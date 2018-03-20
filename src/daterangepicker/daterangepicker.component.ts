@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ElementRef, HostListener, EventEmitter, Output} from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener, EventEmitter, Output} from '@angular/core';
 import { FormBuilder, FormControl} from '@angular/forms';
 import * as moment from 'moment';
 
@@ -65,7 +65,6 @@ export class DaterangepickerComponent implements OnInit {
     @Output('choosedDate') choosedDate:EventEmitter<Object>; 
 
     constructor(
-        private renderer: Renderer2,
         private el: ElementRef
     ) {
         this.choosedDate = new EventEmitter();
