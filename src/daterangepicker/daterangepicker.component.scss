@@ -24,11 +24,9 @@ $md-drppicker-unselected-color:           #999 !default;
 $md-drppicker-unselected-border-color:    transparent !default;
 $md-drppicker-unselected-bg-color:        #fff !default;
 
-// md-drppicker
 $md-drppicker-width:          278px !default;
 $md-drppicker-border-color:   #ccc !default;
 
-// Calendar
 $md-drppicker-calendar-margin:              4px !default;
 $md-drppicker-calendar-bg-color:            $md-drppicker-bg-color !default;
 
@@ -36,7 +34,6 @@ $md-drppicker-calendar-border-size:         1px !default;
 $md-drppicker-calendar-border-color:        $md-drppicker-bg-color !default;
 $md-drppicker-calendar-border-radius:       4px !default;
 
-// Calendar Cells
 $md-drppicker-cell-size:           20px !default;
 $md-drppicker-cell-width:          $md-drppicker-cell-size !default;
 $md-drppicker-cell-height:         $md-drppicker-cell-size !default;
@@ -44,7 +41,6 @@ $md-drppicker-cell-height:         $md-drppicker-cell-size !default;
 $md-drppicker-cell-border-radius:  $md-drppicker-calendar-border-radius !default;
 $md-drppicker-cell-border-size:    1px !default;
 
-// Controls
 $md-drppicker-control-height:               30px !default;
 $md-drppicker-control-line-height:          $md-drppicker-control-height !default;
 $md-drppicker-control-color:                #555 !default;
@@ -58,9 +54,9 @@ $md-drppicker-control-active-border-color:  #08c !default;
 $md-drppicker-control-active-border-radius: $md-drppicker-control-border-radius !default;
 
 $md-drppicker-control-disabled-color:       #ccc !default;
-//
-// STYLESHEETS
-//
+/*
+* styles
+*/
 .md-drppicker {
   position: absolute;
   font-family: Roboto, sans-serif;
@@ -154,8 +150,6 @@ $md-drppicker-control-disabled-color:       #ccc !default;
     th, td {
       white-space: nowrap;
       text-align: center;
-
-      // TODO: Should this actually be hard-coded?
       min-width: 32px;
     }
   }
@@ -293,9 +287,7 @@ $md-drppicker-control-disabled-color:       #ccc !default;
     }
   }
 
-  //
-  // Disabled Controls
-  //
+  // disabled controls
   td, option {
     &.disabled {
       color: #999;
@@ -323,9 +315,6 @@ $md-drppicker-control-disabled-color:       #ccc !default;
     }
   }
 
-  //
-  // Text Input Controls (above calendar)
-  //
   .label-input {
     border: $md-drppicker-control-border-size solid $md-drppicker-control-border-color;
     border-radius: $md-drppicker-control-border-radius;
@@ -334,13 +323,9 @@ $md-drppicker-control-disabled-color:       #ccc !default;
     line-height: $md-drppicker-control-height;
     display: block;
     vertical-align: middle;
-
-    // TODO: Should these all be static, too??
     margin: 0 auto 5px auto;
     padding: 0 0 0 28px;
     width: 100%;
-    
-    
 
     &.active {
       border: $md-drppicker-control-active-border-size solid $md-drppicker-control-active-border-color;
@@ -354,8 +339,6 @@ $md-drppicker-control-disabled-color:       #ccc !default;
 
     i, svg {
       position: absolute;
-
-      // NOTE: These appear to be eyeballed to me...
       left: 8px;
       top: 8px;
     }
@@ -375,7 +358,6 @@ $md-drppicker-control-disabled-color:       #ccc !default;
 @media (min-width: 564px) {
   .md-drppicker {
     width: auto;
-
 
     &.single {
       .calendar.left {

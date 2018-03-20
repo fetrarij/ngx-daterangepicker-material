@@ -2,7 +2,7 @@ import { Directive, ViewContainerRef, ComponentFactoryResolver, ElementRef, Host
 import { DaterangepickerComponent } from './daterangepicker.component';
 
 @Directive({
-  selector: 'input[ngMdDaterangepicker]',
+  selector: 'input[ngDaterangepickerMd]',
   host: {
     '(change)': 'onChange($event)',
     '(keyup.esc)': 'hide()',

@@ -138,7 +138,7 @@
     </div>
     <div class="buttons">
         <div class="buttons_input">
-            <button class="btn btn-default" type="button" (click)="clickCancel()">Cancel</button>
+            <button class="btn btn-default" type="button" (click)="clickCancel($event)">Cancel</button>
             <button class="btn"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">Apply</button> 
         </div>
     </div>
