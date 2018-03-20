@@ -1,0 +1,572 @@
+/*
+*  variables
+*/
+$md-drppicker-color:                      inherit !default;
+$md-drppicker-bg-color:                   #fff !default;
+
+$md-drppicker-cell-color:                 $md-drppicker-color !default;
+$md-drppicker-cell-border-color:          transparent !default;
+$md-drppicker-cell-bg-color:              $md-drppicker-bg-color !default;
+
+$md-drppicker-cell-hover-color:           $md-drppicker-color !default;
+$md-drppicker-cell-hover-border-color:    $md-drppicker-cell-border-color !default;
+$md-drppicker-cell-hover-bg-color:        #eee !default;
+
+$md-drppicker-in-range-color:             #000 !default;
+$md-drppicker-in-range-border-color:      transparent !default;
+$md-drppicker-in-range-bg-color:          #dde2e4 !default;
+
+$md-drppicker-active-color:               #fff !default;
+$md-drppicker-active-bg-color:            #3f51b5 !default;
+$md-drppicker-active-border-color:        transparent !default;
+
+$md-drppicker-unselected-color:           #999 !default;
+$md-drppicker-unselected-border-color:    transparent !default;
+$md-drppicker-unselected-bg-color:        #fff !default;
+
+// md-drppicker
+$md-drppicker-width:          278px !default;
+$md-drppicker-border-color:   #ccc !default;
+
+// Calendar
+$md-drppicker-calendar-margin:              4px !default;
+$md-drppicker-calendar-bg-color:            $md-drppicker-bg-color !default;
+
+$md-drppicker-calendar-border-size:         1px !default;
+$md-drppicker-calendar-border-color:        $md-drppicker-bg-color !default;
+$md-drppicker-calendar-border-radius:       4px !default;
+
+// Calendar Cells
+$md-drppicker-cell-size:           20px !default;
+$md-drppicker-cell-width:          $md-drppicker-cell-size !default;
+$md-drppicker-cell-height:         $md-drppicker-cell-size !default;
+
+$md-drppicker-cell-border-radius:  $md-drppicker-calendar-border-radius !default;
+$md-drppicker-cell-border-size:    1px !default;
+
+// Controls
+$md-drppicker-control-height:               30px !default;
+$md-drppicker-control-line-height:          $md-drppicker-control-height !default;
+$md-drppicker-control-color:                #555 !default;
+
+$md-drppicker-control-border-size:          1px !default;
+$md-drppicker-control-border-color:         #ccc !default;
+$md-drppicker-control-border-radius:        4px !default;
+
+$md-drppicker-control-active-border-size:   1px !default;
+$md-drppicker-control-active-border-color:  #08c !default;
+$md-drppicker-control-active-border-radius: $md-drppicker-control-border-radius !default;
+
+$md-drppicker-control-disabled-color:       #ccc !default;
+//
+// STYLESHEETS
+//
+.md-drppicker {
+  position: absolute;
+  font-family: Roboto, sans-serif;
+  color: $md-drppicker-color;
+  background-color: $md-drppicker-bg-color;
+  border-radius: 4px;
+  width: $md-drppicker-width;
+  padding: 4px;
+  margin-top: 1px;
+  overflow: hidden;
+  z-index: 1000;
+  left: 0;
+  font-size: 14px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+
+
+  &:before, &:after {
+    position: absolute;
+    display: inline-block;
+
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    content: '';
+  }
+
+
+
+  &.openscenter {
+    &:before {
+      left: 0;
+      right: 0;
+      width: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &:after {
+      left: 0;
+      right: 0;
+      width: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &.single {
+    .ranges, .calendar {
+      float: none;
+    }
+  }
+
+  &.shown {
+    transform: scale(1);
+    transition: all 0.1s ease-in-out;
+    transform-origin: 0 0;
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+        -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+    .calendar {
+      display: block;
+    }
+  }
+  &.hidden {
+    transition: all 0.1s ease;
+    transform: scale(0);
+    transform-origin: 0 0;
+    cursor: default;
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+        -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+    .calendar {
+      display: none;
+    }
+  }
+
+  .calendar {
+    /* display: none; */
+    max-width: $md-drppicker-width - ($md-drppicker-calendar-margin * 2);
+    margin: $md-drppicker-calendar-margin;
+
+    &.single {
+      .calendar-table {
+        border: none;
+      }
+    }
+
+    th, td {
+      white-space: nowrap;
+      text-align: center;
+
+      // TODO: Should this actually be hard-coded?
+      min-width: 32px;
+    }
+  }
+
+  .calendar-table {
+    border: $md-drppicker-calendar-border-size solid $md-drppicker-calendar-border-color;
+    padding: $md-drppicker-calendar-margin;
+    border-radius: $md-drppicker-calendar-border-radius;
+    background-color: $md-drppicker-calendar-bg-color;
+  }
+
+  table {
+    width: 100%;
+    margin: 0;
+  }
+  th {
+    color: #988c8c;
+  }
+  td, th {
+    text-align: center;
+    width: $md-drppicker-cell-width;
+    height: $md-drppicker-cell-height;
+    border-radius: $md-drppicker-cell-border-radius;
+    border: $md-drppicker-cell-border-size solid $md-drppicker-cell-border-color;
+    white-space: nowrap;
+    cursor: pointer;
+    height: 2em;
+    width: 2em;  
+
+    &.available {
+      &.prev {
+        display: block;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMy43IDYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMuNyA2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGQ9Ik0zLjcsMC43TDEuNCwzbDIuMywyLjNMMyw2TDAsM2wzLTNMMy43LDAuN3oiLz4NCjwvZz4NCjwvc3ZnPg0K");
+        background-repeat: no-repeat;
+        background-size: .5em;
+        background-position: center;
+        opacity: .8;
+        transition: background-color .2s ease;
+        border-radius: 2em;
+        &:hover {
+          margin: 0;
+        }
+      }
+      &.next {
+        transform: rotate(180deg);
+        display: block;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgMy43IDYiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMuNyA2IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGQ9Ik0zLjcsMC43TDEuNCwzbDIuMywyLjNMMyw2TDAsM2wzLTNMMy43LDAuN3oiLz4NCjwvZz4NCjwvc3ZnPg0K");
+        background-repeat: no-repeat;
+        background-size: .5em;
+        background-position: center;
+        opacity: .8;
+        transition: background-color .2s ease;
+        border-radius: 2em;
+        &:hover {
+          margin: 0;
+          transform: rotate(180deg);
+        }
+      }
+      &:hover {
+        background-color: $md-drppicker-cell-hover-bg-color;
+        border-color: $md-drppicker-cell-hover-border-color;
+        color: $md-drppicker-cell-hover-color;
+        background-repeat: no-repeat;
+        background-size: .5em;
+        background-position: center;
+        margin: .25em 0;
+        opacity: .8;
+        /*transition: background-color .2s ease;*/
+        border-radius: 2em;
+        
+        transform: scale(1);
+        transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    
+      }
+    }
+
+    &.week {
+      font-size: 80%;
+      color: #ccc;
+    }
+  }
+
+  td {
+        margin: .25em 0;
+        opacity: .8;
+        transition: background-color .2s ease;
+        border-radius: 2em;
+        transform: scale(1);
+        transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    &.off {
+      &, &.in-range, &.start-date, &.end-date {
+        background-color: $md-drppicker-unselected-bg-color;
+        border-color: $md-drppicker-unselected-border-color;
+        color: $md-drppicker-unselected-color;
+      }
+    }
+
+    //
+    // Date Range
+    &.in-range {
+      background-color: $md-drppicker-in-range-bg-color;
+      border-color: $md-drppicker-in-range-border-color;
+      color: $md-drppicker-in-range-color;
+
+      // TODO: Should this be static or should it be parameterized?
+      border-radius: 0;
+    }
+
+    &.start-date {
+      border-radius: 2em 0 0 2em;
+    }
+
+    &.end-date {
+      border-radius: 0 2em 2em 0;
+    }
+
+    &.start-date.end-date {
+      border-radius: $md-drppicker-cell-border-radius;
+    }
+
+    &.active {
+      transition: background 300ms ease-out;
+      background: rgba(0, 0, 0, 0.1);
+      &, &:hover {
+        background-color: $md-drppicker-active-bg-color;
+        border-color: $md-drppicker-active-border-color;
+        color: $md-drppicker-active-color;
+      }
+    }
+  }
+
+  th {
+    &.month {
+      width: auto;
+    }
+  }
+
+  //
+  // Disabled Controls
+  //
+  td, option {
+    &.disabled {
+      color: #999;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+  }
+
+  select {
+    &.monthselect, &.yearselect {
+      font-size: 12px;
+      padding: 1px;
+      height: auto;
+      margin: 0;
+      cursor: default;
+    }
+
+    &.monthselect {
+      margin-right: 2%;
+      width: 56%;
+    }
+
+    &.yearselect {
+      width: 40%;
+    }
+  }
+
+  //
+  // Text Input Controls (above calendar)
+  //
+  .label-input {
+    border: $md-drppicker-control-border-size solid $md-drppicker-control-border-color;
+    border-radius: $md-drppicker-control-border-radius;
+    color: $md-drppicker-control-color;
+    height: $md-drppicker-control-line-height;
+    line-height: $md-drppicker-control-height;
+    display: block;
+    vertical-align: middle;
+
+    // TODO: Should these all be static, too??
+    margin: 0 auto 5px auto;
+    padding: 0 0 0 28px;
+    width: 100%;
+    
+    
+
+    &.active {
+      border: $md-drppicker-control-active-border-size solid $md-drppicker-control-active-border-color;
+      border-radius: $md-drppicker-control-active-border-radius;
+    }
+  }
+
+  .md-drppicker_input {
+    position: relative;
+    padding: 0 30px 0 0;
+
+    i, svg {
+      position: absolute;
+
+      // NOTE: These appear to be eyeballed to me...
+      left: 8px;
+      top: 8px;
+    }
+  }
+  &.rtl {
+    .label-input {
+      padding-right: 28px;
+      padding-left: 6px;
+    }
+    .md-drppicker_input i,  .md-drppicker_input svg{
+      left: auto;
+      right: 8px;
+    }
+  }
+}
+
+@media (min-width: 564px) {
+  .md-drppicker {
+    width: auto;
+
+
+    &.single {
+      .calendar.left {
+        clear: none;
+      }
+    }
+
+    &.ltr {
+      direction: ltr;
+      text-align: left;
+      .calendar{
+        &.left {
+          clear: left;
+          margin-right: 1.5em;
+
+          .calendar-table {
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+        }
+
+        &.right {
+          margin-left: 0;
+
+          .calendar-table {
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+        }
+      }
+
+      .left .md-drppicker_input {
+        padding-right: 35px;
+      }
+      .right .md-drppicker_input {
+        padding-right: 35px;
+      }
+
+      .calendar.left .calendar-table {
+        padding-right: 12px;
+      }
+
+      .ranges, .calendar {
+        float: left;
+      }
+    }
+    &.rtl {
+      direction: rtl;
+      text-align: right;
+      .calendar{
+        &.left {
+          clear: right;
+          margin-left: 0;
+
+          .calendar-table {
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+        }
+
+        &.right {
+          margin-right: 0;
+
+          .calendar-table {
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+        }
+      }
+
+      .left .md-drppicker_input {
+        padding-left: 12px;
+      }
+
+      .calendar.left .calendar-table {
+        padding-left: 12px;
+      }
+
+      .ranges, .calendar {
+        text-align: right;
+        float: right;
+      }
+    }
+  }
+  .drp-animate {
+    transform: translate(0);
+    transition: transform .2s ease,
+                opacity .2s ease;
+    
+    &.drp-picker-site-this {
+      transition-timing-function: linear;
+    }
+    
+    &.drp-animate-right {
+      transform: translateX(10%);
+      opacity: 0;
+    }
+
+    &.drp-animate-left {
+      transform: translateX(-10%);
+      opacity: 0;
+    }
+  }
+}
+
+@media (min-width: 730px) {
+  .md-drppicker {
+    .ranges {
+      width: auto;
+    }
+    &.ltr {
+      .ranges {
+        float: left;
+      }
+    }
+    &.rtl {
+      .ranges {
+        float: right;
+      }
+    }
+
+    .calendar.left {
+      clear: none !important;
+    }
+  }
+}
+
+[hidden] {
+  display: none;
+}
+
+/* button */
+.buttons {
+  text-align: right;
+  margin: 0 5px 5px 0;
+}
+.btn {
+  position: relative;
+  overflow: hidden;
+  border-width: 0;
+  outline: none;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+  background-color: #3f51b5;
+  color: #ecf0f1;
+  transition: background-color .4s;
+  &:hover, &:focus {
+    background-color: #3f51b5;
+  }
+  & > * {
+    position: relative;
+  }
+  & span {
+    display: block;
+    padding: 12px 24px;
+  }
+  &:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    display: block;
+    width: 0;
+    padding-top: 0;
+    border-radius: 100%;
+    background-color: rgba(236, 240, 241, .3);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  &:active {
+    &:before {
+      width: 120%;
+      padding-top: 120%;
+      transition: width .2s ease-out, padding-top .2s ease-out;
+    }
+  }
+  &:disabled {
+    opacity:0.5;
+  }
+  &.btn-default {
+    color: black;
+    background-color: gainsboro;
+  }
+}
