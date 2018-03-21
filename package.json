@@ -1,37 +1,65 @@
 {
-  "name": "ng-daterangepicker-md",
-  "version": "0.0.0",
+  "name": "@fetrarij/daterangepicker",
+  "version": "0.0.1",
+  "description": "Angular 2+ date range picker with material design library",
+  "keywords": [
+    "angular2",
+    "angular4",
+    "angular5",
+    "ng2",
+    "daterangepicker",
+    "material",
+    "component",
+    "directive"
+  ],
+  "homepage": "https://github.com/fetrarij/ng-daterangepicker-md",
   "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "demo:build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
+    "build": "ng-packagr -p package.json"
   },
-  "private": true,
+  "author": "Fetrarijaona R.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fetrarij/ng-daterangepicker-md.git"
+  },
+  "ngPackage": {
+    "lib": {
+      "entryFile": "src/daterangepicker/index.ts"
+    },
+    "dest": "dist",
+    "externals": {
+        "moment": "node_modules/moment/**"
+      }
+  },
   "dependencies": {
     "moment": "^2.20.1"
   },
   "devDependencies": {
     "@angular/cli": "1.7.2",
-    "@angular/common": "^2.4.4",
-    "@angular/compiler": "^2.4.4",
-    "@angular/compiler-cli": "^2.4.4",
-    "@angular/core": "^2.4.4",
-    "@angular/forms": "^2.4.4",
-    "@angular/http": "^2.4.4",
-    "@angular/platform-browser": "^2.4.4",
-    "@angular/platform-browser-dynamic": "^2.4.4",
-    "@angular/router": "^3.4.4",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19",
+    "@angular/common": "^5.2.0",
+    "@angular/compiler": "^5.2.0",
+    "@angular/compiler-cli": "^5.2.0",
+    "@angular/core": "^5.2.0",
+    "@angular/forms": "^5.2.0",
+    "@angular/http": "^5.2.0",
+    "@angular/platform-browser": "^5.2.0",
+    "@angular/platform-browser-dynamic": "^5.2.0",
+    "@angular/router": "^5.2.0",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
+    "@types/moment": "^2.13.0",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
+    "core-js": "^2.4.1",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
@@ -39,9 +67,14 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "ng-packagr": "^2.2.0",
     "protractor": "~5.1.2",
+    "rimraf": "^2.6.1",
+    "rxjs": "^5.5.6",
     "ts-node": "4.1.0",
+    "tsickle": "^0.27.2",
     "tslint": "5.9.1",
-    "typescript": "2.4.2"
+    "typescript": "2.4.2",
+    "zone.js": "^0.8.17"
   }
 }

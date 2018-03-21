@@ -25,4 +25,4 @@ import { DaterangepickerDirective } from './daterangepicker.directive';
     DaterangepickerComponent
   ]
 })
-export class NgDaterangepickerMdModule { }
+export class NgDaterangepickerMd { }

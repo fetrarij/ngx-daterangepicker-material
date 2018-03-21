@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, HostListener, EventEmitter, Output} from '@angular/core';
 import { FormBuilder, FormControl} from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment/src/moment'
+
 
 interface Hour {
     hour: string;
@@ -637,6 +638,4 @@ export class DaterangepickerComponent implements OnInit {
     hideCalendars() {
         this.isShown  = false;
     }
-
-
 }
