@@ -24,7 +24,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
-    "gh-pages": "ng build --prod --no-aot --base-href=\"/daterangepicker/\" && ngh --dir demo/dist",
+    "gh-pages": "ng build --prod --no-aot --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
     "build": "ng-packagr -p package.json"
   },
   "author": "Fetrarijaona R.",
