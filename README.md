@@ -2,6 +2,8 @@
 
 A simple Angular 2+ Date range picker with material theme. Compatible with Angular2, Angular4 and Angular5. It uses moment.js.
 
+demo:  https://fetrarij.github.io/daterangepicker/
+
 ## Installation
 
 1) Run `npn install ngx-daterangepicker-material --save` .
@@ -25,6 +27,8 @@ A simple Angular 2+ Date range picker with material theme. Compatible with Angul
 
 ## Usage
 ```html
-<input type="text" ngDaterangepickerMd class="form-control"/>
+<input type="text" ngDaterangepickerMd [(ngModel)]="selected" class="form-control"/>
 ```
-
+````typescript
+selected: {startdDate: Moment, endDate: Moment};
+````
