@@ -1,7 +1,7 @@
 {
   "name": "@fetrarij/daterangepicker",
-  "version": "0.0.2",
-  "description": "Angular 2+ date range picker with material design library",
+  "version": "0.0.3",
+  "description": "Angular 2+ date range picker with material design theme",
   "keywords": [
     "angular2",
     "angular4",
@@ -32,7 +32,7 @@
     "url": "https://github.com/fetrarij/daterangepicker.git"
   },
   "dependencies": {
-    "moment": "^2.19.1"
+    "moment": "^2.21.0"
   },
   "devDependencies": {
     "@angular/cli": "1.7.2",

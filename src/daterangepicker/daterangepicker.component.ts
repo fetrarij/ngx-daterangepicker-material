@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, HostListener, EventEmitter, Output} from '@angular/core';
 import { FormBuilder, FormControl} from '@angular/forms';
-import moment from 'moment/src/moment';
 
+import * as _moment from 'moment'; const moment = _moment;
 
 interface Hour {
     hour: string;
@@ -34,8 +34,8 @@ export class DaterangepickerComponent implements OnInit {
 
     startDate = moment().startOf('day');
     endDate = moment().endOf('day');
-    minDate: moment.Moment = null;
-    maxDate: moment.Moment = null;
+    minDate: _moment.Moment = null;
+    maxDate: _moment.Moment = null;
     dateLimit = null;
     autoApply: Boolean = false;
     singleDatePicker: Boolean = false;

@@ -1,10 +1,10 @@
 # @fetrarij/daterangepicker
 
-A simple Angular 2+ Date range picker with material theme. Compatible with Angular2, Angular4 and Angular4. It uses moment.js.
+A simple Angular 2+ Date range picker with material theme. Compatible with Angular2, Angular4 and Angular5. It uses moment.js.
 
 ## Installation
 
-1) Run `npn install @fetrarij/daterangepicker --save` . 
+1) Run `npn install @fetrarij/daterangepicker --save` .
 2) import **NgDaterangepickerMd** to your **@NgModule** like example below
     ````
     import { NgModule } from '@angular/core';
