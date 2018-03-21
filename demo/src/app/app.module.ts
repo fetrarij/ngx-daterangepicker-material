@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NgDaterangepickerMd } from './../../../src/daterangepicker';
+import { NgxDaterangepickerMd } from './../../../src/daterangepicker';
 import { AppComponent } from './app.component';
 
 
@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     FormsModule,
-    NgDaterangepickerMd
+    NgxDaterangepickerMd
   ],
   providers: [],
   bootstrap: [AppComponent]

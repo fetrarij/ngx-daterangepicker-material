@@ -4,16 +4,16 @@ A simple Angular 2+ Date range picker with material theme. Compatible with Angul
 
 ## Installation
 
-1) Run `npn install @fetrarij/daterangepicker --save` .
+1) Run `npn install ngx-daterangepicker-material --save` .
 2) import **NgDaterangepickerMd** to your **@NgModule** like example below
-    ````
+    ````typescript
     import { NgModule } from '@angular/core';
     import { BrowserModule } from '@angular/platform-browser';
     import { App } from './app';
-    import { NgDaterangepickerMd } from '@fetrarij/daterangepicker';
+    import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
     @NgModule({
-        imports:      [BrowserModule, NgDaterangepickerMd],
+        imports:      [BrowserModule, NgxDaterangepickerMd],
         declarations: [App],
         bootstrap:    [App]
     })
