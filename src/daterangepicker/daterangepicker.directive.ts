@@ -15,7 +15,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DaterangeValue } from './daterange-value.class';
 
 @Directive({
-  selector: 'input[ngDaterangepickerMd]',
+  selector: 'input[ngxDaterangepickerMd]',
   host: {
     '(keyup.esc)': 'hide()',
     '(blur)': 'onBlur()',

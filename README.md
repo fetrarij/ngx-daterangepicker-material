@@ -27,7 +27,7 @@ demo:  https://fetrarij.github.io/daterangepicker/
 
 ## Usage
 ```html
-<input type="text" ngDaterangepickerMd [(ngModel)]="selected" class="form-control"/>
+<input type="text" ngxDaterangepickerMd [(ngModel)]="selected" class="form-control"/>
 ```
 ````typescript
 selected: {startdDate: Moment, endDate: Moment};
