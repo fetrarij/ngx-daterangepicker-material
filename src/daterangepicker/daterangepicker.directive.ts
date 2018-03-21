@@ -1,24 +1,43 @@
-import { Directive, ViewContainerRef, ComponentFactoryResolver, ElementRef, HostListener } from '@angular/core';
+import {
+  Directive,
+  ViewContainerRef,
+  ComponentFactoryResolver,
+  ElementRef,
+  HostListener,
+  forwardRef,
+  ChangeDetectorRef,
+  OnInit,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { DaterangepickerComponent } from './daterangepicker.component';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DaterangeValue } from './daterange-value.class';
 
 @Directive({
   selector: 'input[ngDaterangepickerMd]',
   host: {
-    '(change)': 'onChange($event)',
     '(keyup.esc)': 'hide()',
     '(blur)': 'onBlur()',
     '(focus)': 'onFocus()'
-  }
+  },
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DaterangepickerDirective), multi: true
+    }
+]
 })
-export class DaterangepickerDirective {
+export class DaterangepickerDirective implements OnInit, OnChanges {
   private _picker: DaterangepickerComponent;
   private _onChange = Function.prototype;
   private _onTouched = Function.prototype;
   private _validatorChange = Function.prototype;
-  private _value: Date;
+  private _value: any;
 
   constructor(
-    public viewContainerRef: ViewContainerRef, 
+    public viewContainerRef: ViewContainerRef,
+    public _changeDetectorRef: ChangeDetectorRef,
     private _componentFactoryResolver: ComponentFactoryResolver,
     private _el: ElementRef
   ) {
@@ -30,12 +49,30 @@ export class DaterangepickerDirective {
       this._el.nativeElement.value = change.chosenLabel;
     })
   }
-  onChange(event: any) {
-    console.log('change', event);
+
+  get value() {
+    return this._value || null;
   }
+
+  set value(val) {
+    this._value = val;
+    this._onChange(val);
+    this._changeDetectorRef.markForCheck();
+  }
+  ngOnInit() {
+    this._picker.choosedDate.asObservable().subscribe((change: any) => {
+      this.value = new DaterangeValue(change.startDate, change.endDate);
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void  {
+    // #TODO watch options for change
+  }
+
   onBlur() {
     this._onTouched();
   }
+
   onFocus(event: any) {
     this._picker.show(event);
   }
@@ -43,7 +80,28 @@ export class DaterangepickerDirective {
   hide() {
     this._picker.hide();
   }
-  
+
+  writeValue(value) {
+    this.value = value;
+    this.setValue(value);
+  }
+  registerOnChange(fn) {
+    this._onChange = fn;
+  }
+  registerOnTouched() {
+  }
+  private setValue(val: any) {
+    if (val) {
+      if (val.startDate) {
+        this._picker.setStartDate(val.startDate)
+      }
+      if (val.endDate) {
+        this._picker.setEndDate(val.endDate)
+      }
+    } else {
+      //
+    }
+  }  
   /**
    * For click outside of the calendar's container
    * @param event event object

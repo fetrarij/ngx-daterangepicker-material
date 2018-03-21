@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, HostListener, EventEmitter, Output} from '@angular/core';
-import { FormBuilder, FormControl} from '@angular/forms';
+import { FormControl} from '@angular/forms';
 
 import * as _moment from 'moment'; const moment = _moment;
 
@@ -407,7 +407,7 @@ export class DaterangepickerComponent implements OnInit {
             this.chosenLabel = this.startDate.format(this.locale.format);
         }
         if (this.chosenLabel) {
-            this.choosedDate.emit({chosenLabel: this.chosenLabel});
+            this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
         }
     }
 
@@ -416,7 +416,7 @@ export class DaterangepickerComponent implements OnInit {
     }
     calculateChosenLabel () {
         if (this.chosenLabel) {
-            this.choosedDate.emit({chosenLabel: this.chosenLabel});
+            this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
         }
     }
 
