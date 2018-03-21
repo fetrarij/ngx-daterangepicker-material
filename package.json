@@ -1,6 +1,6 @@
 {
   "name": "@fetrarij/daterangepicker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Angular 2+ date range picker with material design library",
   "keywords": [
     "angular2",
@@ -17,7 +17,6 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
     "ng": "ng",
     "start": "ng serve",
     "demo:build": "ng build --prod",
@@ -32,17 +31,8 @@
     "type": "git",
     "url": "https://github.com/fetrarij/daterangepicker.git"
   },
-  "ngPackage": {
-    "lib": {
-      "entryFile": "src/daterangepicker/index.ts"
-    },
-    "dest": "dist",
-    "externals": {
-        "moment": "node_modules/moment/**"
-      }
-  },
   "dependencies": {
-    "moment": "^2.20.1"
+    "moment": "^2.19.1"
   },
   "devDependencies": {
     "@angular/cli": "1.7.2",
@@ -57,7 +47,6 @@
     "@angular/router": "^5.2.0",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
-    "@types/moment": "^2.13.0",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
     "core-js": "^2.4.1",
@@ -77,5 +66,15 @@
     "tslint": "5.9.1",
     "typescript": "2.4.2",
     "zone.js": "^0.8.17"
+  },
+  "$schema": "./node_modules/ng-packagr/package.schema.json",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "src/daterangepicker/index.ts",
+      "externals": {
+        "moment": "moment"
+      }
+    },
+    "dest": "dist"
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, HostListener, EventEmitter, Output} from '@angular/core';
 import { FormBuilder, FormControl} from '@angular/forms';
-import moment from 'moment/src/moment'
+import moment from 'moment/src/moment';
 
 
 interface Hour {
@@ -146,9 +146,6 @@ export class DaterangepickerComponent implements OnInit {
         const minDate = side === 'left' ? this.minDate : this.startDate;
         let maxDate = this.maxDate;
         const selected = side === 'left' ? this.startDate : this.endDate;
-        const arrow = this.locale.direction === 'ltr' ?
-            {left: 'chevron-left', right: 'chevron-right'} :
-            {left: 'chevron-right', right: 'chevron-left'};
         this.calendarVariables[side] = {
             month: month,
             year: year,
@@ -166,7 +163,6 @@ export class DaterangepickerComponent implements OnInit {
             calRows: Array.from(Array(6).keys()),
             calCols: Array.from(Array(7).keys()),
             classes: {},
-            arrow: arrow,
             minDate: minDate,
             maxDate: maxDate,
             calendar: calendar

@@ -12,7 +12,6 @@
                         <th *ngIf="showWeekNumbers"></th>
                             <ng-container *ngIf="!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || true)">
                                 <th (click)="clickPrev('left')" class="prev available" >
-                                    <i class="fa fa-{{calendarVariables.left.arrow?.left}} glyphicon glyphicon-{{calendarVariables.left.arrow?.left}}"></i>
                                 </th>
                             </ng-container>
                             <ng-container *ngIf="!(!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || true))">
@@ -38,7 +37,6 @@
                         </th>
                         <ng-container *ngIf="!calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker )">
                             <th class="next available" (click)="clickNext('right')">
-                                    <i class="fa fa-{{calendarVariables.right.arrow?.right}} glyphicon glyphicon-{{calendarVariables.right.arrow?.right}}"></i>
                             </th>
                         </ng-container>
                         <ng-container *ngIf="!(!calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker ))">
@@ -81,7 +79,6 @@
                         <th *ngIf="showWeekNumbers"></th>
                         <ng-container *ngIf="!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || false)">
                             <th (click)="clickPrev('left')" class="prev available" >
-                                <i class="fa fa-{{calendarVariables.left.arrow?.left}} glyphicon glyphicon-{{calendarVariables.left.arrow?.left}}"></i>
                             </th>
                         </ng-container>
                         <ng-container *ngIf="!(!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || false))">
@@ -107,7 +104,6 @@
                         </th>
                             <ng-container *ngIf="!calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker || true)">
                                 <th class="next available" (click)="clickNext('right')">
-                                        <i class="fa fa-{{calendarVariables.right.arrow?.right}} glyphicon glyphicon-{{calendarVariables.right.arrow?.right}}"></i>
                                 </th>
                             </ng-container>
                             <ng-container *ngIf="!(!calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker || true))">
