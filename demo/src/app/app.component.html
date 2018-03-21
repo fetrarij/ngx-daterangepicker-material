@@ -1,11 +1,13 @@
 <div class="container">
-    <h1>Demo for the daterangepicker</h1>
+    <h2>Simple daterangepicker</h2>
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col s6">
         <input type="text" ngDaterangepickerMd [(ngModel)]="selected"class="form-control" name="daterange"/>
     </div>
+    <div class="col s6">
+      <strong>Value: </strong>{{selected  | json}}
+    </div>
   </div>
-  {{selected  | json}}
   
 </div>
 

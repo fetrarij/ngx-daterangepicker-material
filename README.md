@@ -1,4 +1,4 @@
-# @fetrarij/daterangepicker
+# Angular daterangepicker
 
 A simple Angular 2+ Date range picker with material theme. Compatible with Angular2, Angular4 and Angular5. It uses moment.js.
 

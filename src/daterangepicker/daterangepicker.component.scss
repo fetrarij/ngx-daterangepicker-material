@@ -68,7 +68,6 @@ $md-drppicker-control-disabled-color:       #ccc !default;
   margin-top: 1px;
   overflow: hidden;
   z-index: 1000;
-  left: 0;
   font-size: 14px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
@@ -148,6 +147,7 @@ $md-drppicker-control-disabled-color:       #ccc !default;
     }
 
     th, td {
+      padding: 0; 
       white-space: nowrap;
       text-align: center;
       min-width: 32px;
@@ -510,6 +510,7 @@ $md-drppicker-control-disabled-color:       #ccc !default;
   background-color: #3f51b5;
   color: #ecf0f1;
   transition: background-color .4s;
+  height: auto;
   &:hover, &:focus {
     background-color: #3f51b5;
   }
