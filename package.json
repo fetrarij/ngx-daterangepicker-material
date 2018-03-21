@@ -24,6 +24,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
+    "gh-pages": "ng build --prod --no-aot --base-href=\"/daterangepicker/\" && ngh --dir demo/dist",
     "build": "ng-packagr -p package.json"
   },
   "author": "Fetrarijaona R.",
@@ -48,6 +49,7 @@
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
+    "angular-cli-ghpages": "^0.5.2",
     "codelyzer": "^4.0.1",
     "core-js": "^2.4.1",
     "jasmine-core": "~2.8.0",
