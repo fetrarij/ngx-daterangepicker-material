@@ -1,4 +1,4 @@
-# ng-daterangepicker-md
+# @fetrarij/daterangepicker
 
 A simple Angular 2+ Date range picker with material theme. Compatible with Angular2, Angular4 and Angular4. It uses moment.js.
 
@@ -10,7 +10,7 @@ A simple Angular 2+ Date range picker with material theme. Compatible with Angul
     import { NgModule } from '@angular/core';
     import { BrowserModule } from '@angular/platform-browser';
     import { App } from './app';
-    import { NgDaterangepickerMd } from 'ng-daterangepicker-md';
+    import { NgDaterangepickerMd } from '@fetrarij/daterangepicker';
 
     @NgModule({
         imports:      [BrowserModule, NgDaterangepickerMd],

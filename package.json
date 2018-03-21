@@ -12,11 +12,12 @@
     "component",
     "directive"
   ],
-  "homepage": "https://github.com/fetrarij/ng-daterangepicker-md",
+  "homepage": "https://github.com/fetrarij/daterangepicker",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
     "ng": "ng",
     "start": "ng serve",
     "demo:build": "ng build --prod",
@@ -29,7 +30,7 @@
   "author": "Fetrarijaona R.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fetrarij/ng-daterangepicker-md.git"
+    "url": "https://github.com/fetrarij/daterangepicker.git"
   },
   "ngPackage": {
     "lib": {
