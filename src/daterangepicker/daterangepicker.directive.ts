@@ -20,7 +20,8 @@ import { DaterangeValue } from './daterange-value.class';
   host: {
     '(keyup.esc)': 'hide()',
     '(blur)': 'onBlur()',
-    '(focus)': 'onFocus()'
+    '(focus)': 'onFocus()',
+    '(click)': 'onFocus()'
   },
   providers: [
     {
