@@ -8,7 +8,8 @@ import {
   ChangeDetectorRef,
   OnInit,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  Input
 } from '@angular/core';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -49,7 +50,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges {
       this._el.nativeElement.value = change.chosenLabel;
     })
   }
-
+  @Input()
+  autoApply: boolean;
   get value() {
     return this._value || null;
   }
@@ -67,6 +69,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void  {
     // #TODO watch options for change
+    console.log('CHANGES', changes)
   }
 
   onBlur() {
