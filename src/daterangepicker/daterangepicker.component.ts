@@ -599,7 +599,7 @@ export class DaterangepickerComponent implements OnInit {
         this.oldStartDate = this.startDate.clone();
         this.oldEndDate = this.endDate.clone();
         this.updateView();
-        this.isShown = true;
+        setTimeout( () => this.isShown = true , 0);
     }
 
     hide(e?) {
@@ -623,8 +623,7 @@ export class DaterangepickerComponent implements OnInit {
 
         // if picker is attached to a text input, update it
         this.updateElement();
-        // this.element.trigger('hide.daterangepicker', this);
-        this.isShown = false;
+        setTimeout(() => {this.isShown = false}, 0)
     }
 
     showCalendars() {
