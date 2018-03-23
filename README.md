@@ -7,7 +7,7 @@ demo:  https://fetrarij.github.io/ngx-daterangepicker-material/
 ## Installation
 
 1) Run `npn install ngx-daterangepicker-material --save` .
-2) import **NgDaterangepickerMd** to your **@NgModule** like example below
+2) import **NgxDaterangepickerMd** to your **@NgModule** like example below
     ````typescript
     import { NgModule } from '@angular/core';
     import { BrowserModule } from '@angular/platform-browser';
