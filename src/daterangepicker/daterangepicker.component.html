@@ -1,4 +1,4 @@
-<div class="md-drppicker" [ngClass]="{ltr: locale.direction === 'ltr', rtl: this.locale.direction === 'rtl', 'shown': isShown, 'hidden': !isShown}"><!-- -->
+<div class="md-drppicker" [ngClass]="{ltr: locale.direction === 'ltr', rtl: this.locale.direction === 'rtl', 'shown': isShown, 'hidden': !isShown, 'double': !singleDatePicker}"><!-- -->
     <div class="calendar left">
         <div class="md-drppicker_input"> 
           <input class="label-input form-control" type="text" [ngClass]="{active: daterangepickerStart.active}" [formControl]="daterangepickerStart.control" value="" [(ngModel)]="daterangepickerStart.model"
@@ -132,7 +132,7 @@
             </table>
         </div>
     </div>
-    <div class="buttons">
+    <div class="buttons" *ngIf="autoApply === false">
         <div class="buttons_input">
             <button class="btn btn-default" type="button" (click)="clickCancel($event)">Cancel</button>
             <button class="btn"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">Apply</button> 

@@ -15,7 +15,7 @@ export enum SideEnum {
 } 
 
 @Component({
- selector: 'ng-md-daterangepicker',
+ selector: 'ngx-daterangepicker-md',
  styleUrls: ['./daterangepicker.component.scss'],
  templateUrl: './daterangepicker.component.html',
 })
