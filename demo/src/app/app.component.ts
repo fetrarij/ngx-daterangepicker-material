@@ -9,5 +9,10 @@ import * as moment from 'moment';
 
 export class AppComponent {
   title = 'ngx-daterangepicker-material';
+  options: any = {
+    autoApply: false,
+    showInputs: false,
+    alwaysShowCalendars: false
+  };
   selected = {startDate: moment("2018-03-15T21:00:00.000Z"), endDate: moment("2018-04-23T20:59:59.000Z") };
 }

@@ -36,13 +36,16 @@
     "moment": "^2.21.0"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.2",
+    "@angular/animations": "^5.2.9",
+    "@angular/cdk": "^5.2.4",
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/core": "^5.2.0",
     "@angular/forms": "^5.2.0",
     "@angular/http": "^5.2.0",
+    "@angular/material": "^5.2.4",
+    "@angular/cli": "1.7.2",
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",

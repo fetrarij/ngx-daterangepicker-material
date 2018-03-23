@@ -14,6 +14,7 @@ import {
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DaterangeValue } from './daterange-value.class';
+import * as _moment from 'moment'; const moment = _moment;
 
 @Directive({
   selector: 'input[ngxDaterangepickerMd]',
@@ -52,7 +53,20 @@ export class DaterangepickerDirective implements OnInit, OnChanges {
     })
   }
   @Input()
+  minDate: _moment.Moment
+  @Input()
+  maxDate: _moment.Moment
+  @Input()
   autoApply: boolean;
+  @Input()
+  showInputs: boolean;
+  @Input()
+  alwaysShowCalendars: boolean;
+  @Input()
+  cancelLabel: string;
+  @Input()
+  applyLabel: string;
+  
   get value() {
     return this._value || null;
   }
@@ -69,8 +83,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void  {
-    // #TODO watch options for change
-    console.log('CHANGES', changes)
+    for (let change in changes) {
+      if (changes.hasOwnProperty(change)) {
+        this._picker[change] = changes[change].currentValue;
+      }
+    }
   }
 
   onBlur() {

@@ -1,15 +1,24 @@
-<div class="container">
-    <h2>Simple daterangepicker</h2>
+<mat-toolbar>Simple daterangepicker</mat-toolbar>
+
+<mat-card>
   <div class="row">
     <div class="col s6">
-        <input type="text" ngxDaterangepickerMd [(ngModel)]="selected"class="form-control" name="daterange"/>
+        <input type="text" matInput
+          ngxDaterangepickerMd
+          [autoApply]="options.autoApply"
+          [showInputs]="options.showInputs"
+          applyLabel="Okay"
+          [(ngModel)]="selected"  name="daterange"/>
     </div>
     <div class="col s6">
-      <strong>Value: </strong>{{selected  | json}}
+          <strong>Value: </strong>{{selected  | json}}
+          <hr/>
+        <h4>Options:</h4>
+        <mat-checkbox [(ngModel)]="options.autoApply">Auto appli</mat-checkbox>
+        <mat-checkbox [(ngModel)]="options.showInputs">Show inputs</mat-checkbox>
     </div>
   </div>
-  
-</div>
+</mat-card>
 
   
 
