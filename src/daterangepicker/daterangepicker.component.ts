@@ -49,13 +49,13 @@ export class DaterangepickerComponent implements OnInit {
     autoUpdateInput: Boolean = true;
     alwaysShowCalendars: Boolean = false;
     showInputs: Boolean = false;
-    applyLabel: string = 'Apply';
-    cancelLabel: string = 'Cancel';
     locale: any = {
         direction: 'ltr',
         format: moment.localeData().longDateFormat('L'),
         separator: ' - ',
         weekLabel: 'W',
+        applyLabel: 'Apply',
+        cancelLabel: 'Cancel',
         daysOfWeek: moment.weekdaysMin(),
         monthNames: moment.monthsShort(),
         firstDay: moment.localeData().firstDayOfWeek()

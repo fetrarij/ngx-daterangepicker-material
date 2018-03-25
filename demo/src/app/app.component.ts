@@ -15,7 +15,9 @@ export class AppComponent {
     alwaysShowCalendars: false
   };
   locale: any = {
-    format: 'DD/MM-YYYY'
+    format: 'DD/MM-YYYY',
+    cancelLabel: 'Cancel',
+    applyLabel: 'Okay'
   }
   selected = {start: moment("2018-03-15T21:00:00.000Z"), end: moment("2018-04-23T20:59:59.000Z") };
 }

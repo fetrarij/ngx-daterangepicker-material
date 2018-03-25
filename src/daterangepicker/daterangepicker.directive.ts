@@ -68,10 +68,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   alwaysShowCalendars: boolean;
   @Input()
-  cancelLabel: string;
-  @Input()
-  applyLabel: string;
-  @Input()
   locale: any;
   @Input()
   private _endKey: string;

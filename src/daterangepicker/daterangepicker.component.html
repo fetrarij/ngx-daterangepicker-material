@@ -134,8 +134,8 @@
     </div>
     <div class="buttons" *ngIf="autoApply === false">
         <div class="buttons_input">
-            <button class="btn btn-default" type="button" (click)="clickCancel($event)">{{cancelLabel}}</button>
-            <button class="btn"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">{{applyLabel}}</button> 
+            <button class="btn btn-default" type="button" (click)="clickCancel($event)">{{locale.cancelLabel}}</button>
+            <button class="btn"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">{{locale.applyLabel}}</button> 
         </div>
     </div>
 </div>
