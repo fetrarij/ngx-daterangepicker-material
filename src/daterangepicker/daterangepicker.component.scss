@@ -25,7 +25,7 @@ $md-drppicker-unselected-border-color:    transparent !default;
 $md-drppicker-unselected-bg-color:        #fff !default;
 
 $md-drppicker-width:          278px !default;
-$md-drppicker-width-double:          570px !default;
+$md-drppicker-width-double:          520px !default;
 $md-drppicker-border-color:   #ccc !default;
 
 $md-drppicker-calendar-margin:              4px !default;
@@ -73,7 +73,7 @@ $md-drppicker-control-disabled-color:       #ccc !default;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
   &.double {
-    width: $md-drppicker-width-double !important;
+    width: $md-drppicker-width-double;
   }
 
   &:before, &:after {

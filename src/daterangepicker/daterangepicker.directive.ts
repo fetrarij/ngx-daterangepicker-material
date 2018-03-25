@@ -107,7 +107,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this.value[this._startKey] = change.startDate;
       this.value[this._endKey] = change.endDate;
     });
-    this.localeDiffer = this.differs.find(this.locale).create();
+    if (this.locale) {
+      this.localeDiffer = this.differs.find(this.locale).create();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void  {
