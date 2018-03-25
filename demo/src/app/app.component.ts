@@ -21,7 +21,7 @@ export class AppComponent {
   minDate: moment.Moment = moment().subtract(5, 'days');
   maxDate: moment.Moment = moment().add(2, 'month');
   locale: any = {
-    format: 'DD/MM-YYYY',
+    format: 'DD MMMM YYYY',
     separator: ' To ',
     cancelLabel: 'Cancel',
     applyLabel: 'Okay'
