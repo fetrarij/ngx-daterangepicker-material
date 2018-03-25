@@ -67,8 +67,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   showInputs: boolean;
   @Input()
   alwaysShowCalendars: boolean;
-  @Input()
-  locale: any;
+  _locale: any = {};
+  @Input() set locale(value) {
+    if (value !== null) {
+      this._locale = value;
+    }
+  }
+  get locale(): any {
+    return this._locale;
+  }
   @Input()
   private _endKey: string;
   private _startKey: string;
@@ -107,9 +114,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this.value[this._startKey] = change.startDate;
       this.value[this._endKey] = change.endDate;
     });
-    if (this.locale) {
-      this.localeDiffer = this.differs.find(this.locale).create();
-    }
+    this.localeDiffer = this.differs.find(this.locale).create();
   }
 
   ngOnChanges(changes: SimpleChanges): void  {
