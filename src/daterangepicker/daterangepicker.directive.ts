@@ -9,12 +9,15 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  Input
+  Input,
+  DoCheck,
+  KeyValueDiffer,
+  KeyValueDiffers
 } from '@angular/core';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DaterangeValue } from './daterange-value.class';
-import * as _moment from 'moment'; const moment = _moment;
+import * as _moment from 'moment';import { LocationChangeListener } from '@angular/common';
+ const moment = _moment;
 
 @Directive({
   selector: 'input[ngxDaterangepickerMd]',
@@ -31,18 +34,20 @@ import * as _moment from 'moment'; const moment = _moment;
     }
 ]
 })
-export class DaterangepickerDirective implements OnInit, OnChanges {
+export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private _picker: DaterangepickerComponent;
   private _onChange = Function.prototype;
   private _onTouched = Function.prototype;
   private _validatorChange = Function.prototype;
   private _value: any;
+  private localeDiffer: KeyValueDiffer<string, any>;
 
   constructor(
     public viewContainerRef: ViewContainerRef,
     public _changeDetectorRef: ChangeDetectorRef,
     private _componentFactoryResolver: ComponentFactoryResolver,
-    private _el: ElementRef
+    private _el: ElementRef,
+    private differs: KeyValueDiffers
   ) {
     const componentFactory = this._componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
     viewContainerRef.clear();
@@ -66,7 +71,31 @@ export class DaterangepickerDirective implements OnInit, OnChanges {
   cancelLabel: string;
   @Input()
   applyLabel: string;
+  @Input()
+  locale: any;
+  @Input()
+  private _endKey: string;
+  private _startKey: string;
+  @Input() set startKey(value) {
+    if (value !== null) {
+      this._startKey = value;
+    } else {
+      this._startKey = 'startDate';
+    }
+  };
+  @Input() set endKey(value) {
+    if (value !== null) {
+      this._endKey = value;
+    } else {
+      this._endKey = 'endDate';
+    }
+  };
   
+  notForChangesProperty: Array<string> = [
+    'locale',
+    'endKey',
+    'startKey'
+  ];
   get value() {
     return this._value || null;
   }
@@ -78,14 +107,27 @@ export class DaterangepickerDirective implements OnInit, OnChanges {
   }
   ngOnInit() {
     this._picker.choosedDate.asObservable().subscribe((change: any) => {
-      this.value = new DaterangeValue(change.startDate, change.endDate);
+      this.value = {};
+      this.value[this._startKey] = change.startDate;
+      this.value[this._endKey] = change.endDate;
     });
+    this.localeDiffer = this.differs.find(this.locale).create();
   }
 
   ngOnChanges(changes: SimpleChanges): void  {
     for (let change in changes) {
       if (changes.hasOwnProperty(change)) {
-        this._picker[change] = changes[change].currentValue;
+        if (this.notForChangesProperty.indexOf(change) === -1) {
+          this._picker[change] = changes[change].currentValue;
+        }
+      }
+    }
+  }
+  ngDoCheck() {
+    if (this.localeDiffer) {
+      const changes = this.localeDiffer.diff(this.locale);
+      if (changes) {
+        this._picker.updateLocale(this.locale);
       }
     }
   }
@@ -113,11 +155,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges {
   }
   private setValue(val: any) {
     if (val) {
-      if (val.startDate) {
-        this._picker.setStartDate(val.startDate)
+      if (val[this._startKey]) {
+        this._picker.setStartDate(val[this._startKey])
       }
-      if (val.endDate) {
-        this._picker.setEndDate(val.endDate)
+      if (val[this._endKey]) {
+        this._picker.setEndDate(val[this._endKey])
       }
     } else {
       //
@@ -137,21 +179,5 @@ export class DaterangepickerDirective implements OnInit, OnChanges {
       if (!clickedInside) { 
          this.hide()
       }
-  }
-  /**
-   * check if child is descendant of parent
-   * @param parent elementRef
-   * @param child elementRef
-   */
-  isDescendant(parent, child) {
-      let node = child;
-      while (node !== null) {
-        if (node === parent) {
-          return true;
-        } else {
-          node = node.parentNode;
-        }
-      }
-      return false;
   }
 }

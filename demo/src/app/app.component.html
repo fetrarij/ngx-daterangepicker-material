@@ -7,15 +7,32 @@
           ngxDaterangepickerMd
           [autoApply]="options.autoApply"
           [showInputs]="options.showInputs"
-          applyLabel="Okay"
+          applyLabel="Okay" [locale]="locale"
+          startKey="start"
+          endKey="end"
           [(ngModel)]="selected"  name="daterange"/>
     </div>
     <div class="col s6">
           <strong>Value: </strong>{{selected  | json}}
           <hr/>
         <h4>Options:</h4>
-        <mat-checkbox [(ngModel)]="options.autoApply">Auto appli</mat-checkbox>
-        <mat-checkbox [(ngModel)]="options.showInputs">Show inputs</mat-checkbox>
+        <strong>autoApply:</strong> <mat-checkbox [(ngModel)]="options.autoApply">Value: {{options.autoApply}}</mat-checkbox><br>
+        <strong>showInputs:</strong><mat-checkbox [(ngModel)]="options.showInputs">Value: {{options.showInputs}}</mat-checkbox><br>
+        <strong>locale</strong> : <br>
+        <mat-form-field>
+          <mat-select placeholder="Choose format" [(ngModel)]="locale.format">
+            <mat-option value="DD/MM/YYYY">DD/MM/YYYY</mat-option>
+            <mat-option value="MM-DD-YYYY">MM-DD-YYYY</mat-option>
+          </mat-select>
+        </mat-form-field><br>
+        value: 
+      {{locale | json}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s6">
+    </div>
+    <div class="col s6">
     </div>
   </div>
 </mat-card>

@@ -644,4 +644,15 @@ export class DaterangepickerComponent implements OnInit {
     handleInternalClick(e) {
         e.stopPropagation(  )
     }
+    /**
+     * update the locale options
+     * @param locale
+     */
+    updateLocale(locale) {
+        for (const key in locale) {
+          if (this.locale.hasOwnProperty(key) && this.locale.hasOwnProperty(key)) {
+            this.locale[key] = locale[key];
+          }
+        }
+    }
 }

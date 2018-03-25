@@ -14,5 +14,8 @@ export class AppComponent {
     showInputs: false,
     alwaysShowCalendars: false
   };
-  selected = {startDate: moment("2018-03-15T21:00:00.000Z"), endDate: moment("2018-04-23T20:59:59.000Z") };
+  locale: any = {
+    format: 'DD/MM-YYYY'
+  }
+  selected = {start: moment("2018-03-15T21:00:00.000Z"), end: moment("2018-04-23T20:59:59.000Z") };
 }

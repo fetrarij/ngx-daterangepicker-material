@@ -8,7 +8,8 @@ import {
   MatToolbarModule,
   MatCardModule,
   MatGridListModule,
-  MatInputModule
+  MatInputModule,
+  MatSelectModule
 } from '@angular/material';
 
 import { NgxDaterangepickerMd } from './../../../src/daterangepicker';
@@ -29,6 +30,7 @@ import { AppComponent } from './app.component';
     MatCardModule,
     MatGridListModule,
     MatInputModule,
+    MatSelectModule,
     NgxDaterangepickerMd
   ],
   providers: [],
