@@ -8,6 +8,7 @@
           [autoApply]="options.autoApply"
           [showInputs]="options.showInputs"
           [linkedCalendars]="options.linkedCalendars"
+          [singleDatePicker]="options.singleDatePicker"
           applyLabel="Okay"
           [locale]="locale"
           startKey="start"
@@ -24,6 +25,7 @@
         <strong>autoApply:</strong>  <mat-checkbox [(ngModel)]="options.autoApply">Value: {{options.autoApply}}</mat-checkbox><br>
         <strong>showInputs:</strong>  <mat-checkbox [(ngModel)]="options.showInputs">Value: {{options.showInputs}}</mat-checkbox><br>
         <strong>linkedCalendars:</strong><mat-checkbox [(ngModel)]="options.linkedCalendars">Value: {{options.linkedCalendars}}</mat-checkbox><br>
+        <strong>singleDatePicker:</strong><mat-checkbox [(ngModel)]="options.singleDatePicker">Value: {{options.linkedCalendars}}</mat-checkbox><br>
         <strong>minDate:</strong>  {{minDate | date: 'dd/MM/yyyy'}}<br>
         <strong>maxDate:</strong>  {{maxDate | date: 'dd/MM/yyyy'}}<br>
         <strong>locale</strong> : <br>

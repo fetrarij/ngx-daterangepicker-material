@@ -13,7 +13,8 @@ export class AppComponent {
     autoApply: false,
     showInputs: false,
     alwaysShowCalendars: false,
-    linkedCalendars: true
+    linkedCalendars: true,
+    singleDatePicker: false
   };
   minDate: moment.Moment = moment().subtract(5, 'days');
   maxDate: moment.Moment = moment().add(2, 'month');

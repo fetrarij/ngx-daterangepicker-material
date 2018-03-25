@@ -69,6 +69,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   alwaysShowCalendars: boolean;
   @Input()
   linkedCalendars: boolean;
+  @Input()
+  singleDatePicker: boolean;
   _locale: any = {};
   @Input() set locale(value) {
     if (value !== null) {
