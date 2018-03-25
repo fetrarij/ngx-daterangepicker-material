@@ -126,12 +126,17 @@ export class DaterangepickerDirective implements OnInit, OnChanges {
   /**
    * For click outside of the calendar's container
    * @param event event object
+   * @param targetElement target element object
    */
-  @HostListener('document:click', ['$event'])
-  outsideClick(event) {
-      if(this.isDescendant(this._el.nativeElement, event.target) === false) {
-         // this.hide();
-      } 
+  @HostListener('document:click', ['$event', '$event.target'])
+  outsideClick(event, targetElement: HTMLElement): void {
+      if (!targetElement) {
+        return;
+      }
+      const clickedInside = this._el.nativeElement.contains(targetElement);
+      if (!clickedInside) { 
+         this.hide()
+      }
   }
   /**
    * check if child is descendant of parent

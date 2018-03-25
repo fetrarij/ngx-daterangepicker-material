@@ -18,6 +18,9 @@ export enum SideEnum {
  selector: 'ngx-daterangepicker-md',
  styleUrls: ['./daterangepicker.component.scss'],
  templateUrl: './daterangepicker.component.html',
+ host: {
+    '(click)': 'handleInternalClick($event)',
+},
 })
 export class DaterangepickerComponent implements OnInit {
     chosenLabel;
@@ -633,5 +636,12 @@ export class DaterangepickerComponent implements OnInit {
 
     hideCalendars() {
         this.isShown  = false;
+    }
+    /**
+     * handle click on all element in the component, usefull for outside of click
+     * @param e event
+     */
+    handleInternalClick(e) {
+        e.stopPropagation(  )
     }
 }
