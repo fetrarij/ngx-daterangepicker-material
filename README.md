@@ -1,4 +1,4 @@
-# Angular daterangepicker
+# Angular daterangepicker [![Build Status](https://travis-ci.org/fetrarij/ngx-daterangepicker-material.svg?branch=master)](https://travis-ci.org/fetrarij/ngx-daterangepicker-material)
 
 Pure Angular 2+ Date range picker. Compatible with Angular2, Angular4 and Angular5. This plugin uses moment.js.
 
