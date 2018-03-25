@@ -514,6 +514,9 @@ $md-drppicker-control-disabled-color:       #ccc !default;
   color: #ecf0f1;
   transition: background-color .4s;
   height: auto;
+  text-transform: uppercase;
+  line-height: 36px;
+  border: none;
   &:hover, &:focus {
     background-color: #3f51b5;
   }

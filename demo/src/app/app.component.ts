@@ -12,7 +12,8 @@ export class AppComponent {
   options: any = {
     autoApply: false,
     showInputs: false,
-    alwaysShowCalendars: false
+    alwaysShowCalendars: false,
+    linkedCalendars: true
   };
   locale: any = {
     format: 'DD/MM-YYYY',
