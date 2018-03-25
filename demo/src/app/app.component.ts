@@ -15,10 +15,12 @@ export class AppComponent {
     alwaysShowCalendars: false,
     linkedCalendars: true
   };
+  minDate: moment.Moment = moment().subtract(5, 'days');
+  maxDate: moment.Moment = moment().add(2, 'month');
   locale: any = {
     format: 'DD/MM-YYYY',
     cancelLabel: 'Cancel',
     applyLabel: 'Okay'
   }
-  selected = {start: moment("2018-03-15T21:00:00.000Z"), end: moment("2018-04-23T20:59:59.000Z") };
+  selected = {start: moment().subtract(3, 'days'), end: moment().add(3, 'days') };
 }
