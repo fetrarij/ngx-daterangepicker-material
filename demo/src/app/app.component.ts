@@ -14,12 +14,15 @@ export class AppComponent {
     showInputs: false,
     alwaysShowCalendars: false,
     linkedCalendars: true,
-    singleDatePicker: false
+    singleDatePicker: false,
+    showWeekNumbers: false,
+    showISOWeekNumbers: false
   };
   minDate: moment.Moment = moment().subtract(5, 'days');
   maxDate: moment.Moment = moment().add(2, 'month');
   locale: any = {
     format: 'DD/MM-YYYY',
+    separator: ' To ',
     cancelLabel: 'Cancel',
     applyLabel: 'Okay'
   }

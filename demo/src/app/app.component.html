@@ -16,6 +16,8 @@
           [(ngModel)]="selected"
           [minDate]="minDate"
           [maxDate]="maxDate"
+          [showWeekNumbers]="options.showWeekNumbers"
+          [showISOWeekNumbers]="options.showISOWeekNumbers"
           name="daterange"/>
     </div>
     <div class="col s6">
@@ -26,6 +28,8 @@
         <strong>showInputs:</strong>  <mat-checkbox [(ngModel)]="options.showInputs">Value: {{options.showInputs}}</mat-checkbox><br>
         <strong>linkedCalendars:</strong><mat-checkbox [(ngModel)]="options.linkedCalendars">Value: {{options.linkedCalendars}}</mat-checkbox><br>
         <strong>singleDatePicker:</strong><mat-checkbox [(ngModel)]="options.singleDatePicker">Value: {{options.linkedCalendars}}</mat-checkbox><br>
+        <strong>showWeekNumbers:</strong><mat-checkbox [(ngModel)]="options.showWeekNumbers">Value: {{options.linkedCalendars}}</mat-checkbox><br>
+        <strong>showISOWeekNumbers:</strong><mat-checkbox [(ngModel)]="options.showISOWeekNumbers">Value: {{options.linkedCalendars}}</mat-checkbox><br>
         <strong>minDate:</strong>  {{minDate | date: 'dd/MM/yyyy'}}<br>
         <strong>maxDate:</strong>  {{maxDate | date: 'dd/MM/yyyy'}}<br>
         <strong>locale</strong> : <br>

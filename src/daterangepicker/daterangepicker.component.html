@@ -9,14 +9,14 @@
             <table class="table-condensed" *ngIf="calendarVariables">
                 <thead>
                     <tr>
-                        <th *ngIf="showWeekNumbers"></th>
-                            <ng-container *ngIf="!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || true)">
-                                <th (click)="clickPrev('left')" class="prev available" >
-                                </th>
-                            </ng-container>
-                            <ng-container *ngIf="!(!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || true))">
-                                <th></th>
-                            </ng-container>
+                        <th *ngIf="showWeekNumbers || showISOWeekNumbers"></th>
+                        <ng-container *ngIf="!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || true)">
+                            <th (click)="clickPrev('left')" class="prev available" >
+                            </th>
+                        </ng-container>
+                        <ng-container *ngIf="!(!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || true))">
+                            <th></th>
+                        </ng-container>
                         <th colspan="5" class="month drp-animate">
                             <ng-container *ngIf="showDropdowns && calendarVariables.left.dropdowns">
                                     <select class="monthselect" (change)="monthChanged($event, 'left')">
@@ -52,10 +52,10 @@
                     <tr *ngFor="let row of calendarVariables.left.calRows">
                         <!-- add week number -->
                         <td  class="week" *ngIf="showWeekNumbers">
-                            {{calendarVariables.left.calendar[row]}}
+                            {{calendarVariables.left.calendar[row][0].week()}}
                         </td>
-                        <td *ngIf="showISOWeekNumbers">
-                                {{calendarVariables.left.calendar[row]}}
+                        <td class="week" *ngIf="showISOWeekNumbers">
+                                {{calendarVariables.left.calendar[row][0].isoWeek()}}
                         </td>
                         <!-- cal -->
                         <td *ngFor="let col of calendarVariables.left.calCols" [class]="calendarVariables.left.classes[row][col]" (click)="clickDate($event, 'left', row, col)">
@@ -76,7 +76,7 @@
             <table class="table-condensed" *ngIf="calendarVariables">
                 <thead>
                     <tr>
-                        <th *ngIf="showWeekNumbers"></th>
+                        <th *ngIf="showWeekNumbers || showISOWeekNumbers"></th>
                         <ng-container *ngIf="(!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay)) && (!this.linkedCalendars || false)">
                             <th (click)="clickPrev('right')" class="prev available" >
                             </th>
@@ -118,11 +118,11 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let row of calendarVariables.right.calRows">
-                        <td  class="week" *ngIf="showWeekNumbers">
-                            {{calendarVariables.right.calendar[row]}}
+                        <td class="week" *ngIf="showWeekNumbers">
+                            {{calendarVariables.right.calendar[row][0].week()}}
                         </td>
-                        <td *ngIf="showISOWeekNumbers">
-                                {{calendarVariables.right.calendar[row]}}
+                        <td class="week" *ngIf="showISOWeekNumbers">
+                                {{calendarVariables.right.calendar[row][0].isoWeek()}}
                         </td>
                         <td *ngFor="let col of calendarVariables.right.calCols" [class]="calendarVariables.right.classes[row][col]" (click)="clickDate($event, 'right', row, col)">
                            {{calendarVariables.right.calendar[row][col].date()}}

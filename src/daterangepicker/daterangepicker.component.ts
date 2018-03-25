@@ -44,7 +44,7 @@ export class DaterangepickerComponent implements OnInit {
     singleDatePicker: Boolean = false;
     showDropdowns: Boolean = false;
     showWeekNumbers: Boolean = false;
-    showISOWeekNumbers : Boolean= false;
+    showISOWeekNumbers : Boolean= true;
     linkedCalendars: Boolean = false;
     autoUpdateInput: Boolean = true;
     alwaysShowCalendars: Boolean = false;
