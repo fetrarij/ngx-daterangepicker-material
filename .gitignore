@@ -43,5 +43,4 @@ testem.log
 Thumbs.db
 
 #package-lock.json
-package-lock.json
 .ng_build/
