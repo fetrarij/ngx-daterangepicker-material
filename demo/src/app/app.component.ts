@@ -8,7 +8,7 @@ import * as moment from 'moment';
 })
 
 export class AppComponent {
-  title = 'ngx-daterangepicker-material';
+  title = 'Pure angular daterangepicker';
   options: any = {
     autoApply: false,
     showInputs: false,
