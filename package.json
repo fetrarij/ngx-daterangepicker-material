@@ -10,7 +10,11 @@
     "daterangepicker",
     "material",
     "component",
-    "directive"
+    "directive",
+    "daterange",
+    "date",
+    "moment",
+    "picker"
   ],
   "homepage": "https://github.com/fetrarij/ngx-daterangepicker-material",
   "license": "MIT",

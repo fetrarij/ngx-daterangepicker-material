@@ -13,7 +13,7 @@ import {
   MatInputModule,
   MatSelectModule
 } from '@angular/material';
-import { NgxDaterangepickerMd, DaterangepickerDirective } from './../../../src/daterangepicker';
+import { NgxDaterangepickerMd, DaterangepickerDirective, DaterangepickerComponent } from './../../../src/daterangepicker';
 
 
 
@@ -62,5 +62,7 @@ describe('AppComponent', () => {
     inputEl.triggerEventHandler('click', null); 
     fixture.detectChanges();
     expect(daterangepicker.picker.isShown).toEqual(true);
+  }));
+  it('should select 2 dates in the daterangepicker', async(() => {
   }));
 });
