@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild } from '@angular/core';
+import { DaterangepickerDirective } from '../../../src/daterangepicker';
 import * as moment from 'moment';
 
 @Component({
@@ -25,6 +26,11 @@ export class AppComponent {
     separator: ' To ',
     cancelLabel: 'Cancel',
     applyLabel: 'Okay'
+  }
+  @ViewChild(DaterangepickerDirective) daterangepicker: DaterangepickerDirective;
+  click() {
+    console.log('clicked');
+    console.log('locale', this.daterangepicker.locale);
   }
   selected = {start: moment().subtract(3, 'days'), end: moment().add(3, 'days') };
 }
