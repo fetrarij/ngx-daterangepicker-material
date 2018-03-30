@@ -601,7 +601,7 @@ export class DaterangepickerComponent implements OnInit {
         if (this.isShown) { return; }
         this.oldStartDate = this.startDate.clone();
         this.oldEndDate = this.endDate.clone();
-        setTimeout( () => this.isShown = true , 0);
+        this.isShown = true;
         this.updateView();
     }
 
