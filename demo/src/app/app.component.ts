@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild } from '@angular/core';
+import { DaterangepickerDirective } from '../../../src/daterangepicker/daterangepicker.directive';
 import * as moment from 'moment';
 
 @Component({
@@ -8,7 +9,7 @@ import * as moment from 'moment';
 })
 
 export class AppComponent {
-  title = 'ngx-daterangepicker-material';
+  title = 'Pure angular daterangepicker';
   options: any = {
     autoApply: false,
     showInputs: false,
@@ -25,6 +26,9 @@ export class AppComponent {
     separator: ' To ',
     cancelLabel: 'Cancel',
     applyLabel: 'Okay'
+  }
+  @ViewChild(DaterangepickerDirective) daterangepicker: DaterangepickerDirective;
+  click() {
   }
   selected = {start: moment().subtract(3, 'days'), end: moment().add(3, 'days') };
 }
