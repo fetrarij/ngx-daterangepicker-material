@@ -76,7 +76,6 @@ export class DaterangepickerComponent implements OnInit {
         this.updateMonthsInView();
     }
 
-
     ngOnInit() {
         this.renderCalendar(SideEnum.left);
         this.renderCalendar(SideEnum.right);
@@ -602,8 +601,8 @@ export class DaterangepickerComponent implements OnInit {
         if (this.isShown) { return; }
         this.oldStartDate = this.startDate.clone();
         this.oldEndDate = this.endDate.clone();
-        this.updateView();
         setTimeout( () => this.isShown = true , 0);
+        this.updateView();
     }
 
     hide(e?) {
