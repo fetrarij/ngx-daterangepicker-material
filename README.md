@@ -1,6 +1,8 @@
-# Angular daterangepicker [![Build Status](https://travis-ci.org/fetrarij/ngx-daterangepicker-material.svg?branch=master)](https://travis-ci.org/fetrarij/ngx-daterangepicker-material)
+# Angular daterangepicker 
+[![Build Status](https://travis-ci.org/fetrarij/ngx-daterangepicker-material.svg?branch=master)](https://travis-ci.org/fetrarij/ngx-daterangepicker-material)
+[![npm version](https://badge.fury.io/js/ngx-daterangepicker-material.svg)](https://badge.fury.io/js/ngx-daterangepicker-material)
 
-Pure Angular 2+ Date range picker. Compatible with Angular2, Angular4 and Angular5. This plugin uses moment.js.
+Pure Angular 2+ Date range picker. Compatible with Angular2, Angular4, Angular5 and Angular6. This plugin uses moment.js.
 
 This plugin is a rewrite to angular from [bootstrap daterangepicker](http://www.daterangepicker.com), so it doesn't depends on jquery nor bootstrap.
 
@@ -13,14 +15,13 @@ demo:  https://fetrarij.github.io/ngx-daterangepicker-material/
 1) Run `npm install ngx-daterangepicker-material --save` .
 2) import **NgxDaterangepickerMd** to your **@NgModule** like example below
     ````typescript
-    import { NgModule } from '@angular/core';
+    ...
     import { FormsModule } from '@angular/forms';
-    import { BrowserModule } from '@angular/platform-browser';
-    import { App } from './app';
     import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+    import { App } from './app';
 
     @NgModule({
-        imports:      [BrowserModule, FormsModule, NgxDaterangepickerMd],
+        imports:      [... , FormsModule, NgxDaterangepickerMd],
         declarations: [App],
         bootstrap:    [App]
     })
