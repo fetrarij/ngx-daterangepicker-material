@@ -10,7 +10,7 @@ script:
   - ng build --prod --no-aot --base-href=/ngx-daterangepicker-material/
 
 after_success:
-  - ngh --dir dist --repo=https://GH_TOKEN@github.com/fetrarij/ngx-daterangepicker-material.git
+  - ngh --dir demo/dist --repo=https://GH_TOKEN@github.com/fetrarij/ngx-daterangepicker-material.git
 
 notifications:
   email:
