@@ -1,6 +1,6 @@
 {
   "name": "ngx-daterangepicker-material",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Angular 2+ date range picker (with material design theme)",
   "keywords": [
     "angular2",
@@ -37,7 +37,7 @@
     "type": "git",
     "url": "https://github.com/fetrarij/ngx-daterangepicker-material.git"
   },
-  "dependencies": {
+  "peerDependencies": {
     "moment": "^2.21.0"
   },
   "devDependencies": {
@@ -82,6 +82,9 @@
     "lib": {
       "entryFile": "src/daterangepicker/index.ts",
       "externals": {
+        "moment": "moment"
+      },
+      "umdModuleIds": {
         "moment": "moment"
       }
     },

@@ -1,62 +1,22 @@
-<mat-toolbar>{{title}}</mat-toolbar>
+<nav class="light-blue lighten-1" role="navigation">
+  <div class="nav-wrapper container">
+  <a href="//github.com/fetrarij/ngx-daterangepicker-material" class="brand-logo">
+    <img src="assets/images/github.png" style="width: 30px">
+  </a>
+    <ul class="right hide-on-med-and-down">
+      <li><a [routerLink]="['simple']">Simple</a></li>
+      <li><a [routerLink]="['single-datepicker']">Single dateicker</a></li>
+      <li><a [routerLink]="['full']">Full options</a></li>
+    </ul>
 
-<mat-card>
-  <div class="row">
-    <div class="col s6">
-        <input type="text" matInput
-          ngxDaterangepickerMd
-          [autoApply]="options.autoApply"
-          [showInputs]="options.showInputs"
-          [linkedCalendars]="options.linkedCalendars"
-          [singleDatePicker]="options.singleDatePicker"
-          applyLabel="Okay"
-          [locale]="locale"
-          startKey="start"
-          endKey="end"
-          [(ngModel)]="selected"
-          (click)="click()"
-          [minDate]="minDate"
-          [maxDate]="maxDate"
-          [showWeekNumbers]="options.showWeekNumbers"
-          [showISOWeekNumbers]="options.showISOWeekNumbers"
-          name="daterange"/>
-    </div>
-    <div class="col s6">
-          <strong>Value: </strong>{{selected  | json}}
-          <hr/>
-        <h4>Options:</h4>
-        <strong>autoApply:</strong>  <mat-checkbox [(ngModel)]="options.autoApply">Value: {{options.autoApply}}</mat-checkbox><br/>
-        <strong>showInputs:</strong>  <mat-checkbox [(ngModel)]="options.showInputs">Value: {{options.showInputs}}</mat-checkbox><br/>
-        <strong>linkedCalendars:</strong><mat-checkbox [(ngModel)]="options.linkedCalendars">Value: {{options.linkedCalendars}}</mat-checkbox><br/>
-        <strong>singleDatePicker:</strong><mat-checkbox [(ngModel)]="options.singleDatePicker">Value: {{options.singleDatePicker}}</mat-checkbox><br/>
-        <strong>showWeekNumbers:</strong><mat-checkbox [(ngModel)]="options.showWeekNumbers">Value: {{options.showWeekNumbers}}</mat-checkbox><br/>
-        <strong>showISOWeekNumbers:</strong><mat-checkbox [(ngModel)]="options.showISOWeekNumbers">Value: {{options.showISOWeekNumbers}}</mat-checkbox><br/>
-        <strong>minDate:</strong>  {{minDate | date: 'dd/MM/yyyy'}}<br/>
-        <strong>maxDate:</strong>  {{maxDate | date: 'dd/MM/yyyy'}}<br/>
-        <strong>locale</strong> : <br/>
-        <div class="">
-          <div class="row">
-            <div class="col s12">
-                <mat-form-field>
-                  <mat-select placeholder="Choose format" [(ngModel)]="locale.format">
-                    <mat-option value="DD/MM/YYYY">DD/MM/YYYY</mat-option>
-                    <mat-option value="MM-DD-YYYY">MM-DD-YYYY</mat-option>
-                  </mat-select>
-                </mat-form-field><br/>
-                locale value:<br/> 
-              {{locale | json}}
-            </div>
-          </div>
-        </div>
-    </div>
+
+    <ul id="nav-mobile" class="side-nav" style="transform: translateX(-100%);">
+      <li><a href="//github.com/fetrarij/ngx-daterangepicker-material">Github</a></li>
+    </ul>
+    <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
   </div>
-  <div class="row">
-    <div class="col s6">
-    </div>
-    <div class="col s6">
-    </div>
-  </div>
-</mat-card>
+</nav>
 
-  
-
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

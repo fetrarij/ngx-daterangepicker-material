@@ -1,43 +1,59 @@
-# Angular daterangepicker 
+# ngx-daterangepicker-material
+> Pure Angular 2+ Date range picker.
+
 [![Build Status](https://travis-ci.org/fetrarij/ngx-daterangepicker-material.svg?branch=master)](https://travis-ci.org/fetrarij/ngx-daterangepicker-material)
 [![npm version](https://badge.fury.io/js/ngx-daterangepicker-material.svg)](https://badge.fury.io/js/ngx-daterangepicker-material)
 
-Pure Angular 2+ Date range picker. Compatible with Angular2, Angular4, Angular5 and Angular6. This plugin uses moment.js.
+ This plugin is compatible with Angular2, Angular4, Angular5 and Angular6. This plugin uses moment.js.
 
 This plugin is a rewrite to angular from [bootstrap daterangepicker](http://www.daterangepicker.com), so it doesn't depends on jquery nor bootstrap.
 
 This plugin have an independant theme which looks more close to material design, so the material design is just a style.
 
+
+![](screen.png)
+
 demo:  https://fetrarij.github.io/ngx-daterangepicker-material/
 
 ## Installation
 
-1) Run `npm install ngx-daterangepicker-material --save` .
-2) import **NgxDaterangepickerMd** to your **@NgModule** like example below
-    ````typescript
-    ...
-    import { FormsModule } from '@angular/forms';
-    import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-    import { App } from './app';
+ Install the plugin from npm:
+ 
+ `npm install ngx-daterangepicker-material --save` .
 
-    @NgModule({
-        imports:      [... , FormsModule, NgxDaterangepickerMd],
-        declarations: [App],
-        bootstrap:    [App]
-    })
-    export class AppModule {}
-    ````
+ import **NgxDaterangepickerMd** in your module:
 
-3) now we can use it
+````typescript
+...
+import { FormsModule } from '@angular/forms';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { App } from './app';
 
+@NgModule({
+    imports:      [... , FormsModule, NgxDaterangepickerMd],
+    declarations: [App],
+    bootstrap:    [App]
+})
+export class AppModule {}
+````
 
-## Usage
+## Usage example
+
+Html:
+
 ```html
 <input type="text" ngxDaterangepickerMd [(ngModel)]="selected" class="form-control"/>
 ```
-or with some options: 
+Typescript: 
+
+````typescript
+selected: {startdDate: Moment, endDate: Moment};
+````
+### with some options: 
+Html:
+
 ```html
-    <input type="text" matInput
+<input type="text" matInput
     ngxDaterangepickerMd
     [autoApply]="false"
     [showInputs]="false"
@@ -48,25 +64,29 @@ or with some options:
     [(ngModel)]="selected"
     name="daterange"/>
 ```
+Typescript: 
 
 ````typescript
-selected: {startdDate: Moment, endDate: Moment};
+selected: {start: Moment, end: Moment};
 ````
+You can [play with our online demo here](https://fetrarij.github.io/ngx-daterangepicker-material/)
+and [browse our demo code here](./demo/src/app).
 
 
-## Options
 
-### autoApply, showInputs, showInputs, singleDatePicker, showWeekNumbers, showISOWeekNumbers
+## Available options
 
-These options are booleans
+### autoApply, showInputs, singleDatePicker, showWeekNumbers, showISOWeekNumbers
+
+>These options are booleans
 
 ### minDate, maxDate
 
- To set the minimal and maximal date, these options are a moment date
+ >To set the minimal and maximal date, these options are a moment date
 
 ### locale
 
-the locale options is an object with: 
+>the locale options is an object with: 
 ```javascript
 {
     format: 'MM/DD/YYYY',

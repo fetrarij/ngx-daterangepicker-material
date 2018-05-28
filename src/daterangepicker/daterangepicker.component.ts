@@ -540,15 +540,6 @@ export class DaterangepickerComponent implements OnInit {
 
         let date = side ===  SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
-        //
-        // this function needs to do a few things:
-        // * alternate between selecting a start and end date for the range,
-        // * if the time picker is enabled, apply the hour/minute/second from the select boxes to the clicked date
-        // * if autoapply is enabled, and an end date was chosen, apply the selection
-        // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
-        // * if one of the inputs above the calendars was focused, cancel that manual input
-        //
-
         if (this.endDate || date.isBefore(this.startDate, 'day')) { // picking start
             this.endDate = null;
             this.setStartDate(date.clone());
@@ -566,6 +557,9 @@ export class DaterangepickerComponent implements OnInit {
 
         if (this.singleDatePicker) {
             this.setEndDate(this.startDate);
+            if (this.autoApply) {
+                this.clickApply();
+            }
         }
 
         this.updateView();
