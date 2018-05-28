@@ -10,6 +10,7 @@ This plugin is a rewrite to angular from [bootstrap daterangepicker](http://www.
 
 This plugin have an independant theme which looks more close to material design, so the material design is just a style.
 
+
 ![](screen.png)
 
 demo:  https://fetrarij.github.io/ngx-daterangepicker-material/
@@ -22,19 +23,19 @@ demo:  https://fetrarij.github.io/ngx-daterangepicker-material/
 
  import **NgxDaterangepickerMd** in your module:
 
-    ````typescript
-    ...
-    import { FormsModule } from '@angular/forms';
-    import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-    import { App } from './app';
+````typescript
+...
+import { FormsModule } from '@angular/forms';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { App } from './app';
 
-    @NgModule({
-        imports:      [... , FormsModule, NgxDaterangepickerMd],
-        declarations: [App],
-        bootstrap:    [App]
-    })
-    export class AppModule {}
-    ````
+@NgModule({
+    imports:      [... , FormsModule, NgxDaterangepickerMd],
+    declarations: [App],
+    bootstrap:    [App]
+})
+export class AppModule {}
+````
 
 ## Usage example
 
@@ -48,11 +49,11 @@ Typescript:
 ````typescript
 selected: {startdDate: Moment, endDate: Moment};
 ````
-### or with some options: 
+### with some options: 
 Html:
 
 ```html
-    <input type="text" matInput
+<input type="text" matInput
     ngxDaterangepickerMd
     [autoApply]="false"
     [showInputs]="false"
@@ -66,8 +67,11 @@ Html:
 Typescript: 
 
 ````typescript
-selected: {start: Moment, en: Moment};
+selected: {start: Moment, end: Moment};
 ````
+You can [play with our online demo here](https://fetrarij.github.io/ngx-daterangepicker-material/)
+and [browse our demo code here](./demo/src/app).
+
 
 
 ## Available options
