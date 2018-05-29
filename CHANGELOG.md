@@ -1,4 +1,19 @@
-#### 1.0.4 (2018-05-29)
+#### 1.0.5 (2018-05-29)
+
+##### Chores
+
+* **doc:**  update readme ([196df1e3](https://github.com/fetrarij/ngx-daterangepicker-material/commit/196df1e320a683a56ab50f48fc46b5cfdf1e5e9e))
+* **demo:**  add custom ranges demo ([bec21cb6](https://github.com/fetrarij/ngx-daterangepicker-material/commit/bec21cb6577c7a56444362a15c4c9692f27384ce))
+
+##### New Features
+
+* **daterangepicker:**  add custom ranges ([67771664](https://github.com/fetrarij/ngx-daterangepicker-material/commit/6777166491603bdd86070d11bde573a355276d4b))
+
+##### Code Style Changes
+
+* **calendar:**  update style ([4ebd3537](https://github.com/fetrarij/ngx-daterangepicker-material/commit/4ebd353799bf8f2c9a223709e87598555a51d240))
+
+#### 1.0.4 (2018-05-28)
 
 ##### Chores
 
