@@ -68,6 +68,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   alwaysShowCalendars: boolean;
   @Input()
+  showCustomRangeLabel: boolean;
+  @Input()
   linkedCalendars: boolean;
   @Input()
   singleDatePicker: boolean;
@@ -75,6 +77,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   showWeekNumbers: boolean;
   @Input()
   showISOWeekNumbers: boolean;
+  @Input()
+  ranges: any;
   _locale: any = {};
   @Input() set locale(value) {
     if (value !== null) {
@@ -85,8 +89,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     return this._locale;
   }
   @Input()
-  private _endKey: string;
-  private _startKey: string;
+  private _endKey: string = 'startDate';
+  private _startKey: string = 'endDate';
   @Input() set startKey(value) {
     if (value !== null) {
       this._startKey = value;

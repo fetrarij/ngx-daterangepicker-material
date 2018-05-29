@@ -44,11 +44,13 @@ export class DaterangepickerComponent implements OnInit {
     singleDatePicker: Boolean = false;
     showDropdowns: Boolean = false;
     showWeekNumbers: Boolean = false;
-    showISOWeekNumbers : Boolean= true;
+    showISOWeekNumbers : Boolean= false;
     linkedCalendars: Boolean = false;
     autoUpdateInput: Boolean = true;
     alwaysShowCalendars: Boolean = false;
     showInputs: Boolean = false;
+    maxSpan: Boolean = false;
+    timePicker: Boolean = false;
     locale: any = {
         direction: 'ltr',
         format: moment.localeData().longDateFormat('L'),
@@ -56,6 +58,7 @@ export class DaterangepickerComponent implements OnInit {
         weekLabel: 'W',
         applyLabel: 'Apply',
         cancelLabel: 'Cancel',
+        customRangeLabel: 'Custom range',
         daysOfWeek: moment.weekdaysMin(),
         monthNames: moment.monthsShort(),
         firstDay: moment.localeData().firstDayOfWeek()
@@ -65,6 +68,12 @@ export class DaterangepickerComponent implements OnInit {
     isShown: Boolean = false;
     leftCalendar: any = {};
     rightCalendar: any = {};
+    // custom ranges
+    ranges: any = {};
+    showCustomRangeLabel: boolean;
+    rangesArray: Array<any> = [];
+    // states
+    showCalInRanges: Boolean = false;
 
     options: any = {} ; // should get some opt from user
     @Output('choosedDate') choosedDate:EventEmitter<Object>; 
@@ -79,6 +88,61 @@ export class DaterangepickerComponent implements OnInit {
     ngOnInit() {
         this.renderCalendar(SideEnum.left);
         this.renderCalendar(SideEnum.right);
+        this.renderRanges();
+    }
+    renderRanges() {
+        let start, end;
+        if (typeof this.ranges === 'object') {
+            for (const range in this.ranges) {
+                if (typeof this.ranges[range][0] === 'string') {
+                    start = moment(this.ranges[range][0], this.locale.format);
+                } else {
+                    start = moment(this.ranges[range][0]);
+                }
+
+                if (typeof this.ranges[range][1] === 'string') {
+                    end = moment(this.ranges[range][1], this.locale.format);
+                } else {
+                    end = moment(this.ranges[range][1]);
+                }
+
+                // If the start or end date exceed those allowed by the minDate or maxSpan
+                // options, shorten the range to the allowable period.
+                if (this.minDate && start.isBefore(this.minDate)) {
+                    start = this.minDate.clone();
+                }
+
+                var maxDate = this.maxDate;
+                if (this.maxSpan && maxDate && start.clone().add(this.maxSpan).isAfter(maxDate)) {
+                    maxDate = start.clone().add(this.maxSpan);
+                }
+                if (maxDate && end.isAfter(maxDate)) {
+                    end = maxDate.clone();
+                }
+
+                // If the end of the range is before the minimum or the start of the range is
+                // after the maximum, don't display this range option at all.
+                if ((this.minDate && end.isBefore(this.minDate, this.timePicker ? 'minute' : 'day'))
+                || (maxDate && start.isAfter(maxDate, this.timePicker ? 'minute' : 'day'))) {
+                    continue;
+                }
+
+                //Support unicode chars in the range names.
+                var elem = document.createElement('textarea');
+                elem.innerHTML = range;
+                var rangeHtml = elem.value;
+
+                this.ranges[rangeHtml] = [start, end];
+            }
+            for (const range in this.ranges) {
+                this.rangesArray.push(range);
+            }
+            if (this.showCustomRangeLabel) {
+                this.rangesArray.push(this.locale.customRangeLabel);
+            }
+            this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
+        }
+        
     }
     renderCalendar(side: SideEnum) { // site enum
         let mainCalendar: any = ( side === SideEnum.left ) ? this.leftCalendar : this.rightCalendar;
@@ -568,6 +632,35 @@ export class DaterangepickerComponent implements OnInit {
         e.stopPropagation();
 
     }
+    /**
+     *  Click on the custom range
+     * @param e: Event
+     * @param label
+     */
+    clickRange(e, label) {
+        this.chosenLabel = label;
+        if (label == this.locale.customRangeLabel) {
+            this.showCalendars();
+            this.showCalInRanges = true;
+        } else {
+            var dates = this.ranges[label];
+            this.startDate = dates[0].clone();
+            this.endDate = dates[1].clone();
+            this.calculateChosenLabel();
+            this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
+            // this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
+
+            /*if (!this.timePicker) {
+                this.startDate.startOf('day');
+                this.endDate.endOf('day');
+            }*/
+
+            if (!this.alwaysShowCalendars) {
+                this.hideCalendars();
+            }
+            this.clickApply();
+        }
+    };
     /**
      *  Update the input after applying 
      */
