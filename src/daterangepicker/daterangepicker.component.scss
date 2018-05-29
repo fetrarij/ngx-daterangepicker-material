@@ -66,7 +66,7 @@ $md-drppicker-control-disabled-color:       #ccc !default;
   border-radius: 4px;
   width: $md-drppicker-width;
   padding: 4px;
-  margin-top: 1px;
+  margin-top: -10px;
   overflow: hidden;
   z-index: 1000;
   font-size: 14px;
@@ -356,6 +356,42 @@ $md-drppicker-control-disabled-color:       #ccc !default;
       right: 8px;
     }
   }
+  /* ranges */
+  .show-ranges {
+    .drp-calendar.left {
+      border-left: 1px solid #ddd;
+    }
+  }
+  
+  .ranges {
+    float: none;
+    text-align: left;
+    margin: 0;
+    ul {
+      list-style: none;
+      margin: 0 auto;
+      padding: 0;
+      width: 100%;
+      li {
+        font-size: 12px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      li:hover {
+        background-color: #eee;
+      }
+      li.active {
+        background-color: #3f51b5;
+        color: #fff;
+      }
+    }
+  }
+  
+  .show-calendar {
+    .ranges {
+      margin-top: 8px;
+    }
+  }
 }
 
 @media (min-width: 564px) {
@@ -374,7 +410,7 @@ $md-drppicker-control-disabled-color:       #ccc !default;
       .calendar{
         &.left {
           clear: left;
-          margin-right: 1.5em;
+          /*margin-right: 1.5em;*/
 
           .calendar-table {
             border-right: none;
@@ -506,7 +542,7 @@ $md-drppicker-control-disabled-color:       #ccc !default;
   overflow: hidden;
   border-width: 0;
   outline: none;
-  padding: 6px;
+  padding: 0px 6px;
   cursor: pointer;
   border-radius: 2px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, .6);

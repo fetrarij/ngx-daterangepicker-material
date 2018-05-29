@@ -1,0 +1,19 @@
+<mat-toolbar>Custom ranges</mat-toolbar>
+
+<div class="row">
+  <div class="col s6">
+    <input type="text"
+    ngxDaterangepickerMd
+    [(ngModel)]="selected" 
+    [showCustomRangeLabel]="true"
+    [ranges]="ranges"
+    class="form-control"
+    placeholder="Select please..."/>
+  </div>
+  <div class="col s6">
+    <br/>
+    <strong>Model: </strong>
+    <br/> {{selected | json  }}
+  </div>
+</div>
+

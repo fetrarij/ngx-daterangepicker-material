@@ -1,5 +1,19 @@
-<div class="md-drppicker" [ngClass]="{ltr: locale.direction === 'ltr', rtl: this.locale.direction === 'rtl', 'shown': isShown, 'hidden': !isShown, 'double': !singleDatePicker}"><!-- -->
-    <div class="calendar" [ngClass]="{right: singleDatePicker, left: !singleDatePicker}">
+<div class="md-drppicker"
+[ngClass]="{
+    ltr: locale.direction === 'ltr',
+    rtl: this.locale.direction === 'rtl',
+    'shown': isShown,
+    'hidden': !isShown,
+    'double': !singleDatePicker,
+    'show-ranges': rangesArray.length
+}">
+    <div class="ranges">
+        <ul *ngFor="let range of rangesArray">
+            <li (click)="clickRange($event, range)" [ngClass]="{'active': range === chosenLabel}">{{range}}</li>
+        </ul>
+    </div>
+    <div class="calendar" [ngClass]="{right: singleDatePicker, left: !singleDatePicker}"
+        *ngIf="showCalInRanges">
         <div class="md-drppicker_input" *ngIf="showInputs"> 
           <input class="label-input form-control" type="text" [ngClass]="{active: daterangepickerStart.active}" [formControl]="daterangepickerStart.control" value="" [(ngModel)]="daterangepickerStart.model"
           (focus)="daterangepickerStart.focus = true" (blur)="daterangepickerStart.focus=false"/>
@@ -66,7 +80,9 @@
             </table>
         </div>
     </div>
-    <div class="calendar right" *ngIf="!singleDatePicker">
+    <div class="calendar right" 
+        *ngIf="showCalInRanges && !singleDatePicker"
+        >
         <div class="md-drppicker_input"  *ngIf="showInputs">
           <input class="label-input form-control" type="text" [ngClass]="{active: daterangepickerEnd.active}" [formControl]="daterangepickerEnd.control" value="" [(ngModel)]="daterangepickerEnd.model"
           (focus)="daterangepickerEnd.focus = true" (blur)="daterangepickerEnd.focus=false"/>
@@ -132,7 +148,7 @@
             </table>
         </div>
     </div>
-    <div class="buttons" *ngIf="autoApply === false">
+    <div class="buttons" *ngIf="(!autoApply && !rangesArray.length) || (showCalInRanges && !singleDatePicker)">
         <div class="buttons_input">
             <button class="btn btn-default" type="button" (click)="clickCancel($event)">{{locale.cancelLabel}}</button>
             <button class="btn"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">{{locale.applyLabel}}</button> 
