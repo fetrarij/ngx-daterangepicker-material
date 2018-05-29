@@ -19,6 +19,7 @@ import { AppComponent } from './app.component';
 import { SimpleComponent } from './simple/simple.component';
 import { FullComponent } from './full/full.component';
 import { SingleDatepickerComponent } from './single-datepicker/single-datepicker.component';
+import { CustomRangesComponent } from './custom-ranges/custom-ranges.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { SingleDatepickerComponent } from './single-datepicker/single-datepicker
     AppComponent,
     SimpleComponent,
     FullComponent,
-    SingleDatepickerComponent
+    SingleDatepickerComponent,
+    CustomRangesComponent
   ],
   imports: [
     BrowserModule,
