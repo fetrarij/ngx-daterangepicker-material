@@ -89,8 +89,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     return this._locale;
   }
   @Input()
-  private _endKey: string = 'startDate';
-  private _startKey: string = 'endDate';
+  private _endKey: string = 'endDate';
+  private _startKey: string = 'startDate';
   @Input() set startKey(value) {
     if (value !== null) {
       this._startKey = value;
