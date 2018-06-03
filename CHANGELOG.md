@@ -1,3 +1,12 @@
+#### 1.0.6 (2018-06-03)
+
+##### Bug Fixes
+
+* **render:**  'double' class when double calendar only ([c8bfd024](https://github.com/fetrarij/ngx-daterangepicker-material/commit/c8bfd024b5941b19ecf70cc62b86bea264bdcd16))
+
+* **calendar:**  Fix issue #6
+
+
 #### 1.0.5 (2018-05-29)
 
 ##### Chores
