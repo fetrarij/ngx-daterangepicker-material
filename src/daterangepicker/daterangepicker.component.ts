@@ -603,6 +603,7 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         let date = side ===  SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+        console.log(date, side);
 
         if (this.endDate || date.isBefore(this.startDate, 'day')) { // picking start
             this.endDate = null;
@@ -648,12 +649,11 @@ export class DaterangepickerComponent implements OnInit {
             this.endDate = dates[1].clone();
             this.calculateChosenLabel();
             this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
-            // this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
 
-            /*if (!this.timePicker) {
+            if (!this.timePicker) {
                 this.startDate.startOf('day');
                 this.endDate.endOf('day');
-            }*/
+            }
 
             if (!this.alwaysShowCalendars) {
                 this.hideCalendars();
