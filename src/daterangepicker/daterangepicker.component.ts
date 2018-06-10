@@ -749,4 +749,11 @@ export class DaterangepickerComponent implements OnInit {
           }
         }
     }
+    /**
+     *  clear the daterange picker
+     */
+    clear() {
+        this.choosedDate.emit({chosenLabel: '', startDate: null, endDate: null});
+        this.hide();
+    }
 }
