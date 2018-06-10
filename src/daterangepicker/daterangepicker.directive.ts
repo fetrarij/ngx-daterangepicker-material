@@ -12,12 +12,14 @@ import {
   Input,
   DoCheck,
   KeyValueDiffer,
-  KeyValueDiffers
+  KeyValueDiffers,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as _moment from 'moment';import { LocationChangeListener } from '@angular/common';
- const moment = _moment;
+import * as _moment from 'moment';
+const moment = _moment;
 
 @Directive({
   selector: 'input[ngxDaterangepickerMd]',
@@ -111,20 +113,25 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     'endKey',
     'startKey'
   ];
+
   get value() {
     return this._value || null;
   }
-
   set value(val) {
     this._value = val;
     this._onChange(val);
     this._changeDetectorRef.markForCheck();
   }
+  @Output('change') onChange: EventEmitter<Object> = new EventEmitter(); 
   ngOnInit() {
     this.picker.choosedDate.asObservable().subscribe((change: any) => {
-      this.value = {};
-      this.value[this._startKey] = change.startDate;
-      this.value[this._endKey] = change.endDate;
+      if (change) {
+        const value = {};
+        value[this._startKey] = change.startDate;
+        value[this._endKey] = change.endDate;
+        this.value = value;
+        this.onChange.emit(value);
+      }
     });
     this.localeDiffer = this.differs.find(this.locale).create();
   }
@@ -138,6 +145,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       }
     }
   }
+  
   ngDoCheck() {
     if (this.localeDiffer) {
       const changes = this.localeDiffer.diff(this.locale);
@@ -166,7 +174,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   registerOnChange(fn) {
     this._onChange = fn;
   }
-  registerOnTouched() {
+  registerOnTouched(fn) {
+    this._onTouched = fn;
   }
   private setValue(val: any) {
     if (val) {

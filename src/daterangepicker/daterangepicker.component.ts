@@ -473,21 +473,24 @@ export class DaterangepickerComponent implements OnInit {
         } else if ( this.autoUpdateInput) {
             this.chosenLabel = this.startDate.format(this.locale.format);
         }
-        if (this.chosenLabel) {
-            this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
-        }
     }
 
     remove() {
         this.isShown = false;
     }
+    /**
+     * this should calculate the label
+     */
     calculateChosenLabel () {
-        if (this.chosenLabel) {
-            this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
+        if (!this.chosenLabel) {
+            this.updateElement();
         }
     }
 
     clickApply(e?) {
+        if (this.chosenLabel) {
+            this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
+        }
         this.hide();
     }
 
@@ -603,7 +606,6 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         let date = side ===  SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
-        console.log(date, side);
 
         if (this.endDate || date.isBefore(this.startDate, 'day')) { // picking start
             this.endDate = null;
