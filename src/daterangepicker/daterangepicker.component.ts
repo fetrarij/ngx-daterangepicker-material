@@ -86,6 +86,13 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this.locale.firstDay != 0) {
+            var iterator = this.locale.firstDay;
+            while (iterator > 0) {
+                this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
+                iterator--;
+            }
+        }
         this.renderCalendar(SideEnum.left);
         this.renderCalendar(SideEnum.right);
         this.renderRanges();
@@ -173,7 +180,6 @@ export class DaterangepickerComponent implements OnInit {
         if (startDay > daysInLastMonth) {
             startDay -= 7;
         }
-
         if (dayOfWeek === this.locale.firstDay) {
             startDay = daysInLastMonth - 6;
         }
