@@ -8,6 +8,7 @@ import * as moment from 'moment';
 })
 export class CustomRangesComponent implements OnInit {
   selected: any;
+  alwaysShowCalendars: boolean;
   ranges: any = {
     'Today': [moment(), moment()],
     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -16,7 +17,9 @@ export class CustomRangesComponent implements OnInit {
     'This Month': [moment().startOf('month'), moment().endOf('month')],
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
   }
-  constructor() { }
+  constructor() {
+    this.alwaysShowCalendars = true;
+  }
 
   ngOnInit() {
   }

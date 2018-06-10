@@ -2,7 +2,22 @@
 <div class="row">
   <div class="col s6">
     <input type="text" ngxDaterangepickerMd 
-    [(ngModel)]="selected" class="form-control" placeholder="Choose date" 
+    [(ngModel)]="selected" class="form-control" placeholder="Choose date"
     (ngModelChange)="ngModelChange($event)" (change)="change($event)"/>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12">
+    <b>Using the change event :</b>
+      <pre class="prettyprint"><code class="html">&lt;input type="text" ngxDaterangepickerMd 
+[(ngModel)]="selected" placeholder="Choose date" (change)="change($event)"/&gt;</code>
+    </pre>
+    
+   <b>Or with ngModel :</b>
+    
+      <pre class="prettyprint"><code class="html">&lt;input type="text" ngxDaterangepickerMd 
+[(ngModel)]="selected" placeholder="Choose date"
+(ngModelChange)="ngModelChange($event)"/&gt;</code>
+    </pre>
   </div>
 </div>
