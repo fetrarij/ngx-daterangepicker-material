@@ -9,8 +9,15 @@ import * as moment from 'moment';
 export class SingleDatepickerComponent implements OnInit {
   selected = moment();
   constructor() { }
-
   ngOnInit() {
+  }
+  isInvalidDate(date) {
+    return date.weekday() === 0;
+  }
+  isCustomDate(date) {
+    return  (
+      date.weekday() === 0 || date.weekday() === 6
+    )  ? 'mycustomdate' : false;
   }
 
 }

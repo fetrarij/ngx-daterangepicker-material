@@ -1,19 +1,47 @@
-<mat-toolbar>Single datepicker</mat-toolbar>
+<mat-toolbar>Single datepicker with custom invalid date & custom class on date</mat-toolbar>
 <div class="row">
   <div class="col s6">
     <input type="text"
     ngxDaterangepickerMd
+    [isInvalidDate]="isInvalidDate"
+    [isCustomDate]="isCustomDate"
+    [locale]="{format: 'DD/MM/YYYY', firstDay: 1}"
     [(ngModel)]="selected" [singleDatePicker]="true" [autoApply]="true" class="form-control"/>
   </div>
 </div>
 
 
 <div class="row">
-  <div class="col s12">
+  <div class="col s6">
     <b>Html code:</b>
       <pre class="prettyprint"><code class="html">&lt;input type="text"
   ngxDaterangepickerMd
-  [(ngModel)]="selected" [singleDatePicker]="true" [autoApply]="true"/&gt;</code>
+  [isInvalidDate]="isInvalidDate"
+  [isCustomDate]="isCustomDate"
+  [locale]="{{ '{' }}format: 'DD/MM/YYYY', firstDay: 1}"
+  [(ngModel)]="selected"
+  [singleDatePicker]="true"
+  [autoApply]="true"/&gt;</code>
+    </pre>
+    
+  </div>
+  <div class="col s6">
+    <b>Typescript code:</b>
+      <pre class="prettyprint"><code class="javascript">export class SingleDatepickerComponent {{ '{' }}
+        selected: any;
+        
+        constructor() {{ '{' }}
+          this.alwaysShowCalendars = true;
+        }
+        isInvalidDate(date) {{ '{' }}
+          return date.weekday() === 0;
+        }
+        isCustomDate(date) {{ '{' }}
+          return  (
+            date.weekday() === 0 ||
+            date.weekday() === 6
+          )  ? 'mycustomdate' : false;
+        }</code>
     </pre>
     
   </div>

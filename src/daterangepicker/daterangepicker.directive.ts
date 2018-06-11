@@ -80,6 +80,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   showDropdowns: boolean;
   @Input()
+  isInvalidDate: Function; 
+  @Input()
+  isCustomDate: Function; 
+  @Input()
   ranges: any;
   _locale: any = {};
   @Input() set locale(value) {
@@ -125,7 +129,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Output('change') onChange: EventEmitter<Object> = new EventEmitter(); 
   ngOnInit() {
     this.picker.choosedDate.asObservable().subscribe((change: any) => {
-    console.log('change', change);
       if (change) {
         const value = {};
         value[this._startKey] = change.startDate;
