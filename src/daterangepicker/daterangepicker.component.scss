@@ -55,6 +55,12 @@ $md-drppicker-control-active-border-color:  #08c !default;
 $md-drppicker-control-active-border-radius: $md-drppicker-control-border-radius !default;
 
 $md-drppicker-control-disabled-color:       #ccc !default;
+// Select
+$select-border: 1px solid #f2f2f2 !default;
+$select-background: rgba(255, 255, 255, 0.90) !default;
+$select-padding: 5px !default;
+$select-radius: 2px !default;
+$input-height: 3rem !default;
 /*
 * styles
 */
@@ -301,6 +307,12 @@ $md-drppicker-control-disabled-color:       #ccc !default;
 
   select {
     display: inline-block;
+    background-color: $select-background;
+    width: 100%;
+    padding: $select-padding;
+    border: $select-border;
+    border-radius: $select-radius;
+    height: $input-height;
     &.monthselect, &.yearselect {
       font-size: 12px;
       padding: 1px;
