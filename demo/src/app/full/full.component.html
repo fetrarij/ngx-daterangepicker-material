@@ -6,11 +6,11 @@
         <input type="text" matInput
           ngxDaterangepickerMd
           [autoApply]="options.autoApply"
-          [showInputs]="options.showInputs"
           [linkedCalendars]="options.linkedCalendars"
           [singleDatePicker]="options.singleDatePicker"
           applyLabel="Okay"
           [locale]="locale"
+          [showDropdowns]="true"
           startKey="start"
           endKey="end"
           [(ngModel)]="selected"
@@ -26,7 +26,6 @@
           <hr/>
         <h4>Options:</h4>
         <strong>autoApply:</strong>  <mat-checkbox [(ngModel)]="options.autoApply">Value: {{options.autoApply}}</mat-checkbox><br/>
-        <strong>showInputs:</strong>  <mat-checkbox [(ngModel)]="options.showInputs">Value: {{options.showInputs}}</mat-checkbox><br/>
         <strong>linkedCalendars:</strong><mat-checkbox [(ngModel)]="options.linkedCalendars">Value: {{options.linkedCalendars}}</mat-checkbox><br/>
         <strong>singleDatePicker:</strong><mat-checkbox [(ngModel)]="options.singleDatePicker">Value: {{options.singleDatePicker}}</mat-checkbox><br/>
         <strong>showWeekNumbers:</strong><mat-checkbox [(ngModel)]="options.showWeekNumbers">Value: {{options.showWeekNumbers}}</mat-checkbox><br/>

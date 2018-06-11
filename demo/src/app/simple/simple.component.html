@@ -3,7 +3,8 @@
   <div class="col s6">
     <input type="text" ngxDaterangepickerMd 
     [(ngModel)]="selected" class="form-control" placeholder="Choose date"
-    (ngModelChange)="ngModelChange($event)" (change)="change($event)"/>
+    (ngModelChange)="ngModelChange($event)" (change)="change($event)"
+    [maxDate]="maxDate"/>
   </div>
 </div>
 <div class="row">

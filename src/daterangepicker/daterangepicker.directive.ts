@@ -66,8 +66,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   autoApply: boolean;
   @Input()
-  showInputs: boolean;
-  @Input()
   alwaysShowCalendars: boolean;
   @Input()
   showCustomRangeLabel: boolean;
@@ -79,6 +77,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   showWeekNumbers: boolean;
   @Input()
   showISOWeekNumbers: boolean;
+  @Input()
+  showDropdowns: boolean;
   @Input()
   ranges: any;
   _locale: any = {};

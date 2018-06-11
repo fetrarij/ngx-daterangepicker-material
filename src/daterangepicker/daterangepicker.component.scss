@@ -300,6 +300,7 @@ $md-drppicker-control-disabled-color:       #ccc !default;
   }
 
   select {
+    display: inline-block;
     &.monthselect, &.yearselect {
       font-size: 12px;
       padding: 1px;

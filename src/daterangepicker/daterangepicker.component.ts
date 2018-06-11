@@ -48,7 +48,6 @@ export class DaterangepickerComponent implements OnInit {
     linkedCalendars: Boolean = false;
     autoUpdateInput: Boolean = true;
     alwaysShowCalendars: Boolean = false;
-    showInputs: Boolean = false;
     maxSpan: Boolean = false;
     timePicker: Boolean = false;
     locale: any = {
@@ -649,7 +648,7 @@ export class DaterangepickerComponent implements OnInit {
     clickRange(e, label) {
         this.chosenLabel = label;
         if (label == this.locale.customRangeLabel) {
-            this.showCalendars();
+            this.isShown  = true; // show calendars
             this.showCalInRanges = true;
         } else {
             var dates = this.ranges[label];
@@ -664,7 +663,7 @@ export class DaterangepickerComponent implements OnInit {
             }
 
             if (!this.alwaysShowCalendars) {
-                this.hideCalendars();
+                this.isShown  = false; // hide calendars
             }
             this.clickApply();
         }
@@ -724,13 +723,6 @@ export class DaterangepickerComponent implements OnInit {
         setTimeout(() => {this.isShown = false}, 0)
     }
 
-    showCalendars() {
-        this.isShown  = true;
-    }
-
-    hideCalendars() {
-        this.isShown  = false;
-    }
     /**
      * handle click on all element in the component, usefull for outside of click
      * @param e event
