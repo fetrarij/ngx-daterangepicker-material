@@ -125,6 +125,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Output('change') onChange: EventEmitter<Object> = new EventEmitter(); 
   ngOnInit() {
     this.picker.choosedDate.asObservable().subscribe((change: any) => {
+    console.log('change', change);
       if (change) {
         const value = {};
         value[this._startKey] = change.startDate;
@@ -184,6 +185,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       }
       if (val[this._endKey]) {
         this.picker.setEndDate(val[this._endKey])
+      }
+      this.picker.calculateChosenLabel();
+      if (this.picker.chosenLabel) {
+        this._el.nativeElement.value = this.picker.chosenLabel;
       }
     } else {
       //
