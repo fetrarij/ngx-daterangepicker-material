@@ -22,6 +22,9 @@ module.exports = function (config) {
     angularCli: {
       environment: 'dev'
     },
+    files: [
+      './node_modules/materialize-css/dist/css/materialize.css'
+    ],
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,

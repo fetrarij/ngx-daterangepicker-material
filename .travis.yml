@@ -1,16 +1,27 @@
+dist: trusty
+
 language: node_js
 node_js:
   - "8"
+install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+  - sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+  - sudo apt-get update -q
+  - sudo apt-get install -q google-chrome-stable
 
 branches:
   only:
     - master
 
 script:
-  - ng build --prod --no-aot --base-href=/ngx-daterangepicker-material/
+  - npm install
+  - npm test
+  - ./node_modules/.bin/ng build --prod --no-aot --base-href=/ngx-daterangepicker-material/
 
 after_success:
-  - ngh --dir demo/dist --repo=https://GH_TOKEN@github.com/fetrarij/ngx-daterangepicker-material.git
+  - ./node_modules/.bin/ngh --dir demo/dist --repo=https://GH_TOKEN@github.com/fetrarij/ngx-daterangepicker-material.git
 
 notifications:
   email:

@@ -6,6 +6,7 @@
     ngxDaterangepickerMd
     [(ngModel)]="selected" 
     [showCustomRangeLabel]="true"
+    [alwaysShowCalendars]="alwaysShowCalendars"
     [ranges]="ranges"
     class="form-control"
     placeholder="Select please..."/>
@@ -14,6 +15,45 @@
     <br/>
     <strong>Model: </strong>
     <br/> {{selected | json  }}
+    <br>
+    <label>
+        <input type="checkbox" name="alwaysShowCalendars" [(ngModel)]="alwaysShowCalendars"> 
+        <span>alwaysShowCalendars: {{alwaysShowCalendars}}</span>
+      </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s6">
+    <b>Html code</b>
+      <pre class="prettyprint"><code class="html">&lt;input type="text"
+  ngxDaterangepickerMd
+  [(ngModel)]="selected"
+  [showCustomRangeLabel]="true"
+  [alwaysShowCalendars]="{{alwaysShowCalendars}}"
+  [ranges]="ranges"
+  placeholder="Select please.../&gt;</code>
+    </pre>
+    
+  </div>
+  <div class="col s6">
+    <b>Typescript code</b>
+      <pre class="prettyprint"><code class="javascript">export class CustomRangesComponent implements OnInit {{ '{' }}
+selected: any;
+alwaysShowCalendars: boolean;
+ranges: any = {{ '{' }}
+  'Today': [moment(), moment()],
+  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+  'This Month': [moment().startOf('month'), moment().endOf('month')],
+  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+}
+constructor() {{ '{' }}
+  this.alwaysShowCalendars = true;
+}</code>
+    </pre>
+    
   </div>
 </div>
 

@@ -76,7 +76,7 @@ and [browse our demo code here](./demo/src/app).
 
 ## Available options
 
-### autoApply, showInputs, singleDatePicker, showWeekNumbers, showISOWeekNumbers
+### autoApply, showDropdowns, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars
 
 >These options are booleans
 
@@ -93,6 +93,7 @@ and [browse our demo code here](./demo/src/app).
     separator: ' To ', // default is ' - '
     cancelLabel: 'Cancel', // detault is 'Cancel'
     applyLabel: 'Okay' // detault is 'Apply'
+    firstDay: 1 // first day is monday
 }
 ```
 ### startKey and endKey

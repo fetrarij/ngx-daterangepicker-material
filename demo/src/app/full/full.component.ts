@@ -12,7 +12,6 @@ export class FullComponent implements OnInit {
   title = 'Pure angular daterangepicker';
   options: any = {
     autoApply: false,
-    showInputs: false,
     alwaysShowCalendars: false,
     linkedCalendars: true,
     singleDatePicker: false,

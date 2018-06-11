@@ -48,7 +48,6 @@ export class DaterangepickerComponent implements OnInit {
     linkedCalendars: Boolean = false;
     autoUpdateInput: Boolean = true;
     alwaysShowCalendars: Boolean = false;
-    showInputs: Boolean = false;
     maxSpan: Boolean = false;
     timePicker: Boolean = false;
     locale: any = {
@@ -86,6 +85,13 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this.locale.firstDay != 0) {
+            var iterator = this.locale.firstDay;
+            while (iterator > 0) {
+                this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
+                iterator--;
+            }
+        }
         this.renderCalendar(SideEnum.left);
         this.renderCalendar(SideEnum.right);
         this.renderRanges();
@@ -173,7 +179,6 @@ export class DaterangepickerComponent implements OnInit {
         if (startDay > daysInLastMonth) {
             startDay -= 7;
         }
-
         if (dayOfWeek === this.locale.firstDay) {
             startDay = daysInLastMonth - 6;
         }
@@ -473,21 +478,24 @@ export class DaterangepickerComponent implements OnInit {
         } else if ( this.autoUpdateInput) {
             this.chosenLabel = this.startDate.format(this.locale.format);
         }
-        if (this.chosenLabel) {
-            this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
-        }
     }
 
     remove() {
         this.isShown = false;
     }
+    /**
+     * this should calculate the label
+     */
     calculateChosenLabel () {
-        if (this.chosenLabel) {
-            this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
+        if (!this.chosenLabel) {
+            this.updateElement();
         }
     }
 
     clickApply(e?) {
+        if (this.chosenLabel) {
+            this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
+        }
         this.hide();
     }
 
@@ -603,7 +611,6 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         let date = side ===  SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
-        console.log(date, side);
 
         if (this.endDate || date.isBefore(this.startDate, 'day')) { // picking start
             this.endDate = null;
@@ -641,7 +648,7 @@ export class DaterangepickerComponent implements OnInit {
     clickRange(e, label) {
         this.chosenLabel = label;
         if (label == this.locale.customRangeLabel) {
-            this.showCalendars();
+            this.isShown  = true; // show calendars
             this.showCalInRanges = true;
         } else {
             var dates = this.ranges[label];
@@ -656,7 +663,7 @@ export class DaterangepickerComponent implements OnInit {
             }
 
             if (!this.alwaysShowCalendars) {
-                this.hideCalendars();
+                this.isShown  = false; // hide calendars
             }
             this.clickApply();
         }
@@ -716,13 +723,6 @@ export class DaterangepickerComponent implements OnInit {
         setTimeout(() => {this.isShown = false}, 0)
     }
 
-    showCalendars() {
-        this.isShown  = true;
-    }
-
-    hideCalendars() {
-        this.isShown  = false;
-    }
     /**
      * handle click on all element in the component, usefull for outside of click
      * @param e event
@@ -740,5 +740,12 @@ export class DaterangepickerComponent implements OnInit {
             this.locale[key] = locale[key];
           }
         }
+    }
+    /**
+     *  clear the daterange picker
+     */
+    clear() {
+        this.choosedDate.emit({chosenLabel: '', startDate: null, endDate: null});
+        this.hide();
     }
 }
