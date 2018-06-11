@@ -11,7 +11,6 @@ export class SimpleComponent implements OnInit {
   selected: {startDate: moment.Moment, endDate: moment.Moment};
   @ViewChild(DaterangepickerDirective) pickerDirective: DaterangepickerDirective;
   picker: DaterangepickerComponent;
-  maxDate: moment.Moment = moment('2015-11-28T00:00Z');
   constructor() {
     this.selected = {
       startDate: moment('2015-11-18T00:00Z'),
