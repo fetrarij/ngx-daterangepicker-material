@@ -76,9 +76,16 @@ and [browse our demo code here](./demo/src/app).
 
 ## Available options
 
-### autoApply, showDropdowns, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars
+### autoApply, showDropdowns, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars, showClearButton
 
 >These options are booleans
+
+### isCustomDate
+
+>(function) A function that is passed each date in the calendars before they are displayed, and may return a string or array of CSS class names to apply to that date's calendar cell
+
+### isInvalidDate
+>(function) A function that is passed each date in the two calendars before they are displayed, and may return true or false to indicate whether that date should be available for selection or not.
 
 ### minDate, maxDate
 

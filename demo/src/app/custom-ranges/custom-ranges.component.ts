@@ -9,6 +9,7 @@ import * as moment from 'moment';
 export class CustomRangesComponent implements OnInit {
   selected: any;
   alwaysShowCalendars: boolean;
+  maxDate: moment.Moment;
   ranges: any = {
     'Today': [moment(), moment()],
     'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -18,6 +19,7 @@ export class CustomRangesComponent implements OnInit {
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
   }
   constructor() {
+    this.maxDate = moment().add('1 weeks');
     this.alwaysShowCalendars = true;
   }
 

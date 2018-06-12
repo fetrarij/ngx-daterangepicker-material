@@ -55,9 +55,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent(componentFactory);
     this.picker = (<DaterangepickerComponent>componentRef.instance);
-    this.picker.choosedDate.asObservable().subscribe((change: any) => {
-      this._el.nativeElement.value = change.chosenLabel;
-    })
   }
   @Input()
   minDate: _moment.Moment
@@ -79,6 +76,12 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   showISOWeekNumbers: boolean;
   @Input()
   showDropdowns: boolean;
+  @Input()
+  isInvalidDate: Function; 
+  @Input()
+  isCustomDate: Function;
+  @Input()
+  showClearButton: boolean;
   @Input()
   ranges: any;
   _locale: any = {};
@@ -125,13 +128,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Output('change') onChange: EventEmitter<Object> = new EventEmitter(); 
   ngOnInit() {
     this.picker.choosedDate.asObservable().subscribe((change: any) => {
-    console.log('change', change);
       if (change) {
         const value = {};
         value[this._startKey] = change.startDate;
         value[this._endKey] = change.endDate;
         this.value = value;
         this.onChange.emit(value);
+        if(typeof change.chosenLabel === 'string') {
+          this._el.nativeElement.value = change.chosenLabel;
+        }
       }
     });
     this.localeDiffer = this.differs.find(this.locale).create();

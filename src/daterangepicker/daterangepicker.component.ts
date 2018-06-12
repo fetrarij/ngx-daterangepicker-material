@@ -50,6 +50,7 @@ export class DaterangepickerComponent implements OnInit {
     alwaysShowCalendars: Boolean = false;
     maxSpan: Boolean = false;
     timePicker: Boolean = false;
+    showClearButton: Boolean = false;
     locale: any = {
         direction: 'ltr',
         format: moment.localeData().longDateFormat('L'),
@@ -201,6 +202,11 @@ export class DaterangepickerComponent implements OnInit {
             if (this.maxDate && calendar[row][col].format('YYYY-MM-DD') === this.maxDate.format('YYYY-MM-DD') &&
             calendar[row][col].isAfter(this.maxDate) && side === 'right') {
                 calendar[row][col] = this.maxDate.clone();
+            }
+            if (!this.singleDatePicker && this.maxDate && calendar[row][col].format('YYYY-MM-DD') === this.maxDate.format('YYYY-MM-DD') && side === 'left') {
+                // use previous calendars
+                this.leftCalendar.month.subtract(1, 'month');
+                this.rightCalendar.month.subtract(1, 'month');
             }
 
         }
@@ -487,9 +493,7 @@ export class DaterangepickerComponent implements OnInit {
      * this should calculate the label
      */
     calculateChosenLabel () {
-        if (!this.chosenLabel) {
-            this.updateElement();
-        }
+        this.updateElement();
     }
 
     clickApply(e?) {
@@ -745,6 +749,8 @@ export class DaterangepickerComponent implements OnInit {
      *  clear the daterange picker
      */
     clear() {
+        this.startDate = moment().startOf('day');
+        this.endDate = moment().endOf('day');
         this.choosedDate.emit({chosenLabel: '', startDate: null, endDate: null});
         this.hide();
     }
