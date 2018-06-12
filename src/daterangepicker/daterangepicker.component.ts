@@ -203,6 +203,11 @@ export class DaterangepickerComponent implements OnInit {
             calendar[row][col].isAfter(this.maxDate) && side === 'right') {
                 calendar[row][col] = this.maxDate.clone();
             }
+            if (!this.singleDatePicker && this.maxDate && calendar[row][col].format('YYYY-MM-DD') === this.maxDate.format('YYYY-MM-DD') && side === 'left') {
+                // use previous calendars
+                this.leftCalendar.month.subtract(1, 'month');
+                this.rightCalendar.month.subtract(1, 'month');
+            }
 
         }
 
