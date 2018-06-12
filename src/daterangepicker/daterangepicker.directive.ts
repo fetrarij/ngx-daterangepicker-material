@@ -55,9 +55,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent(componentFactory);
     this.picker = (<DaterangepickerComponent>componentRef.instance);
-    this.picker.choosedDate.asObservable().subscribe((change: any) => {
-      this._el.nativeElement.value = change.chosenLabel;
-    })
   }
   @Input()
   minDate: _moment.Moment
@@ -135,6 +132,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         value[this._endKey] = change.endDate;
         this.value = value;
         this.onChange.emit(value);
+        if(change.chosenLabel) {
+          this._el.nativeElement.value = change.chosenLabel;
+        }
       }
     });
     this.localeDiffer = this.differs.find(this.locale).create();
@@ -191,6 +191,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       }
       this.picker.calculateChosenLabel();
       if (this.picker.chosenLabel) {
+        console.log('houuu',this.picker.chosenLabel);
         this._el.nativeElement.value = this.picker.chosenLabel;
       }
     } else {

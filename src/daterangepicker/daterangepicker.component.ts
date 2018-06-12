@@ -487,9 +487,7 @@ export class DaterangepickerComponent implements OnInit {
      * this should calculate the label
      */
     calculateChosenLabel () {
-        if (!this.chosenLabel) {
-            this.updateElement();
-        }
+        this.updateElement();
     }
 
     clickApply(e?) {
