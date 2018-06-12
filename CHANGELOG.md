@@ -1,3 +1,19 @@
+#### 1.1.1 (2018-06-12)
+
+##### Chores
+
+* **test:**  fix tests ([b83fddfc](https://github.com/fetrarij/ngx-daterangepicker-material/commit/b83fddfca4b31a2d833712358ab895920f69dde1))
+
+##### New Features
+
+* **#3:**  show 2nd calendar as per maxDate if provided - As, we have provided maxDate, there is no use of showing next month as 2nd calendar as those dates will not be selectable - instead, can it be maxDate's month as second calendar and prev month as first calendar Close [#3](https://github.com/fetrarij/ngx-daterangepicker-material/pull/3) ([daf00119](https://github.com/fetrarij/ngx-daterangepicker-material/commit/daf00119cc6865cb7f3ad7d00307d0cf47b673c0))
+* **customisation:**   ability to add custom classes and custom invalid dates function - isCustomDate - isInvalidDate Close [#12](https://github.com/fetrarij/ngx-daterangepicker-material/pull/12) ([145bbf5c](https://github.com/fetrarij/ngx-daterangepicker-material/commit/145bbf5c3401c00545608e9e8286fa58e45e51c4))
+
+##### Bug Fixes
+
+* **clear-date:**  bug fixes - doesn't clear the date when clearing - add options to show/hide the clear button ([022c0d00](https://github.com/fetrarij/ngx-daterangepicker-material/commit/022c0d00e7e54cecaeba5635a2388b5fc746b3ff))
+* **input-element:**  label is not updated after applying ([6247be2f](https://github.com/fetrarij/ngx-daterangepicker-material/commit/6247be2f2bfcaaca84240a2c673bd02c617794dc))
+
 #### 1.1.0 (2018-06-11)
 
 ##### Chores
