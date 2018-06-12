@@ -55,9 +55,6 @@ Html:
 ```html
 <input type="text" matInput
     ngxDaterangepickerMd
-    [autoApply]="false"
-    [showInputs]="false"
-    [singleDatePicker]="true"
     [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
     startKey="start"
     endKey="end"
