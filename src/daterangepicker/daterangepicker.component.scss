@@ -550,14 +550,6 @@ $input-height: 3rem !default;
   text-align: right;
   margin: 0 5px 5px 0;
 }
-.clear {
-  cursor: pointer;
-  color: #3f51b5;
-  fill: currentColor;
-  position: relative;
-  vertical-align: middle;
-  display: inline-table;
-}
 .btn {
   position: relative;
   overflow: hidden;
@@ -614,5 +606,13 @@ $input-height: 3rem !default;
   &.btn-default {
     color: black;
     background-color: gainsboro;
+  }
+}
+.clear {
+  box-shadow: none;
+  background-color: #ffffff !important;
+  svg {
+    color: #eb3232;
+    fill: currentColor;
   }
 }

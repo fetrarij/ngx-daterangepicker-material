@@ -79,7 +79,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   isInvalidDate: Function; 
   @Input()
-  isCustomDate: Function; 
+  isCustomDate: Function;
+  @Input()
+  showClearButton: boolean;
   @Input()
   ranges: any;
   _locale: any = {};
@@ -132,7 +134,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         value[this._endKey] = change.endDate;
         this.value = value;
         this.onChange.emit(value);
-        if(change.chosenLabel) {
+        if(typeof change.chosenLabel === 'string') {
           this._el.nativeElement.value = change.chosenLabel;
         }
       }
@@ -191,7 +193,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       }
       this.picker.calculateChosenLabel();
       if (this.picker.chosenLabel) {
-        console.log('houuu',this.picker.chosenLabel);
         this._el.nativeElement.value = this.picker.chosenLabel;
       }
     } else {

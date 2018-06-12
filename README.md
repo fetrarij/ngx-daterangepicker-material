@@ -76,7 +76,7 @@ and [browse our demo code here](./demo/src/app).
 
 ## Available options
 
-### autoApply, showDropdowns, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars
+### autoApply, showDropdowns, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars, showClearButton
 
 >These options are booleans
 

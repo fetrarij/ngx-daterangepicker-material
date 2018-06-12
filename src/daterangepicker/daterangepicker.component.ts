@@ -50,6 +50,7 @@ export class DaterangepickerComponent implements OnInit {
     alwaysShowCalendars: Boolean = false;
     maxSpan: Boolean = false;
     timePicker: Boolean = false;
+    showClearButton: Boolean = false;
     locale: any = {
         direction: 'ltr',
         format: moment.localeData().longDateFormat('L'),
@@ -743,6 +744,8 @@ export class DaterangepickerComponent implements OnInit {
      *  clear the daterange picker
      */
     clear() {
+        this.startDate = moment().startOf('day');
+        this.endDate = moment().endOf('day');
         this.choosedDate.emit({chosenLabel: '', startDate: null, endDate: null});
         this.hide();
     }
