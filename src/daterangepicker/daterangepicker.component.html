@@ -9,7 +9,7 @@
 }">
     <div class="ranges">
         <ul *ngFor="let range of rangesArray">
-            <li (click)="clickRange($event, range)" [ngClass]="{'active': range === chosenLabel}">{{range}}</li>
+            <li (click)="clickRange($event, range)" [ngClass]="{'active': range === chosenRange}">{{range}}</li>
         </ul>
     </div>
     <div class="calendar" [ngClass]="{right: singleDatePicker, left: !singleDatePicker}"
