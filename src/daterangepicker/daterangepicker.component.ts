@@ -3,12 +3,6 @@ import { FormControl} from '@angular/forms';
 
 import * as _moment from 'moment'; const moment = _moment;
 
-interface Hour {
-    hour: string;
-    minute: string;
-    second: string;
-    ampm: string;
-}
 export enum SideEnum {
     left = 'left',
     right = 'right'
@@ -23,18 +17,11 @@ export enum SideEnum {
 },
 })
 export class DaterangepickerComponent implements OnInit {
-    chosenLabel;
-    oldStartDate;
-    oldEndDate;
+    private _old: {start: any, end: any} = {start: null, end: null};
+    chosenLabel: string;
     calendarVariables: {left: any, right: any} = {left: {}, right: {}};
     daterangepicker: {start: FormControl, end: FormControl} = {start: new FormControl(), end: new FormControl()};
-    disabled: {} = {};
-    daterangepickerEnd: {active?: boolean, model?: any, control: FormControl, focus?: boolean} =
-        {active: false, model: undefined, control: new FormControl(), focus: false};
-    daterangepickerStart: {active?: boolean, model?: any, control: FormControl, focus?: boolean} =
-        {active: false, model: undefined, control: new FormControl(), focus: false};
     applyBtn: {disabled: boolean} = {disabled: false};
-
     startDate = moment().startOf('day');
     endDate = moment().endOf('day');
     minDate: _moment.Moment = null;
@@ -70,6 +57,7 @@ export class DaterangepickerComponent implements OnInit {
     rightCalendar: any = {};
     // custom ranges
     ranges: any = {};
+    chosenRange: string;
     showCustomRangeLabel: boolean;
     rangesArray: Array<any> = [];
     // states
@@ -420,16 +408,8 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     updateView() {
-        if (this.endDate) {
-            this.daterangepickerStart.active = true;
-            this.daterangepickerEnd.active = false;
-        } else {
-            this.daterangepickerStart.active = false;
-            this.daterangepickerEnd.active = true;
-        }
         this.updateMonthsInView();
         this.updateCalendars();
-        this.updateFormInputs();
     }
 
     updateMonthsInView() {
@@ -504,8 +484,8 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     clickCancel(e) {
-        this.startDate = this.oldStartDate;
-        this.endDate = this.oldEndDate;
+        this.startDate = this._old.start;
+        this.endDate = this._old.end;
         this.hide();
     }
     /**
@@ -613,6 +593,9 @@ export class DaterangepickerComponent implements OnInit {
         if (!e.target.classList.contains('available')) {
             return;
         }
+        if (this.rangesArray.length) {
+            this.chosenRange = this.locale.customRangeLabel;
+        }
 
         let date = side ===  SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
@@ -650,7 +633,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param label
      */
     clickRange(e, label) {
-        this.chosenLabel = label;
+        this.chosenRange = label;
         if (label == this.locale.customRangeLabel) {
             this.isShown  = true; // show calendars
             this.showCalInRanges = true;
@@ -672,33 +655,13 @@ export class DaterangepickerComponent implements OnInit {
             this.clickApply();
         }
     };
-    /**
-     *  Update the input after applying 
-     */
-    updateFormInputs() {
-        // ignore mouse movements while an above-calendar text input has focus
-        if (this.daterangepickerEnd.focus || this.daterangepickerStart.focus) {
-            return;
-        }
 
-        this.daterangepickerStart.model = this.startDate.format(this.locale.format);
-        if (this.endDate) {
-            this.daterangepickerEnd.model = this.endDate.format(this.locale.format);
-        }
-
-        if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
-            this.applyBtn.disabled = false;
-        } else {
-            this.applyBtn.disabled = true;
-        }
-
-    }
 
 
     show(e?) {
         if (this.isShown) { return; }
-        this.oldStartDate = this.startDate.clone();
-        this.oldEndDate = this.endDate.clone();
+        this._old.start = this.startDate.clone();
+        this._old.end = this.endDate.clone();
         this.isShown = true;
         this.updateView();
     }
@@ -709,16 +672,16 @@ export class DaterangepickerComponent implements OnInit {
         }
         // incomplete date selection, revert to last values
         if (!this.endDate) {
-            if (this.oldStartDate) {
-                this.startDate = this.oldStartDate.clone();
+            if (this._old.start) {
+                this.startDate = this._old.start.clone();
             }
-            if (this.oldEndDate) {
-                this.endDate = this.oldEndDate.clone();
+            if (this._old.end) {
+                this.endDate = this._old.end.clone();
             }
         }
 
         // if a new date range was selected, invoke the user callback function
-        if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate)) {
+        if (!this.startDate.isSame(this._old.start) || !this.endDate.isSame(this._old.end)) {
            // this.callback(this.startDate, this.endDate, this.chosenLabel);
         }
 
