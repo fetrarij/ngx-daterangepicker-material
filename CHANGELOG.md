@@ -1,3 +1,11 @@
+#### 1.1.2 (2018-06-22)
+
+##### Bug Fixes
+
+* **ranges:**  Applied range does not have 'active' class - Fix [#17](https://github.com/fetrarij/ngx-daterangepicker-material/pull/17) ([1c0f03d4](https://github.com/fetrarij/ngx-daterangepicker-material/commit/1c0f03d4bb9e4b66780ee26d635c98249d1ca73d))
+* **autoApply:**  autoApply showing Cancel & Apply buttons - Fix [#16](https://github.com/fetrarij/ngx-daterangepicker-material/pull/16) ([53288f50](https://github.com/fetrarij/ngx-daterangepicker-material/commit/53288f506bbfa276bf8840b34403ed6b17f1eedb))
+* **readme:**  remove showInputs ([672ec99a](https://github.com/fetrarij/ngx-daterangepicker-material/commit/672ec99a106097c59e72923c2c480f9ba92be1c1))
+
 #### 1.1.1 (2018-06-12)
 
 ##### Chores
@@ -6,7 +14,7 @@
 
 ##### New Features
 
-* **#3:**  show 2nd calendar as per maxDate if provided - As, we have provided maxDate, there is no use of showing next month as 2nd calendar as those dates will not be selectable - instead, can it be maxDate's month as second calendar and prev month as first calendar Close [#3](https://github.com/fetrarij/ngx-daterangepicker-material/pull/3) ([daf00119](https://github.com/fetrarij/ngx-daterangepicker-material/commit/daf00119cc6865cb7f3ad7d00307d0cf47b673c0))
+* **#3:**  show 2nd calendar as per maxDate if provided - As, we have provided maxDate, there is no use of showing next month as 2nd calendar as those dates will not be selectable - instead, can it be maxDate's month as second calendar and prev month as first calendar - Fix [#3](https://github.com/fetrarij/ngx-daterangepicker-material/pull/3) ([daf00119](https://github.com/fetrarij/ngx-daterangepicker-material/commit/daf00119cc6865cb7f3ad7d00307d0cf47b673c0))
 * **customisation:**   ability to add custom classes and custom invalid dates function - isCustomDate - isInvalidDate Close [#12](https://github.com/fetrarij/ngx-daterangepicker-material/pull/12) ([145bbf5c](https://github.com/fetrarij/ngx-daterangepicker-material/commit/145bbf5c3401c00545608e9e8286fa58e45e51c4))
 
 ##### Bug Fixes
