@@ -8,8 +8,8 @@
     'show-ranges': rangesArray.length
 }">
     <div class="ranges">
-        <ul *ngFor="let range of rangesArray">
-          <li>
+        <ul>
+          <li *ngFor="let range of rangesArray">
             <button type="button"
                     (click)="clickRange($event, range)"
                     [disabled]="disableRange(range)"
