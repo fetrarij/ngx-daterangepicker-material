@@ -8,8 +8,13 @@
     'show-ranges': rangesArray.length
 }">
     <div class="ranges">
-        <ul *ngFor="let range of rangesArray">
-            <li (click)="clickRange($event, range)" [ngClass]="{'active': range === chosenRange}">{{range}}</li>
+        <ul>
+          <li *ngFor="let range of rangesArray">
+            <button type="button"
+                    (click)="clickRange($event, range)"
+                    [disabled]="disableRange(range)"
+                    [ngClass]="{'active': range === chosenRange}">{{range}}</button>
+          </li>
         </ul>
     </div>
     <div class="calendar" [ngClass]="{right: singleDatePicker, left: !singleDatePicker}"
@@ -75,7 +80,7 @@
             </table>
         </div>
     </div>
-    <div class="calendar right" 
+    <div class="calendar right"
         *ngIf="showCalInRanges && !singleDatePicker"
         >
         <div class="calendar-table">
@@ -142,9 +147,9 @@
         <div class="buttons_input">
             <button  *ngIf="showClearButton" class="btn btn-default clear" type="button" (click)="clear()" title="clear the date">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 -5 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-            </button> 
+            </button>
             <button class="btn btn-default" type="button" (click)="clickCancel($event)">{{locale.cancelLabel}}</button>
-            <button class="btn"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">{{locale.applyLabel}}</button> 
+            <button class="btn"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">{{locale.applyLabel}}</button>
         </div>
     </div>
 </div>

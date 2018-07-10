@@ -4,12 +4,13 @@
   <div class="col s6">
     <input type="text"
     ngxDaterangepickerMd
-    [(ngModel)]="selected" 
+    [(ngModel)]="selected"
     [showCustomRangeLabel]="true"
     [alwaysShowCalendars]="alwaysShowCalendars"
     [ranges]="ranges"
     [showClearButton]="true"
     [maxDate]="maxDate"
+    [minDate]="minDate"
     [linkedCalendars]="true"
     class="form-control"
     placeholder="Select please..."/>
@@ -20,7 +21,7 @@
     <br/> {{selected | json  }}
     <br>
     <label>
-        <input type="checkbox" name="alwaysShowCalendars" [(ngModel)]="alwaysShowCalendars"> 
+        <input type="checkbox" name="alwaysShowCalendars" [(ngModel)]="alwaysShowCalendars">
         <span>alwaysShowCalendars: {{alwaysShowCalendars}}</span>
       </label>
   </div>
@@ -39,7 +40,7 @@
   [showClearButton]="true"
   placeholder="Select please.../&gt;</code>
     </pre>
-    
+
   </div>
   <div class="col s6">
     <b>Typescript code</b>
@@ -58,7 +59,7 @@ constructor() {{ '{' }}
   this.alwaysShowCalendars = true;
 }</code>
     </pre>
-    
+
   </div>
 </div>
 

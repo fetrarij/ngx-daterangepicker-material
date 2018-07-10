@@ -6,7 +6,7 @@ import * as _moment from 'moment'; const moment = _moment;
 export enum SideEnum {
     left = 'left',
     right = 'right'
-} 
+}
 
 @Component({
  selector: 'ngx-daterangepicker-md',
@@ -64,7 +64,7 @@ export class DaterangepickerComponent implements OnInit {
     showCalInRanges: Boolean = false;
 
     options: any = {} ; // should get some opt from user
-    @Output('choosedDate') choosedDate:EventEmitter<Object>; 
+    @Output('choosedDate') choosedDate:EventEmitter<Object>;
 
     constructor(
         private el: ElementRef
@@ -137,7 +137,7 @@ export class DaterangepickerComponent implements OnInit {
             }
             this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
         }
-        
+
     }
     renderCalendar(side: SideEnum) { // site enum
         let mainCalendar: any = ( side === SideEnum.left ) ? this.leftCalendar : this.rightCalendar;
@@ -667,7 +667,7 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     hide(e?) {
-        if (!this.isShown) { 
+        if (!this.isShown) {
             return;
         }
         // incomplete date selection, revert to last values
@@ -716,5 +716,25 @@ export class DaterangepickerComponent implements OnInit {
         this.endDate = moment().endOf('day');
         this.choosedDate.emit({chosenLabel: '', startDate: null, endDate: null});
         this.hide();
+    }
+
+    /**
+     * Find out if the selected range should be disabled if it doesn't
+     * fit into minDate and maxDate limitations.
+     */
+    disableRange(range) {
+      if(range === this.locale.customRangeLabel){
+        return false;
+      }
+      const rangeMarkers = this.ranges[range];
+      const areBothBefore = rangeMarkers.every( date => {
+        return date.isBefore(this.minDate)
+      });
+
+      const areBothAfter = rangeMarkers.every( date => {
+        return date.isAfter(this.maxDate)
+      });
+
+      return(areBothBefore || areBothAfter);
     }
 }
