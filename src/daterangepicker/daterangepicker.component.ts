@@ -727,7 +727,6 @@ export class DaterangepickerComponent implements OnInit {
         return false;
       }
       const rangeMarkers = this.ranges[range];
-      let disabled = false;
       const areBothBefore = rangeMarkers.every( date => {
         return date.isBefore(this.minDate)
       });
@@ -736,9 +735,6 @@ export class DaterangepickerComponent implements OnInit {
         return date.isAfter(this.maxDate)
       });
 
-      if(areBothBefore || areBothAfter) {
-        return disabled = true;
-      }
-      return disabled;
+      return(areBothBefore || areBothAfter);
     }
 }
