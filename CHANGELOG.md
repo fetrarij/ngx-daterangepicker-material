@@ -1,3 +1,9 @@
+#### 1.1.3 (2018-07-10)
+
+##### New Features
+
+* **ranges:** disabling a range if it's beyond minDate or maxDate 
+
 #### 1.1.2 (2018-06-22)
 
 ##### Bug Fixes
