@@ -140,7 +140,7 @@ THE SOFTWARE.
 MIT
 MIT
 
-materialize-css@1.0.0-rc.1
+materialize-css@1.0.0-rc.2
 MIT
 The MIT License (MIT)
 
