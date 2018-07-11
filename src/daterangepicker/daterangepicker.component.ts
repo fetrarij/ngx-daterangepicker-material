@@ -475,6 +475,24 @@ export class DaterangepickerComponent implements OnInit {
      * this should calculate the label
      */
     calculateChosenLabel () {
+        var customRange = true;
+        var i = 0;
+        for (var range in this.ranges) {
+            if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
+                customRange = false;
+                this.chosenRange = this.rangesArray[i];
+                break;
+            }
+            i++;
+        }
+        if (customRange) {
+            if (this.showCustomRangeLabel) {
+                this.chosenRange = this.locale.customRangeLabel;
+            } else {
+                this.chosenRange = null;
+            }
+            this.isShown = true; 
+        }
         this.updateElement();
     }
 

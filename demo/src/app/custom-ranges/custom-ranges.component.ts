@@ -29,7 +29,8 @@ export class CustomRangesComponent implements OnInit {
   constructor() {
     this.maxDate = moment().add('1 weeks');
     this.minDate = moment().subtract(3, 'days');
-    this.alwaysShowCalendars = true;
+    this.alwaysShowCalendars = false;
+    this.selected = {startDate: moment().subtract(1, 'days'), endDate: moment().subtract(1, 'days')};
   }
   rangeClicked(range) {
     console.log('range is : ', range);
