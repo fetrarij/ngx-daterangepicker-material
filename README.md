@@ -130,4 +130,10 @@ ranges: any = {
   }
 ```
 
+## Available events
+
+### \(rangeClicked)
+
+ >Fired when clicked on range, and send an object with range label and dates value, eg:  `{label: 'This Month', dates: [Moment, Moment]}`
+
 ## [License](https://github.com/fetrarij/ngx-daterangepicker-material/blob/master/LICENSE)

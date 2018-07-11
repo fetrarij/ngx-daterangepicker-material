@@ -126,7 +126,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this._changeDetectorRef.markForCheck();
   }
   @Output('change') onChange: EventEmitter<Object> = new EventEmitter(); 
+  @Output('rangeClicked') rangeClicked: EventEmitter<Object> = new EventEmitter(); 
   ngOnInit() {
+    this.picker.rangeClicked.asObservable().subscribe((range: any) => {
+      this.rangeClicked.emit(range);
+    });
     this.picker.choosedDate.asObservable().subscribe((change: any) => {
       if (change) {
         const value = {};
