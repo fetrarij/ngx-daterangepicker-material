@@ -65,11 +65,13 @@ export class DaterangepickerComponent implements OnInit {
 
     options: any = {} ; // should get some opt from user
     @Output('choosedDate') choosedDate:EventEmitter<Object>;
+    @Output('rangeClicked') rangeClicked:EventEmitter<Object>;
 
     constructor(
         private el: ElementRef
     ) {
         this.choosedDate = new EventEmitter();
+        this.rangeClicked = new EventEmitter();
         this.updateMonthsInView();
     }
 
@@ -652,6 +654,7 @@ export class DaterangepickerComponent implements OnInit {
             if (!this.alwaysShowCalendars) {
                 this.isShown  = false; // hide calendars
             }
+            this.rangeClicked.emit({label: label, dates: dates});
             this.clickApply();
         }
     };
@@ -695,7 +698,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param e event
      */
     handleInternalClick(e) {
-        e.stopPropagation(  )
+        e.stopPropagation()
     }
     /**
      * update the locale options
@@ -723,7 +726,7 @@ export class DaterangepickerComponent implements OnInit {
      * fit into minDate and maxDate limitations.
      */
     disableRange(range) {
-      if(range === this.locale.customRangeLabel){
+      if (range === this.locale.customRangeLabel) {
         return false;
       }
       const rangeMarkers = this.ranges[range];
@@ -735,6 +738,6 @@ export class DaterangepickerComponent implements OnInit {
         return date.isAfter(this.maxDate)
       });
 
-      return(areBothBefore || areBothAfter);
+      return (areBothBefore || areBothAfter);
     }
 }

@@ -31,6 +31,9 @@ export class CustomRangesComponent implements OnInit {
     this.minDate = moment().subtract(3, 'days');
     this.alwaysShowCalendars = true;
   }
+  rangeClicked(range) {
+    console.log('range is : ', range);
+  }
 
   ngOnInit() {}
 }
