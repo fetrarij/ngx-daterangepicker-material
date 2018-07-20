@@ -38,6 +38,11 @@ export class DaterangepickerComponent implements OnInit {
     maxSpan: Boolean = false;
     timePicker: Boolean = false;
     showClearButton: Boolean = false;
+    firstMonthDayClass: string = null;
+    lastMonthDayClass: string = null;
+    emptyWeekRowClass: string = null;
+    firstDayOfNextMonthClass: string = null;
+    lastDayOfPreviousMonthClass: string = null;
     locale: any = {
         direction: 'ltr',
         format: moment.localeData().longDateFormat('L'),
@@ -270,6 +275,10 @@ export class DaterangepickerComponent implements OnInit {
 
         for (let row = 0; row < 6; row++) {
             this.calendarVariables[side].classes[row] = {};
+            const rowClasses = [];
+            if(this.emptyWeekRowClass && !this.hasCurrentMonthDays(month, calendar[row])) {
+                rowClasses.push(this.emptyWeekRowClass);
+            }
             for (let col = 0; col < 7; col++) {
                 const classes = [];
 
@@ -286,6 +295,26 @@ export class DaterangepickerComponent implements OnInit {
                 // grey out the dates in other months displayed at beginning and end of this calendar
                 if (calendar[row][col].month() !== calendar[1][1].month()) {
                     classes.push('off');
+
+                    // mark the last day of the previous month in this calendar
+                    if(this.lastDayOfPreviousMonthClass && calendar[row][col].month() < calendar[1][1].month() && calendar[row][col].date() === daysInLastMonth) {
+                        classes.push(this.lastDayOfPreviousMonthClass);
+                    }
+
+                    // mark the first day of the next month in this calendar
+                    if(this.firstDayOfNextMonthClass && calendar[row][col].month() > calendar[1][1].month() && calendar[row][col].date() === 1) {
+                        classes.push(this.firstDayOfNextMonthClass);
+                    }
+                }
+
+                // mark the first day of the current month with a custom class
+                if (this.firstMonthDayClass && calendar[row][col].month() === calendar[1][1].month() && calendar[row][col].date() === calendar.firstDay.date()) {
+                    classes.push(this.firstMonthDayClass);
+                }
+
+                // mark the last day of the current month with a custom class
+                if (this.lastMonthDayClass && calendar[row][col].month() === calendar[1][1].month() && calendar[row][col].date() === calendar.lastDay.date()) {
+                    classes.push(this.lastMonthDayClass);
                 }
 
                 // don't allow selection of dates before the minimum date
@@ -341,6 +370,8 @@ export class DaterangepickerComponent implements OnInit {
 
                 this.calendarVariables[side].classes[row][col] = cname.replace(/^\s+|\s+$/g, '');
             }
+
+            this.calendarVariables[side].classes[row].classList = rowClasses.join(' ');
         }
     }
     setStartDate(startDate) {
@@ -761,5 +792,18 @@ export class DaterangepickerComponent implements OnInit {
       });
 
       return (areBothBefore || areBothAfter);
+    }
+
+    /**
+     * Find out if the current calendar row has current month days 
+     * (as opposed to consisting of only previous/next month days)
+     */
+    hasCurrentMonthDays(currentMonth, row) {
+        for (let day = 0; day < 7; day++) {
+            if(row[day].month() === currentMonth) {
+                return true;
+            }
+        }
+        return false;
     }
 }
