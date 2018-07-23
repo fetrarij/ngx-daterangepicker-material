@@ -1,3 +1,19 @@
+#### 1.1.4 (2018-07-11)
+
+##### New Features
+
+* **ranges:**
+  *  set active class to default date in range ([6fc70f02](https://github.com/fetrarij/ngx-daterangepicker-material/commit/6fc70f025906bf6babbc5812a8e105b32686c13c))
+  *  add event on click to range so we can get the label and the dates of the clicked range ([72d43b61](https://github.com/fetrarij/ngx-daterangepicker-material/commit/72d43b6179771c7521d6c2bb690584711a072ce3))
+      ### new available event:  **\(rangeClicked)**
+
+        >Fired when clicked on range, and send an object with range label and dates value, eg:  `{label: 'This Month', dates: [Moment, Moment]}`
+
+
+##### Bug Fixes
+
+* **range:**  wrong var: showCalInRanges not isShown ([8a6d31c3](https://github.com/fetrarij/ngx-daterangepicker-material/commit/8a6d31c3d444460c8a813dea5587204457397d5c))
+
 #### 1.1.3 (2018-07-10)
 
 ##### New Features
