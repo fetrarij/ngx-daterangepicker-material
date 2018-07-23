@@ -501,6 +501,7 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     clickApply(e?) {
+        console.log('this.chosenLabel', this.chosenLabel)
         if (this.chosenLabel) {
             this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
         }
@@ -640,6 +641,7 @@ export class DaterangepickerComponent implements OnInit {
 
         if (this.singleDatePicker) {
             this.setEndDate(this.startDate);
+            this.updateElement();
             if (this.autoApply) {
                 this.clickApply();
             }
