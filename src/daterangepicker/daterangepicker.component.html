@@ -1,4 +1,4 @@
-<div class="md-drppicker"
+<div class="md-drppicker" #pickerContainer
 [ngClass]="{
     ltr: locale.direction === 'ltr',
     rtl: this.locale.direction === 'rtl',
@@ -16,7 +16,7 @@
                     [ngClass]="{'active': range === chosenRange}">{{range}}</button>
           </li>
         </ul>
-    </div>
+    </div>  
     <div class="calendar" [ngClass]="{right: singleDatePicker, left: !singleDatePicker}"
         *ngIf="showCalInRanges">
         <div class="calendar-table">
