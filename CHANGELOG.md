@@ -1,3 +1,25 @@
+#### 1.2.0 (2018-07-24)
+
+##### New Features
+
+* **attribut:**  add new attributs:
+    - `opens`:  ability to position calendar to left, right or center [#21](https://github.com/fetrarij/ngx-daterangepicker-material/pull/21) 
+    
+    - `drops`: ability to position calendar to up or down ([c8c64605](https://github.com/fetrarij/ngx-daterangepicker-material/commit/c8c64605ee7deae36c41c4c64166f9bec21c3195))
+
+    - `firstMonthDayClass` & `lastMonthDayClass` & `emptyWeekRowClass` & `lastDayOfPreviousMonthClass` & `firstDayOfNextMonthClass` : for customising the dates classes (Thanks to: [@butterknight](http://https://github.com/butterknight) )
+
+* **ranges:**
+  *  set active class to default date in range ([6fc70f02](https://github.com/fetrarij/ngx-daterangepicker-material/commit/6fc70f025906bf6babbc5812a8e105b32686c13c))
+  *  add `rangeClicked` event on click to range so we can get the label and the dates of the clicked range ([72d43b61](https://github.com/fetrarij/ngx-daterangepicker-material/commit/72d43b6179771c7521d6c2bb690584711a072ce3))
+
+##### Bug Fixes
+
+* **single-datepicker:**
+  *  the month label on january have a wrong year ([397554c7](https://github.com/fetrarij/ngx-daterangepicker-material/commit/397554c7719e207cd232e9392119ee45d9b2296e))
+  *  on select a single datepicker, the selected value is not updated ([af838860](https://github.com/fetrarij/ngx-daterangepicker-material/commit/af8388604d428c22124e095f0c746ae2268959cd))
+* **range:**  wrong var: showCalInRanges not isShown ([8a6d31c3](https://github.com/fetrarij/ngx-daterangepicker-material/commit/8a6d31c3d444460c8a813dea5587204457397d5c))
+
 #### 1.1.4 (2018-07-11)
 
 ##### New Features
