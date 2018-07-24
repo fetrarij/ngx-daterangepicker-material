@@ -63,7 +63,7 @@
                     </tr>
                 </thead>
                 <tbody class="drp-animate">
-                    <tr *ngFor="let row of calendarVariables.left.calRows">
+                    <tr *ngFor="let row of calendarVariables.left.calRows" [class]="calendarVariables.left.classes[row].classList">
                         <!-- add week number -->
                         <td  class="week" *ngIf="showWeekNumbers">
                             <span>{{calendarVariables.left.calendar[row][0].week()}}</span>
@@ -128,7 +128,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let row of calendarVariables.right.calRows">
+                    <tr *ngFor="let row of calendarVariables.right.calRows" [class]="calendarVariables.right.classes[row].classList">
                         <td class="week" *ngIf="showWeekNumbers">
                             <span>{{calendarVariables.right.calendar[row][0].week()}}</span>
                         </td>
