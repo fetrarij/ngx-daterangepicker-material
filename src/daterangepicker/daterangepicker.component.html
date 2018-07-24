@@ -1,4 +1,4 @@
-<div class="md-drppicker"
+<div class="md-drppicker" #pickerContainer
 [ngClass]="{
     ltr: locale.direction === 'ltr',
     rtl: this.locale.direction === 'rtl',
@@ -16,7 +16,7 @@
                     [ngClass]="{'active': range === chosenRange}">{{range}}</button>
           </li>
         </ul>
-    </div>
+    </div>  
     <div class="calendar" [ngClass]="{right: singleDatePicker, left: !singleDatePicker}"
         *ngIf="showCalInRanges">
         <div class="calendar-table">
@@ -58,22 +58,22 @@
                         </ng-container>
                     </tr>
                     <tr>
-                        <th *ngIf="showWeekNumbers || showISOWeekNumbers" class="week">{{this.locale.weekLabel}}</th>
-                        <th *ngFor="let dayofweek of locale.daysOfWeek">{{dayofweek}}</th>
+                        <th *ngIf="showWeekNumbers || showISOWeekNumbers" class="week"><span>{{this.locale.weekLabel}}</span></th>
+                        <th *ngFor="let dayofweek of locale.daysOfWeek"><span>{{dayofweek}}</span></th>
                     </tr>
                 </thead>
                 <tbody class="drp-animate">
                     <tr *ngFor="let row of calendarVariables.left.calRows">
                         <!-- add week number -->
                         <td  class="week" *ngIf="showWeekNumbers">
-                            {{calendarVariables.left.calendar[row][0].week()}}
+                            <span>{{calendarVariables.left.calendar[row][0].week()}}</span>
                         </td>
                         <td class="week" *ngIf="showISOWeekNumbers">
-                                {{calendarVariables.left.calendar[row][0].isoWeek()}}
+                            <span>{{calendarVariables.left.calendar[row][0].isoWeek()}}</span>
                         </td>
                         <!-- cal -->
                         <td *ngFor="let col of calendarVariables.left.calCols" [class]="calendarVariables.left.classes[row][col]" (click)="clickDate($event, 'left', row, col)">
-                           {{calendarVariables.left.calendar[row][col].date()}}
+                            <span>{{calendarVariables.left.calendar[row][col].date()}}</span>
                         </td>
                     </tr>
                 </tbody>
@@ -123,20 +123,20 @@
                     </tr>
 
                     <tr>
-                        <th *ngIf="showWeekNumbers || showISOWeekNumbers" class="week">{{this.locale.weekLabel}}</th>
-                        <th *ngFor="let dayofweek of locale.daysOfWeek">{{dayofweek}}</th>
+                        <th *ngIf="showWeekNumbers || showISOWeekNumbers" class="week"><span>{{this.locale.weekLabel}}</span></th>
+                        <th *ngFor="let dayofweek of locale.daysOfWeek"><span>{{dayofweek}}</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let row of calendarVariables.right.calRows">
                         <td class="week" *ngIf="showWeekNumbers">
-                            {{calendarVariables.right.calendar[row][0].week()}}
+                            <span>{{calendarVariables.right.calendar[row][0].week()}}</span>
                         </td>
                         <td class="week" *ngIf="showISOWeekNumbers">
-                                {{calendarVariables.right.calendar[row][0].isoWeek()}}
+                            <span>{{calendarVariables.right.calendar[row][0].isoWeek()}}</span>
                         </td>
                         <td *ngFor="let col of calendarVariables.right.calCols" [class]="calendarVariables.right.classes[row][col]" (click)="clickDate($event, 'right', row, col)">
-                           {{calendarVariables.right.calendar[row][col].date()}}
+                            <span>{{calendarVariables.right.calendar[row][col].date()}}</span>
                         </td>
                     </tr>
                 </tbody>
