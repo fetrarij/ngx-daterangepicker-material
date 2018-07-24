@@ -76,6 +76,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   opens: string;
   @Input()
   drops: string;
+  firstMonthDayClass: string;
+  @Input()
+  lastMonthDayClass: string;
+  @Input()
+  emptyWeekRowClass: string;
+  @Input()
+  firstDayOfNextMonthClass: string; 
+  @Input()
+  lastDayOfPreviousMonthClass: string; 
   _locale: any = {};
   @Input() set locale(value) {
     if (value !== null) {
@@ -148,6 +157,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         }
       }
     });
+    this.picker.firstMonthDayClass = this.firstMonthDayClass;
+    this.picker.lastMonthDayClass = this.lastMonthDayClass;
+    this.picker.emptyWeekRowClass = this.emptyWeekRowClass;
+    this.picker.firstDayOfNextMonthClass = this.firstDayOfNextMonthClass;
+    this.picker.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass;
     this.localeDiffer = this.differs.find(this.locale).create();
   }
 
