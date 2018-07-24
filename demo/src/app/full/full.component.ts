@@ -26,11 +26,16 @@ export class FullComponent implements OnInit {
     cancelLabel: 'Cancel',
     applyLabel: 'Okay'
   }
+  opens: string;
+  drops: string;
   click() {
   }
   selected = {start: moment().subtract(3, 'days'), end: moment().add(3, 'days') };
   @ViewChild(DaterangepickerDirective) daterangepicker: DaterangepickerDirective;
-  constructor() { }
+  constructor() {
+    this.opens = 'right';
+    this.drops = 'down';
+  }
   ngOnInit() {
   }
 }

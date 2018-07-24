@@ -139,6 +139,13 @@ ranges: any = {
 | lastDayOfPreviousMonthClass | string | add a custom class for the last day of the previous month |
 | firstDayOfNextMonthClass | string | add a custom class for the first day of the next month |
 
+### Positioning
+
+| Attribut | Possible values |Description |
+| --- | --- |--- |
+| opens | left, center, right | position the calendar from the input element |
+| drops | up, down | position the calendar to the up or down of the calendar |
+
 ## Available events
 
 ### \(rangeClicked)

@@ -14,7 +14,8 @@ import {
   KeyValueDiffer,
   KeyValueDiffers,
   Output,
-  EventEmitter
+  EventEmitter,
+  Renderer2
 } from '@angular/core';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -43,19 +44,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private _validatorChange = Function.prototype;
   private _value: any;
   private localeDiffer: KeyValueDiffer<string, any>;
-
-  constructor(
-    public viewContainerRef: ViewContainerRef,
-    public _changeDetectorRef: ChangeDetectorRef,
-    private _componentFactoryResolver: ComponentFactoryResolver,
-    private _el: ElementRef,
-    private differs: KeyValueDiffers
-  ) {
-    const componentFactory = this._componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
-    viewContainerRef.clear();
-    const componentRef = viewContainerRef.createComponent(componentFactory);
-    this.picker = (<DaterangepickerComponent>componentRef.instance);
-  }
   @Input()
   minDate: _moment.Moment
   @Input()
@@ -85,6 +73,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   ranges: any;
   @Input()
+  opens: string;
+  @Input()
+  drops: string;
   firstMonthDayClass: string;
   @Input()
   lastMonthDayClass: string;
@@ -120,7 +111,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this._endKey = 'endDate';
     }
   };
-  
   notForChangesProperty: Array<string> = [
     'locale',
     'endKey',
@@ -137,6 +127,20 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   }
   @Output('change') onChange: EventEmitter<Object> = new EventEmitter(); 
   @Output('rangeClicked') rangeClicked: EventEmitter<Object> = new EventEmitter(); 
+  
+  constructor(
+    public viewContainerRef: ViewContainerRef,
+    public _changeDetectorRef: ChangeDetectorRef,
+    private _componentFactoryResolver: ComponentFactoryResolver,
+    private _el: ElementRef,
+    private _renderer: Renderer2,
+    private differs: KeyValueDiffers
+  ) {
+    const componentFactory = this._componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
+    viewContainerRef.clear();
+    const componentRef = viewContainerRef.createComponent(componentFactory);
+    this.picker = (<DaterangepickerComponent>componentRef.instance);
+  }
   ngOnInit() {
     this.picker.rangeClicked.asObservable().subscribe((range: any) => {
       this.rangeClicked.emit(range);
@@ -186,6 +190,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
 
   onFocus(event: any) {
     this.picker.show(event);
+    this.setPosition();
   }
 
   hide() {
@@ -217,7 +222,47 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     } else {
       //
     }
-  }  
+  }
+    /**
+     * Set position of the calendar
+     */
+    setPosition() {
+      let style;
+      let containerTop;
+      const container = this.picker.pickerContainer.nativeElement;
+      const element = this._el.nativeElement;
+      if (this.drops && this.drops == 'up') {
+        containerTop = (element.offsetTop - container.clientHeight) + 'px';
+      } else {
+        containerTop = 'auto';
+      }
+      if (this.opens == 'left') {
+        style = {
+            top: containerTop,
+            left: (element.offsetLeft - container.clientWidth + element.clientWidth) + 'px',
+            right: 'auto'
+        };
+      } else if (this.opens == 'center') {
+          style = {
+            top: containerTop,
+            left: (element.offsetLeft  +  element.clientWidth / 2
+                    - container.clientWidth / 2) + 'px',
+            right: 'auto'
+          };
+      } else {
+          style = {
+            top: containerTop,
+            left: element.offsetLeft  + 'px',
+            right: 'auto'
+          }
+      }
+      if (style) {
+        this._renderer.setStyle(container, 'top', style.top);
+        this._renderer.setStyle(container, 'left', style.left);
+        this._renderer.setStyle(container, 'right', style.right);
+      }
+      
+  }
   /**
    * For click outside of the calendar's container
    * @param event event object

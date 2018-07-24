@@ -24,6 +24,8 @@
           emptyWeekRowClass="empty-week"
           lastDayOfPreviousMonthClass="last-previous-day"
           firstDayOfNextMonthClass="first-next-day"
+          [opens]="opens"
+          [drops]="drops"
           name="daterange"/>
     </div>
     <div class="col s6">
@@ -49,6 +51,25 @@
                 </mat-form-field><br/>
                 locale value:<br/> 
               {{locale | json}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s6">
+              <mat-form-field>
+                <mat-select [(ngModel)]="opens" placeholder="Position">
+                  <mat-option value="left">Left</mat-option>
+                  <mat-option value="center">Center</mat-option>
+                  <mat-option value="right">Right</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col s6">
+              <mat-form-field>
+                <mat-select [(ngModel)]="drops" placeholder="Drops">
+                  <mat-option value="down">Down</mat-option>
+                  <mat-option value="up">Up</mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
         </div>
