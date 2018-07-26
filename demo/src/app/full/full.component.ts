@@ -16,7 +16,8 @@ export class FullComponent implements OnInit {
     linkedCalendars: true,
     singleDatePicker: false,
     showWeekNumbers: false,
-    showISOWeekNumbers: false
+    showISOWeekNumbers: false,
+    keepCalendarVisibleAfterApplying: false
   };
   minDate: moment.Moment = moment().subtract(5, 'days');
   maxDate: moment.Moment = moment().add(2, 'month');

@@ -16,7 +16,7 @@ export enum SideEnum {
  templateUrl: './daterangepicker.component.html',
  host: {
     '(click)': 'handleInternalClick($event)',
-},
+ },
 })
 export class DaterangepickerComponent implements OnInit {
     private _old: {start: any, end: any} = {start: null, end: null};
@@ -45,6 +45,7 @@ export class DaterangepickerComponent implements OnInit {
     emptyWeekRowClass: string = null;
     firstDayOfNextMonthClass: string = null;
     lastDayOfPreviousMonthClass: string = null;
+    keepCalendarVisibleAfterApplying: boolean = false;
     locale: any = {
         direction: 'ltr',
         format: moment.localeData().longDateFormat('L'),
@@ -538,7 +539,9 @@ export class DaterangepickerComponent implements OnInit {
         if (this.chosenLabel) {
             this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
         }
-        this.hide();
+        if(!this.keepCalendarVisibleAfterApplying) {
+            this.hide();
+        }
     }
 
     clickCancel(e) {
@@ -708,7 +711,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.endDate.endOf('day');
             }
 
-            if (!this.alwaysShowCalendars) {
+            if (!this.alwaysShowCalendars && !this.keepCalendarVisibleAfterApplying) {
                 this.isShown  = false; // hide calendars
             }
             this.rangeClicked.emit({label: label, dates: dates});

@@ -35,7 +35,7 @@ const moment = _moment;
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DaterangepickerDirective), multi: true
     }
-]
+  ]
 })
 export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   public picker: DaterangepickerComponent;
@@ -82,9 +82,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   emptyWeekRowClass: string;
   @Input()
-  firstDayOfNextMonthClass: string; 
+  firstDayOfNextMonthClass: string;
   @Input()
-  lastDayOfPreviousMonthClass: string; 
+  lastDayOfPreviousMonthClass: string;
+  @Input()
+  keepCalendarVisibleAfterApplying: boolean;
   _locale: any = {};
   @Input() set locale(value) {
     if (value !== null) {
@@ -162,6 +164,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.emptyWeekRowClass = this.emptyWeekRowClass;
     this.picker.firstDayOfNextMonthClass = this.firstDayOfNextMonthClass;
     this.picker.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass;
+    this.picker.keepCalendarVisibleAfterApplying = this.keepCalendarVisibleAfterApplying;
     this.localeDiffer = this.differs.find(this.locale).create();
   }
 
@@ -274,7 +277,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         return;
       }
       const clickedInside = this._el.nativeElement.contains(targetElement);
-      if (!clickedInside) { 
+      if (!clickedInside) {
          this.hide()
       }
   }
