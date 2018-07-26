@@ -152,4 +152,8 @@ ranges: any = {
 
  >Fired when clicked on range, and send an object with range label and dates value, eg:  `{label: 'This Month', dates: [Moment, Moment]}`
 
+### \(datesUpdated)
+
+ >Fires when any date selection occurs, like when selecting days, ranges, or when applying or cancelling changes, and sends an object containing start and end dates, eg:  `{startDate: Moment, endDate: Moment}`
+
 ## [License](https://github.com/fetrarij/ngx-daterangepicker-material/blob/master/LICENSE)
