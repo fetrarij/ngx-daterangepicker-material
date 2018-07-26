@@ -24,6 +24,7 @@
           emptyWeekRowClass="empty-week"
           lastDayOfPreviousMonthClass="last-previous-day"
           firstDayOfNextMonthClass="first-next-day"
+          [keepCalendarVisibleAfterApplying]="options.keepCalendarVisibleAfterApplying"
           [opens]="opens"
           [drops]="drops"
           name="daterange"/>
@@ -37,6 +38,7 @@
         <strong>singleDatePicker:</strong><mat-checkbox [(ngModel)]="options.singleDatePicker">Value: {{options.singleDatePicker}}</mat-checkbox><br/>
         <strong>showWeekNumbers:</strong><mat-checkbox [(ngModel)]="options.showWeekNumbers">Value: {{options.showWeekNumbers}}</mat-checkbox><br/>
         <strong>showISOWeekNumbers:</strong><mat-checkbox [(ngModel)]="options.showISOWeekNumbers">Value: {{options.showISOWeekNumbers}}</mat-checkbox><br/>
+        <strong>keepCalendarVisibleAfterApplying:</strong><mat-checkbox [(ngModel)]="options.keepCalendarVisibleAfterApplying">Value: {{options.keepCalendarVisibleAfterApplying}}</mat-checkbox><br/>
         <strong>minDate:</strong>  {{minDate | date: 'dd/MM/yyyy'}}<br/>
         <strong>maxDate:</strong>  {{maxDate | date: 'dd/MM/yyyy'}}<br/>
         <strong>locale</strong> : <br/>
