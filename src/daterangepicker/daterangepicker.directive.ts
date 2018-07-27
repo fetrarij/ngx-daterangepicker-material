@@ -141,6 +141,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent(componentFactory);
     this.picker = (<DaterangepickerComponent>componentRef.instance);
+    this.picker.inline = false; // set inline to false for all directive usage
   }
   ngOnInit() {
     this.picker.rangeClicked.asObservable().subscribe((range: any) => {

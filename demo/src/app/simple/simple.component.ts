@@ -10,6 +10,7 @@ import { DaterangepickerComponent, DaterangepickerDirective } from '../../../../
 export class SimpleComponent implements OnInit {
   selected: {startDate: moment.Moment, endDate: moment.Moment};
   @ViewChild(DaterangepickerDirective) pickerDirective: DaterangepickerDirective;
+  inlineDate: any;
   picker: DaterangepickerComponent;
   constructor() {
     this.selected = {
@@ -26,5 +27,8 @@ export class SimpleComponent implements OnInit {
   }
   change(e) {
     console.log(e)
+  }
+  choosedDate(e) {
+     this.inlineDate = e;
   }
 }

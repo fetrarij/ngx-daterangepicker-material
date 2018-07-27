@@ -2,8 +2,9 @@
 [ngClass]="{
     ltr: locale.direction === 'ltr',
     rtl: this.locale.direction === 'rtl',
-    'shown': isShown,
-    'hidden': !isShown,
+    'shown': isShown || inline,
+    'hidden': !isShown && !inline,
+    'inline': inline,
     'double': !singleDatePicker && showCalInRanges,
     'show-ranges': rangesArray.length
 }">

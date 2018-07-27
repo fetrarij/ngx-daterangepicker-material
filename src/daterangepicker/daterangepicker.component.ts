@@ -1,5 +1,5 @@
 import { 
-    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output
+    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input
 } from '@angular/core';
 import { FormControl} from '@angular/forms';
 
@@ -11,7 +11,7 @@ export enum SideEnum {
 }
 
 @Component({
- selector: 'ngx-daterangepicker-md',
+ selector: 'ngx-daterangepicker-material',
  styleUrls: ['./daterangepicker.component.scss'],
  templateUrl: './daterangepicker.component.html',
  host: {
@@ -26,25 +26,45 @@ export class DaterangepickerComponent implements OnInit {
     applyBtn: {disabled: boolean} = {disabled: false};
     startDate = moment().startOf('day');
     endDate = moment().endOf('day');
-    minDate: _moment.Moment = null;
-    maxDate: _moment.Moment = null;
     dateLimit = null;
+    
+    @Input()
+    minDate: _moment.Moment = null;
+    @Input()
+    maxDate: _moment.Moment = null;
+    @Input()
     autoApply: Boolean = false;
+    @Input()
     singleDatePicker: Boolean = false;
+    @Input()
     showDropdowns: Boolean = false;
+    @Input()
     showWeekNumbers: Boolean = false;
+    @Input()
     showISOWeekNumbers : Boolean= false;
+    @Input()
     linkedCalendars: Boolean = false;
+    @Input()
     autoUpdateInput: Boolean = true;
+    @Input()
     alwaysShowCalendars: Boolean = false;
+    @Input()
     maxSpan: Boolean = false;
+    @Input()
     timePicker: Boolean = false;
+    @Input()
     showClearButton: Boolean = false;
+    @Input()
     firstMonthDayClass: string = null;
+    @Input()
     lastMonthDayClass: string = null;
+    @Input()
     emptyWeekRowClass: string = null;
+    @Input()
     firstDayOfNextMonthClass: string = null;
+    @Input()
     lastDayOfPreviousMonthClass: string = null;
+    @Input()
     locale: any = {
         direction: 'ltr',
         format: moment.localeData().longDateFormat('L'),
@@ -57,17 +77,19 @@ export class DaterangepickerComponent implements OnInit {
         monthNames: moment.monthsShort(),
         firstDay: moment.localeData().firstDayOfWeek()
     };
+    // custom ranges
+    @Input()
+    ranges: any = {};
+    @Input()
+    showCustomRangeLabel: boolean;
+    chosenRange: string;
+    rangesArray: Array<any> = [];
 
     // some state information
     isShown: Boolean = false;
+    inline: boolean = true;
     leftCalendar: any = {};
     rightCalendar: any = {};
-    // custom ranges
-    ranges: any = {};
-    chosenRange: string;
-    showCustomRangeLabel: boolean;
-    rangesArray: Array<any> = [];
-    // states
     showCalInRanges: Boolean = false;
 
     options: any = {} ; // should get some opt from user
