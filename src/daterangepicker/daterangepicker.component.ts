@@ -115,6 +115,10 @@ export class DaterangepickerComponent implements OnInit {
                 iterator--;
             }
         }
+        if(this.inline) {
+            this._old.start = this.startDate.clone();
+            this._old.end = this.endDate.clone();
+        }
         this.renderCalendar(SideEnum.left);
         this.renderCalendar(SideEnum.right);
         this.renderRanges();
@@ -574,6 +578,9 @@ export class DaterangepickerComponent implements OnInit {
         this.startDate = this._old.start;
         this.endDate = this._old.end;
         this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
+        if(this.inline) {
+            this.updateView();
+        }
         this.hide();
     }
     /**
