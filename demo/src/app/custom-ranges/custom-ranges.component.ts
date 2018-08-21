@@ -11,6 +11,7 @@ export class CustomRangesComponent implements OnInit {
   alwaysShowCalendars: boolean;
   maxDate: moment.Moment;
   minDate: moment.Moment;
+  invalidDates: moment.Moment[] = [moment().add(2, 'days'), moment().add(3, 'days'), moment().add(5, 'days')];  
   ranges: any = {
     Today: [moment(), moment()],
     Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -26,9 +27,15 @@ export class CustomRangesComponent implements OnInit {
         .endOf('month')
     ]
   };
+
+  isInvalidDate = (m: moment.Moment) =>  {
+    return this.invalidDates.some(d => d.isSame(m, 'day') )
+  }
+
   constructor() {
-    this.maxDate = moment().add('1 weeks');
+    this.maxDate = moment().add(2,  'weeks');
     this.minDate = moment().subtract(3, 'days');
+
     this.alwaysShowCalendars = true;
     this.selected = {startDate: moment().subtract(1, 'days'), endDate: moment().subtract(1, 'days')};
   }
