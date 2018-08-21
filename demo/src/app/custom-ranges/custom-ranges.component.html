@@ -12,6 +12,7 @@
     [maxDate]="maxDate"
     [minDate]="minDate"
     [linkedCalendars]="true"
+    [isInvalidDate] = "isInvalidDate"
     (rangeClicked)="rangeClicked($event)"
     class="form-control"
     placeholder="Select please..."/>
@@ -38,7 +39,9 @@
   [alwaysShowCalendars]="{{alwaysShowCalendars}}"
   [ranges]="ranges"
   [linkedCalendars]="true"
+  [isInvalidDate] = "isInvalidDate"
   [showClearButton]="true"
+
   placeholder="Select please.../&gt;</code>
     </pre>
 
@@ -56,6 +59,12 @@ ranges: any = {{ '{' }}
   'This Month': [moment().startOf('month'), moment().endOf('month')],
   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 }
+invalidDates: moment.Moment[] = [moment().add(2, 'days'), moment().add(3, 'days'), moment().add(5, 'days')];  
+
+isInvalidDate = (m: moment.Moment) =>  {{'{'}}
+  return this.invalidDates.some(d => d.isSame(m, 'day') )
+}
+
 constructor() {{ '{' }}
   this.alwaysShowCalendars = true;
 }</code>
