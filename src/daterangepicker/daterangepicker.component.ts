@@ -1,6 +1,7 @@
 import { 
-    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input
+    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef
 } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { FormControl} from '@angular/forms';
 
 import * as _moment from 'moment'; const moment = _moment;
@@ -11,12 +12,17 @@ export enum SideEnum {
 }
 
 @Component({
- selector: 'ngx-daterangepicker-material',
- styleUrls: ['./daterangepicker.component.scss'],
- templateUrl: './daterangepicker.component.html',
- host: {
+    selector: 'ngx-daterangepicker-material',
+    styleUrls: ['./daterangepicker.component.scss'],
+    templateUrl: './daterangepicker.component.html',
+    host: {
     '(click)': 'handleInternalClick($event)',
-},
+    },
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => DaterangepickerComponent),
+        multi: true
+    }]
 })
 export class DaterangepickerComponent implements OnInit {
     private _old: {start: any, end: any} = {start: null, end: null};
