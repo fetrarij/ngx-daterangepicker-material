@@ -197,7 +197,6 @@ export class DaterangepickerComponent implements OnInit {
         const lastYear = moment(firstDay).subtract(1, 'month').year();
         const daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
         const dayOfWeek = firstDay.day();
-
         // initialize a 6 rows x 7 columns array for the calendar
         let calendar: any= [];
         calendar.firstDay = firstDay;
@@ -238,7 +237,6 @@ export class DaterangepickerComponent implements OnInit {
             if (!this.singleDatePicker && this.maxDate && calendar[row][col].format('YYYY-MM-DD') === this.maxDate.format('YYYY-MM-DD') && side === 'left') {
                 // use previous calendars
                 this.leftCalendar.month.subtract(1, 'month');
-                this.rightCalendar.month.subtract(1, 'month');
             }
 
         }
@@ -834,14 +832,20 @@ export class DaterangepickerComponent implements OnInit {
         return false;
       }
       const rangeMarkers = this.ranges[range];
+      console.log(rangeMarkers, this.minDate )
       const areBothBefore = rangeMarkers.every( date => {
+        if (!this.minDate) {
+            return false;
+        }
         return date.isBefore(this.minDate)
       });
 
       const areBothAfter = rangeMarkers.every( date => {
+        if (!this.maxDate) {
+            return false;
+        }
         return date.isAfter(this.maxDate)
       });
-
       return (areBothBefore || areBothAfter);
     }
 
