@@ -638,7 +638,8 @@ export class DaterangepickerComponent implements OnInit {
                 year = this.maxDate.year();
             }
         }
-
+        this.calendarVariables[side].dropdowns.currentYear = year;
+        this.calendarVariables[side].dropdowns.currentMonth = month;
         if (isLeft) {
             this.leftCalendar.month.month(month).year(year);
             if (this.linkedCalendars) {
