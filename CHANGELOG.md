@@ -1,3 +1,19 @@
+#### 1.2.1 (2018-09-10)
+
+##### New Features
+
+* **inline:**  inline daterangepicker [#31](https://github.com/fetrarij/ngx-daterangepicker-material/pull/31) ([eb574bea](https://github.com/fetrarij/ngx-daterangepicker-material/commit/eb574bea36c249306aadc6d2dbe7d40ca673ba32))
+
+##### Bug Fixes
+
+* **calendar:**  Next month calendar doesn't show up if the preview dates for next month covers the range & fix on disabled ranges ([6b60146a](https://github.com/fetrarij/ngx-daterangepicker-material/commit/6b60146a77c11e87058ddfc1e4e1910b1a0786ff))
+* **dropdowns:**  linkedCalendar & disable dates lower than startDate ([009dad5c](https://github.com/fetrarij/ngx-daterangepicker-material/commit/009dad5c291728b076438a9bfe1d568a88731c4e))
+* **component:**  Template parse errors: 'ngx-daterangepicker-material' is not a known element: when using as inline element ([a77805ad](https://github.com/fetrarij/ngx-daterangepicker-material/commit/a77805ad9a51d082ab3c8bb0fbf68a4138348a81))
+
+##### Other Changes
+
+* **range:**  dont close the calendar after choosing a range ( Close [#38](https://github.com/fetrarij/ngx-daterangepicker-material/pull/38) ) & ability to show the range's name in the input instead of just the dates that belong to it ( Close [#34](https://github.com/fetrarij/ngx-daterangepicker-material/pull/34) ) ([998dcae0](https://github.com/fetrarij/ngx-daterangepicker-material/commit/998dcae00addac65f8285f38efa26101ede40338))
+
 #### 1.2.0 (2018-07-24)
 
 ##### New Features
