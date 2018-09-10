@@ -9,6 +9,8 @@ import * as moment from 'moment';
 export class CustomRangesComponent implements OnInit {
   selected: any;
   alwaysShowCalendars: boolean;
+  showRangeLabelOnInput: boolean;
+  keepCalendarOpeningWithRange: boolean;
   maxDate: moment.Moment;
   minDate: moment.Moment;
   invalidDates: moment.Moment[] = [moment().add(2, 'days'), moment().add(3, 'days'), moment().add(5, 'days')];  
@@ -37,6 +39,8 @@ export class CustomRangesComponent implements OnInit {
     this.minDate = moment().subtract(3, 'days');
 
     this.alwaysShowCalendars = true;
+    this.keepCalendarOpeningWithRange = false;
+    this.showRangeLabelOnInput = false;
     this.selected = {startDate: moment().subtract(1, 'days'), endDate: moment().subtract(1, 'days')};
   }
   rangeClicked(range) {

@@ -14,6 +14,8 @@
     [linkedCalendars]="true"
     [isInvalidDate] = "isInvalidDate"
     (rangeClicked)="rangeClicked($event)"
+    [keepCalendarOpeningWithRange]="keepCalendarOpeningWithRange"
+    [showRangeLabelOnInput]="showRangeLabelOnInput"
     class="form-control"
     placeholder="Select please..."/>
   </div>
@@ -26,6 +28,16 @@
         <input type="checkbox" name="alwaysShowCalendars" [(ngModel)]="alwaysShowCalendars">
         <span>alwaysShowCalendars: {{alwaysShowCalendars}}</span>
       </label>
+      <br>
+      <label>
+          <input type="checkbox" name="keepCalendarOpeningWithRange" [(ngModel)]="keepCalendarOpeningWithRange">
+          <span>keepCalendarOpeningWithRange: {{keepCalendarOpeningWithRange}}</span>
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" name="showRangeLabelOnInput" [(ngModel)]="showRangeLabelOnInput">
+          <span>showRangeLabelOnInput: {{showRangeLabelOnInput}}</span>
+        </label>
   </div>
 </div>
 

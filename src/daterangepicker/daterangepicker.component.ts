@@ -88,6 +88,10 @@ export class DaterangepickerComponent implements OnInit {
     ranges: any = {};
     @Input()
     showCustomRangeLabel: boolean;
+    @Input()
+    keepCalendarOpeningWithRange: boolean = false;
+    @Input()
+    showRangeLabelOnInput: boolean = false;
     chosenRange: string;
     rangesArray: Array<any> = [];
 
@@ -742,7 +746,11 @@ export class DaterangepickerComponent implements OnInit {
             var dates = this.ranges[label];
             this.startDate = dates[0].clone();
             this.endDate = dates[1].clone();
-            this.calculateChosenLabel();
+            if (this.showRangeLabelOnInput && label !== this.locale.customRangeLabel) {
+                this.chosenLabel = label;
+            } else {
+                this.calculateChosenLabel();
+            }
             this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
 
             if (!this.timePicker) {
@@ -754,9 +762,13 @@ export class DaterangepickerComponent implements OnInit {
                 this.isShown  = false; // hide calendars
             }
             this.rangeClicked.emit({label: label, dates: dates});
-            this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
-
-            this.clickApply();
+            if (!this.keepCalendarOpeningWithRange) {
+                this.clickApply();
+            } else {
+                this.renderCalendar(SideEnum.left);
+                this.renderCalendar(SideEnum.right);
+            }
+    
         }
     };
 
@@ -832,7 +844,6 @@ export class DaterangepickerComponent implements OnInit {
         return false;
       }
       const rangeMarkers = this.ranges[range];
-      console.log(rangeMarkers, this.minDate )
       const areBothBefore = rangeMarkers.every( date => {
         if (!this.minDate) {
             return false;

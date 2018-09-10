@@ -84,7 +84,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   firstDayOfNextMonthClass: string; 
   @Input()
-  lastDayOfPreviousMonthClass: string; 
+  lastDayOfPreviousMonthClass: string;
+  @Input()
+  keepCalendarOpeningWithRange: boolean;
+  @Input()
+  showRangeLabelOnInput: boolean;
   _locale: any = {};
   @Input() set locale(value) {
     if (value !== null) {

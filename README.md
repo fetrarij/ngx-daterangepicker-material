@@ -137,6 +137,16 @@ ranges: any = {
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
   }
 ```
+#### Other options with ranges
+
+You can use bellow options when using the ranges. The default are `false`.
+
+| Attribut | Type |Description |
+| --- | --- |--- |
+| alwaysShowCalendars | boolean | set `true` if you want to display the ranges with the calendar |
+| keepCalendarOpeningWithRange | boolean | set `true` if you want the calendar won't be closed after choosing a range |
+| showRangeLabelOnInput | boolean | set `true` if you want do display the range label on input |
+
 ### Customisation
 
 | Attribut | Type |Description |
