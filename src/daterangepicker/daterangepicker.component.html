@@ -36,7 +36,7 @@
                             <ng-container *ngIf="showDropdowns && calendarVariables.left.dropdowns">
                                     <select class="monthselect" (change)="monthChanged($event, 'left')">
                                             <option 
-                                            [disabled]="(calendarVariables.left.dropdowns.inMinYear && m < minDate.month()) || (calendarVariables.left.dropdowns.inMaxYear && m > maxDate.month())"
+                                            [disabled]="(calendarVariables.left.dropdowns.inMinYear && m < calendarVariables.left.minDate.minDate.month()) || (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())"
                                             *ngFor="let m of calendarVariables.left.dropdowns.monthArrays" [value]="m" [selected]="calendarVariables.left.dropdowns.currentMonth == m">
                                                 {{locale.monthNames[m]}}
                                             </option>
@@ -101,7 +101,7 @@
                             <ng-container *ngIf="showDropdowns && calendarVariables.right.dropdowns">
                                     <select class="monthselect" (change)="monthChanged($event, 'right')">
                                             <option 
-                                            [disabled]="(calendarVariables.right.dropdowns.inMinYear && m < minDate.month()) || (calendarVariables.right.dropdowns.inMaxYear && m > maxDate.month())"
+                                            [disabled]="(calendarVariables.right.dropdowns.inMinYear && m < calendarVariables.right.minDate.month()) || (calendarVariables.right.dropdowns.inMaxYear && m > calendarVariables.right.maxDate.month())"
                                             *ngFor="let m of calendarVariables.right.dropdowns.monthArrays" [value]="m" [selected]="calendarVariables.right.dropdowns.currentMonth == m">
                                                 {{locale.monthNames[m]}}
                                             </option>
