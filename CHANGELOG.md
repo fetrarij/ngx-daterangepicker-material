@@ -1,3 +1,14 @@
+#### 1.2.2 (2018-09-11)
+
+##### New Features
+
+* **apply-button:**  on apply, set endDate = startDate if it is not selected Close [#42](https://github.com/fetrarij/ngx-daterangepicker-material/pull/42) ([5c8022e3](https://github.com/fetrarij/ngx-daterangepicker-material/commit/5c8022e353ea6e2a6fedb60442ea7ca358124c17))
+* **inline:**  allow isInvalidDate ([36933b16](https://github.com/fetrarij/ngx-daterangepicker-material/commit/36933b165b073c5168975f3666b8b40739cad2d4))
+
+##### Bug Fixes
+
+* **code:**  [#43](https://github.com/fetrarij/ngx-daterangepicker-material/pull/43) ([f632f98e](https://github.com/fetrarij/ngx-daterangepicker-material/commit/f632f98e3f3cfb7b35a6ba936160ce1c3d35d320))
+
 #### 1.2.1 (2018-09-10)
 
 ##### New Features
