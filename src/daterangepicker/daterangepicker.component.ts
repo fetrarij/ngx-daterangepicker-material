@@ -473,7 +473,7 @@ export class DaterangepickerComponent implements OnInit {
         this.updateMonthsInView();
         this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
     }
-
+    @Input()
     isInvalidDate(date) {
         return false;
     }
