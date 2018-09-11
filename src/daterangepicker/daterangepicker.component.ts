@@ -574,6 +574,10 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     clickApply(e?) {
+        if (!this.singleDatePicker && this.startDate && !this.endDate) {
+            this.endDate = this.startDate.clone();
+            this.calculateChosenLabel();
+        }
         if (this.chosenLabel) {
             this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
         }
