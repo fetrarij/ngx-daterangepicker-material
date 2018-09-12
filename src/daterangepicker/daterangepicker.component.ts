@@ -534,8 +534,14 @@ export class DaterangepickerComponent implements OnInit {
     updateElement() {
         if (!this.singleDatePicker && this.autoUpdateInput) {
             if (this.startDate && this.endDate) {
-                this.chosenLabel = this.startDate.format(this.locale.format) +
-                    this.locale.separator + this.endDate.format(this.locale.format);            }
+                // if we use ranges and should show range label on inpu
+                if (this.rangesArray.length && this.showRangeLabelOnInput === true && this.chosenRange) {
+                    this.chosenLabel = this.chosenRange;
+                } else {
+                    this.chosenLabel = this.startDate.format(this.locale.format) +
+                    this.locale.separator + this.endDate.format(this.locale.format);  
+                }
+            }
         } else if ( this.autoUpdateInput) {
             this.chosenLabel = this.startDate.format(this.locale.format);
         }
