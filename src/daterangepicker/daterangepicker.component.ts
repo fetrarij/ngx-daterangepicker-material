@@ -535,7 +535,8 @@ export class DaterangepickerComponent implements OnInit {
         if (!this.singleDatePicker && this.autoUpdateInput) {
             if (this.startDate && this.endDate) {
                 // if we use ranges and should show range label on inpu
-                if (this.rangesArray.length && this.showRangeLabelOnInput === true && this.chosenRange) {
+                if (this.rangesArray.length && this.showRangeLabelOnInput === true && this.chosenRange && 
+                    this.locale.customRangeLabel !== this.chosenRange) {
                     this.chosenLabel = this.chosenRange;
                 } else {
                     this.chosenLabel = this.startDate.format(this.locale.format) +
