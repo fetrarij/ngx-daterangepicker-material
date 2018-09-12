@@ -174,4 +174,10 @@ You can use bellow options when using the ranges. The default are `false`.
 
  >Fires when any date selection occurs, like when selecting days, ranges, or when applying or cancelling changes, and sends an object containing start and end dates, eg:  `{startDate: Moment, endDate: Moment}`
 
+## Donation
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=THF6M338KQ626)
+
+
 ## [License](https://github.com/fetrarij/ngx-daterangepicker-material/blob/master/LICENSE)
+MIT
