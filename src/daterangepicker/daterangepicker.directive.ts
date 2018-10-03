@@ -27,8 +27,8 @@ const moment = _moment;
   host: {
     '(keyup.esc)': 'hide()',
     '(blur)': 'onBlur()',
-    '(focus)': 'onFocus()',
-    '(click)': 'onFocus()'
+    '(focus)': 'open()',
+    '(click)': 'open()'
   },
   providers: [
     {
@@ -197,13 +197,20 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this._onTouched();
   }
 
-  onFocus(event: any) {
+  open(event?: any) {
     this.picker.show(event);
     this.setPosition();
   }
 
-  hide() {
-    this.picker.hide();
+  hide(e?) {
+    this.picker.hide(e);
+  }
+  toggle(e?) {
+    if (this.picker.isShown) {
+      this.hide(e);
+    } else {
+      this.open(e);
+    }
   }
 
   writeValue(value) {
@@ -280,6 +287,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @HostListener('document:click', ['$event', '$event.target'])
   outsideClick(event, targetElement: HTMLElement): void {
       if (!targetElement) {
+        return;
+      }
+      if (targetElement.classList.contains('ngx-daterangepicker-action')) {
         return;
       }
       const clickedInside = this._el.nativeElement.contains(targetElement);
