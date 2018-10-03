@@ -31,4 +31,7 @@ export class SimpleComponent implements OnInit {
   choosedDate(e) {
      this.inlineDate = e;
   }
+  open(e) {
+    this.pickerDirective.open(e);
+  }
 }
