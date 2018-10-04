@@ -1,3 +1,25 @@
+#### 1.2.4 (2018-10-04)
+
+##### New Features
+
+* **picker:**
+  *  possibility to create a  class in an element so that this element can not handle the click event located outside calendar [#39](https://github.com/fetrarij/ngx-daterangepicker-material/pull/39) ([13ba7dd1](https://github.com/fetrarij/ngx-daterangepicker-material/commit/13ba7dd14df2d2be8ff7d183aaf6045bbc8e9c73))
+  *  possibility to create a  class in an element so that this element can not handle the click event located outside calendar [#39](https://github.com/fetrarij/ngx-daterangepicker-material/pull/39) ([ac3f3626](https://github.com/fetrarij/ngx-daterangepicker-material/commit/ac3f3626a84136b300f542cfcbc15fd0e07cf8e6))
+
+##### Bug Fixes
+
+* **calendar:**  wrong typo ([4eb70fcb](https://github.com/fetrarij/ngx-daterangepicker-material/commit/4eb70fcbf6ae1d96f40fc3c438c005e5035d85a9))
+* **showRangeLabelOnInput:**
+  *  custom range = show date ([52e34933](https://github.com/fetrarij/ngx-daterangepicker-material/commit/52e349334f0a14c7e4e49bbecae4dcd73d0a57fb))
+  *  Showing the preset label doesn't work for the first time with supplied date ([4bdaaeb2](https://github.com/fetrarij/ngx-daterangepicker-material/commit/4bdaaeb268b42c164a9d427b89168f48d3fbd89d))
+
+##### Other Changes
+
+* **demo:**
+  *  add demo for : ability to open the calendar from a button ([08c9b068](https://github.com/fetrarij/ngx-daterangepicker-material/commit/08c9b0680748bd350adb478727e65336a8c1814a))
+  *  add demo for : ability to open the calendar from a button ([26d12fb9](https://github.com/fetrarij/ngx-daterangepicker-material/commit/26d12fb9fe8e5aeca4a44cbff9f1ec36ed184c74))
+* **readme:**  add donation button ([0f4758dc](https://github.com/fetrarij/ngx-daterangepicker-material/commit/0f4758dcc90d39923ccb45208f1a17daea04edb0))
+
 #### 1.2.2 (2018-09-11)
 
 ##### New Features
