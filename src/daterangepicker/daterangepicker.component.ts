@@ -438,8 +438,6 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         this.updateMonthsInView();
-        this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
-
     }
 
     setEndDate(endDate) {
@@ -471,7 +469,9 @@ export class DaterangepickerComponent implements OnInit {
             // this.updateElement();
         }
         this.updateMonthsInView();
-        this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
+        if (this.autoApply) {
+            this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
+        }
     }
     @Input()
     isInvalidDate(date) {
@@ -596,7 +596,6 @@ export class DaterangepickerComponent implements OnInit {
     clickCancel(e) {
         this.startDate = this._old.start;
         this.endDate = this._old.end;
-        this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
         if(this.inline) {
             this.updateView();
         }
