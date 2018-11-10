@@ -36,6 +36,10 @@ export class FullComponent implements OnInit {
     this.opens = 'right';
     this.drops = 'down';
   }
+
+  clear(): void {
+    this.daterangepicker.clear();
+  }
   ngOnInit() {
   }
 }

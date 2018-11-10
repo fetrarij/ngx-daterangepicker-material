@@ -65,7 +65,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   showDropdowns: boolean;
   @Input()
-  isInvalidDate: Function; 
+  isInvalidDate: Function;
   @Input()
   isCustomDate: Function;
   @Input()
@@ -82,7 +82,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   emptyWeekRowClass: string;
   @Input()
-  firstDayOfNextMonthClass: string; 
+  firstDayOfNextMonthClass: string;
   @Input()
   lastDayOfPreviousMonthClass: string;
   @Input()
@@ -129,10 +129,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this._onChange(val);
     this._changeDetectorRef.markForCheck();
   }
-  @Output('change') onChange: EventEmitter<Object> = new EventEmitter(); 
-  @Output('rangeClicked') rangeClicked: EventEmitter<Object> = new EventEmitter(); 
-  @Output('datesUpdated') datesUpdated: EventEmitter<Object> = new EventEmitter(); 
-  
+  @Output('change') onChange: EventEmitter<Object> = new EventEmitter();
+  @Output('rangeClicked') rangeClicked: EventEmitter<Object> = new EventEmitter();
+  @Output('datesUpdated') datesUpdated: EventEmitter<Object> = new EventEmitter();
+
   constructor(
     public viewContainerRef: ViewContainerRef,
     public _changeDetectorRef: ChangeDetectorRef,
@@ -183,7 +183,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       }
     }
   }
-  
+
   ngDoCheck() {
     if (this.localeDiffer) {
       const changes = this.localeDiffer.diff(this.locale);
@@ -211,6 +211,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     } else {
       this.open(e);
     }
+  }
+
+  clear() {
+    this.picker.clear();
   }
 
   writeValue(value) {
@@ -277,7 +281,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         this._renderer.setStyle(container, 'left', style.left);
         this._renderer.setStyle(container, 'right', style.right);
       }
-      
+
   }
   /**
    * For click outside of the calendar's container
@@ -293,7 +297,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         return;
       }
       const clickedInside = this._el.nativeElement.contains(targetElement);
-      if (!clickedInside) { 
+      if (!clickedInside) {
          this.hide()
       }
   }
