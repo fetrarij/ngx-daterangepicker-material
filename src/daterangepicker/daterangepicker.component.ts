@@ -1,4 +1,4 @@
-import { 
+import {
     Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -33,7 +33,7 @@ export class DaterangepickerComponent implements OnInit {
     startDate = moment().startOf('day');
     endDate = moment().endOf('day');
     dateLimit = null;
-    
+
     @Input()
     minDate: _moment.Moment = null;
     @Input()
@@ -92,6 +92,8 @@ export class DaterangepickerComponent implements OnInit {
     keepCalendarOpeningWithRange: boolean = false;
     @Input()
     showRangeLabelOnInput: boolean = false;
+    @Input()
+    material: boolean = false;
     chosenRange: string;
     rangesArray: Array<any> = [];
 
@@ -535,12 +537,12 @@ export class DaterangepickerComponent implements OnInit {
         if (!this.singleDatePicker && this.autoUpdateInput) {
             if (this.startDate && this.endDate) {
                 // if we use ranges and should show range label on inpu
-                if (this.rangesArray.length && this.showRangeLabelOnInput === true && this.chosenRange && 
+                if (this.rangesArray.length && this.showRangeLabelOnInput === true && this.chosenRange &&
                     this.locale.customRangeLabel !== this.chosenRange) {
                     this.chosenLabel = this.chosenRange;
                 } else {
                     this.chosenLabel = this.startDate.format(this.locale.format) +
-                    this.locale.separator + this.endDate.format(this.locale.format);  
+                    this.locale.separator + this.endDate.format(this.locale.format);
                 }
             }
         } else if ( this.autoUpdateInput) {
@@ -573,7 +575,7 @@ export class DaterangepickerComponent implements OnInit {
                     this.chosenRange = null;
                 }
                 // if custom label: show calenar
-                this.showCalInRanges = true; 
+                this.showCalInRanges = true;
             }
         }
 
@@ -779,7 +781,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.renderCalendar(SideEnum.left);
                 this.renderCalendar(SideEnum.right);
             }
-    
+
         }
     };
 
@@ -872,7 +874,7 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     /**
-     * Find out if the current calendar row has current month days 
+     * Find out if the current calendar row has current month days
      * (as opposed to consisting of only previous/next month days)
      */
     hasCurrentMonthDays(currentMonth, row) {

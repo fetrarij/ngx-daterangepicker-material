@@ -11,13 +11,21 @@
     <div class="ranges">
         <ul>
           <li *ngFor="let range of rangesArray">
-            <button type="button"
+              <button mat-flat-button *ngIf="material"
+              type="button" style="padding:0"
+              [color]="range === chosenRange? 'primary' : ''"
+                      (click)="clickRange($event, range)"
+                      [disabled]="disableRange(range)"
+                      [ngClass]="{'active': range === chosenRange}"
+                      >{{range}}</button>
+            <button type="button" class="background-transparent"
+            *ngIf="!material"
                     (click)="clickRange($event, range)"
                     [disabled]="disableRange(range)"
-                    [ngClass]="{'active': range === chosenRange}">{{range}}</button>
+                    [ngClass]="{'active': range === chosenRange, 'bootstrap_selected': range === chosenRange}">{{range}}</button>
           </li>
         </ul>
-    </div>  
+    </div>
     <div class="calendar" [ngClass]="{right: singleDatePicker, left: !singleDatePicker}"
         *ngIf="showCalInRanges">
         <div class="calendar-table">
@@ -35,7 +43,7 @@
                         <th colspan="5" class="month drp-animate">
                             <ng-container *ngIf="showDropdowns && calendarVariables.left.dropdowns">
                                     <select class="monthselect" (change)="monthChanged($event, 'left')">
-                                            <option 
+                                            <option
                                             [disabled]="(calendarVariables.left.dropdowns.inMinYear && m < calendarVariables.left.minDate.month()) || (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())"
                                             *ngFor="let m of calendarVariables.left.dropdowns.monthArrays" [value]="m" [selected]="calendarVariables.left.dropdowns.currentMonth == m">
                                                 {{locale.monthNames[m]}}
@@ -100,7 +108,7 @@
                         <th colspan="5" class="month">
                             <ng-container *ngIf="showDropdowns && calendarVariables.right.dropdowns">
                                     <select class="monthselect" (change)="monthChanged($event, 'right')">
-                                            <option 
+                                            <option
                                             [disabled]="(calendarVariables.right.dropdowns.inMinYear && m < calendarVariables.right.minDate.month()) || (calendarVariables.right.dropdowns.inMaxYear && m > calendarVariables.right.maxDate.month())"
                                             *ngFor="let m of calendarVariables.right.dropdowns.monthArrays" [value]="m" [selected]="calendarVariables.right.dropdowns.currentMonth == m">
                                                 {{locale.monthNames[m]}}
@@ -146,13 +154,22 @@
             </table>
         </div>
     </div>
-    <div class="buttons" *ngIf="!autoApply && ( !rangesArray.length || (showCalInRanges && !singleDatePicker))">
-        <div class="buttons_input">
+    <div class="buttons" [ngClass]="{'text-white': material}"  *ngIf="!autoApply && ( !rangesArray.length || (showCalInRanges && !singleDatePicker))">
+        <div class="buttons_input" *ngIf="!material">
             <button  *ngIf="showClearButton" class="btn btn-default clear" type="button" (click)="clear()" title="clear the date">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 -5 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
             </button>
+
             <button class="btn btn-default" type="button" (click)="clickCancel($event)">{{locale.cancelLabel}}</button>
             <button class="btn"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">{{locale.applyLabel}}</button>
+        </div>
+
+        <div class="buttons_input" *ngIf="material">
+            <button mat-icon-button *ngIf="showClearButton" >
+                <mat-icon (click)="clear()" color="warn">delete</mat-icon>
+              </button>
+            <button mat-raised-button color="accent" (click)="clickCancel($event)">{{locale.cancelLabel}}</button>
+            <button mat-raised-button color="primary"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">{{locale.applyLabel}}</button>
         </div>
     </div>
 </div>
