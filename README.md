@@ -10,7 +10,7 @@ This plugin is a rewrite to angular from [bootstrap daterangepicker](http://www.
 
 This plugin have an independant theme which looks more close to material design, so the material design is just a style.
 
-# More editing is continued [here] (https://github.com/yousefkhan/ngx-daterangepicker-material2)
+# More editing is continued [here](https://github.com/yousefkhan/ngx-daterangepicker-material2)
 ![](screen.png)
 ![](screen_material.png)
 
