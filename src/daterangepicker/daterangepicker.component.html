@@ -12,7 +12,7 @@
         <ul>
           <li *ngFor="let range of rangesArray">
               <button mat-flat-button *ngIf="material"
-              type="button" style="padding:0"
+              type="button"
               [color]="range === chosenRange? 'primary' : ''"
                       (click)="clickRange($event, range)"
                       [disabled]="disableRange(range)"
@@ -168,8 +168,8 @@
             <button mat-icon-button *ngIf="showClearButton" >
                 <mat-icon (click)="clear()" color="warn">delete</mat-icon>
               </button>
-            <button mat-raised-button color="accent" (click)="clickCancel($event)">{{locale.cancelLabel}}</button>
-            <button mat-raised-button color="primary"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">{{locale.applyLabel}}</button>
+            <button mat-raised-button *ngIf="showCancel" class="cancel-btn" color="accent" (click)="clickCancel($event)">{{locale.cancelLabel}}</button>
+            <button mat-raised-button class="apply-btn" color="primary"  [disabled]="applyBtn.disabled" type="button" (click)="clickApply($event)">{{locale.applyLabel}}</button>
         </div>
     </div>
 </div>

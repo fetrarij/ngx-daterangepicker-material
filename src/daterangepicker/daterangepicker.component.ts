@@ -94,6 +94,8 @@ export class DaterangepickerComponent implements OnInit {
     showRangeLabelOnInput: boolean = false;
     @Input()
     material: boolean = false;
+    @Input()
+    showCancel: boolean = false;
     chosenRange: string;
     rangesArray: Array<any> = [];
 
@@ -189,7 +191,7 @@ export class DaterangepickerComponent implements OnInit {
         }
 
     }
-    renderCalendar(side: SideEnum) { // site enum
+    renderCalendar(side: any) { // site enum
         let mainCalendar: any = ( side === SideEnum.left ) ? this.leftCalendar : this.rightCalendar;
         const month = mainCalendar.month.month();
         const year = mainCalendar.month.year();
@@ -609,7 +611,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param monthEvent get value in event.target.value
      * @param side left or right
      */
-    monthChanged(monthEvent: any, side: SideEnum) {
+    monthChanged(monthEvent: any, side: string) {
         const year = this.calendarVariables[side].dropdowns.currentYear;
         const month = parseInt(monthEvent.target.value, 10);
         this.monthOrYearChanged(month, year, side);
@@ -619,7 +621,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param yearEvent get value in event.target.value
      * @param side left or right
      */
-    yearChanged(yearEvent: any, side: SideEnum) {
+    yearChanged(yearEvent: any, side: string) {
         const month = this.calendarVariables[side].dropdowns.currentMonth;
         const year = parseInt(yearEvent.target.value, 10);
         this.monthOrYearChanged(month, year, side);
@@ -630,7 +632,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param year year eg: 1995
      * @param side left or right
      */
-    monthOrYearChanged(month: number, year: number, side: SideEnum) {
+    monthOrYearChanged(month: number, year: number, side: string) {
         const isLeft = side === SideEnum.left;
 
         if (!isLeft) {
@@ -673,7 +675,7 @@ export class DaterangepickerComponent implements OnInit {
      * Click on previous month
      * @param side left or right calendar
      */
-    clickPrev(side: SideEnum) {
+    clickPrev(side: string) {
         if (side === SideEnum.left) {
             this.leftCalendar.month.subtract(1, 'month');
             if (this.linkedCalendars) {
@@ -688,7 +690,7 @@ export class DaterangepickerComponent implements OnInit {
      * Click on next month
      * @param side left or right calendar
      */
-    clickNext(side: SideEnum) {
+    clickNext(side: string) {
         if (side === SideEnum.left) {
             this.leftCalendar.month.add(1, 'month');
         } else {
@@ -706,7 +708,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param row row position of the current date clicked
      * @param col col position of the current date clicked
      */
-    clickDate(e, side: SideEnum, row: number, col: number) {
+    clickDate(e, side: any, row: number, col: number) {
         if (!e.target.classList.contains('available')) {
             return;
         }

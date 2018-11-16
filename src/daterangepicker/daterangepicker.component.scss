@@ -1,4 +1,6 @@
 @import url( 'https://fonts.googleapis.com/css?family=Roboto:400,700|Material+Icons');
+
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 /*
 *  variables
 */
@@ -385,6 +387,10 @@ $input-height: 3rem !default;
     }
   }
 
+  .cancel-btn {
+    margin-right: 10px;
+  }
+
   .ranges {
     float: none;
     text-align: left;
@@ -397,7 +403,7 @@ $input-height: 3rem !default;
       li {
         font-size: 12px;
         button {
-          padding: 8px 12px;
+          padding: 0 5px;
           width: 100%;
           border: none;
           text-align: center;
@@ -418,6 +424,7 @@ $input-height: 3rem !default;
         }
         .background-transparent {
           background: none;
+          padding: 8px 12px;
         }
       }
       li:hover {
