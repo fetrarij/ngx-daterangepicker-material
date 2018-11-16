@@ -1,3 +1,6 @@
+@import url( 'https://fonts.googleapis.com/css?family=Roboto:400,700|Material+Icons');
+
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 /*
 *  variables
 */
@@ -384,6 +387,10 @@ $input-height: 3rem !default;
     }
   }
 
+  .cancel-btn {
+    margin-right: 10px;
+  }
+
   .ranges {
     float: none;
     text-align: left;
@@ -396,22 +403,28 @@ $input-height: 3rem !default;
       li {
         font-size: 12px;
         button {
-          padding: 8px 12px;
+          padding: 0 5px;
           width: 100%;
-          background: none;
           border: none;
-          text-align: left;
+          text-align: center;
           cursor: pointer;
           &.active {
-            background-color: #3f51b5;
+            // background-color: #3f51b5;
             color: #fff;
           }
+          &.bootstrap_selected {
+            background-color: #3f51b5;
+          }
           &[disabled] {
-            opacity: 0.3;
+            opacity: 0.7;
           }
           &:active {
             background: transparent;
           }
+        }
+        .background-transparent {
+          background: none;
+          padding: 8px 12px;
         }
       }
       li:hover {
@@ -563,6 +576,10 @@ $input-height: 3rem !default;
 
 [hidden] {
   display: none;
+}
+
+.mat-raised-button {
+  color: white;
 }
 
 /* button */
