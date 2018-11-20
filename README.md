@@ -47,7 +47,7 @@ Html:
 Typescript: 
 
 ````typescript
-selected: {startdDate: Moment, endDate: Moment};
+selected: {startDate: Moment, endDate: Moment};
 ````
 ### with some options: 
 Html:
