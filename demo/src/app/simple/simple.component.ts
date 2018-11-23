@@ -34,4 +34,8 @@ export class SimpleComponent implements OnInit {
   open(e) {
     this.pickerDirective.open(e);
   }
+  clear(e) {
+    // this.picker.clear(); // we can do
+    this.selected = null; // now we can do
+  }
 }

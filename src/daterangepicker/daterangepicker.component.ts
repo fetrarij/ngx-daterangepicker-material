@@ -103,6 +103,8 @@ export class DaterangepickerComponent implements OnInit {
     showCalInRanges: Boolean = false;
 
     options: any = {} ; // should get some opt from user
+    @Input() drops: string;
+    @Input() opens: string;
     @Output('choosedDate') choosedDate: EventEmitter<Object>;
     @Output('rangeClicked') rangeClicked: EventEmitter<Object>;
     @Output('datesUpdated') datesUpdated: EventEmitter<Object>;
@@ -238,11 +240,6 @@ export class DaterangepickerComponent implements OnInit {
             calendar[row][col].isAfter(this.maxDate) && side === 'right') {
                 calendar[row][col] = this.maxDate.clone();
             }
-            if (!this.singleDatePicker && this.maxDate && calendar[row][col].format('YYYY-MM-DD') === this.maxDate.format('YYYY-MM-DD') && side === 'left') {
-                // use previous calendars
-                this.leftCalendar.month.subtract(1, 'month');
-            }
-
         }
 
         // make the calendar object available to hoverDate/clickDate
@@ -438,8 +435,6 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         this.updateMonthsInView();
-        this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
-
     }
 
     setEndDate(endDate) {
@@ -471,7 +466,9 @@ export class DaterangepickerComponent implements OnInit {
             // this.updateElement();
         }
         this.updateMonthsInView();
-        this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
+        if (this.autoApply) {
+            this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
+        }
     }
     @Input()
     isInvalidDate(date) {
@@ -585,6 +582,18 @@ export class DaterangepickerComponent implements OnInit {
             this.endDate = this.startDate.clone();
             this.calculateChosenLabel();
         }
+        if (this.isInvalidDate && this.startDate && this.endDate) {
+            // get if there are invalid date between range
+            let d = this.startDate.clone();
+            while(d.isBefore(this.endDate)) {
+                if (this.isInvalidDate(d)) {
+                    this.endDate = d.subtract(1, 'days');
+                    this.calculateChosenLabel();
+                    break;
+                }
+                d.add(1, 'days');
+            }
+        }
         if (this.chosenLabel) {
             this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
         }
@@ -596,7 +605,6 @@ export class DaterangepickerComponent implements OnInit {
     clickCancel(e) {
         this.startDate = this._old.start;
         this.endDate = this._old.end;
-        this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
         if(this.inline) {
             this.updateView();
         }
