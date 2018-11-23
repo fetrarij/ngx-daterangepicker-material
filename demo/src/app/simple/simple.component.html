@@ -9,6 +9,7 @@
   <div class="col s6 right-align">
     <br/>
     <button type="button" class="ngx-daterangepicker-action waves-effect waves-light btn" (click)="open($event)">open from a button</button>
+    <button type="button" *ngIf="selected && selected.startDate" class="ngx-daterangepicker-action waves-effect waves-light btn red" (click)="clear($event)">Clear</button>
   </div>
 </div>
 <div class="row">
