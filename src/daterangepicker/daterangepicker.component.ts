@@ -580,6 +580,18 @@ export class DaterangepickerComponent implements OnInit {
             this.endDate = this.startDate.clone();
             this.calculateChosenLabel();
         }
+        if (this.isInvalidDate && this.startDate && this.endDate) {
+            // get if there are invalid date between range
+            let d = this.startDate.clone();
+            while(d.isBefore(this.endDate)) {
+                if (this.isInvalidDate(d)) {
+                    this.endDate = d.subtract(1, 'days');
+                    this.calculateChosenLabel();
+                    break;
+                }
+                d.add(1, 'days');
+            }
+        }
         if (this.chosenLabel) {
             this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
         }
