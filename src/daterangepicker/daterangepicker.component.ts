@@ -103,6 +103,8 @@ export class DaterangepickerComponent implements OnInit {
     showCalInRanges: Boolean = false;
 
     options: any = {} ; // should get some opt from user
+    @Input() drops: string;
+    @Input() opens: string;
     @Output('choosedDate') choosedDate: EventEmitter<Object>;
     @Output('rangeClicked') rangeClicked: EventEmitter<Object>;
     @Output('datesUpdated') datesUpdated: EventEmitter<Object>;
