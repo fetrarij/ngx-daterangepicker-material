@@ -236,7 +236,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         this._el.nativeElement.value = this.picker.chosenLabel;
       }
     } else {
-      //
+      this.picker.clear();
     }
   }
     /**
