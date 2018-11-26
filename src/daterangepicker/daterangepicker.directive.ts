@@ -141,6 +141,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     private _renderer: Renderer2,
     private differs: KeyValueDiffers
   ) {
+    this.drops = 'down';
+    this.opens = 'left';
     const componentFactory = this._componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent(componentFactory);
@@ -171,6 +173,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.emptyWeekRowClass = this.emptyWeekRowClass;
     this.picker.firstDayOfNextMonthClass = this.firstDayOfNextMonthClass;
     this.picker.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass;
+    this.picker.drops = this.drops;
+    this.picker.opens = this.opens;
     this.localeDiffer = this.differs.find(this.locale).create();
   }
 
@@ -240,7 +244,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         this._el.nativeElement.value = this.picker.chosenLabel;
       }
     } else {
-      //
+      this.picker.clear();
     }
   }
     /**

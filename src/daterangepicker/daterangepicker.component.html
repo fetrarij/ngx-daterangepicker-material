@@ -7,7 +7,7 @@
     'inline': inline,
     'double': !singleDatePicker && showCalInRanges,
     'show-ranges': rangesArray.length
-}">
+}" [class]="'drops-' + drops + '-' + opens">
     <div class="ranges">
         <ul>
           <li *ngFor="let range of rangesArray">

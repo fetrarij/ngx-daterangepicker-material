@@ -47,7 +47,7 @@ Html:
 Typescript: 
 
 ````typescript
-selected: {startdDate: Moment, endDate: Moment};
+selected: {startDate: Moment, endDate: Moment};
 ````
 ### with some options: 
 Html:
@@ -172,7 +172,7 @@ You can use bellow options when using the ranges. The default are `false`.
 
 ### \(datesUpdated)
 
- >Fires when any date selection occurs, like when selecting days, ranges, or when applying or cancelling changes, and sends an object containing start and end dates, eg:  `{startDate: Moment, endDate: Moment}`
+ >Fires when the date model is updated, like applying (if you have activated the apply button), or when selecting a range or date without the apply button, and sends an object containing start and end dates, eg: `{startDate: Moment, endDate: Moment}`
 
 ## Donation
 
