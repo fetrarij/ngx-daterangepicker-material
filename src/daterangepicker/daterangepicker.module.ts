@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-
+import {MatButtonModule, MatIconModule} from '@angular/material';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { DaterangepickerDirective } from './daterangepicker.directive';
 
@@ -14,6 +14,8 @@ import { DaterangepickerDirective } from './daterangepicker.directive';
   imports: [
     CommonModule,
     FormsModule,
+    MatButtonModule,
+    MatIconModule,
     ReactiveFormsModule
   ],
   providers: [],

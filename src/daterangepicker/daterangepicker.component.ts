@@ -1,4 +1,4 @@
-import { 
+import {
     Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -33,7 +33,7 @@ export class DaterangepickerComponent implements OnInit {
     startDate = moment().startOf('day');
     endDate = moment().endOf('day');
     dateLimit = null;
-    
+
     @Input()
     minDate: _moment.Moment = null;
     @Input()
@@ -92,6 +92,10 @@ export class DaterangepickerComponent implements OnInit {
     keepCalendarOpeningWithRange: boolean = false;
     @Input()
     showRangeLabelOnInput: boolean = false;
+    @Input()
+    material: boolean = false;
+    @Input()
+    showCancel: boolean = false;
     chosenRange: string;
     rangesArray: Array<any> = [];
 
@@ -189,7 +193,7 @@ export class DaterangepickerComponent implements OnInit {
         }
 
     }
-    renderCalendar(side: SideEnum) { // site enum
+    renderCalendar(side: any) { // site enum
         let mainCalendar: any = ( side === SideEnum.left ) ? this.leftCalendar : this.rightCalendar;
         const month = mainCalendar.month.month();
         const year = mainCalendar.month.year();
@@ -532,12 +536,12 @@ export class DaterangepickerComponent implements OnInit {
         if (!this.singleDatePicker && this.autoUpdateInput) {
             if (this.startDate && this.endDate) {
                 // if we use ranges and should show range label on inpu
-                if (this.rangesArray.length && this.showRangeLabelOnInput === true && this.chosenRange && 
+                if (this.rangesArray.length && this.showRangeLabelOnInput === true && this.chosenRange &&
                     this.locale.customRangeLabel !== this.chosenRange) {
                     this.chosenLabel = this.chosenRange;
                 } else {
                     this.chosenLabel = this.startDate.format(this.locale.format) +
-                    this.locale.separator + this.endDate.format(this.locale.format);  
+                    this.locale.separator + this.endDate.format(this.locale.format);
                 }
             }
         } else if ( this.autoUpdateInput) {
@@ -570,7 +574,7 @@ export class DaterangepickerComponent implements OnInit {
                     this.chosenRange = null;
                 }
                 // if custom label: show calenar
-                this.showCalInRanges = true; 
+                this.showCalInRanges = true;
             }
         }
 
@@ -615,7 +619,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param monthEvent get value in event.target.value
      * @param side left or right
      */
-    monthChanged(monthEvent: any, side: SideEnum) {
+    monthChanged(monthEvent: any, side: string) {
         const year = this.calendarVariables[side].dropdowns.currentYear;
         const month = parseInt(monthEvent.target.value, 10);
         this.monthOrYearChanged(month, year, side);
@@ -625,7 +629,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param yearEvent get value in event.target.value
      * @param side left or right
      */
-    yearChanged(yearEvent: any, side: SideEnum) {
+    yearChanged(yearEvent: any, side: string) {
         const month = this.calendarVariables[side].dropdowns.currentMonth;
         const year = parseInt(yearEvent.target.value, 10);
         this.monthOrYearChanged(month, year, side);
@@ -636,7 +640,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param year year eg: 1995
      * @param side left or right
      */
-    monthOrYearChanged(month: number, year: number, side: SideEnum) {
+    monthOrYearChanged(month: number, year: number, side: string) {
         const isLeft = side === SideEnum.left;
 
         if (!isLeft) {
@@ -679,7 +683,7 @@ export class DaterangepickerComponent implements OnInit {
      * Click on previous month
      * @param side left or right calendar
      */
-    clickPrev(side: SideEnum) {
+    clickPrev(side: string) {
         if (side === SideEnum.left) {
             this.leftCalendar.month.subtract(1, 'month');
             if (this.linkedCalendars) {
@@ -694,7 +698,7 @@ export class DaterangepickerComponent implements OnInit {
      * Click on next month
      * @param side left or right calendar
      */
-    clickNext(side: SideEnum) {
+    clickNext(side: string) {
         if (side === SideEnum.left) {
             this.leftCalendar.month.add(1, 'month');
         } else {
@@ -712,7 +716,7 @@ export class DaterangepickerComponent implements OnInit {
      * @param row row position of the current date clicked
      * @param col col position of the current date clicked
      */
-    clickDate(e, side: SideEnum, row: number, col: number) {
+    clickDate(e, side: any, row: number, col: number) {
         if (!e.target.classList.contains('available')) {
             return;
         }
@@ -787,7 +791,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.renderCalendar(SideEnum.left);
                 this.renderCalendar(SideEnum.right);
             }
-    
+
         }
     };
 
@@ -880,7 +884,7 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     /**
-     * Find out if the current calendar row has current month days 
+     * Find out if the current calendar row has current month days
      * (as opposed to consisting of only previous/next month days)
      */
     hasCurrentMonthDays(currentMonth, row) {
