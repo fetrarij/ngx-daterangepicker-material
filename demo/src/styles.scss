@@ -4,13 +4,13 @@
 @import '~@angular/material/theming';
 @include mat-core();
 
-$fcp-default-primary: mat-palette($mat-green);
-$fcp-default-accent:  mat-palette($mat-grey);
-$fcp-default-warn:  mat-palette($mat-red);
-$fcp-default-theme:   mat-light-theme($fcp-default-primary, $fcp-default-accent, $fcp-default-warn);
+$default-primary: mat-palette($mat-green);
+$default-accent:  mat-palette($mat-grey);
+$default-warn:  mat-palette($mat-red);
+$default-theme:   mat-light-theme($default-primary, $default-accent, $default-warn);
 
 // Include the default theme styles.
-@include angular-material-theme($fcp-default-theme);
+@include angular-material-theme($default-theme);
 
 .mycustomdate {
     background-color: #ccc8c8 !important;
