@@ -21,18 +21,20 @@ export class FullComponent implements OnInit {
   minDate: moment.Moment = moment().subtract(5, 'days');
   maxDate: moment.Moment = moment().add(2, 'month');
   locale: any = {
-    format: 'DD MMMM YYYY',
+    format: 'DD MMMM YYYY HH:mm',
     separator: ' To ',
     cancelLabel: 'Cancel',
     applyLabel: 'Okay'
   }
   opens: string;
   drops: string;
+  timePicker: boolean;
   click() {
   }
   selected = {start: moment().subtract(3, 'days'), end: moment().add(3, 'days') };
   @ViewChild(DaterangepickerDirective) daterangepicker: DaterangepickerDirective;
   constructor() {
+    this.timePicker = false;
     this.opens = 'right';
     this.drops = 'down';
   }

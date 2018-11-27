@@ -143,9 +143,22 @@ You can use bellow options when using the ranges. The default are `false`.
 
 | Attribut | Type |Description |
 | --- | --- |--- |
-| alwaysShowCalendars | boolean | set `true` if you want to display the ranges with the calendar |
-| keepCalendarOpeningWithRange | boolean | set `true` if you want the calendar won't be closed after choosing a range |
-| showRangeLabelOnInput | boolean | set `true` if you want do display the range label on input |
+| alwaysShowCalendars | boolean | set to `true` if you want to display the ranges with the calendar |
+| keepCalendarOpeningWithRange | boolean | set to `true` if you want the calendar won't be closed after choosing a range |
+| showRangeLabelOnInput | boolean | set to `true` if you want do display the range label on input |
+
+### Timepicker
+
+You have to set the attribute `timePicker` to `true` if you want to enable the timepicker.
+
+You can use theses options:
+
+| Attribut | Type |Description |
+| --- | --- |--- |
+| timePicker24Hour | boolean | set to `true` if you want to set the timepicker to 24h instead of having AM and PM |
+| timePickerIncrement | number | set the value increment of the minutes (eg: for `12` there would be 0mn, 15mn, 30mn, 45mn,) |
+| timePickerSeconds | boolean | set `true` if you want do display second's select |
+
 
 ### Customisation
 
