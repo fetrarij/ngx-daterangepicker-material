@@ -81,6 +81,27 @@
                 </tbody>
             </table>
         </div>
+        <div class="calendar-time" *ngIf="timePicker">
+            <select class="hourselect" [disabled]="!endDate" [(ngModel)]="timepickerVariables.left.selectedHour" (ngModelChange)="timeChanged($event, 'left')">
+                <option *ngFor="let i of timepickerVariables.left.hours" 
+                [value]="i"
+                [disabled]="timepickerVariables.left.disabledHours.indexOf(i) > -1">{{i}}</option>
+            </select>
+            <select class="minuteselect" [disabled]="!endDate" [(ngModel)]="timepickerVariables.left.selectedMinute" (ngModelChange)="timeChanged($event, 'left')">
+                <option *ngFor="let i of timepickerVariables.left.minutes; let index = index;" 
+                [value]="i"
+                [disabled]="timepickerVariables.left.disabledMinutes.indexOf(i) > -1">{{timepickerVariables.left.minutesLabel[index]}}</option>
+            </select>
+            <select  *ngIf="timePickerSeconds" class="secondselect" [disabled]="!endDate" [(ngModel)]="timepickerVariables.left.selectedSecond" (ngModelChange)="timeChanged($event, 'left')">
+                <option *ngFor="let i of timepickerVariables.left.seconds; let index = index;"
+                [value]="i"
+                [disabled]="timepickerVariables.left.disabledSeconds.indexOf(i) > -1">{{timepickerVariables.left.secondsLabel[index]}}</option>
+            </select>
+            <select *ngIf="!timePicker24Hour" class="ampmselect" [(ngModel)]="timepickerVariables.left.ampmModel" (ngModelChange)="timeChanged($event, 'left')">
+                <option value="AM" [disabled]="timepickerVariables.left.amDisabled">AM</option>
+                <option value="PM"  [disabled]="timepickerVariables.left.pmDisabled">PM</option>
+            </select>
+        </div>
     </div>
     <div class="calendar right"
         *ngIf="showCalInRanges && !singleDatePicker"
@@ -144,6 +165,27 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="calendar-time" *ngIf="timePicker">
+            <select class="hourselect" [disabled]="!endDate" [(ngModel)]="timepickerVariables.right.selectedHour" (ngModelChange)="timeChanged($event, 'right')">
+                <option *ngFor="let i of timepickerVariables.right.hours" 
+                [value]="i"
+                [disabled]="timepickerVariables.right.disabledHours.indexOf(i) > -1">{{i}}</option>
+            </select>
+            <select class="minuteselect" [disabled]="!endDate" [(ngModel)]="timepickerVariables.right.selectedMinute" (ngModelChange)="timeChanged($event, 'right')">
+                <option *ngFor="let i of timepickerVariables.right.minutes; let index = index;" 
+                [value]="i"
+                [disabled]="timepickerVariables.right.disabledMinutes.indexOf(i) > -1">{{timepickerVariables.right.minutesLabel[index]}}</option>
+            </select>
+            <select *ngIf="timePickerSeconds" class="secondselect" [disabled]="!endDate" [(ngModel)]="timepickerVariables.right.selectedSecond" (ngModelChange)="timeChanged($event, 'right')">
+                <option *ngFor="let i of timepickerVariables.right.seconds; let index = index;"
+                [value]="i"
+                [disabled]="timepickerVariables.right.disabledSeconds.indexOf(i) > -1">{{timepickerVariables.right.secondsLabel[index]}}</option>
+            </select>
+            <select *ngIf="!timePicker24Hour" class="ampmselect" [(ngModel)]="timepickerVariables.right.ampmModel" (ngModelChange)="timeChanged($event, 'right')">
+                <option value="AM" [disabled]="timepickerVariables.right.amDisabled">AM</option>
+                <option value="PM"  [disabled]="timepickerVariables.right.pmDisabled">PM</option>
+            </select>
         </div>
     </div>
     <div class="buttons" *ngIf="!autoApply && ( !rangesArray.length || (showCalInRanges && !singleDatePicker))">

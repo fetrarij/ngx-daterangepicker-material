@@ -89,6 +89,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   keepCalendarOpeningWithRange: boolean;
   @Input()
   showRangeLabelOnInput: boolean;
+   // timepicker variables
+   @Input()
+   timePicker: Boolean = false;
+   @Input()
+   timePicker24Hour: Boolean = false;
+   @Input()
+   timePickerIncrement: number = 1;
+   @Input()
+   timePickerSeconds: Boolean = false;
   _locale: any = {};
   @Input() set locale(value) {
     if (value !== null) {
