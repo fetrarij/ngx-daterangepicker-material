@@ -365,6 +365,18 @@ $input-height: 3rem !default;
       margin: 0;
       cursor: default;
     }
+    &.hourselect, 
+    &.minuteselect,
+    &.secondselect,
+    &.ampmselect {
+      width: 50px;
+      margin: 0 auto;
+      background: #eee;
+      border: 1px solid #eee;
+      padding: 2px;
+      outline: 0;
+      font-size: 12px;
+    }
 
     &.monthselect {
       margin-right: 2%;
@@ -374,6 +386,17 @@ $input-height: 3rem !default;
     &.yearselect {
       width: 40%;
     }
+  }
+  .calendar-time {
+    text-align: center;
+    margin: 4px auto 0 auto;
+    line-height: 30px;
+    position: relative;
+  }
+  
+  .calendar-time select.disabled {
+    color: #ccc;
+    cursor: not-allowed;
   }
 
   .label-input {
