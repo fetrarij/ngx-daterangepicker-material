@@ -3,6 +3,7 @@ import { SimpleComponent } from './simple/simple.component';
 import { FullComponent } from './full/full.component';
 import { CustomRangesComponent } from './custom-ranges/custom-ranges.component';
 import { SingleDatepickerComponent } from './single-datepicker/single-datepicker.component';
+import { TimepickerComponent } from './timepicker/timepicker.component';
 
 export const AppRoutes: Routes = [
     {
@@ -17,6 +18,10 @@ export const AppRoutes: Routes = [
     {
         path: 'single-datepicker',
         component: SingleDatepickerComponent,
+    },
+    {
+        path: 'with-timepicker',
+        component: TimepickerComponent,
     },
     {
         path: 'full',

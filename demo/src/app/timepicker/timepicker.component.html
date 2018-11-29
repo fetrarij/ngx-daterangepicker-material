@@ -1,0 +1,43 @@
+<mat-toolbar>Single datepicker with custom invalid date & custom class on date</mat-toolbar>
+<div class="row">
+  <div class="col s6">
+    <input type="text"
+    ngxDaterangepickerMd
+    [timePicker]="true"
+    [timePickerSeconds]="true"
+    [timePickerIncrement]="15"
+    [timePicker24Hour]="true"
+    [(ngModel)]="selected" class="form-control"/>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col s6">
+    <b>Html code:</b>
+      <pre class="prettyprint"><code class="html">&lt;input type="text"
+    ngxDaterangepickerMd
+    [timePicker]="true"
+    [timePickerSeconds]="true"
+    [timePickerIncrement]="15"
+    [timePicker24Hour]="true"
+    [locale]="{{ '{' }}format: 'DD/MM/YYYY HH:mm:ss', firstDay: 1}"
+    [(ngModel)]="selected""/>
+    class="form-control"/&gt;</code>
+    </pre>
+    
+  </div>
+  <div class="col s6">
+    <b>Typescript code:</b>
+      <pre class="prettyprint"><code class="javascript">export class SingleDatepickerComponent {{ '{' }}
+        selected: any;
+        
+        constructor() {{ '{' }}
+        {{'}'}}
+        isInvalidDate(date) {{ '{' }}
+          return date.weekday() === 0;
+        {{'}'}}</code>
+    </pre>
+    
+  </div>
+</div>

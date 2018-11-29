@@ -82,7 +82,6 @@ export class DaterangepickerComponent implements OnInit {
     @Input()
     locale: any = {
         direction: 'ltr',
-        format: moment.localeData().longDateFormat('L'),
         separator: ' - ',
         weekLabel: 'W',
         applyLabel: 'Apply',
@@ -140,8 +139,10 @@ export class DaterangepickerComponent implements OnInit {
             this._old.start = this.startDate.clone();
             this._old.end = this.endDate.clone();
         }
-        if (this.timePicker) {
+        if (this.timePicker && !this.locale.format) {
             this.locale.format = moment.localeData().longDateFormat('lll');
+        } else {
+            this.locale.format = moment.localeData().longDateFormat('L');
         }
         this.renderCalendar(SideEnum.left);
         this.renderCalendar(SideEnum.right);

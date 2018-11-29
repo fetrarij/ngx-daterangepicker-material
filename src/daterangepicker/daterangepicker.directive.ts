@@ -27,7 +27,6 @@ const moment = _moment;
   host: {
     '(keyup.esc)': 'hide()',
     '(blur)': 'onBlur()',
-    '(focus)': 'open()',
     '(click)': 'open()'
   },
   providers: [
@@ -151,7 +150,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     private differs: KeyValueDiffers
   ) {
     this.drops = 'down';
-    this.opens = 'left';
+    this.opens = 'right';
     const componentFactory = this._componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent(componentFactory);
@@ -212,7 +211,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
 
   open(event?: any) {
     this.picker.show(event);
-    this.setPosition();
+    setTimeout(() => {
+      this.setPosition();
+    })
   }
 
   hide(e?) {
