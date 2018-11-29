@@ -1,3 +1,22 @@
+#### 1.2.6 (2018-11-29)
+
+##### Chores
+
+* **demo:**  add timepicker demo ([86597697](https://github.com/fetrarij/ngx-daterangepicker-material/commit/8659769727d18d549545ef026756da3f006caea5))
+
+##### Documentation Changes
+
+* **timepicker:**  add timepicker to doc and demo ([1c95fda8](https://github.com/fetrarij/ngx-daterangepicker-material/commit/1c95fda80571aead94b5c6476b14c2a820cb1bba))
+
+##### New Features
+
+* **timepicker:**  enabling timepicker ([02b4c655](https://github.com/fetrarij/ngx-daterangepicker-material/commit/02b4c655bf9b8358e65b14de81673c4a467e1129))
+
+##### Bug Fixes
+
+* **daterange:**  initialize format ([8f40adce](https://github.com/fetrarij/ngx-daterangepicker-material/commit/8f40adce8ad6194adeda661b730e08dfa3304626))
+* **calendar:**  fix the position after opening ([69ae2760](https://github.com/fetrarij/ngx-daterangepicker-material/commit/69ae27601efe63854123e867246704e60ecd395a))
+
 #### 1.2.5 (2018-11-23)
 
 ##### Chores
