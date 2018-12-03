@@ -1,4 +1,4 @@
-import { 
+import {
     Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef, ViewEncapsulation
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -35,7 +35,7 @@ export class DaterangepickerComponent implements OnInit {
     startDate = moment().startOf('day');
     endDate = moment().endOf('day');
     dateLimit = null;
-    
+
     @Input()
     minDate: _moment.Moment = null;
     @Input()
@@ -97,6 +97,8 @@ export class DaterangepickerComponent implements OnInit {
     ranges: any = {};
     @Input()
     showCustomRangeLabel: boolean;
+    @Input()
+    showCancel: boolean = false;
     @Input()
     keepCalendarOpeningWithRange: boolean = false;
     @Input()
@@ -558,7 +560,7 @@ export class DaterangepickerComponent implements OnInit {
         if (!this.timePicker) {
             this.startDate = this.startDate.startOf('day');
         }
-        
+
         if (this.timePicker && this.timePickerIncrement) {
             this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
         }
@@ -601,7 +603,7 @@ export class DaterangepickerComponent implements OnInit {
         if (this.timePicker && this.timePickerIncrement) {
             this.endDate.minute(Math.round(this.endDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
         }
-        
+
 
         if (this.endDate.isBefore(this.startDate)) {
             this.endDate = this.startDate.clone();
@@ -690,12 +692,12 @@ export class DaterangepickerComponent implements OnInit {
         if (!this.singleDatePicker && this.autoUpdateInput) {
             if (this.startDate && this.endDate) {
                 // if we use ranges and should show range label on inpu
-                if (this.rangesArray.length && this.showRangeLabelOnInput === true && this.chosenRange && 
+                if (this.rangesArray.length && this.showRangeLabelOnInput === true && this.chosenRange &&
                     this.locale.customRangeLabel !== this.chosenRange) {
                     this.chosenLabel = this.chosenRange;
                 } else {
                     this.chosenLabel = this.startDate.format(this.locale.format) +
-                    this.locale.separator + this.endDate.format(this.locale.format);  
+                    this.locale.separator + this.endDate.format(this.locale.format);
                 }
             }
         } else if ( this.autoUpdateInput) {
@@ -730,7 +732,7 @@ export class DaterangepickerComponent implements OnInit {
                         break;
                     }
                 }
-                
+
                 i++;
             }
             if (customRange) {
@@ -740,7 +742,7 @@ export class DaterangepickerComponent implements OnInit {
                     this.chosenRange = null;
                 }
                 // if custom label: show calenar
-                this.showCalInRanges = true; 
+                this.showCalInRanges = true;
             }
         }
 
@@ -1028,7 +1030,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.renderCalendar(SideEnum.left);
                 this.renderCalendar(SideEnum.right);
             }
-    
+
         }
     };
 
@@ -1121,7 +1123,7 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     /**
-     * Find out if the current calendar row has current month days 
+     * Find out if the current calendar row has current month days
      * (as opposed to consisting of only previous/next month days)
      */
     hasCurrentMonthDays(currentMonth, row) {
