@@ -1,5 +1,5 @@
 import {
-    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef
+    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef, ViewEncapsulation
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { FormControl} from '@angular/forms';
@@ -18,6 +18,7 @@ export enum SideEnum {
     host: {
     '(click)': 'handleInternalClick($event)',
     },
+    encapsulation: ViewEncapsulation.None,
     providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => DaterangepickerComponent),
