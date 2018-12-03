@@ -13,6 +13,8 @@ export class FullComponent implements OnInit {
   options: any = {
     autoApply: false,
     alwaysShowCalendars: false,
+    showCancel: false,
+    showClearButton: false,
     linkedCalendars: true,
     singleDatePicker: false,
     showWeekNumbers: false,
