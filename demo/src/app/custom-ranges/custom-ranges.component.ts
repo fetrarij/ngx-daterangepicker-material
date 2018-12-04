@@ -44,7 +44,10 @@ export class CustomRangesComponent implements OnInit {
     this.selected = {startDate: moment().subtract(1, 'days'), endDate: moment().subtract(1, 'days')};
   }
   rangeClicked(range) {
-    console.log('range is : ', range);
+    console.log('[rangeClicked] range is : ', range);
+  }
+  datesUpdated(range) {
+    console.log('[datesUpdated] range is : ', range);
   }
 
   ngOnInit() {}

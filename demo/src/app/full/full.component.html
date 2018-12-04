@@ -29,11 +29,14 @@
           firstDayOfNextMonthClass="first-next-day"
           [opens]="opens"
           [drops]="drops"
+          [timePicker]="timePicker"
           name="daterange"/>
     </div>
     <div class="col s6">
           <strong>Value: </strong>{{selected  | json}}
           <hr/>
+        <h4>Timepicker</h4>
+        <strong>enable timepicker:</strong>  <mat-checkbox [(ngModel)]="timePicker">Value: {{Timepicker}}</mat-checkbox><br/>
         <h4>Options:</h4>
         <strong>autoApply:</strong>  <mat-checkbox [(ngModel)]="options.autoApply">Value: {{options.autoApply}}</mat-checkbox><br/>
         <strong>material:</strong>  <mat-checkbox [(ngModel)]="options.material">Value: {{options.material}}</mat-checkbox><br/>

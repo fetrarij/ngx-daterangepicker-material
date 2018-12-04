@@ -1,3 +1,51 @@
+#### 1.2.6 (2018-11-29)
+
+##### Chores
+
+* **demo:**  add timepicker demo ([86597697](https://github.com/fetrarij/ngx-daterangepicker-material/commit/8659769727d18d549545ef026756da3f006caea5))
+
+##### Documentation Changes
+
+* **timepicker:**  add timepicker to doc and demo ([1c95fda8](https://github.com/fetrarij/ngx-daterangepicker-material/commit/1c95fda80571aead94b5c6476b14c2a820cb1bba))
+
+##### New Features
+
+* **timepicker:**  enabling timepicker ([02b4c655](https://github.com/fetrarij/ngx-daterangepicker-material/commit/02b4c655bf9b8358e65b14de81673c4a467e1129))
+
+##### Bug Fixes
+
+* **daterange:**  initialize format ([8f40adce](https://github.com/fetrarij/ngx-daterangepicker-material/commit/8f40adce8ad6194adeda661b730e08dfa3304626))
+* **calendar:**  fix the position after opening ([69ae2760](https://github.com/fetrarij/ngx-daterangepicker-material/commit/69ae27601efe63854123e867246704e60ecd395a))
+
+#### 1.2.5 (2018-11-23)
+
+##### Chores
+
+* **travis:**
+  *  fix build ([eca7ba34](https://github.com/fetrarij/ngx-daterangepicker-material/commit/eca7ba34a57ce354ae50af6474d1ffaab05d7462))
+  *  fix build ([0e8c4d61](https://github.com/fetrarij/ngx-daterangepicker-material/commit/0e8c4d6121c0b89925590d0fc3f1223c4303b57e))
+
+##### New Features
+
+* **clear:**
+  *  when setting value to falsy, datepicker will clear, and added demo ([6b9f8d3c](https://github.com/fetrarij/ngx-daterangepicker-material/commit/6b9f8d3c8f59c1105135a7df77a8a7ac6ef52243))
+  *  when setting value to falsy, datepicker will clear, and added demo ([18559a7a](https://github.com/fetrarij/ngx-daterangepicker-material/commit/18559a7a1677f73d06eec912cc637f1db2df96d5))
+* **daterangepicker:**
+  *  if there are InvalidDate from isInvalidDate function, range become the first range until the first invalid date Fix [#7](https://github.com/fetrarij/ngx-daterangepicker-material/pull/7) ([14488fb2](https://github.com/fetrarij/ngx-daterangepicker-material/commit/14488fb2fc336120ba407944d9176301e162d31e))
+  *  if there are InvalidDate from isInvalidDate function, range become the first range until the first invalid date Fix [#7](https://github.com/fetrarij/ngx-daterangepicker-material/pull/7) ([f0f4cce4](https://github.com/fetrarij/ngx-daterangepicker-material/commit/f0f4cce499e8c50d46892c4b69617155f03258ac))
+
+##### Bug Fixes
+
+* **animation-css:**
+  *  Calendar always opens from left top corner even though [opens] is set to center or right ([9faa528b](https://github.com/fetrarij/ngx-daterangepicker-material/commit/9faa528be3ff78fc41e17991ef57683896b8afaf))
+  *  Calendar always opens from left top corner even though [opens] is set to center or right ([512bb913](https://github.com/fetrarij/ngx-daterangepicker-material/commit/512bb9139019f6f43e2084991abca4d577d27d3b))
+* **range:**
+  *  current month became previous month ([f0a1aae2](https://github.com/fetrarij/ngx-daterangepicker-material/commit/f0a1aae27ee14610c442b314ab1d52f8abdd9555))
+  *  current month became previous month ([8ade181f](https://github.com/fetrarij/ngx-daterangepicker-material/commit/8ade181f77d36b5aba0d1fa8bb8e08a026b3c0b5))
+* **datesUpdated:**
+  *  only when dates model is updated ([b0494430](https://github.com/fetrarij/ngx-daterangepicker-material/commit/b0494430ce730af7f78ba4f2f751ca3f8476368e))
+  *  only when dates model is updated ([111db419](https://github.com/fetrarij/ngx-daterangepicker-material/commit/111db41987bdb6d52ffd353ee0161ddadf63032d))
+
 #### 1.2.4 (2018-10-04)
 
 ##### New Features
