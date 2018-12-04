@@ -38,7 +38,9 @@
     "url": "https://github.com/fetrarij/ngx-daterangepicker-material.git"
   },
   "peerDependencies": {
-    "moment": "^2.21.0"
+    "moment": "^2.21.0",
+    "@angular/cdk": "^7.0.4",
+    "@angular/material": "^7.0.4"
   },
   "devDependencies": {
     "@angular/animations": "^5.2.9",
