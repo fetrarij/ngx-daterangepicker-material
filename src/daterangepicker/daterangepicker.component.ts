@@ -35,6 +35,8 @@ export class DaterangepickerComponent implements OnInit {
     startDate = moment().startOf('day');
     endDate = moment().endOf('day');
     dateLimit = null;
+    // used in template for compile time support of enum values.
+    sideEnum = SideEnum;
 
     @Input()
     minDate: _moment.Moment = null;
