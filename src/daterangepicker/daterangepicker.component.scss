@@ -378,15 +378,22 @@ $input-height: 3rem !default;
       font-size: 12px;
     }
 
-    &.monthselect {
-      margin-right: 2%;
-      width: 56%;
-    }
-
+    &.monthselect,
     &.yearselect {
-      width: 40%;
+      opacity: 0;
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      margin: 0;
+      padding: 0;
     }
   }
+
+  th.month > div {
+    position: relative; 
+    display: inline-block;
+  }
+
   .calendar-time {
     text-align: center;
     margin: 4px auto 0 auto;
