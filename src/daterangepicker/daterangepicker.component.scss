@@ -201,7 +201,6 @@ $input-height: 3rem !default;
       white-space: nowrap;
       text-align: center;
       min-width: 32px;
-
       span {
         pointer-events: none;
       }
@@ -380,6 +379,7 @@ $input-height: 3rem !default;
 
     &.monthselect,
     &.yearselect {
+      cursor: pointer;
       opacity: 0;
       position: absolute; 
       top: 0; 
