@@ -144,10 +144,12 @@ export class DaterangepickerComponent implements OnInit {
             this._old.start = this.startDate.clone();
             this._old.end = this.endDate.clone();
         }
-        if (this.timePicker && !this.locale.format) {
-            this.locale.format = moment.localeData().longDateFormat('lll');
-        } else {
-            this.locale.format = moment.localeData().longDateFormat('L');
+        if (!this.locale.format) { 
+            if (this.timePicker) {
+                this.locale.format = moment.localeData().longDateFormat('lll');
+            } else { 
+                this.locale.format = moment.localeData().longDateFormat('L');
+            }
         }
         this.renderCalendar(SideEnum.left);
         this.renderCalendar(SideEnum.right);
@@ -1083,7 +1085,7 @@ export class DaterangepickerComponent implements OnInit {
      */
     updateLocale(locale) {
         for (const key in locale) {
-          if (this.locale.hasOwnProperty(key) && this.locale.hasOwnProperty(key)) {
+          if (locale.hasOwnProperty(key)) {
             this.locale[key] = locale[key];
           }
         }
