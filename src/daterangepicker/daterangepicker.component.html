@@ -34,18 +34,24 @@
                         </ng-container>
                         <th colspan="5" class="month drp-animate">
                             <ng-container *ngIf="showDropdowns && calendarVariables.left.dropdowns">
-                                    <select class="monthselect" (change)="monthChanged($event, sideEnum.left)">
-                                            <option
-                                            [disabled]="(calendarVariables.left.dropdowns.inMinYear && m < calendarVariables.left.minDate.month()) || (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())"
-                                            *ngFor="let m of calendarVariables.left.dropdowns.monthArrays" [value]="m" [selected]="calendarVariables.left.dropdowns.currentMonth == m">
-                                                {{locale.monthNames[m]}}
-                                            </option>
-                                    </select>
+                                <div>
+                                        {{this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()]}}
+                                        <select class="monthselect" (change)="monthChanged($event, sideEnum.left)">
+                                                <option
+                                                [disabled]="(calendarVariables.left.dropdowns.inMinYear && m < calendarVariables.left.minDate.month()) || (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())"
+                                                *ngFor="let m of calendarVariables.left.dropdowns.monthArrays" [value]="m" [selected]="calendarVariables.left.dropdowns.currentMonth == m">
+                                                    {{locale.monthNames[m]}}
+                                                </option>
+                                        </select>
+                                </div>
+                                <div>
+                                    {{ calendarVariables?.left?.calendar[1][1].format(" YYYY")}}
                                     <select class="yearselect"  (change)="yearChanged($event, sideEnum.left)">
                                         <option *ngFor="let y of calendarVariables.left.dropdowns.yearArrays" [selected]="y === calendarVariables.left.dropdowns.currentYear">
                                             {{y}}
                                         </option>
                                     </select>
+                                </div>
                             </ng-container>
                             <ng-container *ngIf="!showDropdowns || !calendarVariables.left.dropdowns">
                                     {{this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()]}}  {{ calendarVariables?.left?.calendar[1][1].format(" YYYY")}}
@@ -120,6 +126,8 @@
                         </ng-container>
                         <th colspan="5" class="month">
                             <ng-container *ngIf="showDropdowns && calendarVariables.right.dropdowns">
+                                <div>
+                                    {{this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()]}}
                                     <select class="monthselect" (change)="monthChanged($event, sideEnum.right)">
                                             <option
                                             [disabled]="(calendarVariables.right.dropdowns.inMinYear && m < calendarVariables.right.minDate.month()) || (calendarVariables.right.dropdowns.inMaxYear && m > calendarVariables.right.maxDate.month())"
@@ -127,11 +135,15 @@
                                                 {{locale.monthNames[m]}}
                                             </option>
                                     </select>
-                                    <select class="yearselect" (change)="yearChanged($event, sideEnum.right)">
+                                </div>
+                                <div>
+                                        {{ calendarVariables?.right?.calendar[1][1].format(" YYYY")}}
+                                        <select class="yearselect" (change)="yearChanged($event, sideEnum.right)">
                                         <option *ngFor="let y of calendarVariables.right.dropdowns.yearArrays" [selected]="y === calendarVariables.right.dropdowns.currentYear">
                                             {{y}}
                                         </option>
                                     </select>
+                                </div>
                             </ng-container>
                             <ng-container *ngIf="!showDropdowns || !calendarVariables.right.dropdowns">
                                     {{this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()]}}  {{ calendarVariables?.right?.calendar[1][1].format(" YYYY")}}
