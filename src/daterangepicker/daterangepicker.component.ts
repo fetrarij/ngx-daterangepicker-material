@@ -1,5 +1,5 @@
 import {
-    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef, ViewEncapsulation
+    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef, ViewEncapsulation, ChangeDetectorRef
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { FormControl} from '@angular/forms';
@@ -125,6 +125,7 @@ export class DaterangepickerComponent implements OnInit {
 
     constructor(
         private el: ElementRef,
+        private _ref: ChangeDetectorRef
     ) {
         this.choosedDate = new EventEmitter();
         this.rangeClicked = new EventEmitter();
@@ -1075,7 +1076,9 @@ export class DaterangepickerComponent implements OnInit {
 
         // if picker is attached to a text input, update it
         this.updateElement();
-        setTimeout(() => {this.isShown = false}, 0)
+        this.isShown = false;
+        this._ref.detectChanges();
+        
     }
 
     /**
