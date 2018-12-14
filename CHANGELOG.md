@@ -1,3 +1,20 @@
+#### 1.2.7 (2018-12-14)
+
+##### New Features
+
+* **css:**  make easy for styling ([2e649c6a](https://github.com/fetrarij/ngx-daterangepicker-material/commit/2e649c6a875e856502c8f44744978b47ec4dd573))
+
+##### Bug Fixes
+
+* **onPush:**  popup doesn't close on first click when OnPush changeDetection ([7e2d27d6](https://github.com/fetrarij/ngx-daterangepicker-material/commit/7e2d27d64ac3bcefe84a6abd2f202a9d36714f1b))
+* **ie11-clickdate:**  Unable to select custom date range from calendar in IE1 ([0a07daba](https://github.com/fetrarij/ngx-daterangepicker-material/commit/0a07dabaf2eb4ae1abd16e1513389d5d64a0a114))
+* **locale-format:**  Locale.format does not change date formats ([5c4f7545](https://github.com/fetrarij/ngx-daterangepicker-material/commit/5c4f75453ecafae393b96f61118adc8034c13edc))
+
+##### Code Style Changes
+
+* **move-css:**  move  .btn / .clear / .buttons / [hidden] under .md-drppicker ([76406c02](https://github.com/fetrarij/ngx-daterangepicker-material/commit/76406c02e885612f1a73a57ce1b99a8aa6b5a331))
+* **month-year-select:**  add cursor pointer ([916810fd](https://github.com/fetrarij/ngx-daterangepicker-material/commit/916810fd6ad2024c1c898198ef015259556b8fca))
+
 #### 1.2.6 (2018-11-29)
 
 ##### Chores
