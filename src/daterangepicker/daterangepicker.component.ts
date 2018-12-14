@@ -934,8 +934,14 @@ export class DaterangepickerComponent implements OnInit {
      * @param col col position of the current date clicked
      */
     clickDate(e, side: SideEnum, row: number, col: number) {
-        if (!e.target.classList.contains('available')) {
-            return;
+        if (e.target.tagName === 'TD') {
+            if (!e.target.classList.contains('available')) {
+                return;
+            }
+        } else if (e.target.tagName === 'SPAN') {
+            if (!e.target.parentElement.classList.contains('available')) {
+                return;
+            }
         }
         if (this.rangesArray.length) {
             this.chosenRange = this.locale.customRangeLabel;
