@@ -44,7 +44,7 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
     MatInputModule,
     MatSelectModule,
     NgxDaterangepickerMd.forRoot({
-      applyLabel: 'Ohkay'
+      applyLabel: 'Okay'
     }),
     RouterModule.forRoot(AppRoutes),
   ],
