@@ -14,7 +14,7 @@ describe('CustomRangesComponent', () => {
       declarations: [ CustomRangesComponent ],
       imports: [
         FormsModule,
-        NgxDaterangepickerMd,
+        NgxDaterangepickerMd.forRoot(),
         MatToolbarModule
       ]
     })
