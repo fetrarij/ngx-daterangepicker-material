@@ -30,7 +30,11 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { App } from './app';
 
 @NgModule({
-    imports:      [... , FormsModule, NgxDaterangepickerMd],
+    imports: [
+        ... , 
+        FormsModule, 
+        NgxDaterangepickerMd.forRoot()
+    ],
     declarations: [App],
     bootstrap:    [App]
 })
@@ -108,6 +112,8 @@ You can use the component directly in your templates, which will set its `inline
     firstDay: 1 // first day is monday
 }
 ```
+[Check here](#global-locale) to set the globa locale
+
 ### startKey and endKey
 
 Theses 2 options are for the key you want for the value, default are `startDate` and `endDate`, it means the value we have from ngModel are: `{startDate: Date, endDate: Date}` by default;
@@ -187,6 +193,26 @@ You can use theses options:
 
  >Fires when the date model is updated, like applying (if you have activated the apply button), or when selecting a range or date without the apply button, and sends an object containing start and end dates, eg: `{startDate: Moment, endDate: Moment}`
 
+### Global locale
+
+For setting the global locale, pass this object to NgxDaterangepickerMd.forRoot().
+
+eg:
+
+```
+@NgModule({
+    imports: [
+        ... , 
+        FormsModule, 
+        NgxDaterangepickerMd.forRoot({
+            separator: ' - ', 
+            applyLabel: 'Okay',
+        })
+    ],
+    declarations: [App],
+    bootstrap:    [App]
+})
+```
 ## Donation
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=THF6M338KQ626)
