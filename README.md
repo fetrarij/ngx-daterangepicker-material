@@ -112,7 +112,7 @@ You can use the component directly in your templates, which will set its `inline
     firstDay: 1 // first day is monday
 }
 ```
-[Check here](#global-locale) to set the globa locale
+[Check here](#global-locale) for setting the global locale
 
 ### startKey and endKey
 
