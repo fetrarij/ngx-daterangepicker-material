@@ -86,7 +86,7 @@ export class DaterangepickerComponent implements OnInit {
     lastDayOfPreviousMonthClass: string = null;
     _locale: LocaleConfig = {};
     @Input() set locale(value) {
-      this._locale = {...value,...this.localeConfig};
+      this._locale = {...this.localeConfig, ...value};
     }
     get locale(): any {
       return this._locale;
@@ -128,7 +128,7 @@ export class DaterangepickerComponent implements OnInit {
         this.choosedDate = new EventEmitter();
         this.rangeClicked = new EventEmitter();
         this.datesUpdated = new EventEmitter();
-        this.locale = {...DefaultLocaleConfig, ...this._locale};
+        this.locale = {...this._locale};
         this.updateMonthsInView();
     }
 
