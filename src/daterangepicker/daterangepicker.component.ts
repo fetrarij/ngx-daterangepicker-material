@@ -3,8 +3,10 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { FormControl} from '@angular/forms';
+import { LocaleConfig, DefaultLocaleConfig } from './daterangepicker.config';
 
-import * as _moment from 'moment'; const moment = _moment;
+import * as _moment from 'moment';
+const moment = _moment;
 
 export enum SideEnum {
     left = 'left',
@@ -82,18 +84,13 @@ export class DaterangepickerComponent implements OnInit {
     firstDayOfNextMonthClass: string = null;
     @Input()
     lastDayOfPreviousMonthClass: string = null;
-    @Input()
-    locale: any = {
-        direction: 'ltr',
-        separator: ' - ',
-        weekLabel: 'W',
-        applyLabel: 'Apply',
-        cancelLabel: 'Cancel',
-        customRangeLabel: 'Custom range',
-        daysOfWeek: moment.weekdaysMin(),
-        monthNames: moment.monthsShort(),
-        firstDay: moment.localeData().firstDayOfWeek()
-    };
+    _locale: LocaleConfig = {};
+    @Input() set locale(value) {
+      this._locale = {...this.localeConfig, ...value};
+    }
+    get locale(): any {
+      return this._locale;
+    }
     // custom ranges
     @Input()
     ranges: any = {};
@@ -125,11 +122,13 @@ export class DaterangepickerComponent implements OnInit {
 
     constructor(
         private el: ElementRef,
-        private _ref: ChangeDetectorRef
+        private _ref: ChangeDetectorRef,
+        private localeConfig: LocaleConfig
     ) {
         this.choosedDate = new EventEmitter();
         this.rangeClicked = new EventEmitter();
         this.datesUpdated = new EventEmitter();
+        this.locale = {...this._locale};
         this.updateMonthsInView();
     }
 

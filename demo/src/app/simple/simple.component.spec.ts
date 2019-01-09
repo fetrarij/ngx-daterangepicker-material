@@ -16,7 +16,7 @@ describe('SimpleComponent', () => {
       declarations: [ SimpleComponent ],
       imports: [
         FormsModule,
-        NgxDaterangepickerMd,
+        NgxDaterangepickerMd.forRoot(),
         MatToolbarModule
       ]
     })
