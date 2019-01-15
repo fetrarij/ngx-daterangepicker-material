@@ -1,3 +1,29 @@
+#### 1.3.0 (2019-01-15)
+
+##### Chores
+
+* **test:**  fix test with new imports ([e151ecb8](https://github.com/fetrarij/ngx-daterangepicker-material/commit/e151ecb8d284b9fc6e9e9e8c681e4c1457d46463))
+
+##### New Features
+
+* **daterangepicker:**  add global locale config [#69](https://github.com/fetrarij/ngx-daterangepicker-material/pull/69) ([0c303f7c](https://github.com/fetrarij/ngx-daterangepicker-material/commit/0c303f7cb3028ea31642bb4cfc7d9e315a6dcb4e))
+
+***Breaking change:***
+ Instead of using `NgxDaterangepickerMd` you should now use `NgxDaterangepickerMd.forRoot()` in imports.
+
+##### Bug Fixes
+
+* **locale:**  fix setting locale for individual and inline mode Fix [#75](https://github.com/fetrarij/ngx-daterangepicker-material/pull/75) ([f73c7515](https://github.com/fetrarij/ngx-daterangepicker-material/commit/f73c75156490e689d061b2dc2369b468ce3712dc))
+* **typo:**  typo in readme ([9b70f872](https://github.com/fetrarij/ngx-daterangepicker-material/commit/9b70f872db4f41d917813446d2b7690077272965))
+
+##### Other Changes
+
+* **global-locale:**  add doc for global locale ([57530799](https://github.com/fetrarij/ngx-daterangepicker-material/commit/57530799df836662232fcb2c9819db65b54e479e))
+
+##### Refactors
+
+* **code:**  refactoring ([92f01ecf](https://github.com/fetrarij/ngx-daterangepicker-material/commit/92f01ecfb8416f01a33f2ee76fa68adf1866d735))
+
 #### 1.2.7 (2018-12-14)
 
 ##### New Features
