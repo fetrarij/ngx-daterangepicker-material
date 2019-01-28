@@ -102,7 +102,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   timePickerSeconds: Boolean = false;
   _locale: LocaleConfig = {};
   @Input() set locale(value) {
-    this._locale = {...value, ...this.localeConfig};
+    this._locale = {...this.localeConfig, ...value};
   }
   get locale(): any {
     return this._locale;
