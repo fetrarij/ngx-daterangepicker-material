@@ -99,7 +99,7 @@ export class DaterangepickerComponent implements OnInit {
         this.renderRanges();
     }
     get ranges(): any {
-        return this.ranges;
+        return this._ranges;
     }
 
     @Input()
