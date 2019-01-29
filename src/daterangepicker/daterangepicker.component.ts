@@ -92,8 +92,16 @@ export class DaterangepickerComponent implements OnInit {
       return this._locale;
     }
     // custom ranges
-    @Input()
-    ranges: any = {};
+    _ranges: any = {};
+
+    @Input() set ranges(value) {
+        this._ranges = value;
+        this.renderRanges();
+    }
+    get ranges(): any {
+        return this._ranges;
+    }
+
     @Input()
     showCustomRangeLabel: boolean;
     @Input()
@@ -156,6 +164,7 @@ export class DaterangepickerComponent implements OnInit {
         this.renderRanges();
     }
     renderRanges() {
+        this.rangesArray = [];
         let start, end;
         if (typeof this.ranges === 'object') {
             for (const range in this.ranges) {
