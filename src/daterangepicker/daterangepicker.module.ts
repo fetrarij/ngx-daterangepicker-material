@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { DaterangepickerDirective } from './daterangepicker.directive';
-import { LocaleConfig, DefaultLocaleConfig } from './daterangepicker.config';
+import { LocaleConfig, DefaultLocaleConfig, LOCALE_CONFIG } from './daterangepicker.config';
 
 @NgModule({
   declarations: [
@@ -26,16 +26,13 @@ import { LocaleConfig, DefaultLocaleConfig } from './daterangepicker.config';
   ]
 })
 export class NgxDaterangepickerMd {
-  constructor(@Optional() @SkipSelf() parentModule: NgxDaterangepickerMd) {
-    if (parentModule) {
-      throw new Error('NgxDaterangepickerMd is already loaded. Import it in the root module only');
-    }
+  constructor() {
   }
-  static forRoot(config: LocaleConfig = DefaultLocaleConfig): ModuleWithProviders {
+  static forRoot(config: LocaleConfig = {}): ModuleWithProviders {
     return {
       ngModule: NgxDaterangepickerMd,
       providers: [
-        {provide: LocaleConfig, useValue: {...DefaultLocaleConfig, ...config}}
+        { provide: LOCALE_CONFIG, useValue: {...DefaultLocaleConfig, ...config} }
       ]
     };
   }

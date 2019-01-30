@@ -1,9 +1,9 @@
 import {
-    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef, ViewEncapsulation, ChangeDetectorRef
+    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef, ViewEncapsulation, ChangeDetectorRef, Inject
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { FormControl} from '@angular/forms';
-import { LocaleConfig, DefaultLocaleConfig } from './daterangepicker.config';
+import { LocaleConfig, LOCALE_CONFIG } from './daterangepicker.config';
 
 import * as _moment from 'moment';
 const moment = _moment;
@@ -131,7 +131,7 @@ export class DaterangepickerComponent implements OnInit {
     constructor(
         private el: ElementRef,
         private _ref: ChangeDetectorRef,
-        private localeConfig: LocaleConfig
+        @Inject(LOCALE_CONFIG) private localeConfig: LocaleConfig
     ) {
         this.choosedDate = new EventEmitter();
         this.rangeClicked = new EventEmitter();

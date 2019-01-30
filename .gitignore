@@ -44,4 +44,5 @@ Thumbs.db
 
 package-lock.json
 .ng_build/
+.ng_pkg_build/
 dist.tgz
