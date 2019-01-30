@@ -1,4 +1,4 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, Injector } from '@angular/core';
 import * as _moment from 'moment';
 const moment = _moment;
 
@@ -31,4 +31,4 @@ export const DefaultLocaleConfig: LocaleConfig = {
     daysOfWeek: moment.weekdaysMin(),
     monthNames: moment.monthsShort(),
     firstDay: moment.localeData().firstDayOfWeek()
-  };
+};

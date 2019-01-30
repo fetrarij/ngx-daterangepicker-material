@@ -6,6 +6,7 @@ import { FormControl} from '@angular/forms';
 import { LocaleConfig, LOCALE_CONFIG } from './daterangepicker.config';
 
 import * as _moment from 'moment';
+import { LocaleService } from './locale.service';
 const moment = _moment;
 
 export enum SideEnum {
@@ -86,7 +87,7 @@ export class DaterangepickerComponent implements OnInit {
     lastDayOfPreviousMonthClass: string = null;
     _locale: LocaleConfig = {};
     @Input() set locale(value) {
-      this._locale = {...this.localeConfig, ...value};
+      this._locale = {...this._localeService.config, ...value};
     }
     get locale(): any {
       return this._locale;
@@ -131,12 +132,12 @@ export class DaterangepickerComponent implements OnInit {
     constructor(
         private el: ElementRef,
         private _ref: ChangeDetectorRef,
-        @Inject(LOCALE_CONFIG) private localeConfig: LocaleConfig
+        private _localeService: LocaleService
     ) {
         this.choosedDate = new EventEmitter();
         this.rangeClicked = new EventEmitter();
         this.datesUpdated = new EventEmitter();
-        this.locale = {...this._locale};
+        this.locale = this._localeService.config;
         this.updateMonthsInView();
     }
 

@@ -10,7 +10,6 @@ import {
   OnChanges,
   SimpleChanges,
   Input,
-  Inject,
   DoCheck,
   KeyValueDiffer,
   KeyValueDiffers,
@@ -21,7 +20,8 @@ import {
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _moment from 'moment';
-import { LocaleConfig, LOCALE_CONFIG} from './daterangepicker.config';
+import { LocaleConfig } from './daterangepicker.config';
+import { LocaleService } from './locale.service';
 const moment = _moment;
 
 @Directive({
@@ -103,7 +103,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   timePickerSeconds: Boolean = false;
   _locale: LocaleConfig = {};
   @Input() set locale(value) {
-    this._locale = {...this.localeConfig, ...value};
+    this._locale = {...this._localeService.config, ...value};
   }
   get locale(): any {
     return this._locale;
@@ -150,7 +150,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     private _el: ElementRef,
     private _renderer: Renderer2,
     private differs: KeyValueDiffers,
-    @Inject(LOCALE_CONFIG) private localeConfig: LocaleConfig
+    private _localeService: LocaleService
   ) {
     this.drops = 'down';
     this.opens = 'right';
