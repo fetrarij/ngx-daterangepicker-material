@@ -1,8 +1,12 @@
-import { Injectable } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 import * as _moment from 'moment';
 const moment = _moment;
-@Injectable()
-export class LocaleConfig {
+
+export const LOCALE_CONFIG = new InjectionToken<LocaleConfig>('daterangepicker.config');
+/**
+ *  LocaleConfig Interface
+ */
+export interface LocaleConfig {
     direction?: string;
     separator?: string;
     weekLabel?: string;
@@ -14,6 +18,9 @@ export class LocaleConfig {
     firstDay?: number;
     format?: string;
 }
+/**
+ *  DefaultLocaleConfig
+ */
 export const DefaultLocaleConfig: LocaleConfig = {
     direction: 'ltr',
     separator: ' - ',
