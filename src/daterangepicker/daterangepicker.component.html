@@ -34,7 +34,7 @@
                         </ng-container>
                         <th colspan="5" class="month drp-animate">
                             <ng-container *ngIf="showDropdowns && calendarVariables.left.dropdowns">
-                                <div>
+                                <div class="dropdowns">
                                         {{this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()]}}
                                         <select class="monthselect" (change)="monthChanged($event, sideEnum.left)">
                                                 <option
@@ -44,7 +44,7 @@
                                                 </option>
                                         </select>
                                 </div>
-                                <div>
+                                <div class="dropdowns">
                                     {{ calendarVariables?.left?.calendar[1][1].format(" YYYY")}}
                                     <select class="yearselect"  (change)="yearChanged($event, sideEnum.left)">
                                         <option *ngFor="let y of calendarVariables.left.dropdowns.yearArrays" [selected]="y === calendarVariables.left.dropdowns.currentYear">
@@ -126,7 +126,7 @@
                         </ng-container>
                         <th colspan="5" class="month">
                             <ng-container *ngIf="showDropdowns && calendarVariables.right.dropdowns">
-                                <div>
+                                <div class="dropdowns">
                                     {{this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()]}}
                                     <select class="monthselect" (change)="monthChanged($event, sideEnum.right)">
                                             <option
@@ -136,7 +136,7 @@
                                             </option>
                                     </select>
                                 </div>
-                                <div>
+                                <div class="dropdowns">
                                         {{ calendarVariables?.right?.calendar[1][1].format(" YYYY")}}
                                         <select class="yearselect" (change)="yearChanged($event, sideEnum.right)">
                                         <option *ngFor="let y of calendarVariables.right.dropdowns.yearArrays" [selected]="y === calendarVariables.right.dropdowns.currentYear">

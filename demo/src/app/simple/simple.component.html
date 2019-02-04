@@ -3,6 +3,7 @@
   <div class="col s6">
     <input type="text" ngxDaterangepickerMd
     [(ngModel)]="selected" class="form-control" placeholder="Choose date"
+    [showDropdowns]="true"
     (ngModelChange)="ngModelChange($event)" (change)="change($event)" showCancel="true"
     />
   </div>
