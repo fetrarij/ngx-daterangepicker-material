@@ -1,6 +1,8 @@
-#### 1.3.0 (2019-01-15)
+#### 2.0.0 (2019-02-04)
 
 ##### Chores
+
+* **build:**  fix build ([0d930d5c](https://github.com/fetrarij/ngx-daterangepicker-material/commit/0d930d5caf5b884e135a720262e9120ffe807c8f))
 
 * **test:**  fix test with new imports ([e151ecb8](https://github.com/fetrarij/ngx-daterangepicker-material/commit/e151ecb8d284b9fc6e9e9e8c681e4c1457d46463))
 
@@ -143,8 +145,8 @@
 ##### New Features
 
 * **attribut:**  add new attributs:
-    - `opens`:  ability to position calendar to left, right or center [#21](https://github.com/fetrarij/ngx-daterangepicker-material/pull/21) 
-    
+    - `opens`:  ability to position calendar to left, right or center [#21](https://github.com/fetrarij/ngx-daterangepicker-material/pull/21)
+
     - `drops`: ability to position calendar to up or down ([c8c64605](https://github.com/fetrarij/ngx-daterangepicker-material/commit/c8c64605ee7deae36c41c4c64166f9bec21c3195))
 
     - `firstMonthDayClass` & `lastMonthDayClass` & `emptyWeekRowClass` & `lastDayOfPreviousMonthClass` & `firstDayOfNextMonthClass` : for customising the dates classes (Thanks to: [@butterknight](http://https://github.com/butterknight) )
@@ -180,7 +182,7 @@
 
 ##### New Features
 
-* **ranges:** disabling a range if it's beyond minDate or maxDate 
+* **ranges:** disabling a range if it's beyond minDate or maxDate
 
 #### 1.1.2 (2018-06-22)
 
