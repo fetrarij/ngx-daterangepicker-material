@@ -72,13 +72,13 @@
     "moment": "^2.22.2",
     "ng-packagr": "^4.7.0",
     "protractor": "~5.4.0",
-    "rimraf": "^2.6.1",
-    "rxjs": "^6.3.3",
+    "rimraf": "~2.6.1",
+    "rxjs": "~6.3.3",
     "ts-node": "4.1.0",
-    "tsickle": "^0.27.2",
+    "tsickle": "~0.27.2",
     "tslint": "5.9.1",
-    "typescript": "^3.2.4",
-    "zone.js": "^0.8.17"
+    "typescript": "~3.2.4",
+    "zone.js": "~0.8.17"
   },
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "ngPackage": {
