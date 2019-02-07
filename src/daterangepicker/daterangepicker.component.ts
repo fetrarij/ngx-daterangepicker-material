@@ -908,7 +908,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.calculateChosenLabel();
             }
             this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
-
+            
             if (!this.timePicker) {
                 this.startDate.startOf('day');
                 this.endDate.endOf('day');
@@ -923,6 +923,10 @@ export class DaterangepickerComponent implements OnInit {
             } else {
                 this.renderCalendar(SideEnum.left);
                 this.renderCalendar(SideEnum.right);
+                if (this.timePicker) {
+                    this.renderTimePicker(SideEnum.left)
+                    this.renderTimePicker(SideEnum.right)
+                }
             }
 
         }

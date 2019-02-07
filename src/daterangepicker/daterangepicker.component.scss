@@ -407,6 +407,49 @@ $input-height: 3rem !default;
     margin: 4px auto 0 auto;
     line-height: 30px;
     position: relative;
+    .select {
+      display: inline;
+      .select-item {
+        display: inline-block;
+        width: auto;
+        position: relative;
+        font-family: inherit;
+        background-color: transparent;
+        padding: 10px 10px 10px 0;
+        font-size: 18px;
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid rgba(0,0,0, 0.12);
+        /* Remove focus */
+        &:after {
+          position: absolute;
+          top: 18px;
+          right: 10px;
+          /* Styling the down arrow */
+          width: 0;
+          height: 0;
+          padding: 0;
+          content: '';
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 6px solid rgba(0, 0, 0, 0.12);
+          pointer-events: none;
+        }
+        &:focus {
+          outline: none;
+        }
+        .select-label {
+          color: rgba(0,0,0, 0.26);
+          font-size: 16px;
+          font-weight: normal;
+          position: absolute;
+          pointer-events: none;
+          left: 0;
+          top: 10px;
+          transition: 0.2s ease all;
+        }
+      }
+    }
   }
   
   .calendar-time select.disabled {
