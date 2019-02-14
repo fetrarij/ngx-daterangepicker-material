@@ -214,6 +214,23 @@ eg:
     bootstrap:    [App]
 })
 ```
+
+## Development
+
+### Prepare your environment
+
+Install local dependencies: `npm install`.
+ 
+### Development server
+
+Run `npm start` to start a development server on a port 4200.
+
+Open `http//:localhost:4200` on your browser.
+
+## Tests
+
+Run `npm test` or `ng test` to run tests.
+
 ## Donation
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=THF6M338KQ626)
