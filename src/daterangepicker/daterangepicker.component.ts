@@ -921,8 +921,10 @@ export class DaterangepickerComponent implements OnInit {
             if (!this.keepCalendarOpeningWithRange) {
                 this.clickApply();
             } else {
-                this.renderCalendar(SideEnum.left);
-                this.renderCalendar(SideEnum.right);
+                this.leftCalendar.month.month(dates[0].month());
+                this.leftCalendar.month.year(dates[0].year());
+                this.rightCalendar.month.month(dates[1].month());
+                this.rightCalendar.month.year(dates[1].year());
                 if (this.timePicker) {
                     this.renderTimePicker(SideEnum.left)
                     this.renderTimePicker(SideEnum.right)
