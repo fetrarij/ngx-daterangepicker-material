@@ -925,6 +925,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.leftCalendar.month.year(dates[0].year());
                 this.rightCalendar.month.month(dates[1].month());
                 this.rightCalendar.month.year(dates[1].year());
+                this.updateCalendars();
                 if (this.timePicker) {
                     this.renderTimePicker(SideEnum.left)
                     this.renderTimePicker(SideEnum.right)
