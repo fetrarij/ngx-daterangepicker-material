@@ -141,7 +141,7 @@ export class DaterangepickerComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.locale = {...this._localeService.config, ...this.locale};
+        this._buildLocale();
         const daysOfWeek = [...this.locale.daysOfWeek];
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -156,13 +156,7 @@ export class DaterangepickerComponent implements OnInit {
             this._old.start = this.startDate.clone();
             this._old.end = this.endDate.clone();
         }
-        if (!this.locale.format) { 
-            if (this.timePicker) {
-                this.locale.format = moment.localeData().longDateFormat('lll');
-            } else { 
-                this.locale.format = moment.localeData().longDateFormat('L');
-            }
-        }
+       
         this.updateMonthsInView();
         this.renderCalendar(SideEnum.left);
         this.renderCalendar(SideEnum.right);
@@ -625,6 +619,9 @@ export class DaterangepickerComponent implements OnInit {
      * this should calculate the label
      */
     calculateChosenLabel () {
+        if (!this.locale || !this.locale.separator) {
+            this._buildLocale();
+        }
         let customRange = true;
         let i = 0;
         if (this.rangesArray.length > 0) {
@@ -1046,6 +1043,19 @@ export class DaterangepickerComponent implements OnInit {
         var minute = parseInt(this.timepickerVariables[side].selectedMinute, 10);
         var second = this.timePickerSeconds ? parseInt(this.timepickerVariables[side].selectedSecond, 10) : 0;
         return date.clone().hour(hour).minute(minute).second(second);
+    }
+    /**
+     *  build the locale config
+     */
+    private _buildLocale() {
+        this.locale = {...this._localeService.config, ...this.locale};
+         if (!this.locale.format) { 
+            if (this.timePicker) {
+                this.locale.format = moment.localeData().longDateFormat('lll');
+            } else { 
+                this.locale.format = moment.localeData().longDateFormat('L');
+            }
+        }
     }
     private _buildCells(calendar, side: SideEnum) {
         for (let row = 0; row < 6; row++) {
