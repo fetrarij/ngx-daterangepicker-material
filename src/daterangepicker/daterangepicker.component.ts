@@ -137,18 +137,21 @@ export class DaterangepickerComponent implements OnInit {
         this.choosedDate = new EventEmitter();
         this.rangeClicked = new EventEmitter();
         this.datesUpdated = new EventEmitter();
-        this.locale = this._localeService.config;
-        this.updateMonthsInView();
+        
     }
 
     ngOnInit() {
+        this.locale = {...this._localeService.config, ...this.locale};
+        const daysOfWeek = [...this.locale.daysOfWeek];
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
+
             while (iterator > 0) {
-                this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
+                daysOfWeek.push(daysOfWeek.shift());
                 iterator--;
             }
         }
+        this.locale.daysOfWeek = daysOfWeek;
         if (this.inline) {
             this._old.start = this.startDate.clone();
             this._old.end = this.endDate.clone();
@@ -160,6 +163,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.locale.format = moment.localeData().longDateFormat('L');
             }
         }
+        this.updateMonthsInView();
         this.renderCalendar(SideEnum.left);
         this.renderCalendar(SideEnum.right);
         this.renderRanges();
@@ -370,6 +374,7 @@ export class DaterangepickerComponent implements OnInit {
         if (startDay > daysInLastMonth) {
             startDay -= 7;
         }
+        
         if (dayOfWeek === this.locale.firstDay) {
             startDay = daysInLastMonth - 6;
         }
