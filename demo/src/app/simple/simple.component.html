@@ -31,16 +31,9 @@
 <hr/>
 <div class="row">
   <div class="col s12">
-      <h1>Inline daterangepicker</h1>
-  </div>
-</div>
-<div class="row">
-  <div class="col s12">
-    <ngx-daterangepicker-material (choosedDate)="choosedDate($event)" [locale]="{applyLabel: 'Done', firstDay: 1}"></ngx-daterangepicker-material>
-  </div>
-</div>
-<div class="row">
-  <div class="col s12">
+      <h3>Inline daterangepicker</h3>
+      <ngx-daterangepicker-material (choosedDate)="choosedDate($event)" [locale]="{applyLabel: 'Done', firstDay: 1}"></ngx-daterangepicker-material>
+      <br>
       Choosed date: {{inlineDate | json}}
   </div>
 </div>

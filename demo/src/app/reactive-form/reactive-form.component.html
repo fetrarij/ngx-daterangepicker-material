@@ -1,0 +1,17 @@
+<mat-toolbar>Reactive forms</mat-toolbar>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="row">
+    <div class="col s6">
+        <input type="text" ngxDaterangepickerMd
+        formControlName="selected" class="form-control" placeholder="Choose date"
+        [showDropdowns]="true"
+        showCancel="true"
+        />
+    </div>
+    <div class="col s6">
+      <br/>
+      <button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn" >Submit</button>
+    </div>
+  </div>
+</form>
+
