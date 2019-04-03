@@ -101,6 +101,10 @@ You can use the component directly in your templates, which will set its `inline
 
  >To set the minimal and maximal date, these options are a moment date
 
+### dateLimit
+
+ >To set max number of the date we can choose
+
 ### locale
 
 >the locale options is an object with: 

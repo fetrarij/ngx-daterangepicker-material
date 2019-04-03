@@ -31,6 +31,7 @@ export class FullComponent implements OnInit {
   opens: string;
   drops: string;
   timePicker: boolean;
+  dateLimit: number;
   click() {
   }
   selected = {start: moment().subtract(3, 'days'), end: moment().add(3, 'days') };
@@ -39,6 +40,7 @@ export class FullComponent implements OnInit {
     this.timePicker = false;
     this.opens = 'right';
     this.drops = 'down';
+    this.dateLimit = 30;
   }
 
   clear(): void {
