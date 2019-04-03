@@ -37,7 +37,8 @@ export class DaterangepickerComponent implements OnInit {
     applyBtn: {disabled: boolean} = {disabled: false};
     startDate = moment().startOf('day');
     endDate = moment().endOf('day');
-    dateLimit = null;
+    @Input()
+    dateLimit: number = null;
     // used in template for compile time support of enum values.
     sideEnum = SideEnum;
 
@@ -408,8 +409,8 @@ export class DaterangepickerComponent implements OnInit {
         // adjust maxDate to reflect the dateLimit setting in order to
         // grey out end dates beyond the dateLimit
         if (this.endDate === null && this.dateLimit) {
-            const maxLimit = this.startDate.clone().add(this.dateLimit).endOf('day');
-            if (!maxDate || maxLimit.isBefore(maxDate)) {
+            const maxLimit = this.startDate.clone().add(this.dateLimit, 'day').endOf('day');
+                if (!maxDate || maxLimit.isBefore(maxDate)) {
                 maxDate = maxLimit;
             }
         }
@@ -523,8 +524,8 @@ export class DaterangepickerComponent implements OnInit {
             this.endDate = this.maxDate.clone();
         }
 
-        if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate)) {
-            this.endDate = this.startDate.clone().add(this.dateLimit);
+        if (this.dateLimit && this.startDate.clone().add(this.dateLimit, 'day').isBefore(this.endDate)) {
+            this.endDate = this.startDate.clone().add(this.dateLimit, 'day');
         }
 
 

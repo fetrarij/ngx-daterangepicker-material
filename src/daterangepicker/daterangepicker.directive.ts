@@ -58,6 +58,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   linkedCalendars: boolean;
   @Input()
+  dateLimit: number = null;
+  @Input()
   singleDatePicker: boolean;
   @Input()
   showWeekNumbers: boolean;
