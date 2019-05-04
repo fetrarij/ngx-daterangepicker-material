@@ -237,7 +237,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   }
 
   writeValue(value) {
-    this.value = value;
     this.setValue(value);
   }
   registerOnChange(fn) {
@@ -248,6 +247,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   }
   private setValue(val: any) {
     if (val) {
+      this.value = val;
       if (val[this._startKey]) {
         this.picker.setStartDate(val[this._startKey])
       }
@@ -262,45 +262,44 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this.picker.clear();
     }
   }
-    /**
-     * Set position of the calendar
-     */
-    setPosition() {
-      let style;
-      let containerTop;
-      const container = this.picker.pickerContainer.nativeElement;
-      const element = this._el.nativeElement;
-      if (this.drops && this.drops == 'up') {
-        containerTop = (element.offsetTop - container.clientHeight) + 'px';
-      } else {
-        containerTop = 'auto';
-      }
-      if (this.opens == 'left') {
+  /**
+   * Set position of the calendar
+   */
+  setPosition() {
+    let style;
+    let containerTop;
+    const container = this.picker.pickerContainer.nativeElement;
+    const element = this._el.nativeElement;
+    if (this.drops && this.drops == 'up') {
+      containerTop = (element.offsetTop - container.clientHeight) + 'px';
+    } else {
+      containerTop = 'auto';
+    }
+    if (this.opens == 'left') {
+      style = {
+          top: containerTop,
+          left: (element.offsetLeft - container.clientWidth + element.clientWidth) + 'px',
+          right: 'auto'
+      };
+    } else if (this.opens == 'center') {
         style = {
-            top: containerTop,
-            left: (element.offsetLeft - container.clientWidth + element.clientWidth) + 'px',
-            right: 'auto'
+          top: containerTop,
+          left: (element.offsetLeft  +  element.clientWidth / 2
+                  - container.clientWidth / 2) + 'px',
+          right: 'auto'
         };
-      } else if (this.opens == 'center') {
-          style = {
-            top: containerTop,
-            left: (element.offsetLeft  +  element.clientWidth / 2
-                    - container.clientWidth / 2) + 'px',
-            right: 'auto'
-          };
-      } else {
-          style = {
-            top: containerTop,
-            left: element.offsetLeft  + 'px',
-            right: 'auto'
-          }
-      }
-      if (style) {
-        this._renderer.setStyle(container, 'top', style.top);
-        this._renderer.setStyle(container, 'left', style.left);
-        this._renderer.setStyle(container, 'right', style.right);
-      }
-
+    } else {
+        style = {
+          top: containerTop,
+          left: element.offsetLeft  + 'px',
+          right: 'auto'
+        }
+    }
+    if (style) {
+      this._renderer.setStyle(container, 'top', style.top);
+      this._renderer.setStyle(container, 'left', style.left);
+      this._renderer.setStyle(container, 'right', style.right);
+    }
   }
   /**
    * For click outside of the calendar's container

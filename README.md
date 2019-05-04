@@ -111,9 +111,14 @@ You can use the component directly in your templates, which will set its `inline
 ```javascript
 {
     format: 'MM/DD/YYYY',
+    direction: 'ltr', // could be rtl
+    weekLabel: 'W',
     separator: ' To ', // default is ' - '
     cancelLabel: 'Cancel', // detault is 'Cancel'
     applyLabel: 'Okay' // detault is 'Apply'
+    customRangeLabel: 'Custom range',
+    daysOfWeek: moment.weekdaysMin(),
+    monthNames: moment.monthsShort(),
     firstDay: 1 // first day is monday
 }
 ```
