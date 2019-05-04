@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import * as localization from 'moment/locale/fr';
+import { LocaleConfig } from '../../../../src/daterangepicker';
+moment.locale('fr', localization);
 
 @Component({
   selector: 'single-datepicker',
@@ -8,6 +11,13 @@ import * as moment from 'moment';
 })
 export class SingleDatepickerComponent implements OnInit {
   selected = moment();
+  locale: LocaleConfig = {
+    applyLabel: 'Appliquer',
+    customRangeLabel: ' - ',
+    daysOfWeek: moment.weekdaysMin(),
+    monthNames: moment.monthsShort(),
+    firstDay: moment.localeData().firstDayOfWeek(),
+  }
   constructor() { }
   ngOnInit() {
   }
