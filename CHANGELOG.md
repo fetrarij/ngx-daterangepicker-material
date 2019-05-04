@@ -1,3 +1,17 @@
+#### 2.1.1 (2019-05-04)
+
+##### Documentation Changes
+
+* **demo:**  add fr language for demo purpose ([c374cb8d](https://github.com/fetrarij/ngx-daterangepicker-material/commit/c374cb8d63aebb15a3d233c284dcf5c09e626072))
+
+##### Bug Fixes
+
+* **ngModelChange:**  initialized by undefined ([5beddf21](https://github.com/fetrarij/ngx-daterangepicker-material/commit/5beddf213314a6085f031fd534019d6a16ad07ed))
+
+##### Other Changes
+
+* **locale:**  update locale config ([41dac5b1](https://github.com/fetrarij/ngx-daterangepicker-material/commit/41dac5b1d4c5a384538138f28a03b10e48c38e8d))
+
 #### 2.1.0 (2019-04-05)
 
 ##### Chores
