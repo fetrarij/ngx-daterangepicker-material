@@ -65,7 +65,7 @@
                             <th></th>
                         </ng-container>
                     </tr>
-                    <tr>
+                    <tr class='week-days'>
                         <th *ngIf="showWeekNumbers || showISOWeekNumbers" class="week"><span>{{this.locale.weekLabel}}</span></th>
                         <th *ngFor="let dayofweek of locale.daysOfWeek"><span>{{dayofweek}}</span></th>
                     </tr>
