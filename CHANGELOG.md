@@ -1,3 +1,34 @@
+#### 2.1.0 (2019-04-05)
+
+##### Chores
+
+* **demo:**
+  *  add reactive forms in demo ([d89333c7](https://github.com/fetrarij/ngx-daterangepicker-material/commit/d89333c7a00210fc7e2500a441863659a2d5e98a))
+  *  add reactive forms in demo ([09884ea5](https://github.com/fetrarij/ngx-daterangepicker-material/commit/09884ea526a2a1dcc11671b7c79abf578884349e))
+* **doc:**  add development process ([76ef56be](https://github.com/fetrarij/ngx-daterangepicker-material/commit/76ef56be1dfa9f539593994045c266aa28898e96))
+* **package:**  add package-lock.json to fix build ([fc91e9bf](https://github.com/fetrarij/ngx-daterangepicker-material/commit/fc91e9bfdbad9e3ebd6c68b334b82d3ddc13ac19))
+* **build:**  fix build ([0d930d5c](https://github.com/fetrarij/ngx-daterangepicker-material/commit/0d930d5caf5b884e135a720262e9120ffe807c8f))
+
+##### New Features
+
+* **dateLimit:**  add the dateLimit option Fix [#118](https://github.com/fetrarij/ngx-daterangepicker-material/pull/118) ([d0564523](https://github.com/fetrarij/ngx-daterangepicker-material/commit/d0564523f86a43f4e6b29f331efbaf1727ba4cbe))
+* **inline:**   allow isCustomDate for inline mode [#44](https://github.com/fetrarij/ngx-daterangepicker-material/pull/44) ([b54de73a](https://github.com/fetrarij/ngx-daterangepicker-material/commit/b54de73abce3b8fdc1bb0d9128715c0a2206f9c6))
+
+##### Bug Fixes
+
+* **calendar:**
+  * fix model's initialization ([e22e741e](https://github.com/fetrarij/ngx-daterangepicker-material/commit/e22e741ebb631759487fa51b42fc1411efe2f44d))
+  * fix model's initialization ([10f4a33b](https://github.com/fetrarij/ngx-daterangepicker-material/commit/10f4a33bd1fe399a6e23753401293d6ffee61b01))
+* **firstDay:**
+  *   jumps day label with multiple components Fix [#144](https://github.com/fetrarij/ngx-daterangepicker-material/pull/144) ([d52868eb](https://github.com/fetrarij/ngx-daterangepicker-material/commit/d52868ebabbc5783fc0596baa2df11f86f72e043))
+  *   jumps day label with multiple components Fix [#144](https://github.com/fetrarij/ngx-daterangepicker-material/pull/144) ([64f372dc](https://github.com/fetrarij/ngx-daterangepicker-material/commit/64f372dcdc453aa14913cd6e8d02732bbf86fd7c))
+* **ranges:**  Timepicker not updated when range clicked Close [#1015](https://github.com/fetrarij/ngx-daterangepicker-material/pull/1015) ([8957c67c](https://github.com/fetrarij/ngx-daterangepicker-material/commit/8957c67caa15d561098c25dfa2aadfe879554b85))
+* **style:**  timepicker hided ([3ec5798e](https://github.com/fetrarij/ngx-daterangepicker-material/commit/3ec5798e5cbada223101ba73d2b69aecdd53f501))
+
+##### Other Changes
+
+* **dateLimit:**  add the dateLimit option Fix [#118](https://github.com/fetrarij/ngx-daterangepicker-material/pull/118) ([7ad369a6](https://github.com/fetrarij/ngx-daterangepicker-material/commit/7ad369a6d08454b7bd4b12823b14e4854e3bd015))
+
 #### 2.0.0 (2019-02-04)
 
 ##### Chores
