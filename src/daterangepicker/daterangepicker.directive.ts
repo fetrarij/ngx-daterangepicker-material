@@ -307,7 +307,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
    * @param targetElement target element object
    */
   @HostListener('document:click', ['$event', '$event.target'])
-  outsideClick(event, targetElement: HTMLElement): void {
+  outsideClick(event, targetElement: any): void {
       if (!targetElement) {
         return;
       }
