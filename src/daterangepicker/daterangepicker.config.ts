@@ -12,6 +12,7 @@ export interface LocaleConfig {
     weekLabel?: string;
     applyLabel?: string;
     cancelLabel?: string;
+    clearLabel?: string;
     customRangeLabel?: string;
     daysOfWeek?: string[];
     monthNames?:  string[];
@@ -27,6 +28,7 @@ export const DefaultLocaleConfig: LocaleConfig = {
     weekLabel: 'W',
     applyLabel: 'Apply',
     cancelLabel: 'Cancel',
+    clearLabel: 'Clear',
     customRangeLabel: 'Custom range',
     daysOfWeek: moment.weekdaysMin(),
     monthNames: moment.monthsShort(),
