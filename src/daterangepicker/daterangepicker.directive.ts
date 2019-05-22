@@ -152,7 +152,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     private _el: ElementRef,
     private _renderer: Renderer2,
     private differs: KeyValueDiffers,
-    private _localeService: LocaleService
+    private _localeService: LocaleService,
+    private elementRef: ElementRef
   ) {
     this.drops = 'down';
     this.opens = 'right';
