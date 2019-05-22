@@ -304,19 +304,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   /**
    * For click outside of the calendar's container
    * @param event event object
-   * @param targetElement target element object
    */
-  @HostListener('document:click', ['$event', '$event.target'])
-  outsideClick(event, targetElement: any): void {
-      if (!targetElement) {
+  @HostListener('document:click', ['$event'])
+  outsideClick(event): void {
+      if(this.elementRef.nativeElement.contains(event.target)) {
+        // inside click
         return;
-      }
-      if (targetElement.classList.contains('ngx-daterangepicker-action')) {
-        return;
-      }
-      const clickedInside = this._el.nativeElement.contains(targetElement);
-      if (!clickedInside) {
-         this.hide()
+      } else {
+        // outside click
+        this.hide()
       }
   }
 }
