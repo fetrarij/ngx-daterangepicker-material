@@ -45,3 +45,4 @@ Thumbs.db
 .ng_build/
 .ng_pkg_build/
 dist.tgz
+.history
