@@ -308,12 +308,17 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
    */
   @HostListener('document:click', ['$event'])
   outsideClick(event): void {
-      if(this.elementRef.nativeElement.contains(event.target)) {
-        // inside click
-        return;
-      } else {
-        // outside click
-        this.hide()
-      }
+    if (event.target.classList.contains('ngx-daterangepicker-action')) {
+      // action click
+      return;
+    }
+
+    if (this.elementRef.nativeElement.contains(event.target)) {
+      // inside click
+      return;
+    }
+
+    // outside click
+    this.hide()
   }
 }
