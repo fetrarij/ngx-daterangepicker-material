@@ -115,8 +115,8 @@ You can use the component directly in your templates, which will set its `inline
     weekLabel: 'W',
     separator: ' To ', // default is ' - '
     cancelLabel: 'Cancel', // detault is 'Cancel'
-    applyLabel: 'Okay' // detault is 'Apply'
-    clearLabel: 'Clear' // detault is 'Apply'
+    applyLabel: 'Okay', // detault is 'Apply'
+    clearLabel: 'Clear', // detault is 'Clear'
     customRangeLabel: 'Custom range',
     daysOfWeek: moment.weekdaysMin(),
     monthNames: moment.monthsShort(),
