@@ -112,6 +112,8 @@ export class DaterangepickerComponent implements OnInit {
     keepCalendarOpeningWithRange: boolean = false;
     @Input()
     showRangeLabelOnInput: boolean = false;
+    @Input()
+    customRangeDirection: boolean = false;
     chosenRange: string;
     rangesArray: Array<any> = [];
 
@@ -856,21 +858,28 @@ export class DaterangepickerComponent implements OnInit {
 
         let date = side ===  SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
-        if (this.endDate || date.isBefore(this.startDate, 'day')) { // picking start
+        if (this.endDate || (date.isBefore(this.startDate, 'days') && this.customRangeDirection == false) ) { // picking start
             if (this.timePicker) {
                 date = this._getDateWithTime(date, SideEnum.left)
             }
             this.endDate = null;
             this.setStartDate(date.clone());
-        } else if (!this.endDate && date.isBefore(this.startDate)) {
+        }  else if (!this.endDate && date.isBefore(this.startDate) && this.customRangeDirection == false) {
             // special case: clicking the same date for start/end,
             // but the time of the end date is before the start date
             this.setEndDate(this.startDate.clone());
-        } else { // picking end
+        }
+         else { // picking end
             if (this.timePicker) {
                 date = this._getDateWithTime(date, SideEnum.right)
             }
-            this.setEndDate(date.clone());
+            if(date.isBefore(this.startDate, 'days') ==  true && this.customRangeDirection == true) {
+                this.setEndDate(this.startDate);
+                this.setStartDate(date.clone());
+            }
+            else
+                this.setEndDate(date.clone());
+            
             if (this.autoApply) {
                 this.calculateChosenLabel();
                 this.clickApply();
