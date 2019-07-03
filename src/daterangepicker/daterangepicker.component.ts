@@ -858,7 +858,7 @@ export class DaterangepickerComponent implements OnInit {
 
         let date = side ===  SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
-        if (this.endDate || (date.isBefore(this.startDate, 'days') && this.customRangeDirection == false) ) { // picking start
+        if (this.endDate || (date.isBefore(this.startDate, 'day') && this.customRangeDirection == false) ) { // picking start
             if (this.timePicker) {
                 date = this._getDateWithTime(date, SideEnum.left)
             }
@@ -873,7 +873,7 @@ export class DaterangepickerComponent implements OnInit {
             if (this.timePicker) {
                 date = this._getDateWithTime(date, SideEnum.right)
             }
-            if(date.isBefore(this.startDate, 'days') ==  true && this.customRangeDirection == true) {
+            if(date.isBefore(this.startDate, 'day') ==  true && this.customRangeDirection == true) {
                 this.setEndDate(this.startDate);
                 this.setStartDate(date.clone());
             }
