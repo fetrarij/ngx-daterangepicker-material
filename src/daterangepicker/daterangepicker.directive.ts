@@ -74,6 +74,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   showClearButton: boolean;
   @Input()
+  customRangeDirection: boolean;
+  @Input()
   ranges: any;
   @Input()
   opens: string;
