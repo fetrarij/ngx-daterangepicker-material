@@ -162,7 +162,8 @@ You can use bellow options when using the ranges. The default are `false`.
 | --- | --- |--- |
 | alwaysShowCalendars | boolean | set to `true` if you want to display the ranges with the calendar |
 | keepCalendarOpeningWithRange | boolean | set to `true` if you want the calendar won't be closed after choosing a range |
-| showRangeLabelOnInput | boolean | set to `true` if you want do display the range label on input |
+| showRangeLabelOnInput | boolean | set to `true` if you want to display the range label on input |
+| customRangeDirection | boolean | set to `true` if you want to allow selection range from end date first |
 
 ### Timepicker
 
