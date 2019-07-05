@@ -21,6 +21,7 @@
           [showCancel]="options.showCancel"
           [showClearButton]="options.showClearButton"
           [showISOWeekNumbers]="options.showISOWeekNumbers"
+          [customRangeDirection]="options.customRangeDirection"
           firstMonthDayClass="first-day"
           lastMonthDayClass="last-day"
           emptyWeekRowClass="empty-week"
@@ -45,6 +46,7 @@
         <strong>singleDatePicker:</strong><mat-checkbox [(ngModel)]="options.singleDatePicker">Value: {{options.singleDatePicker}}</mat-checkbox><br/>
         <strong>showWeekNumbers:</strong><mat-checkbox [(ngModel)]="options.showWeekNumbers">Value: {{options.showWeekNumbers}}</mat-checkbox><br/>
         <strong>showISOWeekNumbers:</strong><mat-checkbox [(ngModel)]="options.showISOWeekNumbers">Value: {{options.showISOWeekNumbers}}</mat-checkbox><br/>
+        <strong>customRangeDirection:</strong><mat-checkbox [(ngModel)]="options.customRangeDirection">Value: {{options.customRangeDirection}}</mat-checkbox><br/>
         <strong>minDate:</strong>  {{minDate | date: 'dd/MM/yyyy'}}<br/>
         <strong>maxDate:</strong>  {{maxDate | date: 'dd/MM/yyyy'}}<br/>
         <strong>locale</strong> : <br/>

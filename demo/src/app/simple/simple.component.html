@@ -5,6 +5,7 @@
     [(ngModel)]="selected" class="form-control" placeholder="Choose date"
     [showDropdowns]="true"
            [lockStartDate]="false"
+           [customRangeDirection]="false"
     (ngModelChange)="ngModelChange($event)" (change)="change($event)" showCancel="true"
     />
   </div>
