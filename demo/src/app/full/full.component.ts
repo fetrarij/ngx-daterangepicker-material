@@ -19,7 +19,8 @@ export class FullComponent implements OnInit {
     singleDatePicker: false,
     showWeekNumbers: false,
     showISOWeekNumbers: false,
-    customRangeDirection: false
+    customRangeDirection: false,
+    lockStartDate: false
   };
   minDate: moment.Moment = moment().subtract(5, 'days');
   maxDate: moment.Moment = moment().add(2, 'month');

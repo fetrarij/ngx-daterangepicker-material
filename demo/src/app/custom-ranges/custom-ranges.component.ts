@@ -13,7 +13,7 @@ export class CustomRangesComponent implements OnInit {
   keepCalendarOpeningWithRange: boolean;
   maxDate: moment.Moment;
   minDate: moment.Moment;
-  invalidDates: moment.Moment[] = [moment().add(2, 'days'), moment().add(3, 'days'), moment().add(5, 'days')];  
+  invalidDates: moment.Moment[] = [moment().add(2, 'days'), moment().add(3, 'days'), moment().add(5, 'days')];
   ranges: any = {
     Today: [moment(), moment()],
     Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],

@@ -96,6 +96,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   showRangeLabelOnInput: boolean;
   @Input()
   showCancel: boolean = false;
+  @Input()
+  lockStartDate: boolean = false;
   // timepicker variables
   @Input()
   timePicker: Boolean = false;
@@ -121,14 +123,14 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     } else {
       this._startKey = 'startDate';
     }
-  };
+  }
   @Input() set endKey(value) {
     if (value !== null) {
       this._endKey = value;
     } else {
       this._endKey = 'endDate';
     }
-  };
+  }
   notForChangesProperty: Array<string> = [
     'locale',
     'endKey',
@@ -179,7 +181,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         value[this._endKey] = change.endDate;
         this.value = value;
         this.onChange.emit(value);
-        if(typeof change.chosenLabel === 'string') {
+        if (typeof change.chosenLabel === 'string') {
           this._el.nativeElement.value = change.chosenLabel;
         }
       }
@@ -195,7 +197,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   }
 
   ngOnChanges(changes: SimpleChanges): void  {
-    for (let change in changes) {
+    for (const change in changes) {
       if (changes.hasOwnProperty(change)) {
         if (this.notForChangesProperty.indexOf(change) === -1) {
           this.picker[change] = changes[change].currentValue;
@@ -221,7 +223,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.show(event);
     setTimeout(() => {
       this.setPosition();
-    })
+    });
   }
 
   hide(e?) {
@@ -252,10 +254,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     if (val) {
       this.value = val;
       if (val[this._startKey]) {
-        this.picker.setStartDate(val[this._startKey])
+        this.picker.setStartDate(val[this._startKey]);
       }
       if (val[this._endKey]) {
-        this.picker.setEndDate(val[this._endKey])
+        this.picker.setEndDate(val[this._endKey]);
       }
       this.picker.calculateChosenLabel();
       if (this.picker.chosenLabel) {
@@ -273,18 +275,18 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     let containerTop;
     const container = this.picker.pickerContainer.nativeElement;
     const element = this._el.nativeElement;
-    if (this.drops && this.drops == 'up') {
+    if (this.drops && this.drops === 'up') {
       containerTop = (element.offsetTop - container.clientHeight) + 'px';
     } else {
       containerTop = 'auto';
     }
-    if (this.opens == 'left') {
+    if (this.opens === 'left') {
       style = {
           top: containerTop,
           left: (element.offsetLeft - container.clientWidth + element.clientWidth) + 'px',
           right: 'auto'
       };
-    } else if (this.opens == 'center') {
+    } else if (this.opens === 'center') {
         style = {
           top: containerTop,
           left: (element.offsetLeft  +  element.clientWidth / 2
@@ -296,7 +298,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
           top: containerTop,
           left: element.offsetLeft  + 'px',
           right: 'auto'
-        }
+        };
     }
     if (style) {
       this._renderer.setStyle(container, 'top', style.top);
@@ -319,7 +321,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
 
     if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.hide()
+      this.hide();
     }
   }
 }
