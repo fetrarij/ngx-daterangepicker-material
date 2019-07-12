@@ -23,10 +23,10 @@ export class SimpleComponent implements OnInit {
     this.picker = this.pickerDirective.picker;
   }
   ngModelChange(e) {
-    console.log(e)
+    console.log(e);
   }
   change(e) {
-    console.log(e)
+    console.log(e);
   }
   choosedDate(e) {
      this.inlineDate = e;
