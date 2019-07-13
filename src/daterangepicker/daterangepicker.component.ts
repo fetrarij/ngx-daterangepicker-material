@@ -935,10 +935,12 @@ export class DaterangepickerComponent implements OnInit {
                 this.isShown  = false; // hide calendars
             }
             this.rangeClicked.emit({label: label, dates: dates});
-            console.log('cliclRange\n\n');
             if (!this.keepCalendarOpeningWithRange) {
                 this.clickApply();
             } else {
+                if (!this.alwaysShowCalendars) {
+                    return  this.clickApply();
+                }
                 this.leftCalendar.month.month(dates[0].month());
                 this.leftCalendar.month.year(dates[0].year());
                 this.rightCalendar.month.month(dates[1].month());
