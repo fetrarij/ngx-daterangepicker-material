@@ -29,7 +29,8 @@ const moment = _moment;
   host: {
     '(keyup.esc)': 'hide()',
     '(blur)': 'onBlur()',
-    '(click)': 'open()'
+    '(click)': 'open()',
+    '(keyup)': 'inputChanged($event)'
   },
   providers: [
     {
@@ -305,6 +306,33 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this._renderer.setStyle(container, 'left', style.left);
       this._renderer.setStyle(container, 'right', style.right);
     }
+  }
+  inputChanged(e) {
+    console.log(e.target.value);
+    if (e.target.tagName.toLowerCase() !== 'input') {
+      return;
+    }
+    if (!e.target.value.length) {
+      return;
+    }
+    const dateString = e.target.value.split(this.picker.locale.separator);
+    console.log('ds', this.picker.locale)
+    let start = null, end = null;
+    if (dateString.length === 2) {
+      start = moment(dateString[0], this.picker.locale.format);
+      end = moment(dateString[1], this.picker.locale.format);
+    }
+    if (this.singleDatePicker || start === null || end === null) {
+      start = moment(e.target.value, this.picker.locale.format);
+      end = start;
+    }
+    if (!start.isValid() || !end.isValid()) {
+      return;
+    }
+    this.picker.setStartDate(start);
+    this.picker.setEndDate(end);
+    this.picker.updateView();
+
   }
   /**
    * For click outside of the calendar's container
