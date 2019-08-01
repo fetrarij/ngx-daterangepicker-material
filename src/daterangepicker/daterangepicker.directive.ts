@@ -108,6 +108,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   timePickerIncrement: number = 1;
   @Input()
   timePickerSeconds: Boolean = false;
+  @Input() closeOnAutoApply = true;
   _locale: LocaleConfig = {};
   @Input() set locale(value) {
     this._locale = {...this._localeService.config, ...value};
@@ -195,6 +196,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.drops = this.drops;
     this.picker.opens = this.opens;
     this.localeDiffer = this.differs.find(this.locale).create();
+    this.picker.closeOnAutoApply = this.closeOnAutoApply;
   }
 
   ngOnChanges(changes: SimpleChanges): void  {
@@ -308,7 +310,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
   inputChanged(e) {
-    console.log(e.target.value);
     if (e.target.tagName.toLowerCase() !== 'input') {
       return;
     }
@@ -316,7 +317,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       return;
     }
     const dateString = e.target.value.split(this.picker.locale.separator);
-    console.log('ds', this.picker.locale)
     let start = null, end = null;
     if (dateString.length === 2) {
       start = moment(dateString[0], this.picker.locale.format);
