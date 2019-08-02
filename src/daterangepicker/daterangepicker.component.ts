@@ -166,10 +166,12 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         if (this.startDate && this.timePicker) {
+          this.setStartDate(this.startDate);
           this.renderTimePicker(SideEnum.left);
         }
 
         if (this.endDate && this.timePicker) {
+          this.setEndDate(this.endDate);
           this.renderTimePicker(SideEnum.right);
         }
 
