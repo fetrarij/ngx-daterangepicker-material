@@ -294,7 +294,13 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
                   - container.clientWidth / 2) + 'px',
           right: 'auto'
         };
-    } else if (this.opens === 'auto') {
+    } else if (this.opens === 'right') {
+        style = {
+          top: containerTop,
+          left: element.offsetLeft  + 'px',
+          right: 'auto'
+        };
+    } else {
       const position = element.offsetLeft  +  element.clientWidth / 2 - container.clientWidth / 2;
       if (position < 0) {
         style = {
@@ -315,12 +321,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
           right: 'auto'
         };
       }
-    } else {
-        style = {
-          top: containerTop,
-          left: element.offsetLeft  + 'px',
-          right: 'auto'
-        };
     }
     if (style) {
       this._renderer.setStyle(container, 'top', style.top);
