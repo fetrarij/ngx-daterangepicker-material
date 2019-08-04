@@ -294,6 +294,27 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
                   - container.clientWidth / 2) + 'px',
           right: 'auto'
         };
+    } else if (this.opens === 'auto') {
+      const position = element.offsetLeft  +  element.clientWidth / 2 - container.clientWidth / 2;
+      if (position < 0) {
+        style = {
+          top: containerTop,
+          left: '0px',
+          right: 'auto'
+        };
+      } else if (window.outerWidth - position < container.clientWidth) {
+        style = {
+          top: containerTop,
+          left: window.outerWidth - container.clientWidth + 'px',
+          right: 'auto'
+        };
+      } else {
+        style = {
+          top: containerTop,
+          left: position + 'px',
+          right: 'auto'
+        };
+      }
     } else {
         style = {
           top: containerTop,
