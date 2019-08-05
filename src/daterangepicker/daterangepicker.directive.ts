@@ -108,8 +108,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   timePickerIncrement: number = 1;
   @Input()
   timePickerSeconds: Boolean = false;
-  @Input()
-  offsetWidth: number = 0;
   _locale: LocaleConfig = {};
   @Input() set locale(value) {
     this._locale = {...this._localeService.config, ...value};
@@ -303,24 +301,19 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
           right: 'auto'
         };
     } else {
-      const position = element.offsetLeft  +  element.clientWidth / 2 - container.clientWidth / 2 - this.offsetWidth;
+      const position = element.offsetLeft  +  element.clientWidth / 2 - container.clientWidth / 2;
       if (position < 0) {
         style = {
           top: containerTop,
-          left: '0px',
+          left: element.offsetLeft + 'px',
           right: 'auto'
         };
-      } else if (window.outerWidth - position < container.clientWidth) {
+      }
+      else {
         style = {
-          top: containerTop,
-          left: window.outerWidth - container.clientWidth + 'px',
-          right: 'auto'
-        };
-      } else {
-        style = {
-          top: containerTop,
-          left: position + 'px',
-          right: 'auto'
+            top: containerTop,
+            left: position + 'px',
+            right: 'auto'
         };
       }
     }
