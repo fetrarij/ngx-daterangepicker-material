@@ -162,7 +162,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     private elementRef: ElementRef
   ) {
     this.drops = 'down';
-    this.opens = 'right';
+    this.opens = 'auto';
     const componentFactory = this._componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent(componentFactory);
@@ -296,12 +296,28 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
                   - container.clientWidth / 2) + 'px',
           right: 'auto'
         };
-    } else {
+    } else if (this.opens === 'right') {
         style = {
           top: containerTop,
           left: element.offsetLeft  + 'px',
           right: 'auto'
         };
+    } else {
+      const position = element.offsetLeft  +  element.clientWidth / 2 - container.clientWidth / 2;
+      if (position < 0) {
+        style = {
+          top: containerTop,
+          left: element.offsetLeft + 'px',
+          right: 'auto'
+        };
+      }
+      else {
+        style = {
+            top: containerTop,
+            left: position + 'px',
+            right: 'auto'
+        };
+      }
     }
     if (style) {
       this._renderer.setStyle(container, 'top', style.top);
