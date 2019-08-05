@@ -35,7 +35,9 @@ export class DaterangepickerComponent implements OnInit {
     timepickerVariables: {left: any, right: any} = {left: {}, right: {}};
     daterangepicker: {start: FormControl, end: FormControl} = {start: new FormControl(), end: new FormControl()};
     applyBtn: {disabled: boolean} = {disabled: false};
+    @Input()
     startDate = moment().startOf('day');
+    @Input()
     endDate = moment().endOf('day');
 
     @Input()
@@ -161,6 +163,16 @@ export class DaterangepickerComponent implements OnInit {
         if (this.inline) {
             this._old.start = this.startDate.clone();
             this._old.end = this.endDate.clone();
+        }
+
+        if (this.startDate && this.timePicker) {
+          this.setStartDate(this.startDate);
+          this.renderTimePicker(SideEnum.left);
+        }
+
+        if (this.endDate && this.timePicker) {
+          this.setEndDate(this.endDate);
+          this.renderTimePicker(SideEnum.right);
         }
 
         this.updateMonthsInView();
