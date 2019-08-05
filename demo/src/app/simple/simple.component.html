@@ -40,3 +40,19 @@
       Choosed date: {{inlineDate | json}}
   </div>
 </div>
+
+<div class="row">
+  <div class="col s12">
+    <h3>Inline daterangepicker with time and auto-apply</h3>
+    <ngx-daterangepicker-material (choosedDate)="choosedDateTime($event)"
+                                  [autoApply]="true"
+                                  [timePicker24Hour]="true"
+                                  [startDate]="selected.startDate"
+                                  [endDate]="selected.endDate"
+                                  [timePicker]="true"
+                                  [locale]="{applyLabel: 'Done', firstDay: 1}"></ngx-daterangepicker-material>
+    <br>
+    <p><b>Default Range:</b> 2015-11-18T00:00Z - 2015-11-26T00:00Z</p>
+    <p>Choosed date (after changes): {{inlineDateTime | json}}</p>
+  </div>
+</div>

@@ -23,6 +23,7 @@
           [showISOWeekNumbers]="options.showISOWeekNumbers"
           [customRangeDirection]="options.customRangeDirection"
           [lockStartDate]="options.lockStartDate"
+          [closeOnAutoApply]="options.closeOnAutoApply"
           firstMonthDayClass="first-day"
           lastMonthDayClass="last-day"
           emptyWeekRowClass="empty-week"
@@ -41,6 +42,7 @@
         <strong>enable timepicker:</strong>  <mat-checkbox [(ngModel)]="timePicker">Value: {{timePicker}}</mat-checkbox><br/>
         <h4>Options:</h4>
         <strong>autoApply:</strong>  <mat-checkbox [(ngModel)]="options.autoApply">Value: {{options.autoApply}}</mat-checkbox><br/>
+        <strong>closeOnAutoApply:</strong><mat-checkbox [(ngModel)]="options.closeOnAutoApply">Value: {{options.closeOnAutoApply}}</mat-checkbox><br/>
         <strong>showCancel:</strong>  <mat-checkbox [(ngModel)]="options.showCancel">Value: {{options.showCancel}}</mat-checkbox><br/>
         <strong>showClearButton:</strong>  <mat-checkbox [(ngModel)]="options.showClearButton">Value: {{options.showClearButton}}</mat-checkbox><br/>
         <strong>linkedCalendars:</strong><mat-checkbox [(ngModel)]="options.linkedCalendars">Value: {{options.linkedCalendars}}</mat-checkbox><br/>

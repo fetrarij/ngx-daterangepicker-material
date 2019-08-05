@@ -1,6 +1,6 @@
 {
   "name": "ngx-daterangepicker-material",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "Angular 2+ date range picker (with material design theme)",
   "keywords": [
     "angular2",
@@ -83,9 +83,6 @@
   "ngPackage": {
     "lib": {
       "entryFile": "src/daterangepicker/index.ts",
-      "externals": {
-        "moment": "moment"
-      },
       "umdModuleIds": {
         "moment": "moment"
       }

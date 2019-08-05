@@ -35,7 +35,9 @@ export class DaterangepickerComponent implements OnInit {
     timepickerVariables: {left: any, right: any} = {left: {}, right: {}};
     daterangepicker: {start: FormControl, end: FormControl} = {start: new FormControl(), end: new FormControl()};
     applyBtn: {disabled: boolean} = {disabled: false};
+    @Input()
     startDate = moment().startOf('day');
+    @Input()
     endDate = moment().endOf('day');
 
     @Input()
@@ -130,6 +132,7 @@ export class DaterangepickerComponent implements OnInit {
     options: any = {} ; // should get some opt from user
     @Input() drops: string;
     @Input() opens: string;
+    @Input() closeOnAutoApply = true;
     @Output() choosedDate: EventEmitter<Object>;
     @Output() rangeClicked: EventEmitter<Object>;
     @Output() datesUpdated: EventEmitter<Object>;
@@ -160,6 +163,16 @@ export class DaterangepickerComponent implements OnInit {
         if (this.inline) {
             this._old.start = this.startDate.clone();
             this._old.end = this.endDate.clone();
+        }
+
+        if (this.startDate && this.timePicker) {
+          this.setStartDate(this.startDate);
+          this.renderTimePicker(SideEnum.left);
+        }
+
+        if (this.endDate && this.timePicker) {
+          this.setEndDate(this.endDate);
+          this.renderTimePicker(SideEnum.right);
         }
 
         this.updateMonthsInView();
@@ -220,10 +233,6 @@ export class DaterangepickerComponent implements OnInit {
             if (!this.timePicker) {
                 this.startDate = this.startDate.startOf('day');
                 this.endDate = this.endDate.endOf('day');
-            }
-            // can't be used together for now
-            if (this.timePicker && this.autoApply) {
-                this.autoApply = false;
             }
         }
 
@@ -687,7 +696,9 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
-        this.hide();
+        if (e || (this.closeOnAutoApply && !e)) {
+          this.hide();
+        }
     }
 
     clickCancel(e) {
@@ -764,6 +775,10 @@ export class DaterangepickerComponent implements OnInit {
         // re-render the time pickers because changing one selection can affect what's enabled in another
         this.renderTimePicker(SideEnum.left);
         this.renderTimePicker(SideEnum.right);
+
+        if (this.autoApply) {
+          this.clickApply();
+        }
     }
     /**
      *  call when month or year changed
@@ -900,6 +915,10 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         this.updateView();
+
+        if (this.autoApply && this.startDate && this.endDate) {
+          this.clickApply();
+        }
 
         // This is to cancel the blur event handler if the mouse was in one of the inputs
         e.stopPropagation();
