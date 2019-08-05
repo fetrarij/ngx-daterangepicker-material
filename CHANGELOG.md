@@ -1,3 +1,24 @@
+#### 2.1.7 (2019-08-05)
+
+##### Chores
+
+* **deps:**
+  *  bump lodash from 4.17.11 to 4.17.14 ([864a641d](https://github.com/fetrarij/ngx-daterangepicker-material/commit/864a641d76965df73bab84b085d28079f0064775))
+  *  bump lodash.mergewith from 4.6.1 to 4.6.2 ([623909bb](https://github.com/fetrarij/ngx-daterangepicker-material/commit/623909bb4f1edf10089df0ce69cc50714d9dab8f))
+
+##### New Features
+
+* **rangepicker:**  update calendar when changing the input element Fix [#115](https://github.com/fetrarij/ngx-daterangepicker-material/pull/115) ([671dcf9a](https://github.com/fetrarij/ngx-daterangepicker-material/commit/671dcf9aab0783ad8131b131068fe60adb426842))
+
+##### Bug Fixes
+
+* **label:**  clear title to clear label in local ([30f7c2e4](https://github.com/fetrarij/ngx-daterangepicker-material/commit/30f7c2e4b9f2f98a50afa48baec3a72e28438b90))
+* **ranges:**  date doesnt update if alwaysShowCalendars = false and keepCalendarOpeningWithRange = true Close [#147](https://github.com/fetrarij/ngx-daterangepicker-material/pull/147) ([28e3684d](https://github.com/fetrarij/ngx-daterangepicker-material/commit/28e3684ddd74f79bca04c6ce204a9fc038b33de4))
+
+##### Other Changes
+
+* **demo:** add lockStartDate in full-options page ([1ceff3f9](https://github.com/fetrarij/ngx-daterangepicker-material/commit/1ceff3f92be00eaff293a9a88eaa54c477306b90))
+
 #### 2.1.1 (2019-05-04)
 
 ##### Documentation Changes
