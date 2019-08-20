@@ -5,7 +5,7 @@
 [![npm version](https://badge.fury.io/js/ngx-daterangepicker-material.svg)](https://badge.fury.io/js/ngx-daterangepicker-material)
 [![last commit](https://img.shields.io/github/last-commit/fetrarij/ngx-daterangepicker-material.svg)](https://github.com/fetrarij/ngx-daterangepicker-material/commits/master)
 
- This plugin is compatible with Angular2, Angular4, Angular5 and Angular6. This plugin uses moment.js.
+ This plugin is compatible with Angular 2+ , work fine with the latest version of angular. This plugin uses moment.js.
 
 This plugin is a rewrite to angular from [bootstrap daterangepicker](http://www.daterangepicker.com), so it doesn't depends on jquery nor bootstrap.
 
