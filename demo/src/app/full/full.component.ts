@@ -51,4 +51,8 @@ export class FullComponent implements OnInit {
   }
   ngOnInit() {
   }
+
+  eventClicked(e): void {
+    console.log(e);
+  }
 }

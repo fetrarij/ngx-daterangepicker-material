@@ -136,6 +136,8 @@ export class DaterangepickerComponent implements OnInit {
     @Output() choosedDate: EventEmitter<Object>;
     @Output() rangeClicked: EventEmitter<Object>;
     @Output() datesUpdated: EventEmitter<Object>;
+    @Output() startDateChanged: EventEmitter<Object>;
+    @Output() endDateChanged: EventEmitter<Object>;
     @ViewChild('pickerContainer') pickerContainer: ElementRef;
 
     constructor(
@@ -146,6 +148,8 @@ export class DaterangepickerComponent implements OnInit {
         this.choosedDate = new EventEmitter();
         this.rangeClicked = new EventEmitter();
         this.datesUpdated = new EventEmitter();
+        this.startDateChanged = new EventEmitter();
+        this.endDateChanged = new EventEmitter();
     }
 
     ngOnInit() {
@@ -506,7 +510,7 @@ export class DaterangepickerComponent implements OnInit {
         if (!this.isShown) {
             this.updateElement();
         }
-
+        this.startDateChanged.emit({startDate: this.startDate});
         this.updateMonthsInView();
     }
 
@@ -543,6 +547,7 @@ export class DaterangepickerComponent implements OnInit {
         if (!this.isShown) {
             // this.updateElement();
         }
+        this.endDateChanged.emit({endDate: this.endDate});
         this.updateMonthsInView();
     }
     @Input()

@@ -150,7 +150,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Output('change') onChange: EventEmitter<Object> = new EventEmitter();
   @Output('rangeClicked') rangeClicked: EventEmitter<Object> = new EventEmitter();
   @Output('datesUpdated') datesUpdated: EventEmitter<Object> = new EventEmitter();
-
+  @Output() startDateChanged: EventEmitter<Object> = new EventEmitter();
+  @Output() endDateChanged: EventEmitter<Object> = new EventEmitter();
   constructor(
     public viewContainerRef: ViewContainerRef,
     public _changeDetectorRef: ChangeDetectorRef,
@@ -170,6 +171,12 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.inline = false; // set inline to false for all directive usage
   }
   ngOnInit() {
+    this.picker.startDateChanged.asObservable().subscribe((itemChanged: any) => {
+      this.startDateChanged.emit(itemChanged);
+    });
+    this.picker.endDateChanged.asObservable().subscribe((itemChanged: any) => {
+      this.endDateChanged.emit(itemChanged);
+    });
     this.picker.rangeClicked.asObservable().subscribe((range: any) => {
       this.rangeClicked.emit(range);
     });
