@@ -33,7 +33,10 @@
           [drops]="drops"
           [timePicker]="timePicker"
           [dateLimit]="dateLimit"
-          name="daterange"/>
+          name="daterange"
+          (startDateChanged)="eventClicked($event)"
+          (endDateChanged)="eventClicked($event)"
+          />
     </div>
     <div class="col s6">
           <strong>Value: </strong>{{selected  | json}}
