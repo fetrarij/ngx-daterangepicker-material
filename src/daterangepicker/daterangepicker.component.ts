@@ -453,8 +453,9 @@ export class DaterangepickerComponent implements OnInit {
         if (this.showDropdowns) {
             const currentMonth = calendar[1][1].month();
             const currentYear = calendar[1][1].year();
-            const maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
-            const minYear = (minDate && minDate.year()) || (currentYear - 50);
+            const realCurrentYear = moment().year();
+            const maxYear = (maxDate && maxDate.year()) || (realCurrentYear + 5);
+            const minYear = (minDate && minDate.year()) || (realCurrentYear - 50);
             const inMinYear = currentYear === minYear;
             const inMaxYear = currentYear === maxYear;
             const years = [];
