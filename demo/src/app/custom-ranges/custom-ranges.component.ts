@@ -13,7 +13,7 @@ export class CustomRangesComponent implements OnInit {
   keepCalendarOpeningWithRange: boolean;
   maxDate: moment.Moment;
   minDate: moment.Moment;
-  invalidDates: moment.Moment[] = [moment().add(2, 'days'), moment().add(3, 'days'), moment().add(5, 'days')];
+  invalidDates: moment.Moment[] = [];
   ranges: any = {
     Today: [moment(), moment()],
     Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -27,11 +27,19 @@ export class CustomRangesComponent implements OnInit {
       moment()
         .subtract(1, 'month')
         .endOf('month')
+    ],
+    'Last 3 Month': [
+      moment()
+        .subtract(3, 'month')
+        .startOf('month'),
+      moment()
+        .subtract(1, 'month')
+        .endOf('month')
     ]
   };
 
   isInvalidDate = (m: moment.Moment) =>  {
-    return this.invalidDates.some(d => d.isSame(m, 'day') )
+    return this.invalidDates.some(d => d.isSame(m, 'day') );
   }
 
   constructor() {
@@ -42,6 +50,9 @@ export class CustomRangesComponent implements OnInit {
     this.keepCalendarOpeningWithRange = true;
     this.showRangeLabelOnInput = true;
     this.selected = {startDate: moment().subtract(1, 'days'), endDate: moment().subtract(1, 'days')};
+    setTimeout(() => {
+      this.invalidDates = [moment().add(2, 'days'), moment().add(3, 'days'), moment().add(5, 'days')];
+    }, 5000);
   }
   rangeClicked(range) {
     console.log('[rangeClicked] range is : ', range);

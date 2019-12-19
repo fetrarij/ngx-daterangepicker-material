@@ -966,7 +966,7 @@ export class DaterangepickerComponent implements OnInit {
                 if (!this.alwaysShowCalendars) {
                     return  this.clickApply();
                 }
-                if (this.maxDate.isSame(dates[0], 'month')) {
+                if (this.maxDate && this.maxDate.isSame(dates[0], 'month')) {
                     this.rightCalendar.month.month(dates[0].month());
                     this.rightCalendar.month.year(dates[0].year());
                     this.leftCalendar.month.month(dates[0].month() - 1);
@@ -974,8 +974,10 @@ export class DaterangepickerComponent implements OnInit {
                 } else {
                     this.leftCalendar.month.month(dates[0].month());
                     this.leftCalendar.month.year(dates[0].year());
-                    this.rightCalendar.month.month(dates[0].month() + 1);
-                    this.rightCalendar.month.year(dates[1].year() );
+                    // get the next year
+                    const nextMonth = dates[0].clone().add(1, 'month');
+                    this.rightCalendar.month.month(nextMonth.month());
+                    this.rightCalendar.month.year(nextMonth.year() );
                 }
                 this.updateCalendars();
                 if (this.timePicker) {
@@ -1172,7 +1174,7 @@ export class DaterangepickerComponent implements OnInit {
                 }
                 // don't allow selection of date if a custom function decides it's invalid
                 if (this.isInvalidDate(calendar[row][col])) {
-                    classes.push('off', 'disabled');
+                    classes.push('off', 'disabled', 'invalid');
                 }
                 // highlight the currently selected start date
                 if (this.startDate && calendar[row][col].format('YYYY-MM-DD') === this.startDate.format('YYYY-MM-DD')) {
