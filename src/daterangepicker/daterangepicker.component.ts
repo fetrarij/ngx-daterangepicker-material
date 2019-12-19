@@ -1174,7 +1174,7 @@ export class DaterangepickerComponent implements OnInit {
                 }
                 // don't allow selection of date if a custom function decides it's invalid
                 if (this.isInvalidDate(calendar[row][col])) {
-                    classes.push('off', 'disabled');
+                    classes.push('off', 'disabled', 'invalid');
                 }
                 // highlight the currently selected start date
                 if (this.startDate && calendar[row][col].format('YYYY-MM-DD') === this.startDate.format('YYYY-MM-DD')) {
