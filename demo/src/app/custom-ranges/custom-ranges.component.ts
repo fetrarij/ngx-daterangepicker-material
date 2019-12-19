@@ -27,6 +27,14 @@ export class CustomRangesComponent implements OnInit {
       moment()
         .subtract(1, 'month')
         .endOf('month')
+    ],
+    'Last 3 Month': [
+      moment()
+        .subtract(3, 'month')
+        .startOf('month'),
+      moment()
+        .subtract(1, 'month')
+        .endOf('month')
     ]
   };
 
