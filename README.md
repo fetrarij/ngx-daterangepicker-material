@@ -19,7 +19,7 @@ demo:  https://fetrarij.github.io/ngx-daterangepicker-material/
 ## Installation
 
  Install the plugin from npm:
- 
+
  `npm install ngx-daterangepicker-material --save` .
 
  import **NgxDaterangepickerMd** in your module:
@@ -32,8 +32,8 @@ import { App } from './app';
 
 @NgModule({
     imports: [
-        ... , 
-        FormsModule, 
+        ... ,
+        FormsModule,
         NgxDaterangepickerMd.forRoot()
     ],
     declarations: [App],
@@ -49,12 +49,12 @@ Html:
 ```html
 <input type="text" ngxDaterangepickerMd [(ngModel)]="selected" class="form-control"/>
 ```
-Typescript: 
+Typescript:
 
 ````typescript
 selected: {startDate: Moment, endDate: Moment};
 ````
-### with some options: 
+### with some options:
 Html:
 
 ```html
@@ -66,7 +66,7 @@ Html:
     [(ngModel)]="selected"
     name="daterange"/>
 ```
-Typescript: 
+Typescript:
 
 ````typescript
 selected: {start: Moment, end: Moment};
@@ -107,10 +107,11 @@ You can use the component directly in your templates, which will set its `inline
 
 ### locale
 
->the locale options is an object with: 
+>the locale options is an object with:
 ```javascript
 {
-    format: 'MM/DD/YYYY',
+    format: 'MM/DD/YYYY', // could be 'YYYY-MM-DDTHH:mm:ss.SSSSZ'
+    displayFormat: 'MM/DD/YYYY', // default is format value
     direction: 'ltr', // could be rtl
     weekLabel: 'W',
     separator: ' To ', // default is ' - '
@@ -131,7 +132,7 @@ Theses 2 options are for the key you want for the value, default are `startDate`
 
 Specifiyng `startKey` and `endKey` would have different model:
 
-example: 
+example:
 ```html
 <input type="text" ngxDaterangepickerMd startKey="start" endKey="end" [(ngModel)]="model">
 ```
@@ -215,10 +216,10 @@ eg:
 ```
 @NgModule({
     imports: [
-        ... , 
-        FormsModule, 
+        ... ,
+        FormsModule,
         NgxDaterangepickerMd.forRoot({
-            separator: ' - ', 
+            separator: ' - ',
             applyLabel: 'Okay',
         })
     ],
@@ -232,7 +233,7 @@ eg:
 ### Prepare your environment
 
 Install local dependencies: `npm install`.
- 
+
 ### Development server
 
 Run `npm start` to start a development server on a port 4200.
