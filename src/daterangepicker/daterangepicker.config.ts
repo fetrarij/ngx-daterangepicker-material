@@ -18,6 +18,7 @@ export interface LocaleConfig {
     monthNames?:  string[];
     firstDay?: number;
     format?: string;
+    displayFormat?: string;
 }
 /**
  *  DefaultLocaleConfig
