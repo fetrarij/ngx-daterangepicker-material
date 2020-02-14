@@ -1134,7 +1134,7 @@ export class DaterangepickerComponent implements OnInit {
                 }
                 // grey out the dates in other months displayed at beginning and end of this calendar
                 if (calendar[row][col].month() !== calendar[1][1].month()) {
-                    classes.push('off');
+                    classes.push('last-next-month-day');
 
                     // mark the last day of the previous month in this calendar
                     if (
