@@ -13,7 +13,11 @@ export class CustomRangesComponent implements OnInit {
   keepCalendarOpeningWithRange: boolean;
   maxDate: moment.Moment;
   minDate: moment.Moment;
-  invalidDates: moment.Moment[] = [];
+  invalidDates: moment.Moment[] = [moment(), moment().add(2, 'days')];
+  tooltips = [
+    {date: moment(), text: 'Today is just unselectable'},
+    {date:  moment().add(2, 'days'), text: 'Yeeeees!!!'}
+  ];
   ranges: any = {
     Today: [moment(), moment()],
     Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -40,6 +44,14 @@ export class CustomRangesComponent implements OnInit {
 
   isInvalidDate = (m: moment.Moment) =>  {
     return this.invalidDates.some(d => d.isSame(m, 'day') );
+  }
+  isTooltipDate = (m: moment.Moment) =>  {
+    const tooltip = this.tooltips.find(tt => tt.date.isSame(m, 'day'));
+    if (tooltip) {
+      return tooltip.text;
+    } else {
+      return false;
+    }
   }
 
   constructor() {
