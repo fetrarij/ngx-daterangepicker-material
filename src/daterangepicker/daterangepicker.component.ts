@@ -156,6 +156,7 @@ export class DaterangepickerComponent implements OnInit {
     ngOnInit() {
         this._buildLocale();
         const daysOfWeek = [...this.locale.daysOfWeek];
+        this.locale.firstDay = this.locale.firstDay % 7;
         if (this.locale.firstDay !== 0) {
             let iterator = this.locale.firstDay;
 
