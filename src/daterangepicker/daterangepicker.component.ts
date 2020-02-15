@@ -1,9 +1,9 @@
 import {
     Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef, ViewEncapsulation, ChangeDetectorRef, Inject
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormControl} from '@angular/forms';
-import { LocaleConfig, LOCALE_CONFIG } from './daterangepicker.config';
+import { LocaleConfig } from './daterangepicker.config';
 
 import * as _moment from 'moment';
 import { LocaleService } from './locale.service';
@@ -32,6 +32,7 @@ export class DaterangepickerComponent implements OnInit {
     private _old: {start: any, end: any} = {start: null, end: null};
     chosenLabel: string;
     calendarVariables: {left: any, right: any} = {left: {}, right: {}};
+    tooltiptext = [];  // for storing tooltiptext
     timepickerVariables: {left: any, right: any} = {left: {}, right: {}};
     daterangepicker: {start: FormControl, end: FormControl} = {start: new FormControl(), end: new FormControl()};
     applyBtn: {disabled: boolean} = {disabled: false};
@@ -559,6 +560,10 @@ export class DaterangepickerComponent implements OnInit {
     isCustomDate(date) {
         return false;
     }
+    @Input()
+    isTooltipDate(date): string {
+        return null;
+    }
 
     updateView() {
         if (this.timePicker) {
@@ -861,6 +866,22 @@ export class DaterangepickerComponent implements OnInit {
             }
         }
         this.updateCalendars();
+    }
+
+    /**
+     * When hovering a date
+     * @param e event: get value by e.target.value
+     * @param side left or right
+     * @param row row position of the current date clicked
+     * @param col col position of the current date clicked
+     */
+    hoverDate(e, side: SideEnum, row: number, col: number) {
+      const leftCalDate = this.calendarVariables.left.calendar[row][col];
+      const rightCalDate = this.calendarVariables.right.calendar[row][col];
+      const tooltip = side === SideEnum.left ? this.tooltiptext[leftCalDate] : this.tooltiptext[rightCalDate];
+          if (tooltip.length > 0) {
+            e.target.setAttribute('title', tooltip);
+          }
     }
     /**
      * When selecting a date
@@ -1197,6 +1218,17 @@ export class DaterangepickerComponent implements OnInit {
                     } else {
                         Array.prototype.push.apply(classes, isCustom);
                     }
+                }
+                // apply custom tooltip for this date
+                const isTooltip = this.isTooltipDate(calendar[row][col]);
+                if (isTooltip) {
+                    if (typeof isTooltip === 'string') {
+                        this.tooltiptext[calendar[row][col]] = isTooltip; // setting tooltiptext for custom date
+                    } else {
+                        this.tooltiptext[calendar[row][col]] = 'Put the tooltip as the returned value of isTooltipDate';
+                    }
+                } else {
+                  this.tooltiptext[calendar[row][col]] = '';
                 }
                 // store classes var
                 let cname = '', disabled = false;

@@ -80,7 +80,7 @@
                             <span>{{calendarVariables.left.calendar[row][0].isoWeek()}}</span>
                         </td>
                         <!-- cal -->
-                        <td *ngFor="let col of calendarVariables.left.calCols" [class]="calendarVariables.left.classes[row][col]" (click)="clickDate($event, sideEnum.left, row, col)">
+                        <td *ngFor="let col of calendarVariables.left.calCols" [class]="calendarVariables.left.classes[row][col]" (click)="clickDate($event, sideEnum.left, row, col)" (mouseenter)="hoverDate($event, sideEnum.left, row, col)">
                             <span>{{calendarVariables.left.calendar[row][col].date()}}</span>
                         </td>
                     </tr>
@@ -185,7 +185,7 @@
                         <td class="week" *ngIf="showISOWeekNumbers">
                             <span>{{calendarVariables.right.calendar[row][0].isoWeek()}}</span>
                         </td>
-                        <td *ngFor="let col of calendarVariables.right.calCols" [class]="calendarVariables.right.classes[row][col]" (click)="clickDate($event, sideEnum.right, row, col)">
+                        <td *ngFor="let col of calendarVariables.right.calCols" [class]="calendarVariables.right.classes[row][col]" (click)="clickDate($event, sideEnum.right, row, col)" (mouseenter)="hoverDate($event, sideEnum.right, row, col)">
                             <span>{{calendarVariables.right.calendar[row][col].date()}}</span>
                         </td>
                     </tr>

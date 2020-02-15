@@ -73,6 +73,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   isCustomDate: Function;
   @Input()
+  isTooltipDate: Function;
+  @Input()
   showClearButton: boolean;
   @Input()
   customRangeDirection: boolean;
