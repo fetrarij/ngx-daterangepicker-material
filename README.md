@@ -170,6 +170,36 @@ You can use bellow options when using the ranges. The default are `false`.
 | customRangeDirection | boolean | set to `true` if you want to allow selection range from end date first |
 | lockStartDate | boolean | set to `true` if you want to lock start date and change only the end date |
 
+#### Open datepicker from outside
+
+It is possible to open datepicker from outside. You should create an input with attached datepicker directive and a button with "ngx-daterangepicker-action" class (to prevent triggering of clickOutside).
+```html
+    <input
+      ngxDaterangepickerMd
+      [closeOnAutoApply]="true"
+      [autoApply]="true"
+      [singleDatePicker]="true"
+      [linkedCalendars]="true"
+      [(ngModel)]="selected"
+      (datesUpdated)="datesUpdated($event)"
+      class="datepicker-calendar-icon">
+
+    <a class="ngx-daterangepicker-action" (click)="openDatepicker()">
+      Open
+    </a>
+```
+
+```javascript
+
+  ...
+    @ViewChild(DaterangepickerDirective, { static: false }) pickerDirective: DaterangepickerDirective;
+  ...
+  ...
+  openDatepicker() {
+    this.pickerDirective.open();
+  }
+```
+
 ### Timepicker
 
 You have to set the attribute `timePicker` to `true` if you want to enable the timepicker.
