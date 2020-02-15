@@ -97,6 +97,9 @@ You can use the component directly in your templates, which will set its `inline
 ### isInvalidDate
 >(function) A function that is passed each date in the two calendars before they are displayed, and may return true or false to indicate whether that date should be available for selection or not.
 
+### isTooltipDate
+>(function) A function that is passed each date in the two calendars before they are displayed, and may return a text to be displayed as a tooltip.
+
 ### minDate, maxDate
 
  >To set the minimal and maximal date, these options are a moment date
