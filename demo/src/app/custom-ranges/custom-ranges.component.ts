@@ -13,11 +13,12 @@ export class CustomRangesComponent implements OnInit {
   keepCalendarOpeningWithRange: boolean;
   maxDate: moment.Moment;
   minDate: moment.Moment;
-  invalidDates: moment.Moment[] = [moment(), moment().add(2, 'days')];
+  invalidDates: moment.Moment[] = [];
   tooltips = [
     {date: moment(), text: 'Today is just unselectable'},
     {date:  moment().add(2, 'days'), text: 'Yeeeees!!!'}
   ];
+  inlineDateTime;
   ranges: any = {
     Today: [moment(), moment()],
     Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -61,10 +62,10 @@ export class CustomRangesComponent implements OnInit {
     this.alwaysShowCalendars = true;
     this.keepCalendarOpeningWithRange = true;
     this.showRangeLabelOnInput = true;
-    this.selected = {startDate: moment().subtract(1, 'days'), endDate: moment().subtract(1, 'days')};
-    setTimeout(() => {
-      this.invalidDates = [moment().add(2, 'days'), moment().add(3, 'days'), moment().add(5, 'days')];
-    }, 5000);
+    this.selected = {
+      startDate: moment().subtract(1, 'days').set({hours: 0, minutes: 0}),
+      endDate: moment().subtract(1, 'days').set({hours: 23, minutes: 59})
+    };
   }
   rangeClicked(range) {
     console.log('[rangeClicked] range is : ', range);
@@ -74,4 +75,7 @@ export class CustomRangesComponent implements OnInit {
   }
 
   ngOnInit() {}
+  choosedDateTime(e) {
+    this.inlineDateTime = e;
+  }
 }

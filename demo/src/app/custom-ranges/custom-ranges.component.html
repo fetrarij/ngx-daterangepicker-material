@@ -87,3 +87,24 @@ constructor() {{ '{' }}
   </div>
 </div>
 
+<div class="row">
+  <div class="col s12">
+    <h3>Inline daterangepicker</h3>
+    <ngx-daterangepicker-material (datesUpdated)="choosedDateTime($event)"
+                                  [autoApply]="true"
+                                  [showCustomRangeLabel]="true"
+                                  [alwaysShowCalendars]="alwaysShowCalendars"
+                                  [ranges]="ranges"
+                                  [showClearButton]="true"
+                                  [showCancel]="true"
+                                  [linkedCalendars]="true"
+                                  [isTooltipDate] = "isTooltipDate"
+                                  [isInvalidDate] = "isInvalidDate"
+                                  [locale]="{applyLabel: 'Done'}"
+                                  [keepCalendarOpeningWithRange]="keepCalendarOpeningWithRange"
+                                  [showRangeLabelOnInput]="showRangeLabelOnInput"
+                                  [locale]="{applyLabel: 'Done', firstDay: 1}"></ngx-daterangepicker-material>
+    <br>
+    <p>Choosed date (after changes): {{inlineDateTime | json}}</p>
+  </div>
+</div>
