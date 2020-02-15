@@ -983,7 +983,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.isShown  = false; // hide calendars
             }
             this.rangeClicked.emit({label: label, dates: dates});
-            if (!this.keepCalendarOpeningWithRange) {
+            if (!this.keepCalendarOpeningWithRange || this.autoApply) {
                 this.clickApply();
             } else {
                 if (!this.alwaysShowCalendars) {
