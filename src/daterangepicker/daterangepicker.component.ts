@@ -92,6 +92,7 @@ export class DaterangepickerComponent implements OnInit {
     firstDayOfNextMonthClass: string = null;
     @Input()
     lastDayOfPreviousMonthClass: string = null;
+
     _locale: LocaleConfig = {};
     @Input() set locale(value) {
       this._locale = {...this._localeService.config, ...value};
@@ -129,7 +130,8 @@ export class DaterangepickerComponent implements OnInit {
     leftCalendar: any = {};
     rightCalendar: any = {};
     showCalInRanges: Boolean = false;
-
+    nowHoveredDate = null;
+    pickingDate: boolean = false;
     options: any = {} ; // should get some opt from user
     @Input() drops: string;
     @Input() opens: string;
@@ -484,9 +486,11 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         if (typeof startDate === 'object') {
+            this.pickingDate = true;
             this.startDate = moment(startDate);
         }
         if (!this.timePicker) {
+            this.pickingDate = true;
             this.startDate = this.startDate.startOf('day');
         }
 
@@ -523,9 +527,11 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         if (typeof endDate === 'object') {
+            this.pickingDate = false;
             this.endDate = moment(endDate);
         }
         if (!this.timePicker) {
+            this.pickingDate = false;
             this.endDate = this.endDate.add(1, 'd').startOf('day').subtract(1, 'second');
         }
 
@@ -879,6 +885,10 @@ export class DaterangepickerComponent implements OnInit {
     hoverDate(e, side: SideEnum, row: number, col: number) {
       const leftCalDate = this.calendarVariables.left.calendar[row][col];
       const rightCalDate = this.calendarVariables.right.calendar[row][col];
+
+      this.nowHoveredDate = side === SideEnum.left ? leftCalDate : rightCalDate;
+      this.renderCalendar(SideEnum.left);
+      this.renderCalendar(SideEnum.right);
       const tooltip = side === SideEnum.left ? this.tooltiptext[leftCalDate] : this.tooltiptext[rightCalDate];
           if (tooltip.length > 0) {
             e.target.setAttribute('title', tooltip);
@@ -1208,7 +1218,21 @@ export class DaterangepickerComponent implements OnInit {
                     classes.push('active', 'end-date');
                 }
                 // highlight dates in-between the selected dates
-                if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate) {
+                if (
+                      (
+                        (this.nowHoveredDate != null && this.pickingDate) || this.endDate != null
+                      ) &&
+                      (
+                        calendar[row][col] > this.startDate &&
+                        (
+                          calendar[row][col] < this.endDate || (calendar[row][col] < this.nowHoveredDate && this.pickingDate)
+                        )
+                      ) &&
+                      (
+                        !classes.find(el => el === 'off')
+                      )
+                ) {
+                  console.log(classes);
                     classes.push('in-range');
                 }
                 // apply custom classes for this date
