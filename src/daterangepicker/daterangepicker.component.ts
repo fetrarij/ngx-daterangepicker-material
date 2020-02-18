@@ -885,10 +885,11 @@ export class DaterangepickerComponent implements OnInit {
     hoverDate(e, side: SideEnum, row: number, col: number) {
       const leftCalDate = this.calendarVariables.left.calendar[row][col];
       const rightCalDate = this.calendarVariables.right.calendar[row][col];
-
-      this.nowHoveredDate = side === SideEnum.left ? leftCalDate : rightCalDate;
-      this.renderCalendar(SideEnum.left);
-      this.renderCalendar(SideEnum.right);
+      if (this.pickingDate) {
+        this.nowHoveredDate = side === SideEnum.left ? leftCalDate : rightCalDate;
+        this.renderCalendar(SideEnum.left);
+        this.renderCalendar(SideEnum.right);
+      }
       const tooltip = side === SideEnum.left ? this.tooltiptext[leftCalDate] : this.tooltiptext[rightCalDate];
           if (tooltip.length > 0) {
             e.target.setAttribute('title', tooltip);
