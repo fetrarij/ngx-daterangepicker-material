@@ -1233,7 +1233,6 @@ export class DaterangepickerComponent implements OnInit {
                         !classes.find(el => el === 'off')
                       )
                 ) {
-                  console.log(classes);
                     classes.push('in-range');
                 }
                 // apply custom classes for this date
