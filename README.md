@@ -76,10 +76,10 @@ and [browse our demo code here](./demo/src/app).
 
 ## Inline usage
 
-You can use the component directly in your templates, which will set its `inline` mode to **true**, in which case the calendar won't hide after date/range selection. You can then use the events: `rangeClicked` or `datesUpdated` or `choosedDate` to get its selection state.
+You can use the component directly in your templates, which will set its `inline` mode to **true**, in which case the calendar won't hide after date/range selection. You can then use the events: `rangeClicked` or `datesUpdated` or `chosenDate` to get its selection state.
 
 ```html
-<ngx-daterangepicker-material (choosedDate)="choosedDate($event)">
+<ngx-daterangepicker-material (chosenDate)="chosenDate($event)">
 </ngx-daterangepicker-material>
 ```
 

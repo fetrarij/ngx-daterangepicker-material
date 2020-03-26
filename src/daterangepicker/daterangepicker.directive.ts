@@ -1,25 +1,11 @@
-import {
-  Directive,
-  ViewContainerRef,
-  ComponentFactoryResolver,
-  ElementRef,
-  HostListener,
-  forwardRef,
-  ChangeDetectorRef,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-  Input,
-  DoCheck,
-  KeyValueDiffer,
-  KeyValueDiffers,
-  Output,
-  EventEmitter,
-  Renderer2
-} from '@angular/core';
-import { DaterangepickerComponent } from './daterangepicker.component';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { ChangeDetectorRef, ComponentRef, Directive, ElementRef, EventEmitter, forwardRef, Input, KeyValueDiffers, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewContainerRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _moment from 'moment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DaterangepickerComponent } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 const moment = _moment;
@@ -39,13 +25,14 @@ const moment = _moment;
     }
 ]
 })
-export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
-  public picker: DaterangepickerComponent;
+export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
   private _onChange = Function.prototype;
   private _onTouched = Function.prototype;
   private _validatorChange = Function.prototype;
   private _value: any;
-  private localeDiffer: KeyValueDiffer<string, any>;
+  private overlayRef: OverlayRef;
+  private componentRef: ComponentRef<DaterangepickerComponent>;
+  
   @Input()
   minDate: _moment.Moment
   @Input()
@@ -81,9 +68,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   ranges: any;
   @Input()
-  opens: string;
+  opens = 'auto';
   @Input()
-  drops: string;
+  drops = 'down';
   firstMonthDayClass: string;
   @Input()
   lastMonthDayClass: string;
@@ -149,43 +136,107 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this._onChange(val);
     this._changeDetectorRef.markForCheck();
   }
+
   @Output('change') onChange: EventEmitter<Object> = new EventEmitter();
   @Output('rangeClicked') rangeClicked: EventEmitter<Object> = new EventEmitter();
   @Output('datesUpdated') datesUpdated: EventEmitter<Object> = new EventEmitter();
   @Output() startDateChanged: EventEmitter<Object> = new EventEmitter();
   @Output() endDateChanged: EventEmitter<Object> = new EventEmitter();
+
+  destroy$ = new Subject();
+
   constructor(
     public viewContainerRef: ViewContainerRef,
     public _changeDetectorRef: ChangeDetectorRef,
-    private _componentFactoryResolver: ComponentFactoryResolver,
     private _el: ElementRef,
-    private _renderer: Renderer2,
     private differs: KeyValueDiffers,
     private _localeService: LocaleService,
-    private elementRef: ElementRef
-  ) {
-    this.drops = 'down';
-    this.opens = 'auto';
-    const componentFactory = this._componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
-    viewContainerRef.clear();
-    const componentRef = viewContainerRef.createComponent(componentFactory);
-    this.picker = (<DaterangepickerComponent>componentRef.instance);
-    this.picker.inline = false; // set inline to false for all directive usage
+    private elementRef: ElementRef,
+    private overlay: Overlay
+  ) {}
+
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void  {
+    for (const change in changes) {
+      if (changes.hasOwnProperty(change)) {
+        if (this.componentRef && this.notForChangesProperty.indexOf(change) === -1) {
+          this.componentRef[change] = changes[change].currentValue;
+        }
+      }
+    }
   }
-  ngOnInit() {
-    this.picker.startDateChanged.asObservable().subscribe((itemChanged: any) => {
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
+
+  onBlur(): void {
+    this._onTouched();
+  }
+
+  open(): void {
+    if(this.overlayRef) {
+      this.hide();
+    }
+
+    // TO-DO: implement this.drops and this.opens!
+    this.overlayRef = this.overlay.create({
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      positionStrategy: this.overlay.position().connectedTo(this.elementRef.nativeElement, { originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' })
+    });
+    const dateRangePickerPortal = new ComponentPortal(DaterangepickerComponent);
+    this.componentRef = this.overlayRef.attach(dateRangePickerPortal);
+
+    // Assign all inputs
+    this.componentRef.instance.showCancel = this.showCancel;
+    this.componentRef.instance.showClearButton = this.showClearButton;
+    this.componentRef.instance.showDropdowns = this.showDropdowns;
+    this.componentRef.instance.lockStartDate = this.lockStartDate;
+    this.componentRef.instance.customRangeDirection = this.customRangeDirection;
+    this.componentRef.instance.firstMonthDayClass = this.firstMonthDayClass;
+    this.componentRef.instance.lastMonthDayClass = this.lastMonthDayClass;
+    this.componentRef.instance.emptyWeekRowClass = this.emptyWeekRowClass;
+    this.componentRef.instance.firstDayOfNextMonthClass = this.firstDayOfNextMonthClass;
+    this.componentRef.instance.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass;
+    this.componentRef.instance.drops = this.drops;
+    this.componentRef.instance.opens = this.opens;
+    this.componentRef.instance.closeOnAutoApply = this.closeOnAutoApply;
+
+    this.componentRef.instance.timePicker = this.timePicker;
+    this.componentRef.instance.timePicker24Hour = this.timePicker24Hour;
+    this.componentRef.instance.timePickerIncrement = this.timePickerIncrement;
+    this.componentRef.instance.timePickerSeconds = this.timePickerSeconds
+    this.componentRef.instance.closeOnAutoApply = this.closeOnAutoApply;
+    
+    const localeDiffer = this.differs.find(this.locale).create();
+    if (localeDiffer) {
+      const changes = localeDiffer.diff(this.locale);
+      if (changes) {
+        this.componentRef.instance.updateLocale(this.locale);
+      }
+    }
+
+    // Subscribe to all outputs
+    this.componentRef.instance.startDateChanged.asObservable().pipe(takeUntil(this.destroy$)).subscribe((itemChanged: { startDate: _moment.Moment }) => {
       this.startDateChanged.emit(itemChanged);
     });
-    this.picker.endDateChanged.asObservable().subscribe((itemChanged: any) => {
+
+    this.componentRef.instance.endDateChanged.asObservable().pipe(takeUntil(this.destroy$)).subscribe((itemChanged: any) => {
       this.endDateChanged.emit(itemChanged);
     });
-    this.picker.rangeClicked.asObservable().subscribe((range: any) => {
+
+    this.componentRef.instance.rangeClicked.asObservable().pipe(takeUntil(this.destroy$)).subscribe((range: any) => {
       this.rangeClicked.emit(range);
     });
-    this.picker.datesUpdated.asObservable().subscribe((range: any) => {
+
+    this.componentRef.instance.datesUpdated.asObservable().pipe(takeUntil(this.destroy$)).subscribe((range: any) => {
       this.datesUpdated.emit(range);
     });
-    this.picker.choosedDate.asObservable().subscribe((change: any) => {
+
+    this.componentRef.instance.chosenDate.asObservable().pipe(takeUntil(this.destroy$)).subscribe((change: any) => {
       if (change) {
         const value = {};
         value[this._startKey] = change.startDate;
@@ -195,186 +246,99 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         if (typeof change.chosenLabel === 'string') {
           this._el.nativeElement.value = change.chosenLabel;
         }
+
+        this.hide();
       }
     });
-    this.picker.firstMonthDayClass = this.firstMonthDayClass;
-    this.picker.lastMonthDayClass = this.lastMonthDayClass;
-    this.picker.emptyWeekRowClass = this.emptyWeekRowClass;
-    this.picker.firstDayOfNextMonthClass = this.firstDayOfNextMonthClass;
-    this.picker.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass;
-    this.picker.drops = this.drops;
-    this.picker.opens = this.opens;
-    this.localeDiffer = this.differs.find(this.locale).create();
-    this.picker.closeOnAutoApply = this.closeOnAutoApply;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void  {
-    for (const change in changes) {
-      if (changes.hasOwnProperty(change)) {
-        if (this.notForChangesProperty.indexOf(change) === -1) {
-          this.picker[change] = changes[change].currentValue;
-        }
-      }
-    }
-  }
-
-  ngDoCheck() {
-    if (this.localeDiffer) {
-      const changes = this.localeDiffer.diff(this.locale);
-      if (changes) {
-        this.picker.updateLocale(this.locale);
-      }
-    }
-  }
-
-  onBlur() {
-    this._onTouched();
-  }
-
-  open(event?: any) {
-    this.picker.show(event);
-    setTimeout(() => {
-      this.setPosition();
+    
+    // Close the DateRangePicker when the backdrop is clicked
+    this.overlayRef.backdropClick().pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.hide();
     });
   }
 
-  hide(e?) {
-    this.picker.hide(e);
+  hide(): void {
+    if(this.overlayRef) {
+      this.overlayRef.dispose();
+      this.destroy$.next();
+      this.overlayRef = null;
+      this.componentRef = null;
+    }
   }
-  toggle(e?) {
-    if (this.picker.isShown) {
-      this.hide(e);
+
+  toggle(): void {
+    if (this.overlayRef) {
+      this.hide();
     } else {
-      this.open(e);
+      this.open();
     }
   }
 
-  clear() {
-    this.picker.clear();
+  clear(): void {
+    if(this.componentRef) {
+      this.componentRef.instance.clear();
+    }
   }
 
-  writeValue(value) {
+  writeValue(value): void {
     this.setValue(value);
   }
-  registerOnChange(fn) {
+
+  registerOnChange(fn): void {
     this._onChange = fn;
   }
-  registerOnTouched(fn) {
+
+  registerOnTouched(fn): void {
     this._onTouched = fn;
   }
-  private setValue(val: any) {
-    if (val) {
-      this.value = val;
-      if (val[this._startKey]) {
-        this.picker.setStartDate(val[this._startKey]);
+
+  private setValue(val: any): void {
+    if(this.componentRef) {
+      if (val) {
+        this.value = val;
+        if (val[this._startKey]) {
+          this.componentRef.instance.setStartDate(val[this._startKey]);
+        }
+        if (val[this._endKey]) {
+          this.componentRef.instance.setEndDate(val[this._endKey]);
+        }
+        this.componentRef.instance.calculateChosenLabel();
+        if (this.componentRef.instance.chosenLabel) {
+          this._el.nativeElement.value = this.componentRef.instance.chosenLabel;
+        }
+      } else {
+        this.componentRef.instance.clear();
       }
-      if (val[this._endKey]) {
-        this.picker.setEndDate(val[this._endKey]);
-      }
-      this.picker.calculateChosenLabel();
-      if (this.picker.chosenLabel) {
-        this._el.nativeElement.value = this.picker.chosenLabel;
-      }
-    } else {
-      this.picker.clear();
     }
   }
-  /**
-   * Set position of the calendar
-   */
-  setPosition() {
-    let style;
-    let containerTop;
-    const container = this.picker.pickerContainer.nativeElement;
-    const element = this._el.nativeElement;
-    if (this.drops && this.drops === 'up') {
-      containerTop = (element.offsetTop - container.clientHeight) + 'px';
-    } else {
-      containerTop = 'auto';
-    }
-    if (this.opens === 'left') {
-      style = {
-          top: containerTop,
-          left: (element.offsetLeft - container.clientWidth + element.clientWidth) + 'px',
-          right: 'auto'
-      };
-    } else if (this.opens === 'center') {
-        style = {
-          top: containerTop,
-          left: (element.offsetLeft  +  element.clientWidth / 2
-                  - container.clientWidth / 2) + 'px',
-          right: 'auto'
-        };
-    } else if (this.opens === 'right') {
-        style = {
-          top: containerTop,
-          left: element.offsetLeft  + 'px',
-          right: 'auto'
-        };
-    } else {
-      const position = element.offsetLeft  +  element.clientWidth / 2 - container.clientWidth / 2;
-      if (position < 0) {
-        style = {
-          top: containerTop,
-          left: element.offsetLeft + 'px',
-          right: 'auto'
-        };
-      }
-      else {
-        style = {
-            top: containerTop,
-            left: position + 'px',
-            right: 'auto'
-        };
-      }
-    }
-    if (style) {
-      this._renderer.setStyle(container, 'top', style.top);
-      this._renderer.setStyle(container, 'left', style.left);
-      this._renderer.setStyle(container, 'right', style.right);
-    }
-  }
-  inputChanged(e) {
+  
+  inputChanged(e): void {
     if (e.target.tagName.toLowerCase() !== 'input') {
       return;
     }
+    
     if (!e.target.value.length) {
       return;
     }
-    const dateString = e.target.value.split(this.picker.locale.separator);
-    let start = null, end = null;
-    if (dateString.length === 2) {
-      start = moment(dateString[0], this.picker.locale.format);
-      end = moment(dateString[1], this.picker.locale.format);
-    }
-    if (this.singleDatePicker || start === null || end === null) {
-      start = moment(e.target.value, this.picker.locale.format);
-      end = start;
-    }
-    if (!start.isValid() || !end.isValid()) {
-      return;
-    }
-    this.picker.setStartDate(start);
-    this.picker.setEndDate(end);
-    this.picker.updateView();
 
-  }
-  /**
-   * For click outside of the calendar's container
-   * @param event event object
-   */
-  @HostListener('document:click', ['$event'])
-  outsideClick(event): void {
-    if (!event.target) {
-      return;
+    if(this.componentRef) {
+      const dateString = e.target.value.split(this.componentRef.instance.locale.separator);
+      let start = null, end = null;
+      if (dateString.length === 2) {
+        start = moment(dateString[0], this.componentRef.instance.locale.format);
+        end = moment(dateString[1], this.componentRef.instance.locale.format);
+      }
+      if (this.singleDatePicker || start === null || end === null) {
+        start = moment(e.target.value, this.componentRef.instance.locale.format);
+        end = start;
+      }
+      if (!start.isValid() || !end.isValid()) {
+        return;
+      }
+      this.componentRef.instance.setStartDate(start);
+      this.componentRef.instance.setEndDate(end);
+      this.componentRef.instance.updateView();
     }
 
-    if (event.target.classList.contains('ngx-daterangepicker-action')) {
-      return;
-    }
-
-    if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.hide();
-    }
   }
 }

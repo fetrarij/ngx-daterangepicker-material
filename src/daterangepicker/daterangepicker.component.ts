@@ -1,11 +1,9 @@
-import {
-    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef, ViewEncapsulation, ChangeDetectorRef, Inject
-} from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { FormControl} from '@angular/forms';
-import { LocaleConfig } from './daterangepicker.config';
-
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _moment from 'moment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 const moment = _moment;
 
@@ -28,13 +26,19 @@ export enum SideEnum {
         multi: true
     }]
 })
-export class DaterangepickerComponent implements OnInit {
+export class DaterangepickerComponent implements OnInit, OnDestroy {
     private _old: {start: any, end: any} = {start: null, end: null};
     chosenLabel: string;
     calendarVariables: {left: any, right: any} = {left: {}, right: {}};
     tooltiptext = [];  // for storing tooltiptext
     timepickerVariables: {left: any, right: any} = {left: {}, right: {}};
+    
     daterangepicker: {start: FormControl, end: FormControl} = {start: new FormControl(), end: new FormControl()};
+    fromMonthControl = new FormControl();
+    fromYearControl = new FormControl();
+    toMonthControl = new FormControl();
+    toYearControl = new FormControl();
+
     applyBtn: {disabled: boolean} = {disabled: false};
     @Input()
     startDate = moment().startOf('day');
@@ -134,7 +138,7 @@ export class DaterangepickerComponent implements OnInit {
     @Input() drops: string;
     @Input() opens: string;
     @Input() closeOnAutoApply = true;
-    @Output() choosedDate: EventEmitter<Object>;
+    @Output() chosenDate: EventEmitter<Object>;
     @Output() rangeClicked: EventEmitter<Object>;
     @Output() datesUpdated: EventEmitter<Object>;
     @Output() startDateChanged: EventEmitter<Object>;
@@ -146,14 +150,32 @@ export class DaterangepickerComponent implements OnInit {
         private _ref: ChangeDetectorRef,
         private _localeService: LocaleService
     ) {
-        this.choosedDate = new EventEmitter();
+        this.chosenDate = new EventEmitter();
         this.rangeClicked = new EventEmitter();
         this.datesUpdated = new EventEmitter();
         this.startDateChanged = new EventEmitter();
         this.endDateChanged = new EventEmitter();
     }
 
-    ngOnInit() {
+    destroy$ = new Subject();
+
+    ngOnInit(): void {
+        this.fromMonthControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(month => {
+            this.monthChanged(month, SideEnum.left)
+        })
+
+        this.fromYearControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(year => {
+            this.yearChanged(year, SideEnum.left)
+        })
+
+        this.toMonthControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(month => {
+            this.monthChanged(month, SideEnum.right)
+        })
+
+        this.toYearControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(year => {
+            this.yearChanged(year, SideEnum.right)
+        })
+
         this._buildLocale();
         const daysOfWeek = [...this.locale.daysOfWeek];
         this.locale.firstDay = this.locale.firstDay % 7;
@@ -172,6 +194,7 @@ export class DaterangepickerComponent implements OnInit {
         }
 
         if (this.startDate && this.timePicker) {
+            
           this.setStartDate(this.startDate);
           this.renderTimePicker(SideEnum.left);
         }
@@ -186,6 +209,11 @@ export class DaterangepickerComponent implements OnInit {
         this.renderCalendar(SideEnum.right);
         this.renderRanges();
     }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+    }
+
     renderRanges() {
         this.rangesArray = [];
         let start, end;
@@ -358,7 +386,7 @@ export class DaterangepickerComponent implements OnInit {
         }
         this.timepickerVariables[side].selected = selected;
     }
-    renderCalendar(side: SideEnum) { // side enum
+    renderCalendar(side: SideEnum): void {
         const mainCalendar: any = ( side === SideEnum.left ) ? this.leftCalendar : this.rightCalendar;
         const month = mainCalendar.month.month();
         const year = mainCalendar.month.year();
@@ -474,7 +502,17 @@ export class DaterangepickerComponent implements OnInit {
                 monthArrays: Array.from(Array(12).keys()),
                 yearArrays: years
             };
+
+            if(side === SideEnum.left) {
+                this.fromMonthControl.setValue(currentMonth, { emitEvent: false });
+                this.fromYearControl.setValue(currentYear, { emitEvent: false });
+            } else if(side === SideEnum.right) {
+                this.toMonthControl.setValue(currentMonth, { emitEvent: false });
+                this.toYearControl.setValue(currentYear, { emitEvent: false });
+            }
         }
+
+            
 
         this._buildCells(calendar, side);
     }
@@ -494,13 +532,11 @@ export class DaterangepickerComponent implements OnInit {
             this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
         }
 
-
         if (this.minDate && this.startDate.isBefore(this.minDate)) {
             this.startDate = this.minDate.clone();
             if (this.timePicker && this.timePickerIncrement) {
                 this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
             }
-
         }
 
         if (this.maxDate && this.startDate.isAfter(this.maxDate)) {
@@ -619,6 +655,7 @@ export class DaterangepickerComponent implements OnInit {
         if (this.endDate === null) { return; }
         this.calculateChosenLabel();
     }
+
     updateElement() {
         const format = this.locale.displayFormat ? this.locale.displayFormat : this.locale.format;
         if (!this.singleDatePicker && this.autoUpdateInput) {
@@ -637,13 +674,10 @@ export class DaterangepickerComponent implements OnInit {
         }
     }
 
-    remove() {
-        this.isShown = false;
-    }
     /**
      * this should calculate the label
      */
-    calculateChosenLabel () {
+    calculateChosenLabel (): void {
         if (!this.locale || !this.locale.separator) {
             this._buildLocale();
         }
@@ -692,6 +726,7 @@ export class DaterangepickerComponent implements OnInit {
             this.endDate = this.startDate.clone();
             this.calculateChosenLabel();
         }
+
         if (this.isInvalidDate && this.startDate && this.endDate) {
             // get if there are invalid date between range
             const d = this.startDate.clone();
@@ -704,8 +739,9 @@ export class DaterangepickerComponent implements OnInit {
                 d.add(1, 'days');
             }
         }
+
         if (this.chosenLabel) {
-            this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
+            this.chosenDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
         }
 
         this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
@@ -714,7 +750,7 @@ export class DaterangepickerComponent implements OnInit {
         }
     }
 
-    clickCancel(e) {
+    clickCancel(): void {
         this.startDate = this._old.start;
         this.endDate = this._old.end;
         if (this.inline) {
@@ -724,22 +760,20 @@ export class DaterangepickerComponent implements OnInit {
     }
     /**
      * called when month is changed
-     * @param monthEvent get value in event.target.value
+     * @param month month represented by a number (0 through 11)
      * @param side left or right
      */
-    monthChanged(monthEvent: any, side: SideEnum) {
+    monthChanged(month: number, side: SideEnum) {
         const year = this.calendarVariables[side].dropdowns.currentYear;
-        const month = parseInt(monthEvent.target.value, 10);
         this.monthOrYearChanged(month, year, side);
     }
     /**
      * called when year is changed
-     * @param yearEvent get value in event.target.value
+     * @param year year represented by a number
      * @param side left or right
      */
-    yearChanged(yearEvent: any, side: SideEnum) {
+    yearChanged(year: number, side: SideEnum) {
         const month = this.calendarVariables[side].dropdowns.currentMonth;
-        const year = parseInt(yearEvent.target.value, 10);
         this.monthOrYearChanged(month, year, side);
     }
     /**
@@ -1022,7 +1056,7 @@ export class DaterangepickerComponent implements OnInit {
         this.updateView();
     }
 
-    hide(e?) {
+    hide(): void {
         if (!this.isShown) {
             return;
         }
@@ -1045,7 +1079,6 @@ export class DaterangepickerComponent implements OnInit {
         this.updateElement();
         this.isShown = false;
         this._ref.detectChanges();
-
     }
 
     /**
@@ -1075,7 +1108,7 @@ export class DaterangepickerComponent implements OnInit {
     clear() {
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
-        this.choosedDate.emit({chosenLabel: '', startDate: null, endDate: null});
+        this.chosenDate.emit({chosenLabel: '', startDate: null, endDate: null});
         this.datesUpdated.emit({startDate: null, endDate: null});
         this.hide();
     }

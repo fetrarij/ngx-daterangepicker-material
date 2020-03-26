@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
@@ -6,7 +6,7 @@ import * as moment from 'moment';
   templateUrl: './custom-ranges.component.html',
   styleUrls: ['./custom-ranges.component.scss']
 })
-export class CustomRangesComponent implements OnInit {
+export class CustomRangesComponent {
   selected: any;
   alwaysShowCalendars: boolean;
   showRangeLabelOnInput: boolean;
@@ -74,8 +74,7 @@ export class CustomRangesComponent implements OnInit {
     console.log('[datesUpdated] range is : ', range);
   }
 
-  ngOnInit() {}
-  choosedDateTime(e) {
+  chosenDateTime(e): void {
     this.inlineDateTime = e;
   }
 }

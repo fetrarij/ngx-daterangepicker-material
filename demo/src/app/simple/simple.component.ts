@@ -1,18 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import { DaterangepickerComponent, DaterangepickerDirective } from '../../../../src/daterangepicker';
+import { DaterangepickerDirective } from '../../../../src/daterangepicker';
 
 @Component({
   selector: 'simple',
   templateUrl: './simple.component.html',
   styleUrls: ['./simple.component.scss']
 })
-export class SimpleComponent implements OnInit {
+export class SimpleComponent {
   selected: {startDate: moment.Moment, endDate: moment.Moment};
   @ViewChild(DaterangepickerDirective, { static: true }) pickerDirective: DaterangepickerDirective;
   inlineDate: any;
   inlineDateTime: any;
-  picker: DaterangepickerComponent;
+
   constructor() {
     this.selected = {
       startDate: moment('2015-11-18T00:00Z'),
@@ -20,27 +20,27 @@ export class SimpleComponent implements OnInit {
     }
    }
 
-  ngOnInit() {
-    this.picker = this.pickerDirective.picker;
-  }
-  ngModelChange(e) {
+  ngModelChange(e): void {
     console.log(e);
   }
-  change(e) {
+
+  change(e): void {
     console.log(e);
   }
-  choosedDate(e) {
+
+  chosenDate(e): void {
      this.inlineDate = e;
   }
 
-  choosedDateTime(e) {
+  chosenDateTime(e): void {
     this.inlineDateTime = e;
   }
-  open(e) {
-    this.pickerDirective.open(e);
+
+  open(): void {
+    this.pickerDirective.open();
   }
-  clear(e) {
-    // this.picker.clear(); // we can do
-    this.selected = null; // now we can do
+
+  clear(e): void {
+    this.selected = null;
   }
 }
