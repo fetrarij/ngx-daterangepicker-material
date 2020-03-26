@@ -1,10 +1,10 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { NgxDaterangepickerMd } from '../../../../src/daterangepicker';
-
 import { By } from '@angular/platform-browser';
+import { NgxDaterangepickerMd } from '../../../../src/daterangepicker';
 import { SimpleComponent } from './simple.component';
+
 
 describe('SimpleComponent', () => {
   let component: SimpleComponent;
@@ -32,6 +32,7 @@ describe('SimpleComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
   /*it('should click on input and open daterange', () => {
     fixture.whenStable().then(() => {
       component = fixture.componentInstance;
@@ -40,6 +41,7 @@ describe('SimpleComponent', () => {
       expect(component.picker.isShown).toBeTruthy();
     });
   });*/
+  
   it('should call change and ngModelChange on select date range', fakeAsync(() => {
       spyOn(component, 'change');
       spyOn(component, 'ngModelChange');
