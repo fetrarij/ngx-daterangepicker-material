@@ -16,6 +16,7 @@ import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
 import { CustomRangesComponent } from './custom-ranges/custom-ranges.component';
 import { FullComponent } from './full/full.component';
+import { NavBarModule } from './navbar/navbar';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 import { SimpleComponent } from './simple/simple.component';
 import { SingleDatepickerComponent } from './single-datepicker/single-datepicker.component';
@@ -29,7 +30,7 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
         SingleDatepickerComponent,
         CustomRangesComponent,
         ReactiveFormComponent,
-        TimepickerComponent,
+        TimepickerComponent
     ],
     imports: [
         BrowserModule,
@@ -44,12 +45,13 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
         MatGridListModule,
         MatInputModule,
         MatSelectModule,
+        NavBarModule,
         NgxDaterangepickerMd.forRoot({
             applyLabel: 'Okay',
-            firstDay: 3,
+            firstDay: 3
         }),
-        RouterModule.forRoot(AppRoutes),
+        RouterModule.forRoot(AppRoutes)
     ],
-    bootstrap: [AppComponent],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}

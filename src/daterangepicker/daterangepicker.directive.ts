@@ -32,6 +32,7 @@ const moment = _moment;
         '(blur)': 'onBlur()',
         '(click)': 'open()',
         '(keyup)': 'inputChanged($event)',
+        autocomplete: 'off',
     },
     providers: [
         {

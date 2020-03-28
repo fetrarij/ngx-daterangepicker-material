@@ -23,7 +23,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run build-themes && ng serve",
     "demo:build": "ng build --prod",
     "test": "./node_modules/.bin/ng test --watch=false",
     "lint": "ng lint",
@@ -31,6 +31,7 @@
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
     "gh-pages": "ng build --prod --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
     "build": "ng-packagr -p package.json",
+    "build-themes": "bash ./tools/build-themes.sh",
     "prettier": "prettier --write '**/*.{html,js,ts,css,scss,less,md,json}'",
     "prettier-check": "prettier --list-different '**/*.{html,js,ts,css,scss,less,md,json}'"
   },

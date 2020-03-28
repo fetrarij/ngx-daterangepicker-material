@@ -1,5 +1,7 @@
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~@angular/material/theming';
+
+@import './app/navbar/navbar-theme';
+
 .mycustomdate {
     background-color: #ccc8c8 !important;
     border-radius: 1px !important;
@@ -29,3 +31,44 @@ body {
     margin: 0;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
+// Styles for the docs app that are based on the current theme.
+@mixin material-docs-app-theme($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+    $next-theme: mat-palette($mat-red);
+
+    .docs-app-background {
+        background: mat-color($background, background);
+    }
+
+    .docs-primary-header {
+        background: mat-color($primary);
+
+        h1 {
+            color: mat-color($primary, default-contrast);
+        }
+    }
+
+    .docs-footer {
+        background: mat-color($primary);
+        color: mat-color($primary, default-contrast);
+    }
+
+    .is-next-version {
+        background: mat-color($next-theme, 900) !important;
+    }
+
+    @include nav-bar-theme($theme);
+}
+
+// Define the light theme.
+$primary: mat-palette($mat-indigo);
+$accent: mat-palette($mat-pink, A200, A100, A400);
+
+$theme: mat-light-theme($primary, $accent);
+
+@include material-docs-app-theme($theme);
