@@ -1,20 +1,24 @@
 <mat-toolbar>Single datepicker with custom invalid date & custom class on date / with french language</mat-toolbar>
 <div class="row">
-  <div class="col s6">
-    <input type="text"
-    ngxDaterangepickerMd
-    [isInvalidDate]="isInvalidDate"
-    [isCustomDate]="isCustomDate"
-    [locale]="locale"
-    [(ngModel)]="selected" [singleDatePicker]="true" [autoApply]="true" class="form-control"/>
-  </div>
+    <div class="col s6">
+        <input
+            type="text"
+            ngxDaterangepickerMd
+            [isInvalidDate]="isInvalidDate"
+            [isCustomDate]="isCustomDate"
+            [locale]="locale"
+            [(ngModel)]="selected"
+            [singleDatePicker]="true"
+            [autoApply]="true"
+            class="form-control"
+        />
+    </div>
 </div>
 
-
 <div class="row">
-  <div class="col s6">
-    <b>Html code:</b>
-      <pre class="prettyprint"><code class="html">&lt;input type="text"
+    <div class="col s6">
+        <b>Html code:</b>
+        <pre class="prettyprint"><code class="html">&lt;input type="text"
   ngxDaterangepickerMd
   [isInvalidDate]="isInvalidDate"
   [isCustomDate]="isCustomDate"
@@ -23,11 +27,10 @@
   [singleDatePicker]="true"
   [autoApply]="true"/&gt;</code>
     </pre>
-    
-  </div>
-  <div class="col s6">
-    <b>Typescript code:</b>
-      <pre class="prettyprint"><code class="javascript">
+    </div>
+    <div class="col s6">
+        <b>Typescript code:</b>
+        <pre class="prettyprint"><code class="javascript">
 import * as moment from 'moment';
 import * as localization from 'moment/locale/fr';
 moment.locale('fr', localization);
@@ -55,6 +58,5 @@ export class SingleDatepickerComponent {{ '{' }}
   }
 }</code>
     </pre>
-    
-  </div>
+    </div>
 </div>

@@ -6,28 +6,23 @@ import { NgxDaterangepickerMd } from '../../../../src/daterangepicker';
 import { CustomRangesComponent } from './custom-ranges.component';
 
 describe('CustomRangesComponent', () => {
-  let component: CustomRangesComponent;
-  let fixture: ComponentFixture<CustomRangesComponent>;
+    let component: CustomRangesComponent;
+    let fixture: ComponentFixture<CustomRangesComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CustomRangesComponent ],
-      imports: [
-        FormsModule,
-        NgxDaterangepickerMd.forRoot(),
-        MatToolbarModule
-      ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [CustomRangesComponent],
+            imports: [FormsModule, NgxDaterangepickerMd.forRoot(), MatToolbarModule],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CustomRangesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(CustomRangesComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

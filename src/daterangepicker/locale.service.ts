@@ -3,13 +3,13 @@ import { LOCALE_CONFIG, DefaultLocaleConfig, LocaleConfig } from './daterangepic
 
 @Injectable()
 export class LocaleService {
-  constructor(@Inject(LOCALE_CONFIG) private _config: LocaleConfig) {}
+    constructor(@Inject(LOCALE_CONFIG) private _config: LocaleConfig) {}
 
-  get config() {
-    if (!this._config) {
-      return DefaultLocaleConfig;
+    get config() {
+        if (!this._config) {
+            return DefaultLocaleConfig;
+        }
+
+        return { ...DefaultLocaleConfig, ...this._config };
     }
-
-    return {... DefaultLocaleConfig, ...this._config};
-  }
 }

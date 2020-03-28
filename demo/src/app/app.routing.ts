@@ -8,9 +8,9 @@ import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 
 export const AppRoutes: Routes = [
     {
-         path: '',
-         redirectTo: 'simple',
-         pathMatch: 'full'
+        path: '',
+        redirectTo: 'simple',
+        pathMatch: 'full',
     },
     {
         path: 'simple',
@@ -35,5 +35,5 @@ export const AppRoutes: Routes = [
     {
         path: 'reactive-forms',
         component: ReactiveFormComponent,
-    }
+    },
 ];

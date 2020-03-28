@@ -11,32 +11,18 @@ import { DaterangepickerDirective } from './daterangepicker.directive';
 import { LocaleService } from './locale.service';
 
 @NgModule({
-  declarations: [
-    DaterangepickerComponent,
-    DaterangepickerDirective
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSelectModule,
-    OverlayModule
-  ],
-  exports: [
-    DaterangepickerComponent,
-    DaterangepickerDirective
-  ]
+    declarations: [DaterangepickerComponent, DaterangepickerDirective],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, MatSelectModule, OverlayModule],
+    exports: [DaterangepickerComponent, DaterangepickerDirective],
 })
 export class NgxDaterangepickerMd {
-  static forRoot(config: LocaleConfig = {}): ModuleWithProviders<NgxDaterangepickerMd> {
-    return {
-      ngModule: NgxDaterangepickerMd,
-      providers: [
-        { provide: LOCALE_CONFIG, useValue: config},
-        { provide: LocaleService, useClass: LocaleService, deps: [LOCALE_CONFIG]}
-      ]
-    };
-  }
+    static forRoot(config: LocaleConfig = {}): ModuleWithProviders<NgxDaterangepickerMd> {
+        return {
+            ngModule: NgxDaterangepickerMd,
+            providers: [
+                { provide: LOCALE_CONFIG, useValue: config },
+                { provide: LocaleService, useClass: LocaleService, deps: [LOCALE_CONFIG] },
+            ],
+        };
+    }
 }

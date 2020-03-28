@@ -3,44 +3,44 @@ import * as moment from 'moment';
 import { DaterangepickerDirective } from '../../../../src/daterangepicker';
 
 @Component({
-  selector: 'simple',
-  templateUrl: './simple.component.html',
-  styleUrls: ['./simple.component.scss']
+    selector: 'simple',
+    templateUrl: './simple.component.html',
+    styleUrls: ['./simple.component.scss'],
 })
 export class SimpleComponent {
-  selected: {startDate: moment.Moment, endDate: moment.Moment};
-  @ViewChild(DaterangepickerDirective, { static: true }) pickerDirective: DaterangepickerDirective;
-  inlineDate: any;
-  inlineDateTime: any;
+    selected: { startDate: moment.Moment; endDate: moment.Moment };
+    @ViewChild(DaterangepickerDirective, { static: true }) pickerDirective: DaterangepickerDirective;
+    inlineDate: any;
+    inlineDateTime: any;
 
-  constructor() {
-    this.selected = {
-      startDate: moment('2015-11-18T00:00Z'),
-      endDate: moment('2015-11-26T00:00Z')
+    constructor() {
+        this.selected = {
+            startDate: moment('2015-11-18T00:00Z'),
+            endDate: moment('2015-11-26T00:00Z'),
+        };
     }
-   }
 
-  ngModelChange(e): void {
-    console.log(e);
-  }
+    ngModelChange(e): void {
+        console.log(e);
+    }
 
-  change(e): void {
-    console.log(e);
-  }
+    change(e): void {
+        console.log(e);
+    }
 
-  chosenDate(e): void {
-     this.inlineDate = e;
-  }
+    chosenDate(e): void {
+        this.inlineDate = e;
+    }
 
-  chosenDateTime(e): void {
-    this.inlineDateTime = e;
-  }
+    chosenDateTime(e): void {
+        this.inlineDateTime = e;
+    }
 
-  open(): void {
-    this.pickerDirective.open();
-  }
+    open(): void {
+        this.pickerDirective.open();
+    }
 
-  clear(e): void {
-    this.selected = null;
-  }
+    clear(e): void {
+        this.selected = null;
+    }
 }

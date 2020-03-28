@@ -30,7 +30,9 @@
     "e2e": "ng e2e",
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
     "gh-pages": "ng build --prod --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
-    "build": "ng-packagr -p package.json"
+    "build": "ng-packagr -p package.json",
+    "prettier": "prettier --write '**/*.{html,js,ts,css,scss,less,md,json}'",
+    "prettier-check": "prettier --list-different '**/*.{html,js,ts,css,scss,less,md,json}'"
   },
   "author": "Fetrarijaona R.",
   "repository": {
@@ -70,6 +72,7 @@
     "materialize-css": "^1.0.0",
     "moment": "^2.22.2",
     "ng-packagr": "^9.0.0",
+    "prettier": "^2.0.2",
     "protractor": "~5.4.0",
     "rimraf": "^2.6.1",
     "rxjs": "^6.3.3",
