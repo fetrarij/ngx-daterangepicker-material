@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LocaleConfig } from '../../../../src/daterangepicker';
 
 @Component({
@@ -38,11 +38,11 @@ export class ReactiveFormComponent {
         });
     }
 
-    submit() {
+    submit(): void {
         console.log(this.form.value);
     }
 
-    submit2() {
+    submit2(): void {
         console.log(this.form2.value);
     }
 }

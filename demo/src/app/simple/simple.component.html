@@ -17,13 +17,8 @@
     </div>
     <div class="col s6 right-align">
         <br />
-        <button type="button" class="ngx-daterangepicker-action waves-effect waves-light btn" (click)="open()">open from a button</button>
-        <button
-            type="button"
-            *ngIf="selected && selected.startDate"
-            class="ngx-daterangepicker-action waves-effect waves-light btn red"
-            (click)="clear($event)"
-        >
+        <button mat-raised-button color="primary" (click)="open()">Open from a button</button>
+        <button *ngIf="selected && selected.startDate" mat-raised-button (click)="clear($event)">
             Clear
         </button>
     </div>
@@ -37,10 +32,12 @@
 
         <b>Or with ngModel :</b>
 
-        <pre class="prettyprint"><code class="html">&lt;input type="text" ngxDaterangepickerMd
+        <pre class="prettyprint">
+            <code class="html">&lt;input type="text" ngxDaterangepickerMd
         [lockStartDate]="false"
 [(ngModel)]="selected" placeholder="Choose date"
 (ngModelChange)="ngModelChange($event)"/&gt;</code>
+
     </pre>
     </div>
 </div>

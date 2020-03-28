@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { NgxDaterangepickerMd } from './../../../src/daterangepicker';
 import { AppComponent } from './app.component';
@@ -33,7 +33,7 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
     ],
     imports: [
         BrowserModule,
-        NoopAnimationsModule,
+        BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         MatButtonModule,
@@ -50,7 +50,6 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
         }),
         RouterModule.forRoot(AppRoutes),
     ],
-    providers: [],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
