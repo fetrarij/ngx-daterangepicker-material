@@ -4,6 +4,7 @@
         <mat-form-field>
             <input
                 type="text"
+                name="daterangepicker"
                 ngxDaterangepickerMd
                 matInput
                 [(ngModel)]="selected"
@@ -46,8 +47,9 @@
     <div class="col s12">
         <h2>Inline daterangepicker</h2>
         <ngx-daterangepicker-material
-            (chosenDate)="chosenDate($event)"
             [locale]="{ applyLabel: 'Done', firstDay: 1 }"
+            name="inline-daterangepicker"
+            (chosenDate)="chosenDate($event)"
         ></ngx-daterangepicker-material>
         <br />
         Chosen date: {{ inlineDate | json }}
@@ -58,6 +60,7 @@
     <div class="col s12">
         <h2>Inline daterangepicker with time and auto-apply</h2>
         <ngx-daterangepicker-material
+            name="inline-daterangepicker-auto"
             [autoApply]="true"
             [timePicker24Hour]="true"
             [linkedCalendars]="true"

@@ -1,7 +1,10 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxDaterangepickerMd } from '../../../../src/daterangepicker';
 import { SimpleComponent } from './simple.component';
 
@@ -13,7 +16,14 @@ describe('SimpleComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [SimpleComponent],
-            imports: [FormsModule, NgxDaterangepickerMd.forRoot(), MatToolbarModule],
+            imports: [
+                FormsModule,
+                NgxDaterangepickerMd.forRoot(),
+                NoopAnimationsModule,
+                MatToolbarModule,
+                MatInputModule,
+                MatFormFieldModule,
+            ],
         }).compileComponents();
     }));
 
@@ -27,38 +37,19 @@ describe('SimpleComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    /*it('should click on input and open daterange', () => {
-    fixture.whenStable().then(() => {
-      component = fixture.componentInstance;
-      fixture.debugElement.queryAll(By.css(opener))[0].nativeElement.click();
-      fixture.detectChanges();
-      expect(component.picker.isShown).toBeTruthy();
-    });
-  });*/
-
-    it('should call change and ngModelChange on select date range', fakeAsync(() => {
-        spyOn(component, 'change');
-        spyOn(component, 'ngModelChange');
+    it('should call chosenDate() when a valid date range was selected', fakeAsync(() => {
+        spyOn(component, 'chosenDate');
         fixture.debugElement.queryAll(By.css(opener))[0].nativeElement.click();
+        tick(200);
+
         let table = fixture.nativeElement.querySelectorAll('table');
         let trs = table[0].querySelectorAll('tr');
         let tds = trs[4].querySelectorAll('td');
-        setTimeout(() => {
-            tds[0].click();
-            fixture.detectChanges();
-        }, 500);
-        tick(500);
-        setTimeout(() => {
-            tds[4].click();
-            fixture.detectChanges();
-        }, 500);
-        tick(500);
-        setTimeout(() => {
-            fixture.debugElement.queryAll(By.css('button'))[1].nativeElement.click();
-            fixture.detectChanges();
-        }, 200);
-        tick(200);
-        expect(component.change).toHaveBeenCalled();
-        expect(component.ngModelChange).toHaveBeenCalled();
+
+        tds[0].click();
+        tds[4].click();
+        fixture.nativeElement.querySelector('ngx-daterangepicker-material button[color="primary"]').click();
+
+        expect(component.chosenDate).toHaveBeenCalled();
     }));
 });

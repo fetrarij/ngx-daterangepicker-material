@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
 
 @Component({
@@ -28,18 +29,19 @@ export class CustomRangesComponent {
         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
         'Last 3 Month': [moment().subtract(3, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
     };
-
-    constructor() {
-        this.maxDate = moment().add(2, 'weeks');
-        this.minDate = moment().subtract(3, 'days');
-
-        this.alwaysShowCalendars = true;
-        this.keepCalendarOpeningWithRange = true;
-        this.showRangeLabelOnInput = true;
-        this.selected = {
+    form = this.formBuilder.group({
+        selected: {
             startDate: moment().subtract(1, 'days').set({ hours: 0, minutes: 0 }),
             endDate: moment().subtract(1, 'days').set({ hours: 23, minutes: 59 }),
-        };
+        },
+        alwaysShowCalendars: true,
+        keepCalendarOpeningWithRange: true,
+        showRangeLabelOnInput: true,
+    });
+
+    constructor(private formBuilder: FormBuilder) {
+        this.maxDate = moment().add(2, 'weeks');
+        this.minDate = moment().subtract(3, 'days');
     }
 
     isInvalidDate = (m: moment.Moment) => {
