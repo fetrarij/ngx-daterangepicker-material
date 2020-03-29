@@ -3,81 +3,68 @@
 <mat-card>
     <div class="row">
         <div class="col s6">
-            <input
-                type="text"
-                matInput
-                ngxDaterangepickerMd
-                [autoApply]="options.autoApply"
-                [linkedCalendars]="options.linkedCalendars"
-                [singleDatePicker]="options.singleDatePicker"
-                applyLabel="Okay"
-                [locale]="locale"
-                [showDropdowns]="true"
-                startKey="start"
-                endKey="end"
-                [(ngModel)]="selected"
-                (click)="click()"
-                [minDate]="minDate"
-                [maxDate]="maxDate"
-                [showWeekNumbers]="options.showWeekNumbers"
-                [showCancel]="options.showCancel"
-                [showClearButton]="options.showClearButton"
-                [showISOWeekNumbers]="options.showISOWeekNumbers"
-                [customRangeDirection]="options.customRangeDirection"
-                [lockStartDate]="options.lockStartDate"
-                [closeOnAutoApply]="options.closeOnAutoApply"
-                firstMonthDayClass="first-day"
-                lastMonthDayClass="last-day"
-                emptyWeekRowClass="empty-week"
-                lastDayOfPreviousMonthClass="last-previous-day"
-                firstDayOfNextMonthClass="first-next-day"
-                [opens]="opens"
-                [drops]="drops"
-                [timePicker]="timePicker"
-                [dateLimit]="dateLimit"
-                name="daterange"
-                (startDateChanged)="eventClicked($event)"
-                (endDateChanged)="eventClicked($event)"
-            />
+            <mat-form-field>
+                <input
+                    type="text"
+                    matInput
+                    ngxDaterangepickerMd
+                    [autoApply]="options.autoApply"
+                    [linkedCalendars]="options.linkedCalendars"
+                    [singleDatePicker]="options.singleDatePicker"
+                    applyLabel="Okay"
+                    [locale]="locale"
+                    [showDropdowns]="true"
+                    startKey="start"
+                    endKey="end"
+                    [(ngModel)]="selected"
+                    (click)="click()"
+                    [minDate]="minDate"
+                    [maxDate]="maxDate"
+                    [showWeekNumbers]="options.showWeekNumbers"
+                    [showCancel]="options.showCancel"
+                    [showClearButton]="options.showClearButton"
+                    [showISOWeekNumbers]="options.showISOWeekNumbers"
+                    [customRangeDirection]="options.customRangeDirection"
+                    [lockStartDate]="options.lockStartDate"
+                    [closeOnAutoApply]="options.closeOnAutoApply"
+                    firstMonthDayClass="first-day"
+                    lastMonthDayClass="last-day"
+                    emptyWeekRowClass="empty-week"
+                    lastDayOfPreviousMonthClass="last-previous-day"
+                    firstDayOfNextMonthClass="first-next-day"
+                    [opens]="opens"
+                    [drops]="drops"
+                    [timePicker]="timePicker"
+                    [dateLimit]="dateLimit"
+                    name="daterange"
+                    placeholder="Choose date"
+                    (startDateChanged)="eventClicked($event)"
+                    (endDateChanged)="eventClicked($event)"
+                />
+            </mat-form-field>
         </div>
         <div class="col s6">
             <strong>Value: </strong>{{ selected | json }}
             <hr />
-            <h4>Timepicker</h4>
-            <strong>enable timepicker:</strong> <mat-checkbox [(ngModel)]="timePicker">Value: {{ timePicker }}</mat-checkbox
-            ><br />
-            <h4>Options:</h4>
-            <strong>autoApply:</strong> <mat-checkbox [(ngModel)]="options.autoApply">Value: {{ options.autoApply }}</mat-checkbox
-            ><br />
-            <strong>closeOnAutoApply:</strong
-            ><mat-checkbox [(ngModel)]="options.closeOnAutoApply">Value: {{ options.closeOnAutoApply }}</mat-checkbox
-            ><br />
-            <strong>showCancel:</strong> <mat-checkbox [(ngModel)]="options.showCancel">Value: {{ options.showCancel }}</mat-checkbox
-            ><br />
-            <strong>showClearButton:</strong>
-            <mat-checkbox [(ngModel)]="options.showClearButton">Value: {{ options.showClearButton }}</mat-checkbox
-            ><br />
-            <strong>linkedCalendars:</strong
-            ><mat-checkbox [(ngModel)]="options.linkedCalendars">Value: {{ options.linkedCalendars }}</mat-checkbox
-            ><br />
-            <strong>singleDatePicker:</strong
-            ><mat-checkbox [(ngModel)]="options.singleDatePicker">Value: {{ options.singleDatePicker }}</mat-checkbox
-            ><br />
-            <strong>showWeekNumbers:</strong
-            ><mat-checkbox [(ngModel)]="options.showWeekNumbers">Value: {{ options.showWeekNumbers }}</mat-checkbox
-            ><br />
-            <strong>showISOWeekNumbers:</strong
-            ><mat-checkbox [(ngModel)]="options.showISOWeekNumbers">Value: {{ options.showISOWeekNumbers }}</mat-checkbox
-            ><br />
-            <strong>customRangeDirection:</strong
-            ><mat-checkbox [(ngModel)]="options.customRangeDirection">Value: {{ options.customRangeDirection }}</mat-checkbox
-            ><br />
-            <strong>lockStartDate:</strong
-            ><mat-checkbox [(ngModel)]="options.lockStartDate">Value: {{ options.lockStartDate }}</mat-checkbox
-            ><br />
-            <strong>minDate:</strong> {{ minDate | date: 'dd/MM/yyyy' }}<br />
-            <strong>maxDate:</strong> {{ maxDate | date: 'dd/MM/yyyy' }}<br />
-            <strong>locale</strong> : <br />
+            <h2>Timepicker</h2>
+            <mat-checkbox [(ngModel)]="timePicker">Enable Timepicker</mat-checkbox><br />
+
+            <h2>Options:</h2>
+            <div class="checkbox-wrapper">
+                <mat-checkbox [(ngModel)]="options.autoApply">autoApply</mat-checkbox>
+                <mat-checkbox [(ngModel)]="options.closeOnAutoApply">closeOnAutoApply</mat-checkbox>
+                <mat-checkbox [(ngModel)]="options.showCancel">showCancel</mat-checkbox>
+                <mat-checkbox [(ngModel)]="options.showClearButton">showClearButton</mat-checkbox>
+                <mat-checkbox [(ngModel)]="options.linkedCalendars">linkedCalendars</mat-checkbox>
+                <mat-checkbox [(ngModel)]="options.singleDatePicker">singleDatePicker</mat-checkbox>
+                <mat-checkbox [(ngModel)]="options.showWeekNumbers">showWeekNumbers</mat-checkbox>
+                <mat-checkbox [(ngModel)]="options.showISOWeekNumbers">showISOWeekNumbers</mat-checkbox>
+                <mat-checkbox [(ngModel)]="options.customRangeDirection">customRangeDirection</mat-checkbox>
+                <mat-checkbox [(ngModel)]="options.lockStartDate">lockStartDate</mat-checkbox>
+                <div><strong>minDate:</strong> {{ minDate | date: 'dd/MM/yyyy' }}</div>
+                <div><strong>maxDate:</strong> {{ maxDate | date: 'dd/MM/yyyy' }}</div>
+            </div>
+            <h2>Locale</h2>
             <div class="">
                 <div class="row">
                     <div class="col s12">

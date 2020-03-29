@@ -17,13 +17,12 @@ import {
     ViewContainerRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as _moment from 'moment';
+import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
-const moment = _moment;
 
 @Directive({
     selector: 'input[ngxDaterangepickerMd]',
@@ -51,9 +50,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     private componentRef: ComponentRef<DaterangepickerComponent>;
 
     @Input()
-    minDate: _moment.Moment;
+    minDate: moment.Moment;
     @Input()
-    maxDate: _moment.Moment;
+    maxDate: moment.Moment;
     @Input()
     autoApply: boolean;
     @Input()
@@ -73,17 +72,17 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     @Input()
     showDropdowns: boolean;
     @Input()
-    isInvalidDate: Function;
+    isInvalidDate = (date: moment.Moment) => false;
     @Input()
-    isCustomDate: Function;
+    isCustomDate = (date: moment.Moment) => false;
     @Input()
-    isTooltipDate: Function;
+    isTooltipDate = (date: moment.Moment) => null;
     @Input()
     showClearButton: boolean;
     @Input()
     customRangeDirection: boolean;
     @Input()
-    ranges: any;
+    ranges = {};
     @Input()
     opens = 'auto';
     @Input()
@@ -107,13 +106,13 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     lockStartDate = false;
     // timepicker variables
     @Input()
-    timePicker: Boolean = false;
+    timePicker = false;
     @Input()
-    timePicker24Hour: Boolean = false;
+    timePicker24Hour = false;
     @Input()
     timePickerIncrement = 1;
     @Input()
-    timePickerSeconds: Boolean = false;
+    timePickerSeconds = false;
     @Input() closeOnAutoApply = true;
     _locale: LocaleConfig = {};
     @Input() set locale(value) {
@@ -150,11 +149,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this._changeDetectorRef.markForCheck();
     }
 
-    @Output('change') onChange: EventEmitter<Object> = new EventEmitter();
-    @Output('rangeClicked') rangeClicked: EventEmitter<Object> = new EventEmitter();
-    @Output('datesUpdated') datesUpdated: EventEmitter<Object> = new EventEmitter();
-    @Output() startDateChanged: EventEmitter<Object> = new EventEmitter();
-    @Output() endDateChanged: EventEmitter<Object> = new EventEmitter();
+    @Output('change') onChange: EventEmitter<{ startDate: moment.Moment; endDate: moment.Moment }> = new EventEmitter();
+    @Output('rangeClicked') rangeClicked: EventEmitter<{ label: string; dates: [moment.Moment, moment.Moment] }> = new EventEmitter();
+    @Output('datesUpdated') datesUpdated: EventEmitter<{ startDate: moment.Moment; endDate: moment.Moment }> = new EventEmitter();
+    @Output() startDateChanged: EventEmitter<{ startDate: moment.Moment }> = new EventEmitter();
+    @Output() endDateChanged: EventEmitter<{ endDate: moment.Moment }> = new EventEmitter();
 
     destroy$ = new Subject();
 
@@ -168,7 +167,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         private overlay: Overlay
     ) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this._buildLocale();
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         for (const change in changes) {
@@ -210,25 +211,44 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this.componentRef = this.overlayRef.attach(dateRangePickerPortal);
 
         // Assign all inputs
-        this.componentRef.instance.showCancel = this.showCancel;
-        this.componentRef.instance.showClearButton = this.showClearButton;
+        this.componentRef.instance.minDate = this.minDate;
+        this.componentRef.instance.maxDate = this.maxDate;
+        this.componentRef.instance.autoApply = this.autoApply;
+        this.componentRef.instance.alwaysShowCalendars = this.alwaysShowCalendars;
+        this.componentRef.instance.showCustomRangeLabel = this.showCustomRangeLabel;
+        this.componentRef.instance.linkedCalendars = this.linkedCalendars;
+        this.componentRef.instance.dateLimit = this.dateLimit;
+        this.componentRef.instance.singleDatePicker = this.singleDatePicker;
+        this.componentRef.instance.showWeekNumbers = this.showWeekNumbers;
+        this.componentRef.instance.showISOWeekNumbers = this.showISOWeekNumbers;
         this.componentRef.instance.showDropdowns = this.showDropdowns;
-        this.componentRef.instance.lockStartDate = this.lockStartDate;
+        this.componentRef.instance.showClearButton = this.showClearButton;
         this.componentRef.instance.customRangeDirection = this.customRangeDirection;
+        this.componentRef.instance.ranges = this.ranges;
+        this.componentRef.instance.opens = this.opens;
+        this.componentRef.instance.drops = this.drops;
         this.componentRef.instance.firstMonthDayClass = this.firstMonthDayClass;
         this.componentRef.instance.lastMonthDayClass = this.lastMonthDayClass;
         this.componentRef.instance.emptyWeekRowClass = this.emptyWeekRowClass;
         this.componentRef.instance.firstDayOfNextMonthClass = this.firstDayOfNextMonthClass;
         this.componentRef.instance.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass;
-        this.componentRef.instance.drops = this.drops;
-        this.componentRef.instance.opens = this.opens;
-        this.componentRef.instance.closeOnAutoApply = this.closeOnAutoApply;
-
+        this.componentRef.instance.keepCalendarOpeningWithRange = this.keepCalendarOpeningWithRange;
+        this.componentRef.instance.showRangeLabelOnInput = this.showRangeLabelOnInput;
+        this.componentRef.instance.showCancel = this.showCancel;
+        this.componentRef.instance.lockStartDate = this.lockStartDate;
         this.componentRef.instance.timePicker = this.timePicker;
         this.componentRef.instance.timePicker24Hour = this.timePicker24Hour;
         this.componentRef.instance.timePickerIncrement = this.timePickerIncrement;
         this.componentRef.instance.timePickerSeconds = this.timePickerSeconds;
         this.componentRef.instance.closeOnAutoApply = this.closeOnAutoApply;
+        this.componentRef.instance.locale = this.locale;
+
+        this.componentRef.instance.isInvalidDate = this.isInvalidDate;
+        this.componentRef.instance.isCustomDate = this.isCustomDate;
+        this.componentRef.instance.isTooltipDate = this.isTooltipDate;
+
+        // Set the value
+        this.setValue(this.value);
 
         const localeDiffer = this.differs.find(this.locale).create();
         if (localeDiffer) {
@@ -242,43 +262,41 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this.componentRef.instance.startDateChanged
             .asObservable()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((itemChanged: { startDate: _moment.Moment }) => {
+            .subscribe((itemChanged: { startDate: moment.Moment }) => {
                 this.startDateChanged.emit(itemChanged);
             });
 
         this.componentRef.instance.endDateChanged
             .asObservable()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((itemChanged: any) => {
+            .subscribe((itemChanged) => {
                 this.endDateChanged.emit(itemChanged);
             });
 
         this.componentRef.instance.rangeClicked
             .asObservable()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((range: any) => {
+            .subscribe((range) => {
                 this.rangeClicked.emit(range);
             });
 
         this.componentRef.instance.datesUpdated
             .asObservable()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((range: any) => {
+            .subscribe((range) => {
                 this.datesUpdated.emit(range);
             });
 
         this.componentRef.instance.chosenDate
             .asObservable()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((change: any) => {
-                if (change) {
-                    const value = {};
-                    value[this._startKey] = change.startDate;
-                    value[this._endKey] = change.endDate;
-                    this.value = value;
-                    this.onChange.emit(value);
-                    if (typeof change.chosenLabel === 'string') {
-                        this._el.nativeElement.value = change.chosenLabel;
+            .subscribe((chosenDate) => {
+                if (chosenDate) {
+                    const { endDate, startDate } = chosenDate;
+                    this.value = { endDate, startDate };
+                    this.onChange.emit(this.value);
+                    if (typeof chosenDate.chosenLabel === 'string') {
+                        this._el.nativeElement.value = chosenDate.chosenLabel;
                     }
 
                     this.hide();
@@ -324,8 +342,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    writeValue(value): void {
-        this.setValue(value);
+    writeValue(value: { startDate: moment.Moment | string; endDate: moment.Moment | string } | moment.Moment): void {
+        if (moment.isMoment(value)) {
+            this.value = { startDate: value };
+        } else if (value) {
+            this.value = { startDate: moment(value.startDate), endDate: moment(value.endDate) };
+        } else {
+            this.value = null;
+        }
+        this.setValue(this.value);
     }
 
     registerOnChange(fn): void {
@@ -336,15 +361,14 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this._onTouched = fn;
     }
 
-    private setValue(val: any): void {
+    private setValue(value: { startDate: moment.Moment; endDate: moment.Moment }): void {
         if (this.componentRef) {
-            if (val) {
-                this.value = val;
-                if (val[this._startKey]) {
-                    this.componentRef.instance.setStartDate(val[this._startKey]);
+            if (value) {
+                if (value[this._startKey]) {
+                    this.componentRef.instance.setStartDate(value[this._startKey]);
                 }
-                if (val[this._endKey]) {
-                    this.componentRef.instance.setEndDate(val[this._endKey]);
+                if (value[this._endKey]) {
+                    this.componentRef.instance.setEndDate(value[this._endKey]);
                 }
                 this.componentRef.instance.calculateChosenLabel();
                 if (this.componentRef.instance.chosenLabel) {
@@ -354,6 +378,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                 this.componentRef.instance.clear();
             }
         }
+
+        this._el.nativeElement.value = value ? this.calculateChosenLabel(value.startDate, value.endDate) : null;
     }
 
     inputChanged(e): void {
@@ -383,6 +409,34 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             this.componentRef.instance.setStartDate(start);
             this.componentRef.instance.setEndDate(end);
             this.componentRef.instance.updateView();
+        }
+    }
+
+    calculateChosenLabel(startDate: moment.Moment, endDate: moment.Moment): string {
+        const format = this.locale.displayFormat ? this.locale.displayFormat : this.locale.format;
+
+        if (this.singleDatePicker) {
+            return startDate.format(format);
+        }
+
+        if (startDate && endDate) {
+            return startDate.format(format) + this.locale.separator + endDate.format(format);
+        }
+
+        return null;
+    }
+
+    /**
+     *  build the locale config
+     */
+    private _buildLocale() {
+        this.locale = { ...this._localeService.config, ...this.locale };
+        if (!this.locale.format) {
+            if (this.timePicker) {
+                this.locale.format = moment.localeData().longDateFormat('lll');
+            } else {
+                this.locale.format = moment.localeData().longDateFormat('L');
+            }
         }
     }
 }

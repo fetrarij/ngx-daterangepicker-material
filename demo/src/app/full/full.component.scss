@@ -1,0 +1,8 @@
+.checkbox-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    mat-checkbox {
+        margin-bottom: 4px;
+    }
+}

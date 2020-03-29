@@ -2,12 +2,11 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="row">
         <div class="col s12">
-            <h6>Multi Select</h6>
+            <h2>Multi Select</h2>
         </div>
         <div class="col s6">
             <mat-form-field>
-                <input type="text" matInput formControlName="selected" class="form-control" placeholder="Choose date" />
-                <!--<input
+                <input
                     type="text"
                     matInput
                     ngxDaterangepickerMd
@@ -16,11 +15,8 @@
                     placeholder="Choose date"
                     [showDropdowns]="true"
                     showCancel="true"
-                />-->
+                />
             </mat-form-field>
-        </div>
-        <div class="col s6">
-            <br />
             <button mat-raised-button color="primary" type="submit">Submit</button>
         </div>
     </div>
@@ -29,14 +25,14 @@
 <form [formGroup]="form2" (ngSubmit)="submit2()">
     <div class="row">
         <div class="col s12">
-            <h6>Single Select</h6>
+            <h2>Single Select</h2>
         </div>
         <div class="col s6">
-            <!--<mat-form-field>
+            <mat-form-field>
                 <input
                     type="text"
                     ngxDaterangepickerMd
-                    mat-input
+                    matInput
                     formControlName="selected"
                     class="form-control"
                     placeholder="Choose date"
@@ -45,10 +41,7 @@
                     [locale]="locale"
                     showCancel="true"
                 />
-            </mat-form-field>-->
-        </div>
-        <div class="col s6">
-            <br />
+            </mat-form-field>
             <button mat-raised-button color="primary" type="submit">Submit</button>
         </div>
     </div>

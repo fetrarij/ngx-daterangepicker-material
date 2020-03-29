@@ -36,8 +36,9 @@ export class FullComponent implements OnInit {
     timePicker: boolean;
     dateLimit: number;
     click() {}
-    selected = { start: moment().subtract(3, 'days'), end: moment().add(3, 'days') };
+    selected = { startDate: moment().subtract(3, 'days'), endDate: moment().add(3, 'days') };
     @ViewChild(DaterangepickerDirective, { static: true }) daterangepicker: DaterangepickerDirective;
+
     constructor() {
         this.timePicker = false;
         this.opens = 'right';

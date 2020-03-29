@@ -105,6 +105,12 @@
                         "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
                         "exclude": ["**/node_modules/**"]
                     }
+                },
+                "deploy": {
+                    "builder": "angular-cli-ghpages:deploy",
+                    "options": {
+                        "baseHref": "/ngx-daterangepicker-material/"
+                    }
                 }
             }
         },

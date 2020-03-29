@@ -1,6 +1,7 @@
 @import '~@angular/material/theming';
 
 @import './app/navbar/navbar-theme';
+@import './app/footer/footer-theme';
 
 .mycustomdate {
     background-color: #ccc8c8 !important;
@@ -63,6 +64,7 @@ body {
     }
 
     @include nav-bar-theme($theme);
+    @include footer-theme($theme);
 }
 
 // Define the light theme.

@@ -69,37 +69,37 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     @Input()
     maxDate: _moment.Moment = null;
     @Input()
-    autoApply: Boolean = false;
+    autoApply = false;
     @Input()
-    singleDatePicker: Boolean = false;
+    singleDatePicker = false;
     @Input()
-    showDropdowns: Boolean = false;
+    showDropdowns = false;
     @Input()
-    showWeekNumbers: Boolean = false;
+    showWeekNumbers = false;
     @Input()
-    showISOWeekNumbers: Boolean = false;
+    showISOWeekNumbers = false;
     @Input()
-    linkedCalendars: Boolean = false;
+    linkedCalendars = false;
     @Input()
-    autoUpdateInput: Boolean = true;
+    autoUpdateInput = true;
     @Input()
-    alwaysShowCalendars: Boolean = false;
+    alwaysShowCalendars = false;
     @Input()
-    maxSpan: Boolean = false;
+    maxSpan = false;
     @Input()
-    lockStartDate: Boolean = false;
+    lockStartDate = false;
     // timepicker variables
     @Input()
-    timePicker: Boolean = false;
+    timePicker = false;
     @Input()
-    timePicker24Hour: Boolean = false;
+    timePicker24Hour = false;
     @Input()
     timePickerIncrement = 1;
     @Input()
-    timePickerSeconds: Boolean = false;
+    timePickerSeconds = false;
     // end of timepicker variables
     @Input()
-    showClearButton: Boolean = false;
+    showClearButton = false;
     @Input()
     firstMonthDayClass: string = null;
     @Input()
@@ -138,6 +138,20 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     showRangeLabelOnInput = false;
     @Input()
     customRangeDirection = false;
+
+    @Input()
+    isInvalidDate(date: _moment.Moment) {
+        return false;
+    }
+    @Input()
+    isCustomDate(date: _moment.Moment) {
+        return false;
+    }
+    @Input()
+    isTooltipDate(date: _moment.Moment): string {
+        return null;
+    }
+
     chosenRange: string;
     rangesArray: Array<any> = [];
 
@@ -148,16 +162,15 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     rightCalendar: any = {};
     showCalInRanges: Boolean = false;
 
-    options: any = {}; // should get some opt from user
     @Input() drops: string;
     @Input() opens: string;
     @Input() closeOnAutoApply = true;
 
-    @Output() chosenDate: EventEmitter<Object> = new EventEmitter();
-    @Output() rangeClicked: EventEmitter<Object> = new EventEmitter();
-    @Output() datesUpdated: EventEmitter<Object> = new EventEmitter();
-    @Output() startDateChanged: EventEmitter<Object> = new EventEmitter();
-    @Output() endDateChanged: EventEmitter<Object> = new EventEmitter();
+    @Output() chosenDate: EventEmitter<{ chosenLabel: string; startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
+    @Output() rangeClicked: EventEmitter<{ label: string; dates: [_moment.Moment, _moment.Moment] }> = new EventEmitter();
+    @Output() datesUpdated: EventEmitter<{ startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
+    @Output() startDateChanged: EventEmitter<{ startDate: _moment.Moment }> = new EventEmitter();
+    @Output() endDateChanged: EventEmitter<{ endDate: _moment.Moment }> = new EventEmitter();
     @Output() closeDateRangePicker: EventEmitter<void> = new EventEmitter();
 
     @ViewChild('pickerContainer', { static: true }) pickerContainer: ElementRef;
@@ -599,18 +612,6 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         this.endDateChanged.emit({ endDate: this.endDate });
         this.updateMonthsInView();
     }
-    @Input()
-    isInvalidDate(date) {
-        return false;
-    }
-    @Input()
-    isCustomDate(date) {
-        return false;
-    }
-    @Input()
-    isTooltipDate(date): string {
-        return null;
-    }
 
     updateView(): void {
         if (this.timePicker) {
@@ -785,30 +786,33 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         }
         this.hide();
     }
+
     /**
      * called when month is changed
      * @param month month represented by a number (0 through 11)
      * @param side left or right
      */
-    monthChanged(month: number, side: SideEnum) {
+    monthChanged(month: number, side: SideEnum): void {
         const year = this.calendarVariables[side].dropdowns.currentYear;
         this.monthOrYearChanged(month, year, side);
     }
+
     /**
      * called when year is changed
      * @param year year represented by a number
      * @param side left or right
      */
-    yearChanged(year: number, side: SideEnum) {
+    yearChanged(year: number, side: SideEnum): void {
         const month = this.calendarVariables[side].dropdowns.currentMonth;
         this.monthOrYearChanged(month, year, side);
     }
+
     /**
      * called when time is changed
      * @param timeEvent  an event
      * @param side left or right
      */
-    timeChanged(timeEvent: any, side: SideEnum) {
+    timeChanged(timeEvent: any, side: SideEnum): void {
         let hour = parseInt(this.timepickerVariables[side].selectedHour, 10);
         const minute = parseInt(this.timepickerVariables[side].selectedMinute, 10);
         const second = this.timePickerSeconds ? parseInt(this.timepickerVariables[side].selectedSecond, 10) : 0;
@@ -853,13 +857,14 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
             this.clickApply();
         }
     }
+
     /**
      *  call when month or year changed
      * @param month month number 0 -11
      * @param year year eg: 1995
      * @param side left or right
      */
-    monthOrYearChanged(month: number, year: number, side: SideEnum) {
+    monthOrYearChanged(month: number, year: number, side: SideEnum): void {
         const isLeft = side === SideEnum.left;
 
         if (!isLeft) {
@@ -913,11 +918,12 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         }
         this.updateCalendars();
     }
+
     /**
      * Click on next month
      * @param side left or right calendar
      */
-    clickNext(side: SideEnum) {
+    clickNext(side: SideEnum): void {
         if (side === SideEnum.left) {
             this.leftCalendar.month.add(1, 'month');
         } else {
@@ -944,6 +950,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
             e.target.setAttribute('title', tooltip);
         }
     }
+
     /**
      * When selecting a date
      * @param e event: get value by e.target.value
@@ -1016,6 +1023,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         // This is to cancel the blur event handler if the mouse was in one of the inputs
         e.stopPropagation();
     }
+
     /**
      *  Click on the custom range
      * @param e: Event
@@ -1117,9 +1125,10 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
      * handle click on all element in the component, useful for outside of click
      * @param e event
      */
-    handleInternalClick(e) {
+    handleInternalClick(e): void {
         e.stopPropagation();
     }
+
     /**
      * update the locale options
      * @param locale
@@ -1137,7 +1146,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     /**
      *  clear the daterange picker
      */
-    clear() {
+    clear(): void {
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
         this.chosenDate.emit({ chosenLabel: '', startDate: null, endDate: null });
@@ -1189,6 +1198,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         const second = this.timePickerSeconds ? parseInt(this.timepickerVariables[side].selectedSecond, 10) : 0;
         return date.clone().hour(hour).minute(minute).second(second);
     }
+
     /**
      *  build the locale config
      */
@@ -1202,6 +1212,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
             }
         }
     }
+
     private _buildCells(calendar, side: SideEnum) {
         for (let row = 0; row < 6; row++) {
             this.calendarVariables[side].classes[row] = {};
@@ -1323,7 +1334,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
      * Find out if the current calendar row has current month days
      * (as opposed to consisting of only previous/next month days)
      */
-    hasCurrentMonthDays(currentMonth, row) {
+    hasCurrentMonthDays(currentMonth, row): boolean {
         for (let day = 0; day < 7; day++) {
             if (row[day].month() === currentMonth) {
                 return true;

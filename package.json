@@ -24,6 +24,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npm run build-themes && ng serve",
+    "deploy": "ng deploy --deploy-url /ngx-daterangepicker-material",
     "demo:build": "ng build --prod",
     "test": "./node_modules/.bin/ng test --watch=false",
     "lint": "ng lint",
@@ -60,7 +61,7 @@
     "@types/jasmine": "~2.8.9",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
-    "angular-cli-ghpages": "^0.5.2",
+    "angular-cli-ghpages": "^0.6.2",
     "codelyzer": "^5.1.2",
     "core-js": "^2.5.4",
     "jasmine-core": "~2.8.0",

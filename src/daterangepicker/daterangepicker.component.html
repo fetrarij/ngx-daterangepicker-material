@@ -39,7 +39,11 @@
                                     (!this.linkedCalendars || true))
                             "
                         >
-                            <th (click)="clickPrev(sideEnum.left)" class="prev available"></th>
+                            <th>
+                                <button mat-icon-button (click)="clickPrev(sideEnum.left)">
+                                    <mat-icon>keyboard_arrow_left</mat-icon>
+                                </button>
+                            </th>
                         </ng-container>
                         <ng-container
                             *ngIf="
@@ -89,7 +93,11 @@
                                 (!linkedCalendars || singleDatePicker)
                             "
                         >
-                            <th class="next available" (click)="clickNext(sideEnum.left)"></th>
+                            <th>
+                                <button mat-icon-button (click)="clickNext(sideEnum.left)">
+                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                </button>
+                            </th>
                         </ng-container>
                         <ng-container
                             *ngIf="
@@ -216,7 +224,11 @@
                                 !this.linkedCalendars
                             "
                         >
-                            <th (click)="clickPrev(sideEnum.right)" class="prev available"></th>
+                            <th>
+                                <button mat-icon-button (click)="clickPrev(sideEnum.right)">
+                                    <mat-icon>keyboard_arrow_left</mat-icon>
+                                </button>
+                            </th>
                         </ng-container>
                         <ng-container
                             *ngIf="
@@ -266,7 +278,11 @@
                                     (!linkedCalendars || singleDatePicker || true))
                             "
                         >
-                            <th class="next available" (click)="clickNext(sideEnum.right)"></th>
+                            <th>
+                                <button mat-icon-button (click)="clickNext(sideEnum.right)">
+                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                </button>
+                            </th>
                         </ng-container>
                         <ng-container
                             *ngIf="

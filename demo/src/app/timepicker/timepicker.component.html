@@ -11,6 +11,7 @@
                 [timePickerIncrement]="15"
                 [timePicker24Hour]="true"
                 [(ngModel)]="selected"
+                placeholder="Choose date"
                 class="form-control"
             />
         </mat-form-field>
@@ -19,7 +20,7 @@
 
 <div class="row">
     <div class="col s6">
-        <b>Html code:</b>
+        <h2>Html code:</h2>
         <pre class="prettyprint"><code class="html">&lt;input type="text"
     ngxDaterangepickerMd
     [timePicker]="true"
@@ -32,12 +33,10 @@
     </pre>
     </div>
     <div class="col s6">
-        <b>Typescript code:</b>
+        <h2>Typescript code:</h2>
         <pre class="prettyprint"><code class="javascript">export class SingleDatepickerComponent {{ '{' }}
         selected: any;
         
-        constructor() {{ '{' }}
-        {{'}'}}
         isInvalidDate(date) {{ '{' }}
           return date.weekday() === 0;
         {{'}'}}</code>
