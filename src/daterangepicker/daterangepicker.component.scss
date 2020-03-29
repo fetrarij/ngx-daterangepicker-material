@@ -1,3 +1,5 @@
+@import '../../node_modules/@angular/material/theming';
+
 /*
 *  variables
 */
@@ -55,17 +57,34 @@ $md-drppicker-control-active-border-color: #08c !default;
 $md-drppicker-control-active-border-radius: $md-drppicker-control-border-radius !default;
 
 $md-drppicker-control-disabled-color: #ccc !default;
-// Select
-$select-border: 1px solid #f2f2f2 !default;
-$select-background: rgba(255, 255, 255, 0.9) !default;
-$select-padding: 5px !default;
-$select-radius: 2px !default;
-$input-height: 3rem !default;
+
+@mixin date-range-picker-theme($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $background: map-get($theme, background);
+
+    .md-drppicker {
+        background-color: mat-color($background);
+
+        td {
+            &.active {
+                transition: background 300ms ease-out, border 300ms ease-out;
+                background: rgba(0, 0, 0, 0.1);
+                &,
+                &:hover {
+                    background-color: mat-color($primary);
+                    border-color: mat-color($primary);
+                    color: $md-drppicker-active-color;
+                }
+            }
+        }
+    }
+}
+
 /*
 * styles
 */
 .md-drppicker {
-    background-color: $md-drppicker-bg-color;
     border-radius: 4px;
     width: $md-drppicker-width;
     padding: 4px;
@@ -209,17 +228,6 @@ $input-height: 3rem !default;
 
         &.start-date.end-date {
             border-radius: $md-drppicker-cell-border-radius;
-        }
-
-        &.active {
-            transition: background 300ms ease-out;
-            background: rgba(0, 0, 0, 0.1);
-            &,
-            &:hover {
-                background-color: $md-drppicker-active-bg-color;
-                border-color: $md-drppicker-active-border-color;
-                color: $md-drppicker-active-color;
-            }
         }
     }
 

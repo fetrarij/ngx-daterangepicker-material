@@ -22,6 +22,9 @@
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "demo/src/styles.scss",
                             {
+                                "input": "demo/src/highlightjs/material-light.scss"
+                            },
+                            {
                                 "inject": false,
                                 "input": "demo/src/assets/pink-bluegrey.css",
                                 "bundleName": "pink-bluegrey"

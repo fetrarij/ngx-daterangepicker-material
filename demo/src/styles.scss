@@ -1,7 +1,8 @@
-@import '~@angular/material/theming';
+@import '../../node_modules/@angular/material/theming';
 
 @import './app/navbar/navbar-theme';
 @import './app/footer/footer-theme';
+@import '../../src/daterangepicker/daterangepicker.component.scss';
 
 .mycustomdate {
     background-color: #ccc8c8 !important;
@@ -46,12 +47,9 @@ body {
         background: mat-color($background, background);
     }
 
-    .docs-primary-header {
-        background: mat-color($primary);
-
-        h1 {
-            color: mat-color($primary, default-contrast);
-        }
+    h1,
+    h2 {
+        color: mat-color($primary, default-contrast);
     }
 
     .docs-footer {
@@ -65,6 +63,7 @@ body {
 
     @include nav-bar-theme($theme);
     @include footer-theme($theme);
+    @include date-range-picker-theme($theme);
 }
 
 // Define the light theme.
