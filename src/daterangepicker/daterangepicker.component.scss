@@ -19,7 +19,6 @@ $md-drppicker-in-range-border-color: transparent !default;
 $md-drppicker-in-range-bg-color: #dde2e4 !default;
 
 $md-drppicker-active-color: #fff !default;
-$md-drppicker-active-bg-color: #3f51b5 !default;
 $md-drppicker-active-border-color: transparent !default;
 
 $md-drppicker-unselected-color: #999 !default;
@@ -62,11 +61,45 @@ $md-drppicker-control-disabled-color: #ccc !default;
     $primary: map-get($theme, primary);
     $accent: map-get($theme, accent);
     $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
 
     .md-drppicker {
-        background-color: mat-color($background);
+        background-color: mat-color($background, card);
+        color: mat-color($foreground, text);
 
         td {
+            &.off {
+                &,
+                &.in-range,
+                &.start-date,
+                &.end-date {
+                    background-color: $md-drppicker-unselected-bg-color;
+                    border-color: $md-drppicker-unselected-border-color;
+                    color: $md-drppicker-unselected-color;
+                }
+            }
+
+            &.in-range {
+                background-color: $md-drppicker-in-range-bg-color;
+                border-color: $md-drppicker-in-range-border-color;
+                color: $md-drppicker-in-range-color;
+
+                // TODO: Should this be static or should it be parameterized?
+                border-radius: 0;
+            }
+
+            &.start-date {
+                border-radius: 2em 0 0 2em;
+            }
+
+            &.end-date {
+                border-radius: 0 2em 2em 0;
+            }
+
+            &.start-date.end-date {
+                border-radius: $md-drppicker-cell-border-radius;
+            }
+
             &.active {
                 transition: background 300ms ease-out, border 300ms ease-out;
                 background: rgba(0, 0, 0, 0.1);
@@ -77,6 +110,13 @@ $md-drppicker-control-disabled-color: #ccc !default;
                     color: $md-drppicker-active-color;
                 }
             }
+        }
+
+        .calendar-table {
+            border: $md-drppicker-calendar-border-size solid mat-color($background, card);
+            padding: $md-drppicker-calendar-margin;
+            border-radius: $md-drppicker-calendar-border-radius;
+            background-color: mat-color($background, card);
         }
     }
 }
@@ -157,19 +197,9 @@ $md-drppicker-control-disabled-color: #ccc !default;
         }
     }
 
-    .calendar-table {
-        border: $md-drppicker-calendar-border-size solid $md-drppicker-calendar-border-color;
-        padding: $md-drppicker-calendar-margin;
-        border-radius: $md-drppicker-calendar-border-radius;
-        background-color: $md-drppicker-calendar-bg-color;
-    }
-
     table {
         width: 100%;
         margin: 0;
-    }
-    th {
-        color: rgba(0, 0, 0, 0.38);
     }
     td,
     th {
@@ -185,7 +215,6 @@ $md-drppicker-control-disabled-color: #ccc !default;
 
         &.week {
             font-size: 80%;
-            color: #ccc;
         }
     }
 
@@ -196,39 +225,6 @@ $md-drppicker-control-disabled-color: #ccc !default;
         border-radius: 2em;
         transform: scale(1);
         transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-        &.off {
-            &,
-            &.in-range,
-            &.start-date,
-            &.end-date {
-                background-color: $md-drppicker-unselected-bg-color;
-                border-color: $md-drppicker-unselected-border-color;
-                color: $md-drppicker-unselected-color;
-            }
-        }
-
-        //
-        // Date Range
-        &.in-range {
-            background-color: $md-drppicker-in-range-bg-color;
-            border-color: $md-drppicker-in-range-border-color;
-            color: $md-drppicker-in-range-color;
-
-            // TODO: Should this be static or should it be parameterized?
-            border-radius: 0;
-        }
-
-        &.start-date {
-            border-radius: 2em 0 0 2em;
-        }
-
-        &.end-date {
-            border-radius: 0 2em 2em 0;
-        }
-
-        &.start-date.end-date {
-            border-radius: $md-drppicker-cell-border-radius;
-        }
     }
 
     th {

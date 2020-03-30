@@ -59,16 +59,9 @@
       .md-drppicker .calendar th span,
       .md-drppicker .calendar td span {
         pointer-events: none; }
-  .md-drppicker .calendar-table {
-    border: 1px solid #fff;
-    padding: 4px;
-    border-radius: 4px;
-    background-color: #fff; }
   .md-drppicker table {
     width: 100%;
     margin: 0; }
-  .md-drppicker th {
-    color: rgba(0, 0, 0, 0.38); }
   .md-drppicker td,
   .md-drppicker th {
     text-align: center;
@@ -82,8 +75,7 @@
     width: 2em; }
     .md-drppicker td.week,
     .md-drppicker th.week {
-      font-size: 80%;
-      color: #ccc; }
+      font-size: 80%; }
   .md-drppicker td {
     margin: 0.25em 0;
     opacity: 0.8;
@@ -91,21 +83,6 @@
     border-radius: 2em;
     transform: scale(1);
     transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; }
-    .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
-      background-color: #fff;
-      border-color: transparent;
-      color: #999; }
-    .md-drppicker td.in-range {
-      background-color: #dde2e4;
-      border-color: transparent;
-      color: #000;
-      border-radius: 0; }
-    .md-drppicker td.start-date {
-      border-radius: 2em 0 0 2em; }
-    .md-drppicker td.end-date {
-      border-radius: 0 2em 2em 0; }
-    .md-drppicker td.start-date.end-date {
-      border-radius: 4px; }
   .md-drppicker th.month {
     width: auto; }
   .md-drppicker td.disabled,
@@ -310,6 +287,9 @@ body {
 .docs-app-background {
   background: #fafafa; }
 
+body {
+  color: rgba(0, 0, 0, 0.87); }
+
 h1,
 h2 {
   color: white; }
@@ -329,13 +309,36 @@ app-navbar {
 app-footer .docs-footer-links a {
   color: white; }
 
-.md-drppicker td.active {
-  transition: background 300ms ease-out, border 300ms ease-out;
-  background: rgba(0, 0, 0, 0.1); }
-  .md-drppicker td.active, .md-drppicker td.active:hover {
-    background-color: #3f51b5;
-    border-color: #3f51b5;
-    color: #fff; }
+.md-drppicker {
+  background-color: white;
+  color: rgba(0, 0, 0, 0.87); }
+  .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
+    background-color: #fff;
+    border-color: transparent;
+    color: #999; }
+  .md-drppicker td.in-range {
+    background-color: #dde2e4;
+    border-color: transparent;
+    color: #000;
+    border-radius: 0; }
+  .md-drppicker td.start-date {
+    border-radius: 2em 0 0 2em; }
+  .md-drppicker td.end-date {
+    border-radius: 0 2em 2em 0; }
+  .md-drppicker td.start-date.end-date {
+    border-radius: 4px; }
+  .md-drppicker td.active {
+    transition: background 300ms ease-out, border 300ms ease-out;
+    background: rgba(0, 0, 0, 0.1); }
+    .md-drppicker td.active, .md-drppicker td.active:hover {
+      background-color: #3f51b5;
+      border-color: #3f51b5;
+      color: #fff; }
+  .md-drppicker .calendar-table {
+    border: 1px solid white;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: white; }
 
 /*
 Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  (c) Kelby Gassmanl <kelby.gassman@gmail.com>
@@ -1802,6 +1805,9 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 .docs-app-background {
   background: #303030; }
 
+body {
+  color: white; }
+
 h1,
 h2 {
   color: white; }
@@ -1821,10 +1827,33 @@ app-navbar {
 app-footer .docs-footer-links a {
   color: white; }
 
-.md-drppicker td.active {
-  transition: background 300ms ease-out, border 300ms ease-out;
-  background: rgba(0, 0, 0, 0.1); }
-  .md-drppicker td.active, .md-drppicker td.active:hover {
-    background-color: #9c27b0;
-    border-color: #9c27b0;
-    color: #fff; }
+.md-drppicker {
+  background-color: #424242;
+  color: white; }
+  .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
+    background-color: #fff;
+    border-color: transparent;
+    color: #999; }
+  .md-drppicker td.in-range {
+    background-color: #dde2e4;
+    border-color: transparent;
+    color: #000;
+    border-radius: 0; }
+  .md-drppicker td.start-date {
+    border-radius: 2em 0 0 2em; }
+  .md-drppicker td.end-date {
+    border-radius: 0 2em 2em 0; }
+  .md-drppicker td.start-date.end-date {
+    border-radius: 4px; }
+  .md-drppicker td.active {
+    transition: background 300ms ease-out, border 300ms ease-out;
+    background: rgba(0, 0, 0, 0.1); }
+    .md-drppicker td.active, .md-drppicker td.active:hover {
+      background-color: #9c27b0;
+      border-color: #9c27b0;
+      color: #fff; }
+  .md-drppicker .calendar-table {
+    border: 1px solid #424242;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #424242; }

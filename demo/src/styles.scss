@@ -47,6 +47,10 @@ body {
         background: mat-color($background, background);
     }
 
+    body {
+        color: mat-color($foreground, text);
+    }
+
     h1,
     h2 {
         color: mat-color($primary, default-contrast);
