@@ -1,48 +1,56 @@
 <mat-toolbar>Reactive forms</mat-toolbar>
 <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="row">
-        <div class="col s12">
-            <h2>Multi Select</h2>
-        </div>
+        <h2>Multi Select</h2>
+    </div>
+    <div class="row">
         <div class="col s6">
-            <mat-form-field>
-                <input
-                    type="text"
-                    matInput
-                    ngxDaterangepickerMd
-                    formControlName="selected"
-                    class="form-control"
-                    placeholder="Choose date"
-                    [showDropdowns]="true"
-                    showCancel="true"
-                />
-            </mat-form-field>
-            <button mat-raised-button color="primary" type="submit">Submit</button>
+            <div class="row">
+                <mat-form-field>
+                    <input
+                        type="text"
+                        matInput
+                        ngxDaterangepickerMd
+                        formControlName="selected"
+                        class="form-control"
+                        placeholder="Choose date"
+                        [showDropdowns]="true"
+                        showCancel="true"
+                    />
+                </mat-form-field>
+                <div>
+                    <button mat-raised-button color="primary" type="submit">Submit</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>
 
 <form [formGroup]="form2" (ngSubmit)="submit2()">
     <div class="row">
-        <div class="col s12">
-            <h2>Single Select</h2>
-        </div>
+        <h2>Single Select</h2>
+    </div>
+    <div class="row">
         <div class="col s6">
-            <mat-form-field>
-                <input
-                    type="text"
-                    ngxDaterangepickerMd
-                    matInput
-                    formControlName="selected"
-                    class="form-control"
-                    placeholder="Choose date"
-                    [showDropdowns]="true"
-                    [singleDatePicker]="true"
-                    [locale]="locale"
-                    showCancel="true"
-                />
-            </mat-form-field>
-            <button mat-raised-button color="primary" type="submit">Submit</button>
+            <div class="row">
+                <mat-form-field>
+                    <input
+                        type="text"
+                        ngxDaterangepickerMd
+                        matInput
+                        formControlName="selected"
+                        class="form-control"
+                        placeholder="Choose date"
+                        [showDropdowns]="true"
+                        [singleDatePicker]="true"
+                        [locale]="locale"
+                        showCancel="true"
+                    />
+                </mat-form-field>
+                <div>
+                    <button mat-raised-button color="primary" type="submit">Submit</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>

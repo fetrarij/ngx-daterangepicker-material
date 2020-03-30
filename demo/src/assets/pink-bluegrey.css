@@ -257,6 +257,15 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif; }
 
+.row {
+  display: flex;
+  flex-direction: row; }
+
+.col {
+  display: flex;
+  flex-direction: column;
+  width: 50%; }
+
 .docs-app-background {
   background: #fafafa; }
 

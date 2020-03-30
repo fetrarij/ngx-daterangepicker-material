@@ -5,10 +5,10 @@ import { DaterangepickerDirective } from '../../../../src/daterangepicker/datera
 @Component({
     selector: 'full',
     templateUrl: './full.component.html',
-    styleUrls: ['./full.component.scss'],
+    styleUrls: ['./full.component.scss']
 })
 export class FullComponent implements OnInit {
-    title = 'Pure angular daterangepicker';
+    title = 'Full option ngx-daterangepicker-material';
     options: any = {
         autoApply: false,
         alwaysShowCalendars: false,
@@ -20,7 +20,7 @@ export class FullComponent implements OnInit {
         showISOWeekNumbers: false,
         customRangeDirection: false,
         lockStartDate: false,
-        closeOnAutoApply: true,
+        closeOnAutoApply: true
     };
     minDate: moment.Moment = moment().subtract(5, 'days');
     maxDate: moment.Moment = moment().add(2, 'month');
@@ -29,7 +29,7 @@ export class FullComponent implements OnInit {
         displayFormat: 'DD MMMM YYYY HH:mm',
         separator: ' To ',
         cancelLabel: 'Cancel',
-        applyLabel: 'Okay',
+        applyLabel: 'Okay'
     };
     opens: string;
     drops: string;

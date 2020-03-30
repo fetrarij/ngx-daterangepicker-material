@@ -12,7 +12,7 @@
     }"
     [class]="'drops-' + drops + '-' + opens"
 >
-    <div class="ranges">
+    <div *ngIf="rangesArray.length > 0" class="ranges">
         <ul>
             <li *ngFor="let range of rangesArray">
                 <button

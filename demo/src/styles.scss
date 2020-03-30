@@ -34,6 +34,32 @@ body {
     font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+
+    &.s6 {
+        width: 50%;
+    }
+
+    &.s12 {
+        width: 100%;
+    }
+}
+
+.col + .col {
+    margin-left: 8px;
+}
+
+mat-toolbar {
+    margin-bottom: 24px !important;
+}
+
 // Styles for the docs app that are based on the current theme.
 @mixin material-docs-app-theme($theme) {
     $primary: map-get($theme, primary);

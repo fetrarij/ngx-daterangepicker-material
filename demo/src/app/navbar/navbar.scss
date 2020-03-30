@@ -1,43 +1,44 @@
 .docs-navbar-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 8px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 8px 16px;
+    margin-bottom: 32px;
 
-  > .mat-button {
-    &:last-child {
-      margin-left: auto;
+    > .mat-button {
+        &:last-child {
+            margin-left: auto;
+        }
     }
-  }
 }
 
 .flex-spacer {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
 .docs-angular-logo {
-  height: 26px;
-  margin: 0 4px 3px 0;
-  vertical-align: middle;
+    height: 26px;
+    margin: 0 4px 3px 0;
+    vertical-align: middle;
 }
 
 .docs-github-logo {
-  height: 21px;
-  margin: 0 7px 2px 0;
-  vertical-align: middle;
+    height: 21px;
+    margin: 0 7px 2px 0;
+    vertical-align: middle;
 }
 
 .docs-navbar-link {
-  text-decoration: inherit;
-  flex: 1;
+    text-decoration: inherit;
+    flex: 1;
 }
 
 .docs-navbar {
-  display: none;
+    display: none;
 }
 
 .docs-navbar-show-small {
-  display: none;
+    display: none;
 }
 
 /**
@@ -45,19 +46,19 @@
   * Moves content two rows instead of one.
   */
 @media (max-width: 720px) {
-  .docs-navbar-hide-small {
-    display: none;
-  }
+    .docs-navbar-hide-small {
+        display: none;
+    }
 
-  .docs-navbar-show-small {
-    display: block;
-  }
+    .docs-navbar-show-small {
+        display: block;
+    }
 
-  .docs-navbar {
-    display: flex;
-  }
+    .docs-navbar {
+        display: flex;
+    }
 
-  .docs-navbar--github-logo {
-    margin: 0;
-  }
+    .docs-navbar--github-logo {
+        margin: 0;
+    }
 }
