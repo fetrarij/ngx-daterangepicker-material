@@ -140,33 +140,6 @@
     right: 8px; }
   .md-drppicker .show-ranges .drp-calendar.left {
     border-left: 1px solid #ddd; }
-  .md-drppicker .ranges {
-    float: none;
-    text-align: left;
-    margin: 0; }
-    .md-drppicker .ranges ul {
-      list-style: none;
-      margin: 0 auto;
-      padding: 0;
-      width: 100%; }
-      .md-drppicker .ranges ul li {
-        font-size: 12px; }
-        .md-drppicker .ranges ul li button {
-          padding: 8px 12px;
-          width: 100%;
-          background: none;
-          border: none;
-          text-align: left;
-          cursor: pointer; }
-          .md-drppicker .ranges ul li button.active {
-            background-color: #3f51b5;
-            color: #fff; }
-          .md-drppicker .ranges ul li button[disabled] {
-            opacity: 0.3; }
-          .md-drppicker .ranges ul li button:active {
-            background: transparent; }
-      .md-drppicker .ranges ul li:hover {
-        background-color: #eee; }
   .md-drppicker .show-calendar .ranges {
     margin-top: 8px; }
   .md-drppicker [hidden] {
@@ -290,10 +263,6 @@ body {
 body {
   color: rgba(0, 0, 0, 0.87); }
 
-h1,
-h2 {
-  color: white; }
-
 .docs-footer {
   background: #3f51b5;
   color: white; }
@@ -339,6 +308,34 @@ app-footer .docs-footer-links a {
     padding: 4px;
     border-radius: 4px;
     background-color: white; }
+  .md-drppicker .ranges {
+    float: none;
+    text-align: left;
+    margin: 0; }
+    .md-drppicker .ranges ul {
+      list-style: none;
+      margin: 0 auto;
+      padding: 0;
+      width: 100%; }
+      .md-drppicker .ranges ul li {
+        font-size: 12px; }
+        .md-drppicker .ranges ul li button {
+          padding: 8px 12px;
+          width: 100%;
+          background: none;
+          border: none;
+          text-align: left;
+          cursor: pointer;
+          outline: none; }
+          .md-drppicker .ranges ul li button.active {
+            background-color: #3f51b5;
+            color: white; }
+          .md-drppicker .ranges ul li button[disabled] {
+            opacity: 0.3; }
+          .md-drppicker .ranges ul li button:active {
+            background: transparent; }
+      .md-drppicker .ranges ul li:hover {
+        background-color: #eee; }
 
 /*
 Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  (c) Kelby Gassmanl <kelby.gassman@gmail.com>
@@ -577,33 +574,6 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
     right: 8px; }
   .md-drppicker .show-ranges .drp-calendar.left {
     border-left: 1px solid #ddd; }
-  .md-drppicker .ranges {
-    float: none;
-    text-align: left;
-    margin: 0; }
-    .md-drppicker .ranges ul {
-      list-style: none;
-      margin: 0 auto;
-      padding: 0;
-      width: 100%; }
-      .md-drppicker .ranges ul li {
-        font-size: 12px; }
-        .md-drppicker .ranges ul li button {
-          padding: 8px 12px;
-          width: 100%;
-          background: none;
-          border: none;
-          text-align: left;
-          cursor: pointer; }
-          .md-drppicker .ranges ul li button.active {
-            background-color: #3f51b5;
-            color: #fff; }
-          .md-drppicker .ranges ul li button[disabled] {
-            opacity: 0.3; }
-          .md-drppicker .ranges ul li button:active {
-            background: transparent; }
-      .md-drppicker .ranges ul li:hover {
-        background-color: #eee; }
   .md-drppicker .show-calendar .ranges {
     margin-top: 8px; }
   .md-drppicker [hidden] {
@@ -2063,10 +2033,6 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 body {
   color: white; }
 
-h1,
-h2 {
-  color: white; }
-
 .docs-footer {
   background: #e91e63;
   color: white; }
@@ -2112,6 +2078,34 @@ app-footer .docs-footer-links a {
     padding: 4px;
     border-radius: 4px;
     background-color: #424242; }
+  .md-drppicker .ranges {
+    float: none;
+    text-align: left;
+    margin: 0; }
+    .md-drppicker .ranges ul {
+      list-style: none;
+      margin: 0 auto;
+      padding: 0;
+      width: 100%; }
+      .md-drppicker .ranges ul li {
+        font-size: 12px; }
+        .md-drppicker .ranges ul li button {
+          padding: 8px 12px;
+          width: 100%;
+          background: none;
+          border: none;
+          text-align: left;
+          cursor: pointer;
+          outline: none; }
+          .md-drppicker .ranges ul li button.active {
+            background-color: #e91e63;
+            color: white; }
+          .md-drppicker .ranges ul li button[disabled] {
+            opacity: 0.3; }
+          .md-drppicker .ranges ul li button:active {
+            background: transparent; }
+      .md-drppicker .ranges ul li:hover {
+        background-color: #eee; }
 
 .md-drppicker {
   background-color: #424242;
@@ -2143,3 +2137,31 @@ app-footer .docs-footer-links a {
     padding: 4px;
     border-radius: 4px;
     background-color: #424242; }
+  .md-drppicker .ranges {
+    float: none;
+    text-align: left;
+    margin: 0; }
+    .md-drppicker .ranges ul {
+      list-style: none;
+      margin: 0 auto;
+      padding: 0;
+      width: 100%; }
+      .md-drppicker .ranges ul li {
+        font-size: 12px; }
+        .md-drppicker .ranges ul li button {
+          padding: 8px 12px;
+          width: 100%;
+          background: none;
+          border: none;
+          text-align: left;
+          cursor: pointer;
+          outline: none; }
+          .md-drppicker .ranges ul li button.active {
+            background-color: #e91e63;
+            color: white; }
+          .md-drppicker .ranges ul li button[disabled] {
+            opacity: 0.3; }
+          .md-drppicker .ranges ul li button:active {
+            background: transparent; }
+      .md-drppicker .ranges ul li:hover {
+        background-color: #eee; }

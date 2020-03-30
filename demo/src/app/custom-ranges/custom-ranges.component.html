@@ -44,18 +44,31 @@
     <div class="row">
         <div class="col s6">
             <h2>Html code</h2>
-            <pre class="prettyprint"><code class="html">&lt;input type="text"
-  ngxDaterangepickerMd
-  [(ngModel)]="selected"
-  [showCustomRangeLabel]="true"
-  [alwaysShowCalendars]="{{alwaysShowCalendars}}"
-  [ranges]="ranges"
-  [linkedCalendars]="true"
-  [isInvalidDate] = "isInvalidDate"
-  [showClearButton]="true"
-
-  placeholder="Select please.../&gt;</code>
-    </pre>
+            <pre class="prettyprint"><code class="html">
+&lt;mat-form-field&gt;
+    &lt;input
+        type="text"
+        matInput
+        ngxDaterangepickerMd
+        formControlName="selected"
+        [showCustomRangeLabel]="true"
+        [alwaysShowCalendars]="form.get('alwaysShowCalendars').value"
+        [ranges]="ranges"
+        [showClearButton]="true"
+        [showCancel]="true"
+        [linkedCalendars]="true"
+        [isTooltipDate]="isTooltipDate"
+        [isInvalidDate]="isInvalidDate"
+        [locale]="&#123; applyLabel: 'Done' &#125;"
+        (rangeClicked)="rangeClicked($event)"
+        (datesUpdated)="datesUpdated($event)"
+        [keepCalendarOpeningWithRange]="form.get('keepCalendarOpeningWithRange').value"
+        [showRangeLabelOnInput]="form.get('showRangeLabelOnInput').value"
+        class="form-control"
+        placeholder="Choose date"
+    /&gt;
+&lt;/mat-form-field&gt;
+            </code></pre>
         </div>
         <div class="col s6">
             <h2>Typescript code</h2>

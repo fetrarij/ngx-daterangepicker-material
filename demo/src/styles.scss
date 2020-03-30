@@ -51,11 +51,6 @@ body {
         color: mat-color($foreground, text);
     }
 
-    h1,
-    h2 {
-        color: mat-color($primary, default-contrast);
-    }
-
     .docs-footer {
         background: mat-color($primary);
         color: mat-color($primary, default-contrast);

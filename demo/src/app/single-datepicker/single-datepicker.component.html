@@ -22,15 +22,23 @@
 <div class="row">
     <div class="col s6">
         <h2>Html code:</h2>
-        <pre class="prettyprint"><code class="html">&lt;input type="text"
-  ngxDaterangepickerMd
-  [isInvalidDate]="isInvalidDate"
-  [isCustomDate]="isCustomDate"
-  [locale]="locale"
-  [(ngModel)]="selected"
-  [singleDatePicker]="true"
-  [autoApply]="true"/&gt;</code>
-    </pre>
+        <pre class="prettyprint"><code class="html">
+&lt;mat-form-field&gt;
+    &lt;input
+        type="text"
+        matInput
+        ngxDaterangepickerMd
+        [isInvalidDate]="isInvalidDate"
+        [isCustomDate]="isCustomDate"
+        [locale]="locale"
+        [(ngModel)]="selected"
+        [singleDatePicker]="true"
+        [autoApply]="true"
+        placeholder="Choose date"
+        class="form-control"
+    /&gt;
+&lt;/mat-form-field&gt;
+        </code></pre>
     </div>
     <div class="col s6">
         <h2>Typescript code:</h2>

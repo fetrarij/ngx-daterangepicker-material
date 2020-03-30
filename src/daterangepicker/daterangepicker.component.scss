@@ -118,6 +118,46 @@ $md-drppicker-control-disabled-color: #ccc !default;
             border-radius: $md-drppicker-calendar-border-radius;
             background-color: mat-color($background, card);
         }
+
+        .ranges {
+            float: none;
+            text-align: left;
+            margin: 0;
+            ul {
+                list-style: none;
+                margin: 0 auto;
+                padding: 0;
+                width: 100%;
+                li {
+                    font-size: 12px;
+                    button {
+                        padding: 8px 12px;
+                        width: 100%;
+                        background: none;
+                        border: none;
+                        text-align: left;
+                        cursor: pointer;
+                        outline: none;
+
+                        &.active {
+                            background-color: mat-color($primary);
+                            color: mat-color($primary, default-contrast);
+                        }
+
+                        &[disabled] {
+                            opacity: 0.3;
+                        }
+
+                        &:active {
+                            background: transparent;
+                        }
+                    }
+                }
+                li:hover {
+                    background-color: #eee;
+                }
+            }
+        }
     }
 }
 
@@ -323,42 +363,6 @@ $md-drppicker-control-disabled-color: #ccc !default;
         }
     }
 
-    .ranges {
-        float: none;
-        text-align: left;
-        margin: 0;
-        ul {
-            list-style: none;
-            margin: 0 auto;
-            padding: 0;
-            width: 100%;
-            li {
-                font-size: 12px;
-                button {
-                    padding: 8px 12px;
-                    width: 100%;
-                    background: none;
-                    border: none;
-                    text-align: left;
-                    cursor: pointer;
-                    &.active {
-                        background-color: #3f51b5;
-                        color: #fff;
-                    }
-                    &[disabled] {
-                        opacity: 0.3;
-                    }
-                    &:active {
-                        background: transparent;
-                    }
-                }
-            }
-            li:hover {
-                background-color: #eee;
-            }
-        }
-    }
-
     .show-calendar {
         .ranges {
             margin-top: 8px;
@@ -397,6 +401,7 @@ $md-drppicker-control-disabled-color: #ccc !default;
         &.ltr {
             direction: ltr;
             text-align: left;
+
             .calendar {
                 &.left {
                     clear: left;
@@ -423,6 +428,7 @@ $md-drppicker-control-disabled-color: #ccc !default;
             .left .md-drppicker_input {
                 padding-right: 35px;
             }
+
             .right .md-drppicker_input {
                 padding-right: 35px;
             }
@@ -436,6 +442,7 @@ $md-drppicker-control-disabled-color: #ccc !default;
                 float: left;
             }
         }
+
         &.rtl {
             direction: rtl;
             text-align: right;
@@ -477,6 +484,7 @@ $md-drppicker-control-disabled-color: #ccc !default;
             }
         }
     }
+
     .drp-animate {
         transform: translate(0);
         transition: transform 0.2s ease, opacity 0.2s ease;

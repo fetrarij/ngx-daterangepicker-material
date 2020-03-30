@@ -26,20 +26,27 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <h2>Using the change event :</h2>
-        <pre class="prettyprint"><code class="html">&lt;input type="text" ngxDaterangepickerMd
-[(ngModel)]="selected" placeholder="Choose date" (change)="change($event)"/&gt;</code>
-    </pre>
+        <h2>Example:</h2>
 
-        <h2>Or with ngModel :</h2>
-
-        <pre class="prettyprint">
-            <code class="html">&lt;input type="text" ngxDaterangepickerMd
+        <pre class="prettyprint"><code class="html">
+&lt;mat-form-field&gt;
+    &lt;input
+        type="text"
+        name="daterangepicker"
+        ngxDaterangepickerMd
+        matInput
+        [(ngModel)]="selected"
+        class="form-control"
+        placeholder="Choose date"
+        [showDropdowns]="true"
         [lockStartDate]="false"
-[(ngModel)]="selected" placeholder="Choose date"
-(ngModelChange)="ngModelChange($event)"/&gt;</code>
-
-    </pre>
+        [customRangeDirection]="false"
+        (ngModelChange)="ngModelChange($event)"
+        (change)="change($event)"
+        showCancel="true"
+    /&gt;
+&lt;/mat-form-field&gt;
+        </code></pre>
     </div>
 </div>
 
