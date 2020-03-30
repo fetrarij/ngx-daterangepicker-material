@@ -1,12 +1,9 @@
-import {
-    Component, OnInit, ElementRef, ViewChild, EventEmitter, Output, Input, forwardRef, ViewEncapsulation, ChangeDetectorRef, Inject
-} from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { FormControl} from '@angular/forms';
-import { LocaleConfig } from './daterangepicker.config';
-
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _moment from 'moment';
+import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
+
 const moment = _moment;
 
 export enum SideEnum {
@@ -245,17 +242,21 @@ export class DaterangepickerComponent implements OnInit {
         }
 
     }
-    renderTimePicker(side: SideEnum) {
-        if (side === SideEnum.right && !this.endDate) {
-            return;
-        }
+    renderTimePicker(side: SideEnum) {        
         let selected, minDate;
         const maxDate = this.maxDate;
         if (side === SideEnum.left) {
             selected = this.startDate.clone(),
             minDate = this.minDate;
-        } else if (side === SideEnum.right) {
+        } else if (side === SideEnum.right && this.endDate) {
             selected = this.endDate.clone(),
+            minDate = this.startDate;
+        } else if (side === SideEnum.right && !this.endDate) {
+            // don't have an end date, use the start date then put the selected time for the right side as the time
+            selected = this._getDateWithTime(this.startDate, SideEnum.right);
+            if(selected.isBefore(this.startDate)){
+                selected = this.startDate.clone();  //set it back to the start date the time was backwards
+            }
             minDate = this.startDate;
         }
         const start = this.timePicker24Hour ? 0 : 1;
@@ -296,6 +297,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.timepickerVariables[side].disabledHours.push(i);
             }
         }
+        
         // generate minutes
         for (let i = 0; i < 60; i += this.timePickerIncrement) {
             const padded = i < 10 ? '0' + i : i;
@@ -695,7 +697,8 @@ export class DaterangepickerComponent implements OnInit {
 
     clickApply(e?) {
         if (!this.singleDatePicker && this.startDate && !this.endDate) {
-            this.endDate = this.startDate.clone();
+            this.endDate = this._getDateWithTime(this.startDate, SideEnum.right);
+
             this.calculateChosenLabel();
         }
         if (this.isInvalidDate && this.startDate && this.endDate) {
@@ -754,7 +757,6 @@ export class DaterangepickerComponent implements OnInit {
      * @param side left or right
      */
     timeChanged(timeEvent: any, side: SideEnum) {
-
         let hour = parseInt(this.timepickerVariables[side].selectedHour, 10);
         const minute = parseInt(this.timepickerVariables[side].selectedMinute, 10);
         const second = this.timePickerSeconds ? parseInt(this.timepickerVariables[side].selectedSecond, 10) : 0;
@@ -779,6 +781,14 @@ export class DaterangepickerComponent implements OnInit {
                 this.endDate = this.startDate.clone();
             } else if (this.endDate && this.endDate.format('YYYY-MM-DD') === start.format('YYYY-MM-DD') && this.endDate.isBefore(start)) {
                 this.setEndDate(start.clone());
+            } else if(!this.endDate && this.timePicker){
+                const startClone = this._getDateWithTime(start, SideEnum.right);
+                
+                if(startClone.isBefore(start)){
+                    this.timepickerVariables[SideEnum.right].selectedHour = hour;
+                    this.timepickerVariables[SideEnum.right].selectedMinute = minute;
+                    this.timepickerVariables[SideEnum.right].selectedSecond = second;
+                }
             }
         } else if (this.endDate) {
             const end = this.endDate.clone();
