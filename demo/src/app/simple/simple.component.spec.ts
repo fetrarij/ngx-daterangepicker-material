@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatToolbarModule} from '@angular/material';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxDaterangepickerMd } from '../../../../src/daterangepicker';
 
 import { By } from '@angular/platform-browser';

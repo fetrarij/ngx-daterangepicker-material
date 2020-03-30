@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
+    "downlevelIteration": true,
     "importHelpers": true,
-    "target": "es2018",
-    "module": "commonjs",
+    "target": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,

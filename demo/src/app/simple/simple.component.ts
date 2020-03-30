@@ -9,7 +9,7 @@ import { DaterangepickerComponent, DaterangepickerDirective } from '../../../../
 })
 export class SimpleComponent implements OnInit {
   selected: {startDate: moment.Moment, endDate: moment.Moment};
-  @ViewChild(DaterangepickerDirective) pickerDirective: DaterangepickerDirective;
+  @ViewChild(DaterangepickerDirective, { static: true }) pickerDirective: DaterangepickerDirective;
   inlineDate: any;
   inlineDateTime: any;
   picker: DaterangepickerComponent;
