@@ -6,6 +6,7 @@
         "module": "esnext",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "removeComments": true,
