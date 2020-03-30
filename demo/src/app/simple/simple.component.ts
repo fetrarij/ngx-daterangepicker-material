@@ -7,7 +7,7 @@ declare var PR;
 @Component({
     selector: 'simple',
     templateUrl: './simple.component.html',
-    styleUrls: ['./simple.component.scss']
+    styleUrls: ['./simple.component.scss'],
 })
 export class SimpleComponent implements AfterViewInit {
     selected: { startDate: moment.Moment; endDate: moment.Moment };
@@ -18,7 +18,7 @@ export class SimpleComponent implements AfterViewInit {
     constructor() {
         this.selected = {
             startDate: moment('2015-11-18T00:00Z'),
-            endDate: moment('2015-11-26T00:00Z')
+            endDate: moment('2015-11-26T00:00Z'),
         };
     }
 

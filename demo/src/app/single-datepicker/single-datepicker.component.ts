@@ -9,7 +9,7 @@ declare var PR;
 @Component({
     selector: 'single-datepicker',
     templateUrl: './single-datepicker.component.html',
-    styleUrls: ['./single-datepicker.component.scss']
+    styleUrls: ['./single-datepicker.component.scss'],
 })
 export class SingleDatepickerComponent implements AfterViewInit {
     selected = moment();
@@ -18,7 +18,7 @@ export class SingleDatepickerComponent implements AfterViewInit {
         customRangeLabel: ' - ',
         daysOfWeek: moment.weekdaysMin(),
         monthNames: moment.monthsShort(),
-        firstDay: moment.localeData().firstDayOfWeek()
+        firstDay: moment.localeData().firstDayOfWeek(),
     };
 
     ngAfterViewInit(): void {

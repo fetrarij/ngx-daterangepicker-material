@@ -1,6 +1,6 @@
 {
   "name": "ngx-daterangepicker-material",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Angular 2+ date range picker (with material design theme)",
   "keywords": [
     "angular2",
@@ -21,6 +21,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "schematics": "./schematics/collection.json",
   "scripts": {
     "ng": "ng",
     "start": "npm run build-themes && ng serve",
@@ -33,6 +34,8 @@
     "gh-pages": "ng build --prod --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
     "build": "ng-packagr -p package.json",
     "build-themes": "bash ./tools/build-themes.sh",
+    "copy:collection": "mkdir -p ./dist/schematics && cp ./schematics/collections.json ./dist/schematics/collections.json",
+    "postbuild": "npm run copy:collection",
     "prettier": "prettier --write '**/*.{html,js,ts,css,scss,less,md,json}'",
     "prettier-check": "prettier --list-different '**/*.{html,js,ts,css,scss,less,md,json}'"
   },
@@ -42,7 +45,10 @@
     "url": "https://github.com/fetrarij/ngx-daterangepicker-material.git"
   },
   "peerDependencies": {
-    "moment": "^2.21.0"
+    "moment": "^2.21.0",
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/material": "^8.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.0",
@@ -78,6 +84,7 @@
     "protractor": "~5.4.0",
     "rxjs": "^6.3.3",
     "ts-node": "~8.8.1",
+    "tslib": "^1.10.0",
     "tslint": "~5.11.0",
     "typescript": "~3.8.3",
     "zone.js": "~0.10.2"
@@ -91,12 +98,5 @@
       }
     },
     "dest": "dist"
-  },
-  "dependencies": {
-    "@angular/animations": "^9.0.0 || ^10.0.0-0",
-    "@angular/cdk": "~9.2.0-next.0",
-    "@angular/forms": "^9.0.0 || ^10.0.0-0",
-    "@angular/material": "~9.2.0-next.0",
-    "tslib": "^1.10.0"
   }
 }
