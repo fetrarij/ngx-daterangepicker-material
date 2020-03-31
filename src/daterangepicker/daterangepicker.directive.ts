@@ -86,9 +86,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     @Input()
     ranges = {};
     @Input()
-    opens = 'auto';
+    opens: 'left' | 'center' | 'right' = 'center';
     @Input()
-    drops = 'down';
+    drops: 'up' | 'down' = 'down';
     firstMonthDayClass: string;
     @Input()
     lastMonthDayClass: string;
@@ -106,7 +106,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     showCancel = false;
     @Input()
     lockStartDate = false;
-    // timepicker variables
     @Input()
     timePicker = false;
     @Input()
@@ -196,6 +195,22 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             this.hide();
         }
 
+        let originX, overlayX;
+        switch (this.opens) {
+            case 'left':
+                originX = 'start';
+                overlayX = 'end';
+                break;
+            case 'center':
+                originX = 'center';
+                overlayX = 'center';
+                break;
+            case 'right':
+                originX = 'end';
+                overlayX = 'start';
+                break;
+        }
+
         // TO-DO: implement this.drops and this.opens!
         this.overlayRef = this.overlay.create({
             backdropClass: 'cdk-overlay-transparent-backdrop',
@@ -205,8 +220,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                 .position()
                 .connectedTo(
                     this.elementRef.nativeElement,
-                    { originX: 'start', originY: 'bottom' },
-                    { overlayX: 'start', overlayY: 'top' }
+                    { originX, originY: this.drops === 'up' ? 'top' : 'bottom' },
+                    { overlayX, overlayY: this.drops === 'up' ? 'bottom' : 'top' }
                 ),
         });
         const dateRangePickerPortal = new ComponentPortal(DaterangepickerComponent);
@@ -227,8 +242,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this.componentRef.instance.showClearButton = this.showClearButton;
         this.componentRef.instance.customRangeDirection = this.customRangeDirection;
         this.componentRef.instance.ranges = this.ranges;
-        this.componentRef.instance.opens = this.opens;
-        this.componentRef.instance.drops = this.drops;
         this.componentRef.instance.firstMonthDayClass = this.firstMonthDayClass;
         this.componentRef.instance.lastMonthDayClass = this.lastMonthDayClass;
         this.componentRef.instance.emptyWeekRowClass = this.emptyWeekRowClass;

@@ -162,8 +162,6 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     rightCalendar: any = {};
     showCalInRanges: Boolean = false;
 
-    @Input() drops: string;
-    @Input() opens: string;
     @Input() closeOnAutoApply = true;
 
     @Output() chosenDate: EventEmitter<{ chosenLabel: string; startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();

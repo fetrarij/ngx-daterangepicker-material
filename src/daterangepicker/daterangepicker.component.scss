@@ -1,5 +1,3 @@
-@import '../../node_modules/@angular/material/theming';
-
 /*
 *  variables
 */
@@ -51,115 +49,7 @@ $md-drppicker-control-border-size: 1px !default;
 $md-drppicker-control-border-color: #ccc !default;
 $md-drppicker-control-border-radius: 4px !default;
 
-$md-drppicker-control-active-border-size: 1px !default;
-$md-drppicker-control-active-border-color: #08c !default;
-$md-drppicker-control-active-border-radius: $md-drppicker-control-border-radius !default;
-
 $md-drppicker-control-disabled-color: #ccc !default;
-
-@mixin date-range-picker-theme($theme) {
-    $primary: map-get($theme, primary);
-    $accent: map-get($theme, accent);
-    $background: map-get($theme, background);
-    $foreground: map-get($theme, foreground);
-
-    .md-drppicker {
-        background-color: mat-color($background, card);
-        color: mat-color($foreground, text);
-
-        td {
-            &.off {
-                &,
-                &.in-range,
-                &.start-date,
-                &.end-date {
-                    background-color: $md-drppicker-unselected-bg-color;
-                    border-color: $md-drppicker-unselected-border-color;
-                    color: $md-drppicker-unselected-color;
-                }
-            }
-
-            &.in-range {
-                background-color: $md-drppicker-in-range-bg-color;
-                border-color: $md-drppicker-in-range-border-color;
-                color: $md-drppicker-in-range-color;
-
-                // TODO: Should this be static or should it be parameterized?
-                border-radius: 0;
-            }
-
-            &.start-date {
-                border-radius: 2em 0 0 2em;
-            }
-
-            &.end-date {
-                border-radius: 0 2em 2em 0;
-            }
-
-            &.start-date.end-date {
-                border-radius: $md-drppicker-cell-border-radius;
-            }
-
-            &.active {
-                transition: background 300ms ease-out, border 300ms ease-out;
-                background: rgba(0, 0, 0, 0.1);
-                &,
-                &:hover {
-                    background-color: mat-color($primary);
-                    border-color: mat-color($primary);
-                    color: $md-drppicker-active-color;
-                }
-            }
-        }
-
-        .calendar-table {
-            border: $md-drppicker-calendar-border-size solid mat-color($background, card);
-            padding: $md-drppicker-calendar-margin;
-            border-radius: $md-drppicker-calendar-border-radius;
-            background-color: mat-color($background, card);
-        }
-
-        .ranges {
-            float: none;
-            text-align: left;
-            margin: 0;
-            ul {
-                list-style: none;
-                margin: 0 auto;
-                padding: 0;
-                width: 100%;
-                li {
-                    font-size: 12px;
-                    button {
-                        padding: 8px 12px;
-                        width: 100%;
-                        background: none;
-                        border: none;
-                        text-align: left;
-                        cursor: pointer;
-                        outline: none;
-
-                        &.active {
-                            background-color: mat-color($primary);
-                            color: mat-color($primary, default-contrast);
-                        }
-
-                        &[disabled] {
-                            opacity: 0.3;
-                        }
-
-                        &:active {
-                            background: transparent;
-                        }
-                    }
-                }
-                li:hover {
-                    background-color: #eee;
-                }
-            }
-        }
-    }
-}
 
 /*
 * styles
@@ -172,6 +62,7 @@ $md-drppicker-control-disabled-color: #ccc !default;
     overflow: hidden;
     font-size: 14px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+
     &.double {
         width: $md-drppicker-width-double;
     }
@@ -237,6 +128,49 @@ $md-drppicker-control-disabled-color: #ccc !default;
         }
     }
 
+    .calendar-table {
+        border: 1px solid transparent;
+        padding: $md-drppicker-calendar-margin;
+    }
+
+    .ranges {
+        float: none;
+        text-align: left;
+        margin: 0;
+
+        ul {
+            list-style: none;
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+
+            li {
+                font-size: 12px;
+                button {
+                    padding: 8px 12px;
+                    width: 100%;
+                    background: none;
+                    border: none;
+                    text-align: left;
+                    cursor: pointer;
+                    outline: none;
+
+                    &[disabled] {
+                        opacity: 0.3;
+                    }
+
+                    &:active {
+                        background: transparent;
+                    }
+                }
+            }
+
+            li:hover {
+                background-color: #eee;
+            }
+        }
+    }
+
     table {
         width: 100%;
         margin: 0;
@@ -259,8 +193,41 @@ $md-drppicker-control-disabled-color: #ccc !default;
     }
 
     td {
+        &.off {
+            &,
+            &.in-range,
+            &.start-date,
+            &.end-date {
+                background-color: $md-drppicker-unselected-bg-color;
+                border-color: $md-drppicker-unselected-border-color;
+                color: $md-drppicker-unselected-color;
+            }
+        }
+
+        &.in-range {
+            background-color: $md-drppicker-in-range-bg-color;
+            border-color: $md-drppicker-in-range-border-color;
+            color: $md-drppicker-in-range-color;
+
+            // TODO: Should this be static or should it be parameterized?
+            border-radius: 0;
+        }
+
+        &.start-date {
+            border-radius: 2em 0 0 2em;
+        }
+
+        &.end-date {
+            border-radius: 0 2em 2em 0;
+        }
+
+        &.start-date.end-date {
+            border-radius: $md-drppicker-cell-border-radius;
+        }
+    }
+
+    td {
         margin: 0.25em 0;
-        opacity: 0.8;
         transition: background-color 0.2s ease;
         border-radius: 2em;
         transform: scale(1);
@@ -314,24 +281,6 @@ $md-drppicker-control-disabled-color: #ccc !default;
     .calendar-time select.disabled {
         color: #ccc;
         cursor: not-allowed;
-    }
-
-    .label-input {
-        border: $md-drppicker-control-border-size solid $md-drppicker-control-border-color;
-        border-radius: $md-drppicker-control-border-radius;
-        color: $md-drppicker-control-color;
-        height: $md-drppicker-control-line-height;
-        line-height: $md-drppicker-control-height;
-        display: block;
-        vertical-align: middle;
-        margin: 0 auto 5px auto;
-        padding: 0 0 0 28px;
-        width: 100%;
-
-        &.active {
-            border: $md-drppicker-control-active-border-size solid $md-drppicker-control-active-border-color;
-            border-radius: $md-drppicker-control-active-border-radius;
-        }
     }
 
     .md-drppicker_input {

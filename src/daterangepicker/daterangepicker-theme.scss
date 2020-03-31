@@ -1,0 +1,41 @@
+@mixin date-range-picker-theme($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    .md-drppicker {
+        background-color: mat-color($background, card);
+        color: mat-color($foreground, text);
+
+        td {
+            &.active {
+                transition: background 300ms ease-out, border 300ms ease-out;
+                background: rgba(0, 0, 0, 0.1);
+                &,
+                &:hover {
+                    background-color: mat-color($primary) !important;
+                    border-color: mat-color($primary) !important;
+                    color: mat-color($primary, default-contrast) !important;
+                }
+            }
+        }
+
+        .ranges {
+            ul {
+                li {
+                    button {
+                        &.active {
+                            background-color: mat-color($primary);
+                            color: mat-color($primary, default-contrast);
+                        }
+                    }
+
+                    li:hover {
+                        background-color: #eee;
+                    }
+                }
+            }
+        }
+    }
+}
