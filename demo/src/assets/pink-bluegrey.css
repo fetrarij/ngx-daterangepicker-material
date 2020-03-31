@@ -90,7 +90,6 @@ app-footer .docs-footer-links a {
     background: rgba(0, 0, 0, 0.1); }
     .md-drppicker td.active, .md-drppicker td.active:hover {
       background-color: #3f51b5;
-      border-color: #3f51b5;
       color: white; }
   .md-drppicker .ranges ul li button {
     border-radius: 4px;
@@ -249,7 +248,7 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
       border: none; }
     .md-drppicker .calendar th,
     .md-drppicker .calendar td {
-      padding: 0;
+      padding: 1px;
       white-space: nowrap;
       text-align: center;
       min-width: 32px; }
@@ -291,7 +290,6 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    border: 1px solid transparent;
     white-space: nowrap;
     cursor: pointer;
     height: 2em;
@@ -1863,7 +1861,6 @@ app-footer .docs-footer-links a {
     background: rgba(0, 0, 0, 0.1); }
     .md-drppicker td.active, .md-drppicker td.active:hover {
       background-color: #e91e63;
-      border-color: #e91e63;
       color: white; }
   .md-drppicker .ranges ul li button {
     border-radius: 4px;

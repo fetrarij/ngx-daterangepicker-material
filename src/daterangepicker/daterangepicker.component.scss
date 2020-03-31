@@ -105,7 +105,7 @@ $md-drppicker-cell-border-size: 1px !default;
 
         th,
         td {
-            padding: 0;
+            padding: 1px;
             white-space: nowrap;
             text-align: center;
             min-width: 32px;
@@ -164,7 +164,6 @@ $md-drppicker-cell-border-size: 1px !default;
         width: $md-drppicker-cell-width;
         height: $md-drppicker-cell-height;
         border-radius: $md-drppicker-cell-border-radius;
-        border: $md-drppicker-cell-border-size solid $md-drppicker-cell-border-color;
         white-space: nowrap;
         cursor: pointer;
         height: 2em;

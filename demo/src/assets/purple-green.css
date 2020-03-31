@@ -90,7 +90,6 @@ app-footer .docs-footer-links a {
     background: rgba(0, 0, 0, 0.1); }
     .md-drppicker td.active, .md-drppicker td.active:hover {
       background-color: #3f51b5;
-      border-color: #3f51b5;
       color: white; }
   .md-drppicker .ranges ul li button {
     border-radius: 4px;
@@ -1608,7 +1607,6 @@ app-footer .docs-footer-links a {
     background: rgba(0, 0, 0, 0.1); }
     .md-drppicker td.active, .md-drppicker td.active:hover {
       background-color: #9c27b0;
-      border-color: #9c27b0;
       color: white; }
   .md-drppicker .ranges ul li button {
     border-radius: 4px;
