@@ -218,11 +218,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             scrollStrategy: this.overlay.scrollStrategies.reposition(),
             positionStrategy: this.overlay
                 .position()
-                .connectedTo(
-                    this.elementRef.nativeElement,
-                    { originX, originY: this.drops === 'up' ? 'top' : 'bottom' },
-                    { overlayX, overlayY: this.drops === 'up' ? 'bottom' : 'top' }
-                ),
+                .flexibleConnectedTo(this.elementRef.nativeElement)
+                .withPositions([
+                    {
+                        originX,
+                        originY: this.drops === 'up' ? 'top' : 'bottom',
+                        overlayX,
+                        overlayY: this.drops === 'up' ? 'bottom' : 'top',
+                    },
+                ]),
         });
         const dateRangePickerPortal = new ComponentPortal(DaterangepickerComponent);
         this.componentRef = this.overlayRef.attach(dateRangePickerPortal);
