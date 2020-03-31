@@ -72,6 +72,10 @@ app-footer .docs-footer-links a {
 .md-drppicker {
   background-color: white;
   color: rgba(0, 0, 0, 0.87); }
+  .md-drppicker td.available:hover,
+  .md-drppicker th.available:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    color: rgba(0, 0, 0, 0.87); }
   .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
     background-color: white;
     border-color: white;
@@ -1841,6 +1845,10 @@ app-footer .docs-footer-links a {
 .md-drppicker {
   background-color: #424242;
   color: white; }
+  .md-drppicker td.available:hover,
+  .md-drppicker th.available:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: white; }
   .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
     background-color: #424242;
     border-color: #424242;

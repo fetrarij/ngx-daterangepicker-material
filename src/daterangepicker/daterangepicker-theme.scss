@@ -8,6 +8,16 @@
         background-color: mat-color($background, dialog);
         color: mat-color($foreground, text);
 
+        td,
+        th {
+            &.available {
+                &:hover {
+                    background-color: mat-color($background, hover);
+                    color: mat-color($foreground, text);
+                }
+            }
+        }
+
         td {
             &.off {
                 &,
