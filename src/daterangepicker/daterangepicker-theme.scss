@@ -5,18 +5,38 @@
     $foreground: map-get($theme, foreground);
 
     .md-drppicker {
-        background-color: mat-color($background, card);
+        background-color: mat-color($background, dialog);
         color: mat-color($foreground, text);
 
         td {
+            &.off {
+                &,
+                &.in-range,
+                &.start-date,
+                &.end-date {
+                    background-color: mat-color($background, dialog);
+                    border-color: mat-color($background, dialog);
+                    color: mat-color($foreground, text);
+                }
+            }
+
+            &.in-range {
+                background-color: mat-color($background, disabled-button-toggle);
+                border-color: mat-color($background, dialog);
+                color: mat-color($foreground, text);
+
+                // TODO: Should this be static or should it be parameterized?
+                border-radius: 0;
+            }
+
             &.active {
                 transition: background 300ms ease-out, border 300ms ease-out;
                 background: rgba(0, 0, 0, 0.1);
                 &,
                 &:hover {
-                    background-color: mat-color($primary) !important;
-                    border-color: mat-color($primary) !important;
-                    color: mat-color($primary, default-contrast) !important;
+                    background-color: mat-color($primary);
+                    border-color: mat-color($primary);
+                    color: mat-color($primary, default-contrast);
                 }
             }
         }
@@ -25,14 +45,19 @@
             ul {
                 li {
                     button {
+                        border-radius: 4px;
+                        color: mat-color($foreground, text);
+
                         &.active {
                             background-color: mat-color($primary);
                             color: mat-color($primary, default-contrast);
                         }
                     }
 
-                    li:hover {
-                        background-color: #eee;
+                    &:hover {
+                        border-radius: 4px;
+                        background-color: mat-color($background, hover);
+                        color: mat-color($primary, default-contrast);
                     }
                 }
             }

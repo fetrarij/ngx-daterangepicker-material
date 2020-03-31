@@ -72,18 +72,32 @@ app-footer .docs-footer-links a {
 .md-drppicker {
   background-color: white;
   color: rgba(0, 0, 0, 0.87); }
+  .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
+    background-color: white;
+    border-color: white;
+    color: rgba(0, 0, 0, 0.87); }
+  .md-drppicker td.in-range {
+    background-color: #eeeeee;
+    border-color: white;
+    color: rgba(0, 0, 0, 0.87);
+    border-radius: 0; }
   .md-drppicker td.active {
     transition: background 300ms ease-out, border 300ms ease-out;
     background: rgba(0, 0, 0, 0.1); }
     .md-drppicker td.active, .md-drppicker td.active:hover {
-      background-color: #3f51b5 !important;
-      border-color: #3f51b5 !important;
-      color: white !important; }
-  .md-drppicker .ranges ul li button.active {
-    background-color: #3f51b5;
+      background-color: #3f51b5;
+      border-color: #3f51b5;
+      color: white; }
+  .md-drppicker .ranges ul li button {
+    border-radius: 4px;
+    color: rgba(0, 0, 0, 0.87); }
+    .md-drppicker .ranges ul li button.active {
+      background-color: #3f51b5;
+      color: white; }
+  .md-drppicker .ranges ul li:hover {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.04);
     color: white; }
-  .md-drppicker .ranges ul li li:hover {
-    background-color: #eee; }
 
 /*
 Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  (c) Kelby Gassmanl <kelby.gassman@gmail.com>
@@ -264,8 +278,6 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
             opacity: 0.3; }
           .md-drppicker .ranges ul li button:active {
             background: transparent; }
-      .md-drppicker .ranges ul li:hover {
-        background-color: #eee; }
   .md-drppicker table {
     width: 100%;
     margin: 0; }
@@ -283,15 +295,6 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
     .md-drppicker td.week,
     .md-drppicker th.week {
       font-size: 80%; }
-  .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
-    background-color: #fff;
-    border-color: transparent;
-    color: #999; }
-  .md-drppicker td.in-range {
-    background-color: #dde2e4;
-    border-color: transparent;
-    color: #000;
-    border-radius: 0; }
   .md-drppicker td.start-date {
     border-radius: 2em 0 0 2em; }
   .md-drppicker td.end-date {
@@ -353,9 +356,12 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
     display: none; }
   .md-drppicker button + button {
     margin-left: 8px; }
-  .md-drppicker .clear-icon {
-    font-size: 20px !important;
-    color: #eb3232; }
+  .md-drppicker .clear-button {
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+    .md-drppicker .clear-button .clear-icon {
+      font-size: 20px !important; }
   .md-drppicker .buttons {
     text-align: right;
     margin: 0 5px 5px 0; }
@@ -1825,15 +1831,29 @@ app-footer .docs-footer-links a {
 .md-drppicker {
   background-color: #424242;
   color: white; }
+  .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
+    background-color: #424242;
+    border-color: #424242;
+    color: white; }
+  .md-drppicker td.in-range {
+    background-color: black;
+    border-color: #424242;
+    color: white;
+    border-radius: 0; }
   .md-drppicker td.active {
     transition: background 300ms ease-out, border 300ms ease-out;
     background: rgba(0, 0, 0, 0.1); }
     .md-drppicker td.active, .md-drppicker td.active:hover {
-      background-color: #e91e63 !important;
-      border-color: #e91e63 !important;
-      color: white !important; }
-  .md-drppicker .ranges ul li button.active {
-    background-color: #e91e63;
+      background-color: #e91e63;
+      border-color: #e91e63;
+      color: white; }
+  .md-drppicker .ranges ul li button {
+    border-radius: 4px;
     color: white; }
-  .md-drppicker .ranges ul li li:hover {
-    background-color: #eee; }
+    .md-drppicker .ranges ul li button.active {
+      background-color: #e91e63;
+      color: white; }
+  .md-drppicker .ranges ul li:hover {
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.04);
+    color: white; }

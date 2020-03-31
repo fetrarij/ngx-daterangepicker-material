@@ -72,18 +72,32 @@ app-footer .docs-footer-links a {
 .md-drppicker {
   background-color: white;
   color: rgba(0, 0, 0, 0.87); }
+  .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
+    background-color: white;
+    border-color: white;
+    color: rgba(0, 0, 0, 0.87); }
+  .md-drppicker td.in-range {
+    background-color: #eeeeee;
+    border-color: white;
+    color: rgba(0, 0, 0, 0.87);
+    border-radius: 0; }
   .md-drppicker td.active {
     transition: background 300ms ease-out, border 300ms ease-out;
     background: rgba(0, 0, 0, 0.1); }
     .md-drppicker td.active, .md-drppicker td.active:hover {
-      background-color: #3f51b5 !important;
-      border-color: #3f51b5 !important;
-      color: white !important; }
-  .md-drppicker .ranges ul li button.active {
-    background-color: #3f51b5;
+      background-color: #3f51b5;
+      border-color: #3f51b5;
+      color: white; }
+  .md-drppicker .ranges ul li button {
+    border-radius: 4px;
+    color: rgba(0, 0, 0, 0.87); }
+    .md-drppicker .ranges ul li button.active {
+      background-color: #3f51b5;
+      color: white; }
+  .md-drppicker .ranges ul li:hover {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.04);
     color: white; }
-  .md-drppicker .ranges ul li li:hover {
-    background-color: #eee; }
 
 .mat-ripple-element {
   background-color: rgba(0, 0, 0, 0.1); }
@@ -1470,15 +1484,29 @@ app-footer .docs-footer-links a {
 .md-drppicker {
   background-color: white;
   color: rgba(0, 0, 0, 0.87); }
+  .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
+    background-color: white;
+    border-color: white;
+    color: rgba(0, 0, 0, 0.87); }
+  .md-drppicker td.in-range {
+    background-color: #eeeeee;
+    border-color: white;
+    color: rgba(0, 0, 0, 0.87);
+    border-radius: 0; }
   .md-drppicker td.active {
     transition: background 300ms ease-out, border 300ms ease-out;
     background: rgba(0, 0, 0, 0.1); }
     .md-drppicker td.active, .md-drppicker td.active:hover {
-      background-color: #673ab7 !important;
-      border-color: #673ab7 !important;
-      color: white !important; }
-  .md-drppicker .ranges ul li button.active {
-    background-color: #673ab7;
+      background-color: #673ab7;
+      border-color: #673ab7;
+      color: white; }
+  .md-drppicker .ranges ul li button {
+    border-radius: 4px;
+    color: rgba(0, 0, 0, 0.87); }
+    .md-drppicker .ranges ul li button.active {
+      background-color: #673ab7;
+      color: white; }
+  .md-drppicker .ranges ul li:hover {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.04);
     color: white; }
-  .md-drppicker .ranges ul li li:hover {
-    background-color: #eee; }

@@ -399,8 +399,10 @@
     <div class="buttons" *ngIf="!autoApply && (!rangesArray.length || (showCalInRanges && !singleDatePicker))">
         <div class="buttons_input">
             <button *ngIf="showClearButton" mat-raised-button type="button" [title]="locale.clearLabel" (click)="clear()">
-                {{ locale.clearLabel }}
-                <mat-icon [inline]="true" class="clear-icon">delete</mat-icon>
+                <span class="clear-button">
+                    {{ locale.clearLabel }}
+                    <mat-icon [inline]="true" class="clear-icon">delete</mat-icon>
+                </span>
             </button>
             <button *ngIf="showCancel" mat-raised-button (click)="clickCancel()">{{ locale.cancelLabel }}</button>
             <button [disabled]="applyBtn.disabled" mat-raised-button color="primary" (click)="clickApply($event)">

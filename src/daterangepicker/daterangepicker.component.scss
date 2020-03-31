@@ -16,9 +16,6 @@ $md-drppicker-in-range-color: #000 !default;
 $md-drppicker-in-range-border-color: transparent !default;
 $md-drppicker-in-range-bg-color: #dde2e4 !default;
 
-$md-drppicker-active-color: #fff !default;
-$md-drppicker-active-border-color: transparent !default;
-
 $md-drppicker-unselected-color: #999 !default;
 $md-drppicker-unselected-border-color: transparent !default;
 $md-drppicker-unselected-bg-color: #fff !default;
@@ -40,16 +37,6 @@ $md-drppicker-cell-height: $md-drppicker-cell-size !default;
 
 $md-drppicker-cell-border-radius: $md-drppicker-calendar-border-radius !default;
 $md-drppicker-cell-border-size: 1px !default;
-
-$md-drppicker-control-height: 30px !default;
-$md-drppicker-control-line-height: $md-drppicker-control-height !default;
-$md-drppicker-control-color: #555 !default;
-
-$md-drppicker-control-border-size: 1px !default;
-$md-drppicker-control-border-color: #ccc !default;
-$md-drppicker-control-border-radius: 4px !default;
-
-$md-drppicker-control-disabled-color: #ccc !default;
 
 /*
 * styles
@@ -164,10 +151,6 @@ $md-drppicker-control-disabled-color: #ccc !default;
                     }
                 }
             }
-
-            li:hover {
-                background-color: #eee;
-            }
         }
     }
 
@@ -193,26 +176,6 @@ $md-drppicker-control-disabled-color: #ccc !default;
     }
 
     td {
-        &.off {
-            &,
-            &.in-range,
-            &.start-date,
-            &.end-date {
-                background-color: $md-drppicker-unselected-bg-color;
-                border-color: $md-drppicker-unselected-border-color;
-                color: $md-drppicker-unselected-color;
-            }
-        }
-
-        &.in-range {
-            background-color: $md-drppicker-in-range-bg-color;
-            border-color: $md-drppicker-in-range-border-color;
-            color: $md-drppicker-in-range-color;
-
-            // TODO: Should this be static or should it be parameterized?
-            border-radius: 0;
-        }
-
         &.start-date {
             border-radius: 2em 0 0 2em;
         }
@@ -326,9 +289,14 @@ $md-drppicker-control-disabled-color: #ccc !default;
         margin-left: 8px;
     }
 
-    .clear-icon {
-        font-size: 20px !important;
-        color: #eb3232;
+    .clear-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .clear-icon {
+            font-size: 20px !important;
+        }
     }
 
     .buttons {
