@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { NgxDaterangepickerMd } from './../../../src/daterangepicker';
 import { AppComponent } from './app.component';
-import { AppRoutes } from './app.routing';
+import { appRoutes } from './app.routing';
 import { CustomRangesComponent } from './custom-ranges/custom-ranges.component';
 import { FooterModule } from './footer/footer';
 import { FullComponent } from './full/full.component';
@@ -52,7 +52,7 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
             applyLabel: 'Okay',
             firstDay: 3,
         }),
-        RouterModule.forRoot(AppRoutes),
+        RouterModule.forRoot(appRoutes),
     ],
     bootstrap: [AppComponent],
 })

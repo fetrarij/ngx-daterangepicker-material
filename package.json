@@ -32,7 +32,7 @@
     "e2e": "ng e2e",
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
     "gh-pages": "ng build --prod --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
-    "build": "ng-packagr -p package.json && npm run bundle-styles",
+    "build": "bash ./tools/build-themes.sh && ng-packagr -p package.json && npm run bundle-styles",
     "build-themes": "bash ./tools/build-themes.sh",
     "bundle-styles": "scss-bundle -c scss-bundle.config.json",
     "copy:collection": "mkdir -p ./dist/schematics && cp ./schematics/collections.json ./dist/schematics/collections.json",

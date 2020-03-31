@@ -77,7 +77,7 @@ app-footer .docs-footer-links a {
     border-color: white;
     color: rgba(0, 0, 0, 0.87); }
   .md-drppicker td.in-range {
-    background-color: #eeeeee;
+    background-color: rgba(0, 0, 0, 0.12);
     border-color: white;
     color: rgba(0, 0, 0, 0.87);
     border-radius: 0; }
@@ -1489,7 +1489,7 @@ app-footer .docs-footer-links a {
     border-color: white;
     color: rgba(0, 0, 0, 0.87); }
   .md-drppicker td.in-range {
-    background-color: #eeeeee;
+    background-color: rgba(0, 0, 0, 0.12);
     border-color: white;
     color: rgba(0, 0, 0, 0.87);
     border-radius: 0; }

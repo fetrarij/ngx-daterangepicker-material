@@ -21,7 +21,7 @@
             }
 
             &.in-range {
-                background-color: mat-color($background, disabled-button-toggle);
+                background-color: mat-color($background, disabled-button);
                 border-color: mat-color($background, dialog);
                 color: mat-color($foreground, text);
 
