@@ -109,6 +109,8 @@ $md-drppicker-cell-border-size: 1px !default;
             white-space: nowrap;
             text-align: center;
             min-width: 32px;
+            user-select: none;
+
             span {
                 pointer-events: none;
             }
@@ -118,6 +120,10 @@ $md-drppicker-cell-border-size: 1px !default;
     .calendar-table {
         border: 1px solid transparent;
         padding: $md-drppicker-calendar-margin;
+
+        table {
+            border-spacing: 2px;
+        }
     }
 
     .ranges {
@@ -177,6 +183,10 @@ $md-drppicker-cell-border-size: 1px !default;
     td {
         &.start-date {
             border-radius: 2em 0 0 2em;
+        }
+
+        &.in-range {
+            border-radius: 0;
         }
 
         &.end-date {

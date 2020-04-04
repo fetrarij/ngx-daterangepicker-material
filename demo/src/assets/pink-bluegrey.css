@@ -79,12 +79,11 @@ app-footer .docs-footer-links a {
   .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
     background-color: white;
     border-color: white;
-    color: rgba(0, 0, 0, 0.87); }
+    color: rgba(0, 0, 0, 0.38); }
   .md-drppicker td.in-range {
-    background-color: rgba(0, 0, 0, 0.12);
-    border-color: white;
-    color: rgba(0, 0, 0, 0.87);
-    border-radius: 0; }
+    background-color: #eeeeee;
+    border-color: #eeeeee;
+    color: rgba(0, 0, 0, 0.87); }
   .md-drppicker td.active {
     transition: background 300ms ease-out, border 300ms ease-out;
     background: rgba(0, 0, 0, 0.1); }
@@ -251,13 +250,16 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
       padding: 1px;
       white-space: nowrap;
       text-align: center;
-      min-width: 32px; }
+      min-width: 32px;
+      user-select: none; }
       .md-drppicker .calendar th span,
       .md-drppicker .calendar td span {
         pointer-events: none; }
   .md-drppicker .calendar-table {
     border: 1px solid transparent;
     padding: 4px; }
+    .md-drppicker .calendar-table table {
+      border-spacing: 2px; }
   .md-drppicker .ranges {
     float: none;
     text-align: left;
@@ -299,6 +301,8 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
       font-size: 80%; }
   .md-drppicker td.start-date {
     border-radius: 2em 0 0 2em; }
+  .md-drppicker td.in-range {
+    border-radius: 0; }
   .md-drppicker td.end-date {
     border-radius: 0 2em 2em 0; }
   .md-drppicker td.start-date.end-date {
@@ -1850,12 +1854,11 @@ app-footer .docs-footer-links a {
   .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
     background-color: #424242;
     border-color: #424242;
-    color: white; }
+    color: rgba(255, 255, 255, 0.5); }
   .md-drppicker td.in-range {
-    background-color: rgba(255, 255, 255, 0.12);
-    border-color: #424242;
-    color: white;
-    border-radius: 0; }
+    background-color: black;
+    border-color: black;
+    color: white; }
   .md-drppicker td.active {
     transition: background 300ms ease-out, border 300ms ease-out;
     background: rgba(0, 0, 0, 0.1); }

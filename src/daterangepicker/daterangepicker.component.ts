@@ -158,8 +158,8 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     // some state information
     isShown: Boolean = false;
     inline = true;
-    leftCalendar: any = {};
-    rightCalendar: any = {};
+    leftCalendar: { month: _moment.Moment; calendar?: _moment.Moment[][] } = { month: null };
+    rightCalendar: { month: _moment.Moment; calendar?: _moment.Moment[][] } = { month: null };
     showCalInRanges: Boolean = false;
 
     @Input() closeOnAutoApply = true;
@@ -231,7 +231,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         this.destroy$.next();
     }
 
-    renderRanges() {
+    renderRanges(): void {
         this.rangesArray = [];
         let start, end;
         if (typeof this.ranges === 'object') {
@@ -384,9 +384,6 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         }
         // generate AM/PM
         if (!this.timePicker24Hour) {
-            const am_html = '';
-            const pm_html = '';
-
             if (minDate && selected.clone().hour(12).minute(0).second(0).isBefore(minDate)) {
                 this.timepickerVariables[side].amDisabled = true;
             }
@@ -404,7 +401,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
     }
 
     renderCalendar(side: SideEnum): void {
-        const mainCalendar: any = side === SideEnum.left ? this.leftCalendar : this.rightCalendar;
+        const mainCalendar = side === SideEnum.left ? this.leftCalendar : this.rightCalendar;
         const month = mainCalendar.month.month();
         const year = mainCalendar.month.year();
         const hour = mainCalendar.month.hour();
@@ -484,26 +481,27 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
                 maxDate = maxLimit;
             }
         }
+
         this.calendarVariables[side] = {
-            month: month,
-            year: year,
-            hour: hour,
-            minute: minute,
-            second: second,
-            daysInMonth: daysInMonth,
-            firstDay: firstDay,
-            lastDay: lastDay,
-            lastMonth: lastMonth,
-            lastYear: lastYear,
-            daysInLastMonth: daysInLastMonth,
-            dayOfWeek: dayOfWeek,
+            month,
+            year,
+            hour,
+            minute,
+            second,
+            daysInMonth,
+            firstDay,
+            lastDay,
+            lastMonth,
+            lastYear,
+            daysInLastMonth,
+            dayOfWeek,
             // other vars
             calRows: Array.from(Array(6).keys()),
             calCols: Array.from(Array(7).keys()),
             classes: {},
-            minDate: minDate,
-            maxDate: maxDate,
-            calendar: calendar,
+            minDate,
+            maxDate,
+            calendar,
         };
         if (this.showDropdowns) {
             const currentMonth = calendar[1][1].month();
@@ -539,7 +537,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
 
         this._buildCells(calendar, side);
     }
-    setStartDate(startDate) {
+    setStartDate(startDate): void {
         if (typeof startDate === 'string') {
             this.startDate = moment(startDate, this.locale.format);
         }
@@ -576,7 +574,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         this.updateMonthsInView();
     }
 
-    setEndDate(endDate) {
+    setEndDate(endDate): void {
         if (typeof endDate === 'string') {
             this.endDate = moment(endDate, this.locale.format);
         }
@@ -807,10 +805,9 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
 
     /**
      * called when time is changed
-     * @param timeEvent  an event
      * @param side left or right
      */
-    timeChanged(timeEvent: any, side: SideEnum): void {
+    timeChanged(side: SideEnum): void {
         let hour = parseInt(this.timepickerVariables[side].selectedHour, 10);
         const minute = parseInt(this.timepickerVariables[side].selectedMinute, 10);
         const second = this.timePickerSeconds ? parseInt(this.timepickerVariables[side].selectedSecond, 10) : 0;
@@ -1024,10 +1021,9 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
 
     /**
      *  Click on the custom range
-     * @param e: Event
      * @param label
      */
-    clickRange(e, label) {
+    clickRange(label: string): void {
         this.chosenRange = label;
         if (label === this.locale.customRangeLabel) {
             this.isShown = true; // show calendars
@@ -1066,10 +1062,14 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
                 } else {
                     this.leftCalendar.month.month(dates[0].month());
                     this.leftCalendar.month.year(dates[0].year());
-                    // get the next year
-                    const nextMonth = dates[0].clone().add(1, 'month');
-                    this.rightCalendar.month.month(nextMonth.month());
-                    this.rightCalendar.month.year(nextMonth.year());
+                    if (this.linkedCalendars || dates[0].month() === dates[1].month()) {
+                        const nextMonth = dates[0].clone().add(1, 'month');
+                        this.rightCalendar.month.month(nextMonth.month());
+                        this.rightCalendar.month.year(nextMonth.year());
+                    } else {
+                        this.rightCalendar.month.month(dates[1].month());
+                        this.rightCalendar.month.year(dates[1].year());
+                    }
                 }
                 this.updateCalendars();
                 if (this.timePicker) {

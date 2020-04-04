@@ -64,7 +64,7 @@ export class CustomRangesComponent implements AfterViewInit {
     };
 
     rangeClicked(range): void {
-        console.log('[rangeClicked] range is : ', range);
+        // console.log('[rangeClicked] range is : ', range);
     }
 
     datesUpdated(range): void {

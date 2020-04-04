@@ -79,12 +79,11 @@ app-footer .docs-footer-links a {
   .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
     background-color: white;
     border-color: white;
-    color: rgba(0, 0, 0, 0.87); }
+    color: rgba(0, 0, 0, 0.38); }
   .md-drppicker td.in-range {
-    background-color: rgba(0, 0, 0, 0.12);
-    border-color: white;
-    color: rgba(0, 0, 0, 0.87);
-    border-radius: 0; }
+    background-color: #eeeeee;
+    border-color: #eeeeee;
+    color: rgba(0, 0, 0, 0.87); }
   .md-drppicker td.active {
     transition: background 300ms ease-out, border 300ms ease-out;
     background: rgba(0, 0, 0, 0.1); }
@@ -1494,12 +1493,11 @@ app-footer .docs-footer-links a {
   .md-drppicker td.off, .md-drppicker td.off.in-range, .md-drppicker td.off.start-date, .md-drppicker td.off.end-date {
     background-color: white;
     border-color: white;
-    color: rgba(0, 0, 0, 0.87); }
+    color: rgba(0, 0, 0, 0.38); }
   .md-drppicker td.in-range {
-    background-color: rgba(0, 0, 0, 0.12);
-    border-color: white;
-    color: rgba(0, 0, 0, 0.87);
-    border-radius: 0; }
+    background-color: #eeeeee;
+    border-color: #eeeeee;
+    color: rgba(0, 0, 0, 0.87); }
   .md-drppicker td.active {
     transition: background 300ms ease-out, border 300ms ease-out;
     background: rgba(0, 0, 0, 0.1); }

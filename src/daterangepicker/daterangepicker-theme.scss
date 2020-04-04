@@ -26,17 +26,14 @@
                 &.end-date {
                     background-color: mat-color($background, dialog);
                     border-color: mat-color($background, dialog);
-                    color: mat-color($foreground, text);
+                    color: mat-color($foreground, disabled);
                 }
             }
 
             &.in-range {
-                background-color: mat-color($background, disabled-button);
-                border-color: mat-color($background, dialog);
+                background-color: mat-color($background, disabled-list-option);
+                border-color: mat-color($background, disabled-list-option);
                 color: mat-color($foreground, text);
-
-                // TODO: Should this be static or should it be parameterized?
-                border-radius: 0;
             }
 
             &.active {

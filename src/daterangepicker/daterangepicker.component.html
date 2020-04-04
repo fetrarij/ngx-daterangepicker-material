@@ -18,7 +18,7 @@
                     type="button"
                     [disabled]="disableRange(range)"
                     [ngClass]="{ active: range === chosenRange }"
-                    (click)="clickRange($event, range)"
+                    (click)="clickRange(range)"
                 >
                     {{ range }}
                 </button>
@@ -147,7 +147,7 @@
                     class="hourselect"
                     [disabled]="!endDate"
                     [(ngModel)]="timepickerVariables.left.selectedHour"
-                    (ngModelChange)="timeChanged($event, sideEnum.left)"
+                    (ngModelChange)="timeChanged(sideEnum.left)"
                 >
                     <mat-option
                         *ngFor="let i of timepickerVariables.left.hours"
@@ -163,7 +163,7 @@
                     class="minuteselect"
                     [disabled]="!endDate"
                     [(ngModel)]="timepickerVariables.left.selectedMinute"
-                    (ngModelChange)="timeChanged($event, sideEnum.left)"
+                    (ngModelChange)="timeChanged(sideEnum.left)"
                 >
                     <mat-option
                         *ngFor="let i of timepickerVariables.left.minutes; let index = index"
@@ -182,7 +182,7 @@
                     *ngIf="timePickerSeconds"
                     [disabled]="!endDate"
                     [(ngModel)]="timepickerVariables.left.selectedSecond"
-                    (ngModelChange)="timeChanged($event, sideEnum.left)"
+                    (ngModelChange)="timeChanged(sideEnum.left)"
                 >
                     <mat-option
                         *ngFor="let i of timepickerVariables.left.seconds; let index = index"
@@ -200,7 +200,7 @@
                     class="ampmselect"
                     *ngIf="!timePicker24Hour"
                     [(ngModel)]="timepickerVariables.left.ampmModel"
-                    (ngModelChange)="timeChanged($event, sideEnum.left)"
+                    (ngModelChange)="timeChanged(sideEnum.left)"
                 >
                     <mat-option value="AM" [disabled]="timepickerVariables.left.amDisabled">AM</mat-option>
                     <mat-option value="PM" [disabled]="timepickerVariables.left.pmDisabled">PM</mat-option>
@@ -331,7 +331,7 @@
                     class="hourselect"
                     [disabled]="!endDate"
                     [(ngModel)]="timepickerVariables.right.selectedHour"
-                    (ngModelChange)="timeChanged($event, sideEnum.right)"
+                    (ngModelChange)="timeChanged(sideEnum.right)"
                 >
                     <mat-option
                         *ngFor="let i of timepickerVariables.right.hours"
@@ -349,7 +349,7 @@
                     class="minuteselect"
                     [disabled]="!endDate"
                     [(ngModel)]="timepickerVariables.right.selectedMinute"
-                    (ngModelChange)="timeChanged($event, sideEnum.right)"
+                    (ngModelChange)="timeChanged(sideEnum.right)"
                 >
                     <mat-option
                         *ngFor="let i of timepickerVariables.right.minutes; let index = index"
@@ -368,7 +368,7 @@
                     class="secondselect"
                     [disabled]="!endDate"
                     [(ngModel)]="timepickerVariables.right.selectedSecond"
-                    (ngModelChange)="timeChanged($event, sideEnum.right)"
+                    (ngModelChange)="timeChanged(sideEnum.right)"
                 >
                     <mat-option
                         *ngFor="let i of timepickerVariables.right.seconds; let index = index"
@@ -386,7 +386,7 @@
                     *ngIf="!timePicker24Hour"
                     class="ampmselect"
                     [(ngModel)]="timepickerVariables.right.ampmModel"
-                    (ngModelChange)="timeChanged($event, sideEnum.right)"
+                    (ngModelChange)="timeChanged(sideEnum.right)"
                 >
                     <mat-option value="AM" [disabled]="timepickerVariables.right.amDisabled">AM</mat-option>
                     <mat-option value="PM" [disabled]="timepickerVariables.right.pmDisabled">PM</mat-option>
