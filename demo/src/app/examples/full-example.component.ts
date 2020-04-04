@@ -56,47 +56,36 @@ import { DaterangepickerDirective } from '../../../../src/daterangepicker';
             <mat-checkbox [(ngModel)]="options.showISOWeekNumbers">showISOWeekNumbers</mat-checkbox>
             <mat-checkbox [(ngModel)]="options.customRangeDirection">customRangeDirection</mat-checkbox>
             <mat-checkbox [(ngModel)]="options.lockStartDate">lockStartDate</mat-checkbox>
+            <br />
             <div><strong>minDate:</strong> {{ minDate | date: 'dd/MM/yyyy' }}</div>
             <div><strong>maxDate:</strong> {{ maxDate | date: 'dd/MM/yyyy' }}</div>
         </div>
-        <h2>Locale</h2>
-        <div class="">
-            <div class="row">
-                <div class="col s12">
-                    <mat-form-field>
-                        <mat-select placeholder="Choose format" [(ngModel)]="locale.format">
-                            <mat-option value="DD/MM/YYYY">DD/MM/YYYY</mat-option>
-                            <mat-option value="MM-DD-YYYY">MM-DD-YYYY</mat-option>
-                        </mat-select> </mat-form-field
-                    ><br />
-                    locale value:<br />
-                    {{ locale | json }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s6">
-                    <mat-form-field>
-                        <mat-select [(ngModel)]="opens" placeholder="Position">
-                            <mat-option value="left">Left</mat-option>
-                            <mat-option value="center">Center</mat-option>
-                            <mat-option value="right">Right</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col s6">
-                    <mat-form-field>
-                        <mat-select [(ngModel)]="drops" placeholder="Drops">
-                            <mat-option value="down">Down</mat-option>
-                            <mat-option value="up">Up</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="row">
-                <div>
-                    <button mat-raised-button color="warn" (click)="clear()">Clear</button>
-                </div>
-            </div>
+        <br />
+        <div>Locale</div>
+        <mat-form-field>
+            <mat-select placeholder="Choose format" [(ngModel)]="locale.format">
+                <mat-option value="DD/MM/YYYY">DD/MM/YYYY</mat-option>
+                <mat-option value="MM-DD-YYYY">MM-DD-YYYY</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div>Locale value: {{ locale | json }}</div>
+        <br />
+
+        <mat-form-field>
+            <mat-select [(ngModel)]="opens" placeholder="Position">
+                <mat-option value="left">Left</mat-option>
+                <mat-option value="center">Center</mat-option>
+                <mat-option value="right">Right</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select [(ngModel)]="drops" placeholder="Drops">
+                <mat-option value="down">Down</mat-option>
+                <mat-option value="up">Up</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div>
+            <button mat-raised-button color="warn" (click)="clear()">Clear</button>
         </div>
     `,
     styleUrls: ['full-example.component.scss'],
