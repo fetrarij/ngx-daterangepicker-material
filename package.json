@@ -67,7 +67,7 @@
     "@angular/router": "^9.1.0",
     "@types/jasmine": "~3.5.10",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "^12.11.1",
+    "@types/node": "^12.12.34",
     "angular-cli-ghpages": "^0.6.2",
     "codelyzer": "^5.1.2",
     "core-js": "^2.5.4",
@@ -100,5 +100,8 @@
       }
     },
     "dest": "dist"
+  },
+  "dependencies": {
+    "ngx-highlightjs": "^4.1.0-beta"
   }
 }

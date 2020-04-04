@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
-import { LocaleConfig } from '../../../../src/daterangepicker';
+
+const reactiveFormMultiSelectExample = require('!!raw-loader!../examples/reactive-form-multi-select-example.component.ts').default;
+const reactiveFormSingleSelectExample = require('!!raw-loader!../examples/reactive-form-single-select-example.component.ts').default;
 
 @Component({
     selector: 'reactive-form',
@@ -9,40 +9,6 @@ import { LocaleConfig } from '../../../../src/daterangepicker';
     styleUrls: ['./reactive-form.component.scss'],
 })
 export class ReactiveFormComponent {
-    form: FormGroup;
-    form2: FormGroup;
-    locale: LocaleConfig = {
-        format: 'YYYY-MM-DDTHH:mm:ss.SSSSZ',
-        displayFormat: 'YYYY-MM-DD',
-    };
-
-    constructor(private fb: FormBuilder) {
-        this.form = this.fb.group({
-            selected: [
-                {
-                    startDate: moment('2015-11-24T00:00Z'),
-                    endDate: moment('2015-11-26T00:00Z'),
-                },
-                Validators.required,
-            ],
-        });
-
-        this.form2 = this.fb.group({
-            selected: [
-                {
-                    startDate: '2019-12-11T18:30:00.000Z',
-                    endDate: '2019-12-12T18:29:59.000Z',
-                },
-                Validators.required,
-            ],
-        });
-    }
-
-    submit(): void {
-        console.log(this.form.value);
-    }
-
-    submit2(): void {
-        console.log(this.form2.value);
-    }
+    reactiveFormMultiSelectExample = reactiveFormMultiSelectExample;
+    reactiveFormSingleSelectExample = reactiveFormSingleSelectExample;
 }

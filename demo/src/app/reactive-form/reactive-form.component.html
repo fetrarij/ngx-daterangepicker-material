@@ -1,56 +1,15 @@
-<mat-toolbar>Reactive forms</mat-toolbar>
-<form [formGroup]="form" (ngSubmit)="submit()">
-    <div class="row">
-        <h2>Multi Select</h2>
+<div class="row">
+    <div class="col s12">
+        <example [code]="reactiveFormMultiSelectExample" title="Reactive Form Multi Select">
+            <example-reactive-form-multi-select></example-reactive-form-multi-select>
+        </example>
     </div>
-    <div class="row">
-        <div class="col s6">
-            <div class="row">
-                <mat-form-field>
-                    <input
-                        type="text"
-                        matInput
-                        ngxDaterangepickerMd
-                        formControlName="selected"
-                        class="form-control"
-                        placeholder="Choose date"
-                        [showDropdowns]="true"
-                        showCancel="true"
-                    />
-                </mat-form-field>
-                <div>
-                    <button mat-raised-button color="primary" type="submit">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+</div>
 
-<form [formGroup]="form2" (ngSubmit)="submit2()">
-    <div class="row">
-        <h2>Single Select</h2>
+<div class="row">
+    <div class="col s12">
+        <example [code]="reactiveFormSingleSelectExample" title="Reactive Form Single Select">
+            <example-reactive-form-single-select></example-reactive-form-single-select>
+        </example>
     </div>
-    <div class="row">
-        <div class="col s6">
-            <div class="row">
-                <mat-form-field>
-                    <input
-                        type="text"
-                        ngxDaterangepickerMd
-                        matInput
-                        formControlName="selected"
-                        class="form-control"
-                        placeholder="Choose date"
-                        [showDropdowns]="true"
-                        [singleDatePicker]="true"
-                        [locale]="locale"
-                        showCancel="true"
-                    />
-                </mat-form-field>
-                <div>
-                    <button mat-raised-button color="primary" type="submit">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+</div>

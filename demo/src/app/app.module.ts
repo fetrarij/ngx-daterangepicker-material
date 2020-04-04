@@ -11,10 +11,22 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { HighlightModule } from 'ngx-highlightjs';
 import { NgxDaterangepickerMd } from './../../../src/daterangepicker';
 import { AppComponent } from './app.component';
 import { appRoutes } from './app.routing';
 import { CustomRangesComponent } from './custom-ranges/custom-ranges.component';
+import { ExampleComponent } from './example/example.component';
+import { CustomRangesExampleComponent } from './examples/custom-ranges-example.component';
+import { CustomRangesInlineExampleComponent } from './examples/custom-ranges-inline-example.component';
+import { FullExampleComponent } from './examples/full-example.component';
+import { ReactiveFormMultiSelectExample } from './examples/reactive-form-multi-select-example.component';
+import { ReactiveFormSingleSelectExample } from './examples/reactive-form-single-select-example.component';
+import { SimpleExampleComponent } from './examples/simple-example.component';
+import { SimpleInlineExampleComponent } from './examples/simple-inline-example.component';
+import { SimpleInlineTimepickerExampleComponent } from './examples/simple-inline-timepicker-example.component';
+import { SingleDatepickerExampleComponent } from './examples/single-datepicker-example.component';
+import { TimepickerExampleComponent } from './examples/timepicker-example.component';
 import { FooterModule } from './footer/footer';
 import { FullComponent } from './full/full.component';
 import { NavBarModule } from './navbar/navbar';
@@ -27,8 +39,19 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
     declarations: [
         AppComponent,
         SimpleComponent,
+        ExampleComponent,
         FullComponent,
+        CustomRangesExampleComponent,
+        CustomRangesInlineExampleComponent,
+        FullExampleComponent,
         SingleDatepickerComponent,
+        SingleDatepickerExampleComponent,
+        SimpleExampleComponent,
+        SimpleInlineExampleComponent,
+        SimpleInlineTimepickerExampleComponent,
+        ReactiveFormMultiSelectExample,
+        ReactiveFormSingleSelectExample,
+        TimepickerExampleComponent,
         CustomRangesComponent,
         ReactiveFormComponent,
         TimepickerComponent,
@@ -38,6 +61,7 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
         BrowserAnimationsModule,
         FooterModule,
         FormsModule,
+        HighlightModule,
         ReactiveFormsModule,
         MatButtonModule,
         MatCheckboxModule,

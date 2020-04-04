@@ -1,119 +1,15 @@
-<mat-toolbar>Custom ranges</mat-toolbar>
-
-<form [formGroup]="form">
-    <div class="row">
-        <div class="col s6">
-            <mat-form-field>
-                <input
-                    type="text"
-                    matInput
-                    ngxDaterangepickerMd
-                    formControlName="selected"
-                    [showCustomRangeLabel]="true"
-                    [alwaysShowCalendars]="form.get('alwaysShowCalendars').value"
-                    [ranges]="ranges"
-                    [showClearButton]="true"
-                    [showCancel]="true"
-                    [linkedCalendars]="false"
-                    [isTooltipDate]="isTooltipDate"
-                    [isInvalidDate]="isInvalidDate"
-                    [locale]="{ applyLabel: 'Done' }"
-                    (rangeClicked)="rangeClicked($event)"
-                    (datesUpdated)="datesUpdated($event)"
-                    [keepCalendarOpeningWithRange]="form.get('keepCalendarOpeningWithRange').value"
-                    [showRangeLabelOnInput]="form.get('showRangeLabelOnInput').value"
-                    class="form-control"
-                    placeholder="Choose date"
-                />
-            </mat-form-field>
-        </div>
-        <div class="col s6">
-            <h2>Model:</h2>
-            {{ selected | json }}
-            <mat-checkbox formControlName="alwaysShowCalendars">alwaysShowCalendars</mat-checkbox>
-            <mat-checkbox formControlName="keepCalendarOpeningWithRange">
-                keepCalendarOpeningWithRange
-            </mat-checkbox>
-            <mat-checkbox formControlName="showRangeLabelOnInput">showRangeLabelOnInput</mat-checkbox>
-        </div>
+<div class="row">
+    <div class="col s12">
+        <example [code]="customRangesExample" title="Custom Ranges">
+            <example-custom-ranges></example-custom-ranges>
+        </example>
     </div>
+</div>
 
-    <div class="row">
-        <div class="col s6">
-            <h2>Html code</h2>
-            <pre class="prettyprint"><code class="html">
-&lt;mat-form-field&gt;
-    &lt;input
-        type="text"
-        matInput
-        ngxDaterangepickerMd
-        formControlName="selected"
-        [showCustomRangeLabel]="true"
-        [alwaysShowCalendars]="form.get('alwaysShowCalendars').value"
-        [ranges]="ranges"
-        [showClearButton]="true"
-        [showCancel]="true"
-        [linkedCalendars]="true"
-        [isTooltipDate]="isTooltipDate"
-        [isInvalidDate]="isInvalidDate"
-        [locale]="&#123; applyLabel: 'Done' &#125;"
-        (rangeClicked)="rangeClicked($event)"
-        (datesUpdated)="datesUpdated($event)"
-        [keepCalendarOpeningWithRange]="form.get('keepCalendarOpeningWithRange').value"
-        [showRangeLabelOnInput]="form.get('showRangeLabelOnInput').value"
-        class="form-control"
-        placeholder="Choose date"
-    /&gt;
-&lt;/mat-form-field&gt;
-            </code></pre>
-        </div>
-        <div class="col s6">
-            <h2>Typescript code</h2>
-            <pre class="prettyprint"><code class="javascript">export class CustomRangesComponent implements OnInit {{ '{' }}
-selected: any;
-alwaysShowCalendars: boolean;
-ranges: any = {{ '{' }}
-  'Today': [moment(), moment()],
-  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-  'This Month': [moment().startOf('month'), moment().endOf('month')],
-  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-}
-invalidDates: moment.Moment[] = [moment().add(2, 'days'), moment().add(3, 'days'), moment().add(5, 'days')];
-
-isInvalidDate = (m: moment.Moment) =>  {{'{'}}
-  return this.invalidDates.some(d => d.isSame(m, 'day') )
-}
-
-constructor() {{ '{' }}
-  this.alwaysShowCalendars = true;
-}</code>
-    </pre>
-        </div>
+<div class="row">
+    <div class="col s12">
+        <example [code]="customRangesInlineExample" title="Inline Custom Ranges">
+            <example-custom-ranges-inline></example-custom-ranges-inline>
+        </example>
     </div>
-
-    <div class="row">
-        <div class="col s12">
-            <h2>Inline daterangepicker</h2>
-            <ngx-daterangepicker-material
-                (datesUpdated)="chosenDateTime($event)"
-                [autoApply]="true"
-                [showCustomRangeLabel]="true"
-                [alwaysShowCalendars]="form.get('alwaysShowCalendars').value"
-                [ranges]="ranges"
-                [showClearButton]="true"
-                [showCancel]="true"
-                [linkedCalendars]="true"
-                [isTooltipDate]="isTooltipDate"
-                [isInvalidDate]="isInvalidDate"
-                [locale]="{ applyLabel: 'Done' }"
-                [keepCalendarOpeningWithRange]="form.get('keepCalendarOpeningWithRange').value"
-                [showRangeLabelOnInput]="form.get('showRangeLabelOnInput').value"
-                [locale]="{ applyLabel: 'Done', firstDay: 1 }"
-            ></ngx-daterangepicker-material>
-            <br />
-            <p>Chosen date (after changes): {{ inlineDateTime | json }}</p>
-        </div>
-    </div>
-</form>
+</div>

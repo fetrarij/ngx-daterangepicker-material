@@ -15,7 +15,8 @@
         "sourceMap": false,
         "outDir": "dist",
         "lib": ["es2018", "dom"],
-        "baseUrl": "./"
+        "baseUrl": "./",
+        "types": ["node"]
     },
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": true,
