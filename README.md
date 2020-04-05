@@ -1,31 +1,38 @@
 # ngx-daterangepicker-material
 
-> Pure Angular 2+ Date range picker.
+> Angular 2+ Date range picker.
 
 [![Build Status](https://travis-ci.org/fetrarij/ngx-daterangepicker-material.svg?branch=master)](https://travis-ci.org/fetrarij/ngx-daterangepicker-material)
 [![npm version](https://badge.fury.io/js/ngx-daterangepicker-material.svg)](https://badge.fury.io/js/ngx-daterangepicker-material)
 [![last commit](https://img.shields.io/github/last-commit/fetrarij/ngx-daterangepicker-material.svg)](https://github.com/fetrarij/ngx-daterangepicker-material/commits/master)
 
-This plugin is compatible with Angular 2+ , work fine with the latest version of angular. This plugin uses moment.js.
-
-This plugin is a rewrite to angular from [bootstrap daterangepicker](http://www.daterangepicker.com), so it doesn't depends on jquery nor bootstrap.
-
-This plugin have an independant theme which looks more close to material design, so the material design is just a style.
+This `Angular Material` plugin is compatible with Angular 2+ and is Ivy compatible. It leverages `moment.js` to handle date manipulation and parsing. The base for this plugin was originally the [Bootstrap Date Range Picker](http://www.daterangepicker.com), but its dependencies on jQuery and Bootstrap were removed. `Angular Material` themes are fully supported, so you can just drop this component into an existing Material project and it will blend right into your application.
 
 ![](screen.png)
 
-demo: https://fetrarij.github.io/ngx-daterangepicker-material/
+Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
 
 ## Installation
 
-Install the plugin from npm:
+### Using the Angular CLI
 
-`npm install ngx-daterangepicker-material --save` .
+The recommended way to install `ngx-daterangepicker-material` is by leveraging the `Angular CLI`, which will take care of all the heavy lifting for you:
+
+```
+ng add ngx-daterangepicker-material
+```
+
+### Manual install
+
+If you so choose, you can also manually install the plugin following these steps:
+
+```
+npm i -D ngx-daterangepicker-material
+```
 
 import **NgxDaterangepickerMd** in your module:
 
 ```typescript
-...
 import { FormsModule } from '@angular/forms';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { App } from './app';
@@ -33,7 +40,6 @@ import { App } from './app';
 @NgModule({
     imports: [
         ... ,
-        FormsModule,
         NgxDaterangepickerMd.forRoot()
     ],
     declarations: [App],
@@ -44,45 +50,33 @@ export class AppModule {}
 
 ## Usage example
 
-Html:
+The [demo](https://fetrarij.github.io/ngx-daterangepicker-material/) is the best place to see the picker in action in some different use case, along with the accompanying source code. The picker can be used in two ways, either as a `Component` or a `Directive`. Two basic snippets illustrating this can be found below:
+
+### Directive
+
+Adding the `ngxDaterangepickerMd` directive to an `<input>` element adds the picker as a pop-up element to that `<input>` field. The `drops` (`up` or `down`) and `opens` (`left`, `center` or `right`) inputs determine where to display the pop-up.
 
 ```html
-<input type="text" ngxDaterangepickerMd [(ngModel)]="selected" class="form-control" />
-```
-
-Typescript:
-
-```typescript
-selected: {startDate: Moment, endDate: Moment};
+<input matInput ngxDaterangepickerMd [formControl]="formControl" />
 ```
 
 ### with some options:
 
-Html:
-
 ```html
 <input
-    type="text"
     matInput
     ngxDaterangepickerMd
-    [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
     startKey="start"
     endKey="end"
-    [(ngModel)]="selected"
-    name="daterange"
+    [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
+    [formControl]="formControl"
 />
-```
-
-Typescript:
-
-```typescript
-selected: {start: Moment, end: Moment};
 ```
 
 You can [play with our online demo here](https://fetrarij.github.io/ngx-daterangepicker-material/)
 and [browse our demo code here](./demo/src/app).
 
-## Inline usage
+## Component
 
 You can use the component directly in your templates, which will set its `inline` mode to **true**, in which case the calendar won't hide after date/range selection. You can then use the events: `rangeClicked` or `datesUpdated` or `chosenDate` to get its selection state.
 
@@ -190,6 +184,7 @@ It is possible to open datepicker from outside. You should create an input with 
 
 ```html
 <input
+    matInput
     ngxDaterangepickerMd
     [closeOnAutoApply]="true"
     [autoApply]="true"
