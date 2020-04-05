@@ -24,10 +24,18 @@ ng add ngx-daterangepicker-material
 
 ### Manual install
 
-If you so choose, you can also manually install the plugin following these steps:
+If you so choose, you can also manually install the plugin following these steps.
+You'll first need to install `Angular Material` (see the [official docs](https://material.angular.io/guide/getting-started) for more information):
+
+```
+ng add @angular/material
+```
+
+Next up, install `ngx-daterangepicker-material` package using your prefered package manager:
 
 ```
 npm i -D ngx-daterangepicker-material
+yarn add -D ngx-daterangepicker-material
 ```
 
 import **NgxDaterangepickerMd** in your module:
