@@ -80,6 +80,8 @@ export class DaterangepickerComponent implements OnInit {
     @Input()
     showClearButton: Boolean = false;
     @Input()
+    showDisabledMonthControl = false;
+    @Input()
     firstMonthDayClass: string = null;
     @Input()
     lastMonthDayClass: string = null;

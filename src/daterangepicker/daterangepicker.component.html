@@ -25,13 +25,13 @@
                 <thead>
                     <tr>
                         <th *ngIf="showWeekNumbers || showISOWeekNumbers"></th>
-                        <ng-container *ngIf="!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || true)">
-                            <th (click)="clickPrev(sideEnum.left)" class="prev available" >
-                            </th>
-                        </ng-container>
-                        <ng-container *ngIf="!(!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || true))">
-                            <th></th>
-                        </ng-container>
+                        <th [ngClass]="{ 
+                                'available': showDisabledMonthControl || !calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!linkedCalendars || true),
+                                'disabled': showDisabledMonthControl && !(!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!linkedCalendars || true))
+                            }"
+                            class="prev" 
+                            (click)="clickPrev(sideEnum.left)">
+                        </th>
                         <th colspan="5" class="month drp-animate">
                             <ng-container *ngIf="showDropdowns && calendarVariables.left.dropdowns">
                                 <div class="dropdowns">
@@ -57,13 +57,13 @@
                                     {{this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()]}}  {{ calendarVariables?.left?.calendar[1][1].format(" YYYY")}}
                             </ng-container>
                         </th>
-                        <ng-container *ngIf="(!calendarVariables.left.maxDate || calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars || singleDatePicker )">
-                            <th class="next available" (click)="clickNext(sideEnum.left)">
-                            </th>
-                        </ng-container>
-                        <ng-container *ngIf="!((!calendarVariables.left.maxDate || calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars || singleDatePicker ))">
-                            <th></th>
-                        </ng-container>
+                        <th [ngClass]="{ 
+                                'available': showDisabledMonthControl || !calendarVariables.left.maxDate || calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay) && (!linkedCalendars || singleDatePicker),
+                                'disabled': showDisabledMonthControl && !(!calendarVariables.left.maxDate || calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay) && (!linkedCalendars || singleDatePicker))
+                            }"
+                            class="next" 
+                            (click)="clickNext(sideEnum.left)">
+                        </th>
                     </tr>
                     <tr class='week-days'>
                         <th *ngIf="showWeekNumbers || showISOWeekNumbers" class="week"><span>{{this.locale.weekLabel}}</span></th>
@@ -131,13 +131,13 @@
                 <thead>
                     <tr>
                         <th *ngIf="showWeekNumbers || showISOWeekNumbers"></th>
-                        <ng-container *ngIf="(!calendarVariables.right.minDate || calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && (!this.linkedCalendars)">
-                            <th (click)="clickPrev(sideEnum.right)" class="prev available" >
-                            </th>
-                        </ng-container>
-                        <ng-container *ngIf="!((!calendarVariables.right.minDate || calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && (!this.linkedCalendars))">
-                            <th></th>
-                        </ng-container>
+                        <th [ngClass]="{ 
+                                'available': showDisabledMonthControl || (!calendarVariables.right.minDate || calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && (!this.linkedCalendars),
+                                'disabled': showDisabledMonthControl && !(!calendarVariables.right.minDate || calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && (!this.linkedCalendars)
+                            }"
+                            class="prev" 
+                            (click)="clickPrev(sideEnum.right)">
+                        </th>
                         <th colspan="5" class="month">
                             <ng-container *ngIf="showDropdowns && calendarVariables.right.dropdowns">
                                 <div class="dropdowns">
@@ -163,13 +163,13 @@
                                     {{this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()]}}  {{ calendarVariables?.right?.calendar[1][1].format(" YYYY")}}
                             </ng-container>
                         </th>
-                            <ng-container *ngIf="!calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker || true)">
-                                <th class="next available" (click)="clickNext(sideEnum.right)">
-                                </th>
-                            </ng-container>
-                            <ng-container *ngIf="!(!calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker || true))">
-                                <th></th>
-                            </ng-container>
+                        <th [ngClass]="{ 
+                                'available': showDisabledMonthControl || !calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker || true),
+                                'disabled': showDisabledMonthControl && !(!calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker || true))
+                            }"
+                            class="next" 
+                            (click)="clickNext(sideEnum.right)">
+                        </th>
                     </tr>
 
                     <tr class='week-days'>

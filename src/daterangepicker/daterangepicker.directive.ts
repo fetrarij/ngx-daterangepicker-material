@@ -100,6 +100,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   showCancel: boolean = false;
   @Input()
+  showDisabledMonthControl = false;
+  @Input()
   lockStartDate: boolean = false;
   // timepicker variables
   @Input()
