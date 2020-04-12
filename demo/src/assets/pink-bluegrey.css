@@ -259,7 +259,8 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
     border: 1px solid transparent;
     padding: 4px; }
     .md-drppicker .calendar-table table {
-      border-spacing: 2px; }
+      border-spacing: 2px;
+      border-collapse: separate; }
   .md-drppicker .ranges {
     float: none;
     text-align: left;
