@@ -1,6 +1,6 @@
 # 3.0.0 (2020-04-05)
 
-This new major release pivots `ngx-daterangepicker-material` to become a 'true' `@angular/material` component, in that it now requires `@angular/material` to correctly render and leverages `@angular/material` components throughout. As such, it adheres to theming and UX standards. It now correctly uses the `CDK Overlay` to render the dialog for instance, which takes care of some issues present with the previous implementation (if you had components with a `z-index` > 1000 on your page, you were going to have a bad time).
+This new major release pivots `ngx-daterangepicker-material` to become an `@angular/material` component, in that it now requires `@angular/material` to correctly render and leverages `@angular/material` components throughout. As such, it adheres to theming and UX standards. It now correctly uses the `CDK Overlay` to render the dialog for instance, which takes care of some issues present with the previous implementation (if you had components with a `z-index` > 1000 on your page, you were going to have a bad time).
 
 ### New Features
 
@@ -10,7 +10,7 @@ This new major release pivots `ngx-daterangepicker-material` to become a 'true' 
 ### Chores
 
 -   **deps:**
-    -   bump @angular to 9.1.0
+    -   bump all `@angular` packages to 9.1.0
     -   bump almost every other package to latest
     -   fixed `ng deploy` to correctly deploy to GitHub pages
 
