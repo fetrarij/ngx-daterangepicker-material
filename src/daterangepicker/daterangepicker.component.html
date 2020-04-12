@@ -145,7 +145,7 @@
             <div class="select">
                 <mat-select
                     class="hourselect"
-                    [disabled]="!endDate"
+                    [disabled]="!startDate"
                     [(ngModel)]="timepickerVariables.left.selectedHour"
                     (ngModelChange)="timeChanged(sideEnum.left)"
                 >
@@ -161,7 +161,7 @@
             <div class="select">
                 <mat-select
                     class="minuteselect"
-                    [disabled]="!endDate"
+                    [disabled]="!startDate"
                     [(ngModel)]="timepickerVariables.left.selectedMinute"
                     (ngModelChange)="timeChanged(sideEnum.left)"
                 >
@@ -180,7 +180,7 @@
                 <mat-select
                     class="secondselect"
                     *ngIf="timePickerSeconds"
-                    [disabled]="!endDate"
+                    [disabled]="!startDate"
                     [(ngModel)]="timepickerVariables.left.selectedSecond"
                     (ngModelChange)="timeChanged(sideEnum.left)"
                 >
@@ -329,7 +329,7 @@
             <div class="select">
                 <mat-select
                     class="hourselect"
-                    [disabled]="!endDate"
+                    [disabled]="!startDate"
                     [(ngModel)]="timepickerVariables.right.selectedHour"
                     (ngModelChange)="timeChanged(sideEnum.right)"
                 >
@@ -347,7 +347,7 @@
             <div class="select">
                 <mat-select
                     class="minuteselect"
-                    [disabled]="!endDate"
+                    [disabled]="!startDate"
                     [(ngModel)]="timepickerVariables.right.selectedMinute"
                     (ngModelChange)="timeChanged(sideEnum.right)"
                 >
@@ -366,7 +366,7 @@
                 <mat-select
                     *ngIf="timePickerSeconds"
                     class="secondselect"
-                    [disabled]="!endDate"
+                    [disabled]="!startDate"
                     [(ngModel)]="timepickerVariables.right.selectedSecond"
                     (ngModelChange)="timeChanged(sideEnum.right)"
                 >
