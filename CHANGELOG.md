@@ -11,10 +11,10 @@ Upgrading from previous versions, you will have to add `@angular/material` to yo
 
 ### Chores
 
--   **deps:**
-    -   bump all `@angular` packages to 9.1.0
-    -   bump almost every other package to latest
-    -   fixed `ng deploy` to correctly deploy to GitHub pages
+-   bump all `@angular` packages to 9.1.0
+-   bump almost every other package to latest
+-   fixed `ng deploy` to correctly deploy to GitHub pages
+-   added [Prettier](https://prettier.io/) code formatter to address formatting inconsistencies
 
 ### Other Changes
 
