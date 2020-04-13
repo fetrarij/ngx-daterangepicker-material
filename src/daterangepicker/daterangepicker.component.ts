@@ -952,7 +952,6 @@ export class DaterangepickerComponent implements OnInit {
 
             if (this.autoApply) {
                 this.calculateChosenLabel();
-                this.clickApply();
             }
         }
 
