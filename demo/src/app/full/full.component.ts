@@ -54,6 +54,6 @@ export class FullComponent implements OnInit {
   }
 
   eventClicked(e): void {
-    console.log(e);
+    console.log({'eventClicked()': e});
   }
 }
