@@ -1,3 +1,16 @@
+:host {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 nav {
     margin-bottom: 50px;
+}
+
+.container {
+    max-width: 1280px;
+    width: 85%;
+    margin: 0 auto;
+    flex-grow: 1;
 }

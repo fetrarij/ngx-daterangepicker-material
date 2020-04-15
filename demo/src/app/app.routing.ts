@@ -1,16 +1,16 @@
 import { Routes } from '@angular/router';
-import { SimpleComponent } from './simple/simple.component';
-import { FullComponent } from './full/full.component';
 import { CustomRangesComponent } from './custom-ranges/custom-ranges.component';
+import { FullComponent } from './full/full.component';
+import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
+import { SimpleComponent } from './simple/simple.component';
 import { SingleDatepickerComponent } from './single-datepicker/single-datepicker.component';
 import { TimepickerComponent } from './timepicker/timepicker.component';
-import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 
-export const AppRoutes: Routes = [
+export const appRoutes: Routes = [
     {
-         path: '',
-         redirectTo: 'simple',
-         pathMatch: 'full'
+        path: '',
+        redirectTo: 'simple',
+        pathMatch: 'full',
     },
     {
         path: 'simple',
@@ -35,5 +35,9 @@ export const AppRoutes: Routes = [
     {
         path: 'reactive-forms',
         component: ReactiveFormComponent,
-    }
+    },
+    {
+        path: '**',
+        redirectTo: 'simple',
+    },
 ];

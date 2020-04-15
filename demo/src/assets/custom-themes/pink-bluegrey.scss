@@ -1,0 +1,11 @@
+@import '../../styles.scss';
+@import '../../highlightjs/material-dark';
+@import '../../../../src/daterangepicker/daterangepicker.component.scss';
+
+// Define the dark theme.
+$primary: mat-palette($mat-pink);
+$accent: mat-palette($mat-blue-grey);
+
+$theme: mat-dark-theme($primary, $accent);
+@include angular-material-theme($theme);
+@include material-docs-app-theme($theme);

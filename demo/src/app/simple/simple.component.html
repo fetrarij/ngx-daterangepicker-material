@@ -1,58 +1,23 @@
-<mat-toolbar>Simple daterangepicker</mat-toolbar>
 <div class="row">
-  <div class="col s6">
-    <input type="text" ngxDaterangepickerMd
-    [(ngModel)]="selected" class="form-control" placeholder="Choose date"
-    [showDropdowns]="true"
-           [lockStartDate]="false"
-           [customRangeDirection]="false"
-    (ngModelChange)="ngModelChange($event)" (change)="change($event)" showCancel="true"
-    />
-  </div>
-  <div class="col s6 right-align">
-    <br/>
-    <button type="button" class="ngx-daterangepicker-action waves-effect waves-light btn" (click)="open($event)">open from a button</button>
-    <button type="button" *ngIf="selected && selected.startDate" class="ngx-daterangepicker-action waves-effect waves-light btn red" (click)="clear($event)">Clear</button>
-  </div>
-</div>
-<div class="row">
-  <div class="col s12">
-    <b>Using the change event :</b>
-      <pre class="prettyprint"><code class="html">&lt;input type="text" ngxDaterangepickerMd
-[(ngModel)]="selected" placeholder="Choose date" (change)="change($event)"/&gt;</code>
-    </pre>
-
-   <b>Or with ngModel :</b>
-
-      <pre class="prettyprint"><code class="html">&lt;input type="text" ngxDaterangepickerMd
-        [lockStartDate]="false"
-[(ngModel)]="selected" placeholder="Choose date"
-(ngModelChange)="ngModelChange($event)"/&gt;</code>
-    </pre>
-  </div>
-</div>
-<hr/>
-<div class="row">
-  <div class="col s12">
-      <h3>Inline daterangepicker</h3>
-      <ngx-daterangepicker-material (choosedDate)="choosedDate($event)" [locale]="{applyLabel: 'Done', firstDay: 1}"></ngx-daterangepicker-material>
-      <br>
-      Choosed date: {{inlineDate | json}}
-  </div>
+    <div class="col s12">
+        <example [code]="simpleExample" title="Basic Daterangepicker">
+            <example-simple></example-simple>
+        </example>
+    </div>
 </div>
 
 <div class="row">
-  <div class="col s12">
-    <h3>Inline daterangepicker with time and auto-apply</h3>
-    <ngx-daterangepicker-material (choosedDate)="choosedDateTime($event)"
-                                  [autoApply]="true"
-                                  [timePicker24Hour]="true"
-                                  [linkedCalendars]="true"
-                                  [startDate]="selected?.startDate"
-                                  [endDate]="selected?.endDate"
-                                  [timePicker]="true"
-                                  [locale]="{applyLabel: 'Done', firstDay: 1}"></ngx-daterangepicker-material>
-    <br>
-    <p>Choosed date (after changes): {{inlineDateTime | json}}</p>
-  </div>
+    <div class="col s12">
+        <example [code]="simpleInlineExample" title="Basic In-line Example">
+            <example-simple-inline></example-simple-inline>
+        </example>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <example [code]="simpleInlineTimepickerExample" title="Basic In-line Timepicker Example">
+            <example-simple-inline-timepicker></example-simple-inline-timepicker>
+        </example>
+    </div>
 </div>

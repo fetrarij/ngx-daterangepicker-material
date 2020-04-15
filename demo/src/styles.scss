@@ -1,23 +1,105 @@
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-@import '../../node_modules/materialize-css/sass/materialize.scss';
+@import '../../node_modules/@angular/material/theming';
+
+@import './app/navbar/navbar-theme';
+@import './app/footer/footer-theme';
+@import '../../src/daterangepicker/daterangepicker-theme.scss';
+
 .mycustomdate {
     background-color: #ccc8c8 !important;
     border-radius: 1px !important;
     color: white !important;
 }
+
 .first-day {
     background-color: greenyellow;
 }
+
 .last-day {
     background-color: green;
 }
+
 .empty-week {
     background-color: rosybrown;
 }
+
 .last-previous-day {
     background-color: rgb(218, 226, 145);
 }
+
 .first-next-day {
     background-color: rgb(229, 255, 0);
 }
+
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+
+    &.s6 {
+        width: 50%;
+    }
+
+    &.s12 {
+        width: 100%;
+    }
+}
+
+.col + .col {
+    margin-left: 8px;
+}
+
+mat-toolbar {
+    margin-bottom: 24px !important;
+}
+
+// Styles for the docs app that are based on the current theme.
+@mixin material-docs-app-theme($theme) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, warn);
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+    $next-theme: mat-palette($mat-red);
+
+    .docs-app-background {
+        background: mat-color($background, background);
+    }
+
+    body {
+        color: mat-color($foreground, text);
+    }
+
+    .docs-footer {
+        background: mat-color($primary);
+        color: mat-color($primary, default-contrast);
+    }
+
+    .is-next-version {
+        background: mat-color($next-theme, 900) !important;
+    }
+
+    @include nav-bar-theme($theme);
+    @include footer-theme($theme);
+    @include date-range-picker-theme($theme);
+}
+
+// Define the light theme.
+$primary: mat-palette($mat-indigo);
+$accent: mat-palette($mat-pink, A200, A100, A400);
+
+$theme: mat-light-theme($primary, $accent);
+
+@include material-docs-app-theme($theme);

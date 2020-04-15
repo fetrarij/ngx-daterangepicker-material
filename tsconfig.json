@@ -1,35 +1,32 @@
 {
-  "compilerOptions": {
-    "downlevelIteration": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "removeComments": true,
-    "noImplicitAny": false,
-    "declaration": true,
-    "sourceMap": false,
-    "outDir": "dist",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
-    "baseUrl": "./"
-  },
-  "angularCompilerOptions": {
-    "skipTemplateCodegen": true,
-    "skipMetadataEmit": false,
-    "strictMetadataEmit": true,
-    "annotationsAs": "decorators"
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ]
+    "compilerOptions": {
+        "downlevelIteration": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "noImplicitAny": false,
+        "declaration": true,
+        "sourceMap": false,
+        "outDir": "dist",
+        "lib": ["es2018", "dom"],
+        "baseUrl": "./",
+        "types": ["node"]
+    },
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        "skipTemplateCodegen": true,
+        "skipMetadataEmit": false,
+        "strictMetadataEmit": true,
+        "annotationsAs": "decorators",
+        "strictInjectionParameters": true,
+        "strictTemplates": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "**/*.spec.ts"]
 }
