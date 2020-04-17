@@ -12,6 +12,17 @@ This `Angular Material` plugin is compatible with Angular 2+ and is Ivy compatib
 
 Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
 
+---
+
+## Versions
+
+| Angular| ngx-daterangepicker-material|
+| ------|:------:| 
+| >=9.0.0 | v2.3.x and v3.x |
+| <9.0.0  | v2.2.x and below|
+
+---
+
 ## Installation
 
 ### Using the Angular CLI
