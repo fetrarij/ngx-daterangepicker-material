@@ -7,10 +7,16 @@ export function ngAdd(_options: any): Rule {
     return (tree: Tree, _context: SchematicContext) => {
         const angularVersionRange = getPackageVersionFromPackageJson(tree, '@angular/core');
         const materialVersionRange = getPackageVersionFromPackageJson(tree, '@angular/material');
+        const cdkVersionRange = getPackageVersionFromPackageJson(tree, '@angular/cdk');
 
         // Add @angular/material if the package isn't installed yet
         if (materialVersionRange === null) {
             addPackageToPackageJson(tree, '@angular/material', angularVersionRange);
+        }
+
+        // Add @angular/cdk if the package isn't installed yet
+        if (cdkVersionRange === null) {
+            addPackageToPackageJson(tree, '@angular/cdk', angularVersionRange);
         }
 
         const installTaskId = _context.addTask(new NodePackageInstallTask());
