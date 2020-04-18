@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { chain, Rule, Tree } from '@angular-devkit/schematics';
 import { addModuleImportToRootModule, getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/config';
 
@@ -28,7 +28,7 @@ export default function (options: any): Rule {
  * components of Angular Material will throw an exception.
  */
 function addDateRangePickerModule(options: any) {
-    return (host: Tree, context: SchematicContext) => {
+    return (host: Tree) => {
         const workspace = getWorkspace(host);
         const project = getProjectFromWorkspace(workspace, options.project);
 
