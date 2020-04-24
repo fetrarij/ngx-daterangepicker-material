@@ -961,7 +961,9 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         const leftCalDate = this.calendarVariables.left.calendar[row][col];
         const rightCalDate = this.calendarVariables.right.calendar[row][col];
         if (this.pickingDate) {
-            this.nowHoveredDate = side === SideEnum.left ? leftCalDate : rightCalDate;
+            const hoverDate = side === SideEnum.left ? leftCalDate : rightCalDate;
+            this.nowHoveredDate = this._isDateRangeInvalid(hoverDate) ? null : hoverDate;
+
             this.renderCalendar(SideEnum.left);
             this.renderCalendar(SideEnum.right);
         }
@@ -1015,6 +1017,8 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
             }
             if (date.isBefore(this.startDate, 'day') === true && this.customRangeDirection === true) {
                 this.setEndDate(this.startDate);
+                this.setStartDate(date.clone());
+            } else if (this._isDateRangeInvalid(date)) {
                 this.setStartDate(date.clone());
             } else {
                 this.setEndDate(date.clone());
@@ -1368,5 +1372,20 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
             }
         }
         return false;
+    }
+
+    /**
+     * Returns true when a date within the range of dates is invalid
+     */
+    private _isDateRangeInvalid(endDate): boolean {
+        const days = [];
+        let day = this.startDate;
+
+        while (day <= endDate) {
+            days.push(day);
+            day = day.clone().add(1, 'd');
+        }
+
+        return days.some((d) => this.isInvalidDate(d));
     }
 }
