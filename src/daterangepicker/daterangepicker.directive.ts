@@ -341,7 +341,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     hide(): void {
         if (this.overlayRef) {
             this.overlayRef.dispose();
-            this.destroy$.next();
             this.overlayRef = null;
             this.componentRef = null;
         }
