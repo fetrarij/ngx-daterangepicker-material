@@ -18,7 +18,8 @@ Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
 
 | Angular| ngx-daterangepicker-material|
 | ------|:------:| 
-| >=9.0.0 | v2.3.x and v3.x |
+| >=9.0.0 with @angular/material |v3.x |
+| >=9.0.0 without @angular/material | v2.3.x |
 | <9.0.0  | v2.2.x and below|
 
 ---
