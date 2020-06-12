@@ -227,10 +227,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                     },
                 ]),
         });
-        /*setTimeout(()=> {
-            console.log(this.overlayRef.overlayElement.children.item(0).clientWidth, this.overlayRef.hostElement)
-
-        })*/
         const dateRangePickerPortal = new ComponentPortal(DaterangepickerComponent);
         this.componentRef = this.overlayRef.attach(dateRangePickerPortal);
 
@@ -315,7 +311,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             .subscribe((chosenDate) => {
                 if (chosenDate) {
                     const { endDate, startDate } = chosenDate;
-                    this.value = { endDate, startDate };
+                    this.value = {[this._startKey]: startDate, [this._endKey]: endDate};
                     this.change.emit(this.value);
                     if (typeof chosenDate.chosenLabel === 'string') {
                         this.elementRef.nativeElement.value = chosenDate.chosenLabel;
@@ -363,11 +359,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    writeValue(value: { startDate: _moment.Moment | string; endDate: _moment.Moment | string } | _moment.Moment): void {
+    writeValue(value: any): void {
         if (_moment.isMoment(value)) {
-            this.value = { startDate: value };
+            this.value = { [this._startKey]: value };
         } else if (value) {
-            this.value = { startDate: moment(value.startDate), endDate: moment(value.endDate) };
+            this.value = { [this._startKey]: moment(value[this._startKey]), [this._endKey]: moment(value[this._endKey]) };
         } else {
             this.value = null;
         }
@@ -382,7 +378,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this._onTouched = fn;
     }
 
-    private setValue(value: { startDate: _moment.Moment; endDate: _moment.Moment }): void {
+    private setValue(value: any): void {
         if (this.componentRef) {
             if (value) {
                 if (value[this._startKey]) {
@@ -400,7 +396,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             }
         }
 
-        this.elementRef.nativeElement.value = value ? this.calculateChosenLabel(value.startDate, value.endDate) : null;
+        this.elementRef.nativeElement.value = value ? this.calculateChosenLabel(value[this._startKey], value[this._endKey]) : null;
     }
 
     inputChanged(e): void {
