@@ -144,7 +144,7 @@
                                     {{this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()]}}
                                     <select class="monthselect" (change)="monthChanged($event, sideEnum.right)">
                                             <option
-                                            [disabled]="(calendarVariables.right.dropdowns.inMinYear && m < calendarVariables.right.minDate.month()) || (calendarVariables.right.dropdowns.inMaxYear && m > calendarVariables.right.maxDate.month())"
+                                            [disabled]="(calendarVariables.right.dropdowns.inMinYear && calendarVariables.right.minDate && m < calendarVariables.right.minDate.month()) || (calendarVariables.right.dropdowns.inMaxYear && calendarVariables.right.maxDate && m > calendarVariables.right.maxDate.month())"
                                             *ngFor="let m of calendarVariables.right.dropdowns.monthArrays" [value]="m" [selected]="calendarVariables.right.dropdowns.currentMonth == m">
                                                 {{locale.monthNames[m]}}
                                             </option>
