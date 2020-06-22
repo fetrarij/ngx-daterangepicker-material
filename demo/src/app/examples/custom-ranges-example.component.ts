@@ -54,8 +54,8 @@ export class CustomRangesExampleComponent {
         { date: moment().add(2, 'days'), text: 'Yeeeees!!!' },
     ];
     ranges = {
-        Today: [moment(), moment()],
-        Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        Today: [moment().startOf('day'), moment().endOf('day')],
+        Yesterday: [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
         'This Month': [moment().startOf('month'), moment().endOf('month')],
