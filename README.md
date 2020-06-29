@@ -18,7 +18,8 @@ Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
 
 | Angular| ngx-daterangepicker-material|
 | ------|:------:| 
-| >=9.0.0 | v2.3.x and v3.x |
+| >=9.0.0 with @angular/material |v3.x |
+| >=9.0.0 without @angular/material | v2.3.x |
 | <9.0.0  | v2.2.x and below|
 
 ---
@@ -176,8 +177,8 @@ the model we got would be: `{start: Date, end: Date}`
 
 ```javascript
 ranges: any = {
-    Today: [moment(), moment()],
-    Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    Today: [moment().startOf('day'), moment().endOf('day')],
+    Yesterday: [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
     'This Month': [moment().startOf('month'), moment().endOf('month')],
@@ -197,38 +198,6 @@ You can use bellow options when using the ranges. The default are `false`.
 | customRangeDirection         | boolean | set to `true` if you want to allow selection range from end date first        |
 | lockStartDate                | boolean | set to `true` if you want to lock start date and change only the end date     |
 
-#### Open datepicker from outside
-
-It is possible to open datepicker from outside. You should create an input with attached datepicker directive and a button with "ngx-daterangepicker-action" class (to prevent triggering of clickOutside).
-
-```html
-<input
-    matInput
-    ngxDaterangepickerMd
-    [closeOnAutoApply]="true"
-    [autoApply]="true"
-    [singleDatePicker]="true"
-    [linkedCalendars]="true"
-    [(ngModel)]="selected"
-    (datesUpdated)="datesUpdated($event)"
-    class="datepicker-calendar-icon"
-/>
-
-<a class="ngx-daterangepicker-action" (click)="openDatepicker()">
-    Open
-</a>
-```
-
-```javascript
-
-  ...
-    @ViewChild(DaterangepickerDirective, { static: false }) pickerDirective: DaterangepickerDirective;
-  ...
-  ...
-  openDatepicker() {
-    this.pickerDirective.open();
-  }
-```
 
 ### Timepicker
 
@@ -305,10 +274,6 @@ Open `http//:localhost:4200` on your browser.
 ## Tests
 
 Run `npm test` or `ng test` to run tests.
-
-## Donation
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=THF6M338KQ626)
 
 ## [License](https://github.com/fetrarij/ngx-daterangepicker-material/blob/master/LICENSE)
 
