@@ -1,55 +1,70 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { async, ComponentFixture, fakeAsync, TestBed, tick, inject } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatInputModule, MatInput } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule, BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxDaterangepickerMd } from '../../../../src/daterangepicker';
 import { SimpleComponent } from './simple.component';
+import { SimpleExampleComponent } from '../examples/simple-example.component';
+import { SimpleInlineExampleComponent } from '../examples/simple-inline-example.component';
+import { SimpleInlineTimepickerExampleComponent } from '../examples/simple-inline-timepicker-example.component';
+import { ExampleComponent } from '../example/example.component';
+import {Overlay, OverlayContainer} from '@angular/cdk/overlay';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 describe('SimpleComponent', () => {
     let component: SimpleComponent;
     let fixture: ComponentFixture<SimpleComponent>;
-    const opener = '.form-control';
+    let input: HTMLInputElement;
 
+
+    let overlayContainer: OverlayContainer;
+    let overlayContainerElement: HTMLElement;
+
+    afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
+        currentOverlayContainer.ngOnDestroy();
+        overlayContainer.ngOnDestroy();
+      }));
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [SimpleComponent],
+            declarations: [
+                SimpleComponent,
+                SimpleExampleComponent,
+                SimpleInlineExampleComponent,
+                SimpleInlineTimepickerExampleComponent,
+                ExampleComponent
+            ],
             imports: [
+                ReactiveFormsModule,
                 FormsModule,
                 NgxDaterangepickerMd.forRoot(),
-                NoopAnimationsModule,
+                BrowserAnimationsModule,
                 MatToolbarModule,
+                MatCheckboxModule,
                 MatInputModule,
                 MatFormFieldModule,
             ],
         }).compileComponents();
+        inject([OverlayContainer], (oc: OverlayContainer) => {
+            overlayContainer = oc;
+            overlayContainerElement = oc.getContainerElement();
+          })();
     }));
 
     beforeEach(() => {
         fixture = TestBed.createComponent(SimpleComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
+        input = fixture.debugElement.query(By.css('input'))!.nativeElement;
     });
 
     it('should create', () => {
         expect(component).toBeTruthy();
     });
+ 
 
-    it('should call chosenDate() when a valid date range was selected', fakeAsync(() => {
-        spyOn(component, 'chosenDate');
-        fixture.debugElement.queryAll(By.css(opener))[0].nativeElement.click();
-        tick(200);
 
-        let table = fixture.nativeElement.querySelectorAll('table');
-        let trs = table[0].querySelectorAll('tr');
-        let tds = trs[4].querySelectorAll('td');
-
-        tds[0].click();
-        tds[4].click();
-        fixture.nativeElement.querySelector('ngx-daterangepicker-material button[color="primary"]').click();
-
-        expect(component.chosenDate).toHaveBeenCalled();
-    }));
 });

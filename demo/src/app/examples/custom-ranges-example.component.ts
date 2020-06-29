@@ -25,6 +25,8 @@ import * as moment from 'moment';
                     [showRangeLabelOnInput]="form.get('showRangeLabelOnInput').value"
                     (rangeClicked)="rangeClicked($event)"
                     (datesUpdated)="datesUpdated($event)"
+                    startKey="customStart"
+                    endKey="customEnd"
                 />
             </mat-form-field>
             {{ selected | json }}
@@ -64,8 +66,8 @@ export class CustomRangesExampleComponent {
     };
     form = this.formBuilder.group({
         selected: {
-            startDate: moment().subtract(1, 'days').set({ hours: 0, minutes: 0 }),
-            endDate: moment().subtract(1, 'days').set({ hours: 23, minutes: 59 }),
+            customStart: moment().startOf('month'),
+            customEnd: moment().endOf('month'),
         },
         alwaysShowCalendars: true,
         keepCalendarOpeningWithRange: true,
@@ -76,7 +78,7 @@ export class CustomRangesExampleComponent {
 
     isInvalidDate = (m: moment.Moment) => {
         return this.invalidDates.some((d) => d.isSame(m, 'day'));
-    };
+    }
 
     isTooltipDate = (m: moment.Moment) => {
         const tooltip = this.tooltips.find((tt) => tt.date.isSame(m, 'day'));
