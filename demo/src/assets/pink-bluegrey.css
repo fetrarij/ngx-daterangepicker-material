@@ -100,6 +100,8 @@ app-footer .docs-footer-links a {
     border-radius: 4px;
     background-color: rgba(0, 0, 0, 0.04);
     color: white; }
+  .md-drppicker .calendar-icon::after {
+    border-color: rgba(0, 0, 0, 0.87); }
 
 /*
 Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  (c) Kelby Gassmanl <kelby.gassman@gmail.com>
@@ -325,12 +327,24 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
     width: 32px !important;
     height: 32px !important;
     line-height: 32px !important; }
-    .md-drppicker .navigation-button .mat-icon {
-      width: 24px !important;
-      height: 24px !important;
-      line-height: 24px !important; }
-    .md-drppicker .navigation-button .material-icons {
-      font-size: 24px !important; }
+    .md-drppicker .navigation-button .calendar-icon {
+      transform: rotate(180deg); }
+      .md-drppicker .navigation-button .calendar-icon::after {
+        display: block;
+        content: '';
+        height: 6px;
+        width: 6px;
+        border-width: 0 0 2px 2px;
+        border-style: solid;
+        position: absolute;
+        left: 50%;
+        top: 50%; }
+      .md-drppicker .navigation-button .calendar-icon.calendar-icon--left::after {
+        margin-left: 1px;
+        transform: translate(-50%, -50%) rotate(45deg); }
+      .md-drppicker .navigation-button .calendar-icon.calendar-icon--right::after {
+        margin-left: -1px;
+        transform: translate(-50%, -50%) rotate(225deg); }
   .md-drppicker .dropdowns {
     width: 60px; }
   .md-drppicker .dropdowns + .dropdowns {
@@ -379,6 +393,13 @@ Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  
     justify-content: center; }
     .md-drppicker .clear-button .clear-icon {
       font-size: 20px !important; }
+      .md-drppicker .clear-button .clear-icon svg {
+        width: 1em;
+        height: 1em;
+        fill: currentColor;
+        pointer-events: none;
+        top: .125em;
+        position: relative; }
   .md-drppicker .buttons {
     text-align: right;
     margin: 0 5px 5px 0; }
@@ -1876,3 +1897,5 @@ app-footer .docs-footer-links a {
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.04);
     color: white; }
+  .md-drppicker .calendar-icon::after {
+    border-color: white; }
