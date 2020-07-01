@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { LocaleConfig, LOCALE_CONFIG } from './daterangepicker.config';
@@ -12,7 +11,7 @@ import { LocaleService } from './locale.service';
 
 @NgModule({
     declarations: [DaterangepickerComponent, DaterangepickerDirective],
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatIconModule, MatSelectModule, OverlayModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatSelectModule, OverlayModule],
     exports: [DaterangepickerComponent, DaterangepickerDirective],
 })
 export class NgxDaterangepickerMd {

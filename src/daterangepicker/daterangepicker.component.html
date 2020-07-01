@@ -40,7 +40,7 @@
                         >
                             <th>
                                 <button class="navigation-button" mat-icon-button (click)="clickPrev(sideEnum.left)">
-                                    <mat-icon>keyboard_arrow_left</mat-icon>
+                                    <span class="calendar-icon calendar-icon--left"></span>
                                 </button>
                             </th>
                         </ng-container>
@@ -94,7 +94,7 @@
                         >
                             <th>
                                 <button class="navigation-button" mat-icon-button (click)="clickNext(sideEnum.left)">
-                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                    <span class="calendar-icon calendar-icon--right"></span>
                                 </button>
                             </th>
                         </ng-container>
@@ -225,7 +225,7 @@
                         >
                             <th>
                                 <button class="navigation-button" mat-icon-button (click)="clickPrev(sideEnum.right)">
-                                    <mat-icon>keyboard_arrow_left</mat-icon>
+                                    <span class="calendar-icon calendar-icon--left"></span>
                                 </button>
                             </th>
                         </ng-container>
@@ -279,7 +279,7 @@
                         >
                             <th>
                                 <button class="navigation-button" mat-icon-button (click)="clickNext(sideEnum.right)">
-                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                    <span class="calendar-icon calendar-icon--right"></span>
                                 </button>
                             </th>
                         </ng-container>
@@ -401,7 +401,11 @@
             <button *ngIf="showClearButton" mat-raised-button type="button" [title]="locale.clearLabel" (click)="clear()">
                 <span class="clear-button">
                     {{ locale.clearLabel }}
-                    <mat-icon [inline]="true" class="clear-icon">delete</mat-icon>
+                    <span class="clear-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                        </svg>
+                    </span>
                 </span>
             </button>
             <button *ngIf="showCancel" mat-raised-button (click)="clickCancel()">{{ locale.cancelLabel }}</button>

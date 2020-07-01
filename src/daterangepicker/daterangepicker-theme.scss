@@ -68,5 +68,9 @@
                 }
             }
         }
+
+        .calendar-icon::after {
+            border-color: mat-color($foreground, text);
+        }
     }
 }

@@ -228,14 +228,33 @@ $md-drppicker-cell-border-size: 1px !default;
         height: 32px !important;
         line-height: 32px !important;
 
-        .mat-icon {
-            width: 24px !important;
-            height: 24px !important;
-            line-height: 24px !important;
-        }
+        .calendar-icon {
+            transform:rotate(180deg);
+            &::after {
+                display: block;
+                content: '';
+                height: 6px;
+                width: 6px;
+                border-width: 0 0 2px 2px;
+                border-style: solid;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+            }
 
-        .material-icons {
-            font-size: 24px !important;
+            &.calendar-icon--left {
+                &::after {
+                    margin-left: 1px;
+                    transform: translate(-50%, -50%) rotate(45deg);
+                }
+            }
+            
+            &.calendar-icon--right {
+                &::after {
+                    margin-left: -1px;
+                    transform: translate(-50%, -50%) rotate(225deg);
+                }
+            }
         }
     }
 
@@ -322,6 +341,15 @@ $md-drppicker-cell-border-size: 1px !default;
 
         .clear-icon {
             font-size: 20px !important;
+
+            svg {
+                width: 1em;
+                height: 1em;
+                fill: currentColor;
+                pointer-events: none;
+                top: .125em;
+                position: relative;
+            }
         }
     }
 
