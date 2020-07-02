@@ -100,6 +100,8 @@ app-footer .docs-footer-links a {
     border-radius: 4px;
     background-color: rgba(0, 0, 0, 0.04);
     color: white; }
+  .md-drppicker .calendar-icon::after {
+    border-color: rgba(0, 0, 0, 0.87); }
 
 /*
 Orginal Style from https://github.com/Kelbster/highlightjs-material-dark-theme  (c) Kelby Gassmanl <kelby.gassman@gmail.com>
@@ -1616,3 +1618,5 @@ app-footer .docs-footer-links a {
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.04);
     color: white; }
+  .md-drppicker .calendar-icon::after {
+    border-color: white; }
