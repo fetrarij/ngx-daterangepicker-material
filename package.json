@@ -48,9 +48,9 @@
   },
   "peerDependencies": {
     "moment": "^2.24.0",
-    "@angular/common": "^9.0.0",
-    "@angular/core": "^9.0.0",
-    "@angular/material": "^9.0.0"
+    "@angular/common": ">=9.0.0",
+    "@angular/core": ">=9.0.0",
+    "@angular/material": ">=9.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.0",

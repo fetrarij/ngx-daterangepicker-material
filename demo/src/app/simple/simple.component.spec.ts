@@ -64,7 +64,4 @@ describe('SimpleComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
- 
-
-
 });

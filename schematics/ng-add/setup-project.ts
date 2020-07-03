@@ -32,7 +32,7 @@ function addDateRangePickerModule(options: any) {
         const workspace = getWorkspace(host);
         const project = getProjectFromWorkspace(workspace, options.project);
 
-        addModuleImportToRootModule(host, moduleName, 'ngx-daterangepicker-material', project);
+        addModuleImportToRootModule(host, moduleName + '.forRoot()', 'ngx-daterangepicker-material', project);
 
         return host;
     };

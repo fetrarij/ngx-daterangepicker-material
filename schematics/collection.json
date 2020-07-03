@@ -3,7 +3,7 @@
     "schematics": {
         "ng-add": {
             "description": "Add ngx-daterangepicker-material to an Angular project.",
-            "factory": "./ng-add/index#ngAdd"
+            "factory": "./ng-add/index"
         },
         "ng-add-setup-project": {
             "description": "Sets up the project after the ngx-daterangepicker-material has been installed.",
