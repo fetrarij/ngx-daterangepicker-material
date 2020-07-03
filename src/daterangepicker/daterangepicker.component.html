@@ -247,9 +247,10 @@
                                         <mat-option
                                             *ngFor="let m of calendarVariables.right.dropdowns.monthArrays"
                                             [disabled]="
-                                                (calendarVariables.right.dropdowns.inMinYear &&
+                                                (calendarVariables.right.dropdowns.inMinYear && calendarVariables.right.minDate &&
                                                     m < calendarVariables.right.minDate.month()) ||
-                                                (calendarVariables.right.dropdowns.inMaxYear && m > calendarVariables.right.maxDate.month())
+                                                (calendarVariables.right.dropdowns.inMaxYear && calendarVariables.right.maxDate &&
+                                                m > calendarVariables.right.maxDate.month())
                                             "
                                             [value]="m"
                                         >

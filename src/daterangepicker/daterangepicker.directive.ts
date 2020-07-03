@@ -14,7 +14,6 @@ import {
     OnInit,
     Output,
     SimpleChanges,
-    ViewContainerRef,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _moment from 'moment';
@@ -74,12 +73,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     @Input()
     showDropdowns: boolean;
     @Input()
-    isInvalidDate = (date: _moment.Moment) => false;
-    @Input()
-    isCustomDate = (date: _moment.Moment) => false;
-    @Input()
-    isTooltipDate = (date: _moment.Moment) => null;
-    @Input()
     showClearButton: boolean;
     @Input()
     customRangeDirection: boolean;
@@ -125,6 +118,23 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
     @Input()
     private _endKey = 'endDate';
     private _startKey = 'startDate';
+    notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey'];
+
+    @Output() change: EventEmitter<{ startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
+    @Output() rangeClicked: EventEmitter<{ label: string; dates: [_moment.Moment, _moment.Moment] }> = new EventEmitter();
+    @Output() datesUpdated: EventEmitter<{ startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
+    @Output() startDateChanged: EventEmitter<{ startDate: _moment.Moment }> = new EventEmitter();
+    @Output() endDateChanged: EventEmitter<{ endDate: _moment.Moment }> = new EventEmitter();
+
+    destroy$ = new Subject();
+
+
+    @Input()
+    isInvalidDate = (date: _moment.Moment) => false
+    @Input()
+    isCustomDate = (date: _moment.Moment) => false
+    @Input()
+    isTooltipDate = (date: _moment.Moment) => null
     @Input() set startKey(value) {
         if (value !== null) {
             this._startKey = value;
@@ -139,7 +149,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             this._endKey = 'endDate';
         }
     }
-    notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey'];
 
     get value() {
         return this._value || null;
@@ -150,18 +159,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this._changeDetectorRef.markForCheck();
     }
 
-    @Output('change') onChange: EventEmitter<{ startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
-    @Output('rangeClicked') rangeClicked: EventEmitter<{ label: string; dates: [_moment.Moment, _moment.Moment] }> = new EventEmitter();
-    @Output('datesUpdated') datesUpdated: EventEmitter<{ startDate: _moment.Moment; endDate: _moment.Moment }> = new EventEmitter();
-    @Output() startDateChanged: EventEmitter<{ startDate: _moment.Moment }> = new EventEmitter();
-    @Output() endDateChanged: EventEmitter<{ endDate: _moment.Moment }> = new EventEmitter();
-
-    destroy$ = new Subject();
-
     constructor(
-        public viewContainerRef: ViewContainerRef,
         public _changeDetectorRef: ChangeDetectorRef,
-        private _el: ElementRef,
         private differs: KeyValueDiffers,
         private _localeService: LocaleService,
         private elementRef: ElementRef,
@@ -198,7 +197,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         let originX, overlayX;
         switch (this.opens) {
             case 'left':
-                originX = 'start';
+                originX = 'end';
                 overlayX = 'end';
                 break;
             case 'center':
@@ -206,12 +205,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                 overlayX = 'center';
                 break;
             case 'right':
-                originX = 'end';
+                originX = 'start';
                 overlayX = 'start';
                 break;
         }
 
-        // TO-DO: implement this.drops and this.opens!
         this.overlayRef = this.overlay.create({
             backdropClass: 'cdk-overlay-transparent-backdrop',
             hasBackdrop: true,
@@ -221,6 +219,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                 .flexibleConnectedTo(this.elementRef.nativeElement)
                 .withPositions([
                     {
+                        offsetY: this.drops === 'up' ? 0 : 13,
                         originX,
                         originY: this.drops === 'up' ? 'top' : 'bottom',
                         overlayX,
@@ -312,10 +311,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
             .subscribe((chosenDate) => {
                 if (chosenDate) {
                     const { endDate, startDate } = chosenDate;
-                    this.value = { endDate, startDate };
-                    this.onChange.emit(this.value);
+                    this.value = {[this._startKey]: startDate, [this._endKey]: endDate};
+                    this.change.emit(this.value);
                     if (typeof chosenDate.chosenLabel === 'string') {
-                        this._el.nativeElement.value = chosenDate.chosenLabel;
+                        this.elementRef.nativeElement.value = chosenDate.chosenLabel;
                     }
 
                     this.hide();
@@ -360,11 +359,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    writeValue(value: { startDate: _moment.Moment | string; endDate: _moment.Moment | string } | _moment.Moment): void {
+    writeValue(value: any): void {
         if (_moment.isMoment(value)) {
-            this.value = { startDate: value };
+            this.value = { [this._startKey]: value };
         } else if (value) {
-            this.value = { startDate: moment(value.startDate), endDate: moment(value.endDate) };
+            this.value = { [this._startKey]: moment(value[this._startKey]), [this._endKey]: moment(value[this._endKey]) };
         } else {
             this.value = null;
         }
@@ -379,7 +378,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
         this._onTouched = fn;
     }
 
-    private setValue(value: { startDate: _moment.Moment; endDate: _moment.Moment }): void {
+    private setValue(value: any): void {
         if (this.componentRef) {
             if (value) {
                 if (value[this._startKey]) {
@@ -390,14 +389,14 @@ export class DaterangepickerDirective implements OnInit, OnChanges, OnDestroy {
                 }
                 this.componentRef.instance.calculateChosenLabel();
                 if (this.componentRef.instance.chosenLabel) {
-                    this._el.nativeElement.value = this.componentRef.instance.chosenLabel;
+                    this.elementRef.nativeElement.value = this.componentRef.instance.chosenLabel;
                 }
             } else {
                 this.componentRef.instance.clear();
             }
         }
 
-        this._el.nativeElement.value = value ? this.calculateChosenLabel(value.startDate, value.endDate) : null;
+        this.elementRef.nativeElement.value = value ? this.calculateChosenLabel(value[this._startKey], value[this._endKey]) : null;
     }
 
     inputChanged(e): void {

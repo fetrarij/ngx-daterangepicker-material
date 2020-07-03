@@ -5,7 +5,7 @@ import { DaterangepickerDirective } from '../../../../src/daterangepicker';
 @Component({
     selector: 'example-full',
     template: `
-        <mat-form-field>
+        <mat-form-field  style="width: 300px">
             <input
                 matInput
                 ngxDaterangepickerMd

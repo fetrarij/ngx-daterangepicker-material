@@ -13,6 +13,8 @@ import { DaterangepickerDirective } from '../../../../src/daterangepicker';
                 placeholder="Choose date"
                 [(ngModel)]="selected"
                 [showDropdowns]="true"
+                [minDate]="minDate"
+                [linkedCalendars]="false"
                 [lockStartDate]="false"
                 [customRangeDirection]="false"
                 (ngModelChange)="ngModelChange($event)"
@@ -35,6 +37,7 @@ export class SimpleExampleComponent {
         startDate: moment('2015-11-18T00:00Z'),
         endDate: moment('2015-11-26T00:00Z'),
     };
+    minDate = moment('2020-10-10', 'YYYY-MM-DD');
 
     ngModelChange(e): void {
         console.log(e);
@@ -45,6 +48,7 @@ export class SimpleExampleComponent {
     }
 
     open(): void {
+        console.log('open')
         this.pickerDirective.open();
     }
 
