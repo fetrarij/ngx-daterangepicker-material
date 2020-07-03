@@ -36,7 +36,7 @@
     "build-themes": "bash ./tools/build-themes.sh && cp -R ./tools/prebuilt-themes/ dist/",
     "bundle-styles": "scss-bundle -c scss-bundle.config.json",
     "build:schematics": "tsc -p ./tsconfig.schematics.json",
-    "copy:schematics": "cpr schematics/dist dist/schematics && cp ./schematics/collection.json ./dist/schematics",
+    "copy:schematics": "cpr schematics/dist dist/schematics && cp ./schematics/collection.json ./dist/schematics && cp ./schematics/ng-add/schema.json ./dist/schematics/ng-add",
     "postbuild": "npm run build:schematics && npm run copy:schematics",
     "prettier": "prettier --write '**/*.{html,js,ts,css,scss,less,md,json}'",
     "prettier-check": "prettier --list-different '**/*.{html,js,ts,css,scss,less,md,json}'"
