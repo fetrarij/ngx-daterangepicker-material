@@ -103,5 +103,8 @@
       }
     },
     "dest": "dist"
+  },
+  "dependencies": {
+    "@angular-devkit/schematics": "^10.0.1"
   }
 }
