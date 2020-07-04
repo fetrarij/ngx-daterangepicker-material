@@ -50,7 +50,8 @@
     "moment": "^2.27.0",
     "@angular/common": ">=10.0.0",
     "@angular/core": ">=10.0.0",
-    "@angular/material": ">=10.0.0"
+    "@angular/material": ">=10.0.0",
+    "@angular-devkit/schematics": "^10.0.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.1",
@@ -105,6 +106,5 @@
     "dest": "dist"
   },
   "dependencies": {
-    "@angular-devkit/schematics": "^10.0.1"
   }
 }
