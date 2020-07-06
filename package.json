@@ -1,6 +1,6 @@
 {
   "name": "ngx-daterangepicker-material",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Angular 2+ date range picker (with material design theme)",
   "keywords": [
     "angular2",
@@ -33,7 +33,7 @@
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
     "gh-pages": "ng build --prod --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
     "build": "ng-packagr -p package.json && npm run build-themes && npm run bundle-styles",
-    "build-themes": "bash ./tools/build-themes.sh && cp -R ./tools/prebuilt-themes/ dist/",
+    "build-themes": "bash ./tools/build-themes.sh",
     "bundle-styles": "scss-bundle -c scss-bundle.config.json",
     "build:schematics": "tsc -p ./tsconfig.schematics.json",
     "copy:schematics": "cpr schematics/dist dist/schematics && cp ./schematics/collection.json ./dist/schematics && cp ./schematics/ng-add/schema.json ./dist/schematics/ng-add",
