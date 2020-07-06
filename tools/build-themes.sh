@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DEST_PATH=demo/src/assets
-$DEST_FINAL_PATH=dist/prebuilt-themes/
+DEST_FINAL_PATH=dist/prebuilt-themes/
 INPUT_PATH=$DEST_PATH/custom-themes/
 
 
