@@ -478,7 +478,7 @@ export class DaterangepickerComponent implements OnInit, OnDestroy {
         //
         // Display the calendar
         //
-        const minDate = side === 'left' ? this.minDate : this.startDate;
+        const minDate = this.minDate;
         let maxDate = this.maxDate;
         // adjust maxDate to reflect the dateLimit setting in order to
         // grey out end dates beyond the dateLimit
