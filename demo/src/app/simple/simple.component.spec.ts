@@ -1,67 +1,68 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick, inject } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule, MatInput } from '@angular/material/input';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule, BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxDaterangepickerMd } from '../../../../src/daterangepicker';
-import { SimpleComponent } from './simple.component';
-import { SimpleExampleComponent } from '../examples/simple-example.component';
-import { SimpleInlineExampleComponent } from '../examples/simple-inline-example.component';
-import { SimpleInlineTimepickerExampleComponent } from '../examples/simple-inline-timepicker-example.component';
-import { ExampleComponent } from '../example/example.component';
-import {Overlay, OverlayContainer} from '@angular/cdk/overlay';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 
+import { By } from '@angular/platform-browser';
+import { SimpleComponent } from './simple.component';
 
 describe('SimpleComponent', () => {
-    let component: SimpleComponent;
-    let fixture: ComponentFixture<SimpleComponent>;
-    let input: HTMLInputElement;
+  let component: SimpleComponent;
+  let fixture: ComponentFixture<SimpleComponent>;
+  const opener = '.form-control';
 
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ SimpleComponent ],
+      imports: [
+        FormsModule,
+        NgxDaterangepickerMd.forRoot(),
+        MatToolbarModule
+      ]
+    })
+    .compileComponents();
+  }));
 
-    let overlayContainer: OverlayContainer;
-    let overlayContainerElement: HTMLElement;
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SimpleComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
-        currentOverlayContainer.ngOnDestroy();
-        overlayContainer.ngOnDestroy();
-      }));
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [
-                SimpleComponent,
-                SimpleExampleComponent,
-                SimpleInlineExampleComponent,
-                SimpleInlineTimepickerExampleComponent,
-                ExampleComponent
-            ],
-            imports: [
-                ReactiveFormsModule,
-                FormsModule,
-                NgxDaterangepickerMd.forRoot(),
-                BrowserAnimationsModule,
-                MatToolbarModule,
-                MatCheckboxModule,
-                MatInputModule,
-                MatFormFieldModule,
-            ],
-        }).compileComponents();
-        inject([OverlayContainer], (oc: OverlayContainer) => {
-            overlayContainer = oc;
-            overlayContainerElement = oc.getContainerElement();
-          })();
-    }));
-
-    beforeEach(() => {
-        fixture = TestBed.createComponent(SimpleComponent);
-        component = fixture.componentInstance;
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+  /*it('should click on input and open daterange', () => {
+    fixture.whenStable().then(() => {
+      component = fixture.componentInstance;
+      fixture.debugElement.queryAll(By.css(opener))[0].nativeElement.click();
+      fixture.detectChanges();
+      expect(component.picker.isShown).toBeTruthy();
+    });
+  });*/
+  it('should call change and ngModelChange on select date range', fakeAsync(() => {
+      spyOn(component, 'change');
+      spyOn(component, 'ngModelChange');
+      fixture.debugElement.queryAll(By.css(opener))[0].nativeElement.click();
+      let table = fixture.nativeElement.querySelectorAll('table');
+      let trs = table[0].querySelectorAll('tr');
+      let tds = trs[4].querySelectorAll('td');
+      setTimeout(() => {
+        tds[0].click();
         fixture.detectChanges();
-        input = fixture.debugElement.query(By.css('input'))!.nativeElement;
-    });
-
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+      }, 500);
+      tick(500);
+      setTimeout(() => {
+        tds[4].click();
+        fixture.detectChanges();
+      }, 500);
+      tick(500);
+      setTimeout(() => {
+        fixture.debugElement.queryAll(By.css('button'))[1].nativeElement.click();
+        fixture.detectChanges();
+      }, 200);
+      tick(200);
+      expect(component.change).toHaveBeenCalled();
+      expect(component.ngModelChange).toHaveBeenCalled();
+  }))
 });
