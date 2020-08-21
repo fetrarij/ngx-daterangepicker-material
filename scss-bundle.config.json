@@ -1,6 +1,0 @@
-{
-    "bundlerOptions": {
-        "entryFile": "./src/daterangepicker/daterangepicker-theme.scss",
-        "outFile": "dist/daterangepicker-theme.scss"
-    }
-}
