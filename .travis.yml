@@ -4,6 +4,7 @@ language: node_js
 node_js:
     - 12.18.3
 install:
+    - sudo apt-get install -y dpkg
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
     - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
