@@ -13,7 +13,15 @@
     </div>
     <div class="col s6">
       <br/>
+      <button type="button" 
+      class="ngx-daterangepicker-action waves-effect waves-light btn"
+      [ngClass]="{'red': !form.disabled, 'green': form.disabled}"
+      (click)="toggleDisable(form)">
+          {{form.disabled ? 'Enable' : 'Disable'}}
+      </button>
+      &nbsp;
       <button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn" >Submit</button>
+      &nbsp;
     </div>
   </div>
 </form>

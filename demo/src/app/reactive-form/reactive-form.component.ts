@@ -39,4 +39,11 @@ export class ReactiveFormComponent {
   submit2() {
     console.log(this.form2.value);
   }
+  toggleDisable(form: FormGroup) {
+    if (form.disabled) {
+      form.enable();
+    } else {
+      form.disable();
+    }
+  }
 }

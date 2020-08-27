@@ -15,7 +15,8 @@ import {
   KeyValueDiffers,
   Output,
   EventEmitter,
-  Renderer2
+  Renderer2,
+  HostBinding
 } from '@angular/core';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -44,6 +45,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private _onChange = Function.prototype;
   private _onTouched = Function.prototype;
   private _validatorChange = Function.prototype;
+  private _disabled: boolean;
   private _value: any;
   private localeDiffer: KeyValueDiffer<string, any>;
   @Input()
@@ -154,6 +156,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Output('datesUpdated') datesUpdated: EventEmitter<Object> = new EventEmitter();
   @Output() startDateChanged: EventEmitter<Object> = new EventEmitter();
   @Output() endDateChanged: EventEmitter<Object> = new EventEmitter();
+  @HostBinding('disabled') get disabled() { return this._disabled; }
   constructor(
     public viewContainerRef: ViewContainerRef,
     public _changeDetectorRef: ChangeDetectorRef,
@@ -232,6 +235,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   }
 
   open(event?: any) {
+    if (this.disabled) {
+      return;
+    }
     this.picker.show(event);
     setTimeout(() => {
       this.setPosition();
@@ -262,6 +268,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   registerOnTouched(fn) {
     this._onTouched = fn;
   }
+  setDisabledState(state: boolean): void {
+    this._disabled = state;
+}
   private setValue(val: any) {
     if (val) {
       this.value = val;
