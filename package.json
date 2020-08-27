@@ -1,16 +1,12 @@
 {
   "name": "ngx-daterangepicker-material",
-  "version": "4.0.0",
-  "description": "Angular 9 and 10 date range picker (with material design theme)",
+  "version": "2.4.0",
+  "description": "Angular 2+ date range picker (with material design theme)",
   "keywords": [
     "angular2",
     "angular4",
     "angular5",
     "angular6",
-    "angular7",
-    "angular8",
-    "angular9",
-    "angular10",
     "ng2",
     "daterangepicker",
     "material",
@@ -45,24 +41,25 @@
     "moment": "^2.21.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.901.0",
-    "@angular/animations": "^9.1.0",
-    "@angular/cdk": "^9.2.0",
-    "@angular/cli": "9.1.0",
-    "@angular/common": "^9.1.0",
-    "@angular/compiler": "^9.1.0",
-    "@angular/compiler-cli": "^9.1.0",
-    "@angular/core": "^9.1.0",
-    "@angular/forms": "^9.1.0",
-    "@angular/material": "^9.2.0",
-    "@angular/platform-browser": "^9.1.0",
-    "@angular/platform-browser-dynamic": "^9.1.0",
-    "@angular/router": "^9.1.0",
+    "@angular-devkit/build-angular": "~0.13.8",
+    "@angular/animations": "^7.2.0",
+    "@angular/cdk": "^7.2.0",
+    "@angular/cli": "7.3.8",
+    "@angular/common": "^7.2.0",
+    "@angular/compiler": "^7.2.0",
+    "@angular/compiler-cli": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "@angular/forms": "^7.2.0",
+    "@angular/http": "^7.2.0",
+    "@angular/material": "^7.2.0",
+    "@angular/platform-browser": "^7.2.0",
+    "@angular/platform-browser-dynamic": "^7.2.0",
+    "@angular/router": "^7.2.0",
     "@types/jasmine": "~2.8.9",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "^12.11.1",
+    "@types/node": "~8.9.4",
     "angular-cli-ghpages": "^0.5.2",
-    "codelyzer": "^5.1.2",
+    "codelyzer": "^4.0.1",
     "core-js": "^2.5.4",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -73,14 +70,14 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "materialize-css": "^1.0.0",
     "moment": "^2.22.2",
-    "ng-packagr": "^9.0.0",
+    "ng-packagr": "^5.1.0",
     "protractor": "~5.4.0",
     "rimraf": "^2.6.1",
     "rxjs": "^6.3.3",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.8.3",
-    "zone.js": "~0.10.2"
+    "typescript": "~3.2.4",
+    "zone.js": "^0.8.17"
   },
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "ngPackage": {
@@ -93,6 +90,6 @@
     "dest": "dist"
   },
   "dependencies": {
-    "tslib": "^1.10.0"
+    "tslib": "^1.9.0"
   }
 }

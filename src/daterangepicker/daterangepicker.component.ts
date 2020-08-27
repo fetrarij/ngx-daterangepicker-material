@@ -138,7 +138,7 @@ export class DaterangepickerComponent implements OnInit {
     @Output() datesUpdated: EventEmitter<Object>;
     @Output() startDateChanged: EventEmitter<Object>;
     @Output() endDateChanged: EventEmitter<Object>;
-    @ViewChild('pickerContainer', { static: true }) pickerContainer: ElementRef;
+    @ViewChild('pickerContainer') pickerContainer: ElementRef;
 
     constructor(
         private el: ElementRef,
