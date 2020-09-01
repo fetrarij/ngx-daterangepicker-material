@@ -7,17 +7,20 @@
     color: white !important;
 }
 .first-day {
-    background-color: greenyellow;
+    background-color: greenyellow !important;
 }
 .last-day {
-    background-color: green;
+    background-color: green !important;
 }
-.empty-week {
-    background-color: rosybrown;
+.empty-week-row {
+    background-color: rosybrown !important;
+}
+.empty-week-column {
+    background-color: rgb(133, 45, 45) !important;
 }
 .last-previous-day {
-    background-color: rgb(218, 226, 145);
+    background-color: rgb(218, 226, 145) !important;
 }
 .first-next-day {
-    background-color: rgb(229, 255, 0);
+    background-color: rgb(229, 255, 0) !important;
 }

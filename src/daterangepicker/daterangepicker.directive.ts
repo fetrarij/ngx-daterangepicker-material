@@ -92,6 +92,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   emptyWeekRowClass: string;
   @Input()
+  emptyWeekColumnClass: string;
+  @Input()
   firstDayOfNextMonthClass: string;
   @Input()
   lastDayOfPreviousMonthClass: string;
@@ -203,6 +205,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.firstMonthDayClass = this.firstMonthDayClass;
     this.picker.lastMonthDayClass = this.lastMonthDayClass;
     this.picker.emptyWeekRowClass = this.emptyWeekRowClass;
+    this.picker.emptyWeekColumnClass = this.emptyWeekColumnClass;
     this.picker.firstDayOfNextMonthClass = this.firstDayOfNextMonthClass;
     this.picker.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass;
     this.picker.drops = this.drops;

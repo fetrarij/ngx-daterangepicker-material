@@ -86,6 +86,8 @@ export class DaterangepickerComponent implements OnInit {
     @Input()
     emptyWeekRowClass: string = null;
     @Input()
+    emptyWeekColumnClass: string = null;
+    @Input()
     firstDayOfNextMonthClass: string = null;
     @Input()
     lastDayOfPreviousMonthClass: string = null;
@@ -1161,11 +1163,20 @@ export class DaterangepickerComponent implements OnInit {
         for (let row = 0; row < 6; row++) {
             this.calendarVariables[side].classes[row] = {};
             const rowClasses = [];
-            if (this.emptyWeekRowClass && !this.hasCurrentMonthDays(this.calendarVariables[side].month, calendar[row])) {
+            if (
+                this.emptyWeekRowClass &&
+                Array.from(Array(7).keys()).some(i => calendar[row][i].month() !== this.calendarVariables[side].month)
+            ) {
                 rowClasses.push(this.emptyWeekRowClass);
             }
             for (let col = 0; col < 7; col++) {
                 const classes = [];
+                // empty week row class
+                if (this.emptyWeekColumnClass) {
+                    if (calendar[row][col].month() !== this.calendarVariables[side].month) {
+                        classes.push(this.emptyWeekColumnClass);
+                    }
+                }
                 // highlight today's date
                 if (calendar[row][col].isSame(new Date(), 'day')) {
                     classes.push('today');

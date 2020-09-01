@@ -227,7 +227,8 @@ You can use theses options:
 | --- | --- |--- |
 | firstMonthDayClass | string | add a custom class for all first day of the month |
 | lastMonthDayClass | string | add a custom class for all last day of the month |
-| emptyWeekRowClass | string | add a custom class for all date in a week not in the current month |
+| emptyWeekRowClass | string | add a custom class in a row with a date in a week not in the current month |
+| emptyWeekColumnClass | string | add a custom class for all date in a week not in the current month |
 | lastDayOfPreviousMonthClass | string | add a custom class for the last day of the previous month |
 | firstDayOfNextMonthClass | string | add a custom class for the first day of the next month |
 
