@@ -1,3 +1,14 @@
+#### 4.0.1 (2020-09-01)
+
+##### Chores
+
+* **travis:**  fix build ([de52eea8](https://github.com/fetrarij/ngx-daterangepicker-material/commit/de52eea8b34acfd4afee513d5372f2560d9d94d0))
+
+##### New Features
+
+* **emptyWeekColumnClass:**  add emptyWeekColumnClass attribute to add a custom class for all date in a week not in the current month Fixes [#315](https://github.com/fetrarij/ngx-daterangepicker-material/pull/315) [#294](https://github.com/fetrarij/ngx-daterangepicker-material/pull/294) [#126](https://github.com/fetrarij/ngx-daterangepicker-material/pull/126) ([ba1d136b](https://github.com/fetrarij/ngx-daterangepicker-material/commit/ba1d136bc2e822595a5626f142ea48558965f8bd))
+* **reactive-forms:**  implemente disable in form control ([7c3265b6](https://github.com/fetrarij/ngx-daterangepicker-material/commit/7c3265b64812684023ad290234d87f5ca443679e))
+
 # 3.0.0 (2020-04-05)
 
 This new major release pivots `ngx-daterangepicker-material` to become an `@angular/material` component, in that it now requires `@angular/material` to correctly render and leverages `@angular/material` building blocks throughout. As such, it adheres to theming and UX standards. It now correctly uses the `CDK Overlay` to render the dialog for instance, which takes care of some issues present with the previous implementation (if you had components with a `z-index` > 1000 on your page, you were going to have a bad time).
