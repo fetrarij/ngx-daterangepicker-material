@@ -1291,17 +1291,4 @@ export class DaterangepickerComponent implements OnInit {
             this.calendarVariables[side].classes[row].classList = rowClasses.join(' ');
         }
     }
-
-    /**
-     * Find out if the current calendar row has current month days
-     * (as opposed to consisting of only previous/next month days)
-     */
-    hasCurrentMonthDays(currentMonth, row) {
-        for (let day = 0; day < 7; day++) {
-            if (row[day].month() === currentMonth) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
