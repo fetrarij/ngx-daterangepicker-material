@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import * as _moment from 'moment';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
@@ -36,7 +37,7 @@ export class DaterangepickerComponent implements OnInit {
     @Input()
     startDate = moment().startOf('day');
     @Input()
-    endDate = moment().endOf('day');
+    endDate = moment();
 
     @Input()
     dateLimit: number = null;
@@ -91,6 +92,8 @@ export class DaterangepickerComponent implements OnInit {
     firstDayOfNextMonthClass: string = null;
     @Input()
     lastDayOfPreviousMonthClass: string = null;
+    @Input()
+    endDateShouldBeNow: Boolean = false;
 
     _locale: LocaleConfig = {};
     @Input() set locale(value) {
@@ -200,6 +203,7 @@ export class DaterangepickerComponent implements OnInit {
                     }
                     if (typeof this.ranges[range][1] === 'string') {
                         end = moment(this.ranges[range][1], this.locale.format);
+
                     } else {
                         end = moment(this.ranges[range][1]);
                     }
@@ -239,7 +243,7 @@ export class DaterangepickerComponent implements OnInit {
             this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
             if (!this.timePicker) {
                 this.startDate = this.startDate.startOf('day');
-                this.endDate = this.endDate.endOf('day');
+                this.endDate = this.endDate;
             }
         }
 
@@ -998,7 +1002,16 @@ export class DaterangepickerComponent implements OnInit {
 
             if (!this.timePicker) {
                 this.startDate.startOf('day');
-                this.endDate.endOf('day');
+                if (this.endDateShouldBeNow) {
+                    this.endDate; // other chosedLabels => Today, Last 7 Days: endDate should be now (moment())
+                
+                    if (moment().diff(this.startDate, "days") === 1) { // if yesterday is selected: time should be end of day
+                        this.endDate.endOf('day');
+                    }
+                } else {
+                    this.endDate.endOf('day');
+                }
+               
             }
 
             if (!this.alwaysShowCalendars) {
