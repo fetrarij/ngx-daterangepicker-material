@@ -203,7 +203,6 @@ export class DaterangepickerComponent implements OnInit {
                     }
                     if (typeof this.ranges[range][1] === 'string') {
                         end = moment(this.ranges[range][1], this.locale.format);
-
                     } else {
                         end = moment(this.ranges[range][1]);
                     }
@@ -243,7 +242,14 @@ export class DaterangepickerComponent implements OnInit {
             this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
             if (!this.timePicker) {
                 this.startDate = this.startDate.startOf('day');
-                this.endDate = this.endDate;
+                if(this.endDateShouldBeNow) {
+                    this.endDate = this.endDate;
+                    if (moment().diff(this.startDate, "days") === 1) { // if yesterday is selected: time should be end of day
+                        this.endDate.endOf('day');
+                    }
+                } else {
+                    this.endDate = this.endDate.endOf('day');
+                }
             }
         }
 
