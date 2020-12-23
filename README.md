@@ -116,13 +116,13 @@ You can use the component directly in your templates, which will set its `inline
 
  >To set max number of the date we can choose
 
-### locale
-
->the locale options is an object with:
-
 ### endDateShouldBeNow
 
 >set endDate to now
+
+### locale
+
+>the locale options is an object with:
 ```javascript
 {
     format: 'MM/DD/YYYY', // could be 'YYYY-MM-DDTHH:mm:ss.SSSSZ'
