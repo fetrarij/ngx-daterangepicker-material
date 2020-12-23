@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import * as _moment from 'moment';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
@@ -37,7 +36,7 @@ export class DaterangepickerComponent implements OnInit {
     @Input()
     startDate = moment().startOf('day');
     @Input()
-    endDate = moment();
+    endDate = moment().endOf('day');
 
     @Input()
     dateLimit: number = null;
