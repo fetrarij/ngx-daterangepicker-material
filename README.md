@@ -17,7 +17,7 @@ Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
 ## Versions
 
 | Angular| ngx-daterangepicker-material|
-| ------|:------:| 
+| ------|:------:|
 | >=9.0.0  | v4.x.x |
 | <9.0.0  | v2.x.x |
 | ~~>=9.0.0 depends on @angular/material~~ |~~v3.x~~ |
@@ -110,7 +110,7 @@ You can use the component directly in your templates, which will set its `inline
 
 ### minDate, maxDate
 
- >To set the minimal and maximal date, these options are a moment date
+ >To set the minimal and maximal date, these options are either a moment date or string in [ISO](https://www.w3.org/QA/Tips/iso-date) format
 
 ### dateLimit
 
