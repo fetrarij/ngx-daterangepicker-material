@@ -43,10 +43,38 @@ export class DaterangepickerComponent implements OnInit {
     // used in template for compile time support of enum values.
     sideEnum = SideEnum;
 
+    _minDate: _moment.Moment;
     @Input()
-    minDate: _moment.Moment = null;
+    set minDate(value: _moment.Moment | string) {
+        if (_moment.isMoment(value)) {
+            this._minDate = value;
+        }
+        else if (typeof value === 'string') {
+            this._minDate = moment(value)
+        } else {
+            this._minDate = null;
+        }
+    };
+    getMinDate(): _moment.Moment | null {
+        return this._minDate;
+    }
+
+    _maxDate: _moment.Moment;
     @Input()
-    maxDate: _moment.Moment = null;
+    set maxDate(value: _moment.Moment | string) {
+        if (_moment.isMoment(value)) {
+            this._maxDate = value;
+        }
+        else if (typeof value === 'string') {
+            this._maxDate = moment(value)
+        } else {
+            this._maxDate = null;
+        }
+    }
+    getMaxDate(): _moment.Moment | null {
+        return this._maxDate;
+    }
+
     @Input()
     autoApply: Boolean = false;
     @Input()
@@ -207,10 +235,10 @@ export class DaterangepickerComponent implements OnInit {
                     }
                     // If the start or end date exceed those allowed by the minDate or maxSpan
                     // options, shorten the range to the allowable period.
-                    if (this.minDate && start.isBefore(this.minDate)) {
-                        start = this.minDate.clone();
+                    if (this.getMinDate() && start.isBefore(this.getMinDate())) {
+                        start = this.getMinDate().clone();
                     }
-                    let maxDate = this.maxDate;
+                    let maxDate = this.getMaxDate();
                     if (this.maxSpan && maxDate && start.clone().add(this.maxSpan).isAfter(maxDate)) {
                         maxDate = start.clone().add(this.maxSpan);
                     }
@@ -219,7 +247,7 @@ export class DaterangepickerComponent implements OnInit {
                     }
                     // If the end of the range is before the minimum or the start of the range is
                     // after the maximum, don't display this range option at all.
-                    if ((this.minDate && end.isBefore(this.minDate, this.timePicker ? 'minute' : 'day'))
+                    if ((this.getMinDate() && end.isBefore(this.getMinDate(), this.timePicker ? 'minute' : 'day'))
                     || (maxDate && start.isAfter(maxDate, this.timePicker ? 'minute' : 'day'))) {
                         continue;
                     }
@@ -246,12 +274,12 @@ export class DaterangepickerComponent implements OnInit {
         }
 
     }
-    renderTimePicker(side: SideEnum) {        
+    renderTimePicker(side: SideEnum) {
         let selected, minDate;
-        const maxDate = this.maxDate;
+        const maxDate = this.getMaxDate();
         if (side === SideEnum.left) {
             selected = this.startDate.clone(),
-            minDate = this.minDate;
+            minDate = this.getMinDate();
         } else if (side === SideEnum.right && this.endDate) {
             selected = this.endDate.clone(),
             minDate = this.startDate;
@@ -301,7 +329,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.timepickerVariables[side].disabledHours.push(i);
             }
         }
-        
+
         // generate minutes
         for (let i = 0; i < 60; i += this.timePickerIncrement) {
             const padded = i < 10 ? '0' + i : i;
@@ -409,14 +437,14 @@ export class DaterangepickerComponent implements OnInit {
             calendar[row][col] = curDate.clone().hour(hour).minute(minute).second(second);
             curDate.hour(12);
 
-            if (this.minDate && calendar[row][col].format('YYYY-MM-DD') === this.minDate.format('YYYY-MM-DD') &&
-            calendar[row][col].isBefore(this.minDate) && side === 'left') {
-                calendar[row][col] = this.minDate.clone();
+            if (this.getMinDate() && calendar[row][col].format('YYYY-MM-DD') === this.getMinDate().format('YYYY-MM-DD') &&
+            calendar[row][col].isBefore(this.getMinDate()) && side === 'left') {
+                calendar[row][col] = this.getMinDate().clone();
             }
 
-            if (this.maxDate && calendar[row][col].format('YYYY-MM-DD') === this.maxDate.format('YYYY-MM-DD') &&
-            calendar[row][col].isAfter(this.maxDate) && side === 'right') {
-                calendar[row][col] = this.maxDate.clone();
+            if (this.getMaxDate() && calendar[row][col].format('YYYY-MM-DD') === this.getMaxDate().format('YYYY-MM-DD') &&
+            calendar[row][col].isAfter(this.getMaxDate()) && side === 'right') {
+                calendar[row][col] = this.getMaxDate().clone();
             }
         }
 
@@ -429,8 +457,8 @@ export class DaterangepickerComponent implements OnInit {
         //
         // Display the calendar
         //
-        const minDate = side === 'left' ? this.minDate : this.startDate;
-        let maxDate = this.maxDate;
+        const minDate = side === 'left' ? this.getMinDate() : this.startDate;
+        let maxDate = this.getMaxDate();
         // adjust maxDate to reflect the dateLimit setting in order to
         // grey out end dates beyond the dateLimit
         if (this.endDate === null && this.dateLimit) {
@@ -505,16 +533,16 @@ export class DaterangepickerComponent implements OnInit {
         }
 
 
-        if (this.minDate && this.startDate.isBefore(this.minDate)) {
-            this.startDate = this.minDate.clone();
+        if (this.getMinDate() && this.startDate.isBefore(this.getMinDate())) {
+            this.startDate = this.getMinDate().clone();
             if (this.timePicker && this.timePickerIncrement) {
                 this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
             }
 
         }
 
-        if (this.maxDate && this.startDate.isAfter(this.maxDate)) {
-            this.startDate = this.maxDate.clone();
+        if (this.getMaxDate() && this.startDate.isAfter(this.getMaxDate())) {
+            this.startDate = this.getMaxDate().clone();
             if (this.timePicker && this.timePickerIncrement) {
                 this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
             }
@@ -550,8 +578,8 @@ export class DaterangepickerComponent implements OnInit {
             this.endDate = this.startDate.clone();
         }
 
-        if (this.maxDate && this.endDate.isAfter(this.maxDate)) {
-            this.endDate = this.maxDate.clone();
+        if (this.getMaxDate() && this.endDate.isAfter(this.getMaxDate())) {
+            this.endDate = this.getMaxDate().clone();
         }
 
         if (this.dateLimit && this.startDate.clone().add(this.dateLimit, 'day').isBefore(this.endDate)) {
@@ -616,9 +644,9 @@ export class DaterangepickerComponent implements OnInit {
                 this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
             }
         }
-        if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
-            this.rightCalendar.month = this.maxDate.clone().date(2);
-            this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
+        if (this.getMaxDate() && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.getMaxDate()) {
+            this.rightCalendar.month = this.getMaxDate().clone().date(2);
+            this.leftCalendar.month = this.getMaxDate().clone().date(2).subtract(1, 'month');
         }
     }
     /**
@@ -788,7 +816,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.setEndDate(start.clone());
             } else if(!this.endDate && this.timePicker){
                 const startClone = this._getDateWithTime(start, SideEnum.right);
-                
+
                 if(startClone.isBefore(start)){
                     this.timepickerVariables[SideEnum.right].selectedHour = hour;
                     this.timepickerVariables[SideEnum.right].selectedMinute = minute;
@@ -830,17 +858,17 @@ export class DaterangepickerComponent implements OnInit {
             }
         }
 
-        if (this.minDate) {
-            if (year < this.minDate.year() || (year === this.minDate.year() && month < this.minDate.month())) {
-                month = this.minDate.month();
-                year = this.minDate.year();
+        if (this.getMinDate()) {
+            if (year < this.getMinDate().year() || (year === this.getMinDate().year() && month < this.getMinDate().month())) {
+                month = this.getMinDate().month();
+                year = this.getMinDate().year();
             }
         }
 
-        if (this.maxDate) {
-            if (year > this.maxDate.year() || (year === this.maxDate.year() && month > this.maxDate.month())) {
-                month = this.maxDate.month();
-                year = this.maxDate.year();
+        if (this.getMaxDate()) {
+            if (year > this.getMaxDate().year() || (year === this.getMaxDate().year() && month > this.getMaxDate().month())) {
+                month = this.getMaxDate().month();
+                year = this.getMaxDate().year();
             }
         }
         this.calendarVariables[side].dropdowns.currentYear = year;
@@ -1014,7 +1042,7 @@ export class DaterangepickerComponent implements OnInit {
                 if (!this.alwaysShowCalendars) {
                     return  this.clickApply();
                 }
-                if (this.maxDate && this.maxDate.isSame(dates[0], 'month')) {
+                if (this.getMaxDate() && this.getMaxDate().isSame(dates[0], 'month')) {
                     this.rightCalendar.month.month(dates[0].month());
                     this.rightCalendar.month.year(dates[0].year());
                     this.leftCalendar.month.month(dates[0].month() - 1);
@@ -1115,17 +1143,17 @@ export class DaterangepickerComponent implements OnInit {
       }
       const rangeMarkers = this.ranges[range];
       const areBothBefore = rangeMarkers.every( date => {
-        if (!this.minDate) {
+        if (!this.getMinDate()) {
             return false;
         }
-        return date.isBefore(this.minDate);
+        return date.isBefore(this.getMinDate());
       });
 
       const areBothAfter = rangeMarkers.every( date => {
-        if (!this.maxDate) {
+        if (!this.getMaxDate()) {
             return false;
         }
-        return date.isAfter(this.maxDate);
+        return date.isAfter(this.getMaxDate());
       });
       return (areBothBefore || areBothAfter);
     }
@@ -1222,7 +1250,7 @@ export class DaterangepickerComponent implements OnInit {
                     classes.push(this.lastMonthDayClass);
                 }
                 // don't allow selection of dates before the minimum date
-                if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day')) {
+                if (this.getMinDate() && calendar[row][col].isBefore(this.getMinDate(), 'day')) {
                     classes.push('off', 'disabled');
                 }
                 // don't allow selection of dates after the maximum date
