@@ -93,6 +93,7 @@
     "dest": "dist"
   },
   "dependencies": {
+    "dayjs": "^1.10.4",
     "tslib": "^1.10.0"
   }
 }

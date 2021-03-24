@@ -6,7 +6,7 @@
 [![npm version](https://badge.fury.io/js/ngx-daterangepicker-material.svg)](https://badge.fury.io/js/ngx-daterangepicker-material)
 [![last commit](https://img.shields.io/github/last-commit/fetrarij/ngx-daterangepicker-material.svg)](https://github.com/fetrarij/ngx-daterangepicker-material/commits/master)
 
-This `Angular Material` plugin is compatible with Angular 2+ and is Ivy compatible. It leverages `moment.js` to handle date manipulation and parsing. The base for this plugin was originally the [Bootstrap Date Range Picker](http://www.daterangepicker.com), but its dependencies on jQuery and Bootstrap were removed. `Angular Material` themes are fully supported since v3.0.0, so you can just drop this component into an existing Material project and it will blend right into your application.
+This `Angular Material` plugin is compatible with Angular 2+ and is Ivy compatible. It leverages `dayjs` to handle date manipulation and parsing. The base for this plugin was originally the [Bootstrap Date Range Picker](http://www.daterangepicker.com), but its dependencies on jQuery, Bootstrap and dayjs.js were removed.
 
 ![](screen.png)
 
@@ -60,7 +60,7 @@ Html:
 Typescript:
 
 ````typescript
-selected: {startDate: Moment, endDate: Moment};
+selected: {startDate: Dayjs, endDate: Dayjs};
 ````
 ### with some options:
 Html:
@@ -77,7 +77,7 @@ Html:
 Typescript:
 
 ````typescript
-selected: {start: Moment, end: Moment};
+selected: {start: Dayjs, end: Dayjs};
 ````
 You can [play with our online demo here](https://fetrarij.github.io/ngx-daterangepicker-material/)
 and [browse our demo code here](./demo/src/app).
@@ -110,7 +110,7 @@ You can use the component directly in your templates, which will set its `inline
 
 ### minDate, maxDate
 
- >To set the minimal and maximal date, these options are either a moment date or string in [ISO](https://www.w3.org/QA/Tips/iso-date) format
+ >To set the minimal and maximal date, these options are either a dayjs date or string in [ISO](https://www.w3.org/QA/Tips/iso-date) format
 
 ### dateLimit
 
@@ -130,8 +130,8 @@ You can use the component directly in your templates, which will set its `inline
     applyLabel: 'Okay', // detault is 'Apply'
     clearLabel: 'Clear', // detault is 'Clear'
     customRangeLabel: 'Custom range',
-    daysOfWeek: moment.weekdaysMin(),
-    monthNames: moment.monthsShort(),
+    daysOfWeek: dayjs.weekdaysMin(),
+    monthNames: dayjs.monthsShort(),
     firstDay: 1 // first day is monday
 }
 ```
@@ -158,12 +158,12 @@ the model we got would be:  `{start: Date, end: Date}`
 ```
 ```javascript
 ranges: any = {
-    'Today': [moment(), moment()],
-    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
-    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    'Today': [dayjs(), dayjs()],
+    'Yesterday': [dayjs().subtract(1, 'days'), dayjs().subtract(1, 'days')],
+    'Last 7 Days': [dayjs().subtract(6, 'days'), dayjs()],
+    'Last 30 Days': [dayjs().subtract(29, 'days'), dayjs()],
+    'This Month': [dayjs().startOf('month'), dayjs().endOf('month')],
+    'Last Month': [dayjs().subtract(1, 'month').startOf('month'), dayjs().subtract(1, 'month').endOf('month')]
   }
 ```
 #### Other options with ranges
@@ -243,11 +243,11 @@ You can use theses options:
 
 ### \(rangeClicked)
 
- >Fired when clicked on range, and send an object with range label and dates value, eg:  `{label: 'This Month', dates: [Moment, Moment]}`
+ >Fired when clicked on range, and send an object with range label and dates value, eg:  `{label: 'This Month', dates: [Dayjs, Dayjs]}`
 
 ### \(datesUpdated)
 
- >Fires when the date model is updated, like applying (if you have activated the apply button), or when selecting a range or date without the apply button, and sends an object containing start and end dates, eg: `{startDate: Moment, endDate: Moment}`
+ >Fires when the date model is updated, like applying (if you have activated the apply button), or when selecting a range or date without the apply button, and sends an object containing start and end dates, eg: `{startDate: Dayjs, endDate: Dayjs}`
 
 ### Global locale
 
