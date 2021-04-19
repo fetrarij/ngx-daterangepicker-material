@@ -598,7 +598,7 @@ export class DaterangepickerComponent implements OnInit {
         return false;
     }
     @Input()
-    isCustomDate(date): boolean | string {
+    isCustomDate(date): boolean | string | string[] {
         return false;
     }
     @Input()
