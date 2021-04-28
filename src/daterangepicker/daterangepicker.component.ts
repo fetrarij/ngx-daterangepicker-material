@@ -80,6 +80,8 @@ export class DaterangepickerComponent implements OnInit {
     @Input()
     singleDatePicker: Boolean = false;
     @Input()
+    singleDateSelect: Boolean = false;
+    @Input()
     showDropdowns: Boolean = false;
     @Input()
     showWeekNumbers: Boolean = false;
@@ -988,7 +990,7 @@ export class DaterangepickerComponent implements OnInit {
             }
         }
 
-        if (this.singleDatePicker) {
+        if (this.singleDatePicker || this.singleDateSelect) {
             this.setEndDate(this.startDate);
             this.updateElement();
             if (this.autoApply) {
