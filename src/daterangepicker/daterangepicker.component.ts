@@ -119,6 +119,8 @@ export class DaterangepickerComponent implements OnInit {
     firstDayOfNextMonthClass: string = null;
     @Input()
     lastDayOfPreviousMonthClass: string = null;
+    @Input()
+    endDateShouldBeNow: Boolean = false;
 
     _locale: LocaleConfig = {};
     @Input() set locale(value) {
@@ -269,7 +271,14 @@ export class DaterangepickerComponent implements OnInit {
             this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
             if (!this.timePicker) {
                 this.startDate = this.startDate.startOf('day');
-                this.endDate = this.endDate.endOf('day');
+                if(this.endDateShouldBeNow) {
+                    this.endDate = this.endDate;
+                    if (moment().diff(this.startDate, "days") === 1) { // if yesterday is selected: time should be end of day
+                        this.endDate.endOf('day');
+                    }
+                } else {
+                    this.endDate = this.endDate.endOf('day');
+                }
             }
         }
 
@@ -1029,7 +1038,16 @@ export class DaterangepickerComponent implements OnInit {
 
             if (!this.timePicker) {
                 this.startDate.startOf('day');
-                this.endDate.endOf('day');
+                if (this.endDateShouldBeNow) {
+                    this.endDate; // other chosedLabels => Today, Last 7 Days: endDate should be now (moment())
+                
+                    if (moment().diff(this.startDate, "days") === 1) { // if yesterday is selected: time should be end of day
+                        this.endDate.endOf('day');
+                    }
+                } else {
+                    this.endDate.endOf('day');
+                }
+               
             }
 
             if (!this.alwaysShowCalendars) {
