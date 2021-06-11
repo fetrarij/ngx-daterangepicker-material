@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "ngx-daterangepicker-material-ng-add",
+  "title": "Angular Material ng-add schematic",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "Ngx-daterangepicker-material.",
+      "$default": {
+        "$source": "projectName"
+      }
+    }
+  },
+  "required": []
+}

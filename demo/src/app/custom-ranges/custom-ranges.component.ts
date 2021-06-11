@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'custom-ranges',
@@ -11,42 +11,42 @@ export class CustomRangesComponent implements OnInit {
   alwaysShowCalendars: boolean;
   showRangeLabelOnInput: boolean;
   keepCalendarOpeningWithRange: boolean;
-  maxDate: moment.Moment;
-  minDate: moment.Moment;
-  invalidDates: moment.Moment[] = [];
+  maxDate: dayjs.Dayjs;
+  minDate: dayjs.Dayjs;
+  invalidDates: dayjs.Dayjs[] = [];
   tooltips = [
-    {date: moment(), text: 'Today is just unselectable'},
-    {date:  moment().add(2, 'days'), text: 'Yeeeees!!!'}
+    {date: dayjs(), text: 'Today is just unselectable'},
+    {date:  dayjs().add(2, 'days'), text: 'Yeeeees!!!'}
   ];
   inlineDateTime;
   ranges: any = {
-    Today: [moment(), moment()],
-    Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
+    Today: [dayjs(), dayjs()],
+    Yesterday: [dayjs().subtract(1, 'days'), dayjs().subtract(1, 'days')],
+    'Last 7 Days': [dayjs().subtract(6, 'days'), dayjs()],
+    'Last 30 Days': [dayjs().subtract(29, 'days'), dayjs()],
+    'This Month': [dayjs().startOf('month'), dayjs().endOf('month')],
     'Last Month': [
-      moment()
+      dayjs()
         .subtract(1, 'month')
         .startOf('month'),
-      moment()
+      dayjs()
         .subtract(1, 'month')
         .endOf('month')
     ],
     'Last 3 Month': [
-      moment()
+      dayjs()
         .subtract(3, 'month')
         .startOf('month'),
-      moment()
+      dayjs()
         .subtract(1, 'month')
         .endOf('month')
     ]
   };
 
-  isInvalidDate = (m: moment.Moment) =>  {
+  isInvalidDate = (m: dayjs.Dayjs) =>  {
     return this.invalidDates.some(d => d.isSame(m, 'day') );
   }
-  isTooltipDate = (m: moment.Moment) =>  {
+  isTooltipDate = (m: dayjs.Dayjs) =>  {
     const tooltip = this.tooltips.find(tt => tt.date.isSame(m, 'day'));
     if (tooltip) {
       return tooltip.text;
@@ -56,15 +56,15 @@ export class CustomRangesComponent implements OnInit {
   }
 
   constructor() {
-    this.maxDate = moment().add(2,  'weeks');
-    this.minDate = moment().subtract(3, 'days');
+    this.maxDate = dayjs().add(2,  'weeks');
+    this.minDate = dayjs().subtract(3, 'days');
 
     this.alwaysShowCalendars = true;
     this.keepCalendarOpeningWithRange = true;
     this.showRangeLabelOnInput = true;
     this.selected = {
-      startDate: moment().subtract(1, 'days').set({hours: 0, minutes: 0}),
-      endDate: moment().subtract(1, 'days').set({hours: 23, minutes: 59})
+      startDate: dayjs().subtract(1, 'days').set('hours', 0).set('minutes', 0),
+      endDate: dayjs().subtract(1, 'days').set('hours', 23).set('minutes', 59)
     };
   }
   rangeClicked(range) {

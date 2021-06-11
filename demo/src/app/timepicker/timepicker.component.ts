@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { DaterangepickerComponent, DaterangepickerDirective } from '../../../../src/daterangepicker';
 
 @Component({
@@ -7,11 +7,11 @@ import { DaterangepickerComponent, DaterangepickerDirective } from '../../../../
   templateUrl: './timepicker.component.html'
 })
 export class TimepickerComponent implements OnInit {
-  selected: {startDate: moment.Moment, endDate: moment.Moment};
+  selected: {startDate: dayjs.Dayjs, endDate: dayjs.Dayjs};
   constructor() {
     this.selected = {
-      startDate: moment('2015-11-18T00:00Z'),
-      endDate: moment('2015-11-26T00:00Z')
+      startDate: dayjs('2015-11-18T00:00Z'),
+      endDate: dayjs('2015-11-26T00:00Z')
     }
    }
 

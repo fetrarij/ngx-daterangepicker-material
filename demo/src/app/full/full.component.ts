@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { DaterangepickerDirective } from '../../../../src/daterangepicker/daterangepicker.directive';
 
 @Component({
@@ -23,8 +23,8 @@ export class FullComponent implements OnInit {
     lockStartDate: false,
     closeOnAutoApply: true
   };
-  minDate: moment.Moment = moment().subtract(5, 'days');
-  maxDate: moment.Moment = moment().add(2, 'month');
+  minDate: dayjs.Dayjs = dayjs().subtract(5, 'days');
+  maxDate: dayjs.Dayjs = dayjs().add(2, 'month');
   locale: any = {
     format: 'YYYY-MM-DDTHH:mm:ss.SSSSZ',
     displayFormat: 'DD MMMM YYYY HH:mm',
@@ -38,7 +38,7 @@ export class FullComponent implements OnInit {
   dateLimit: number;
   click() {
   }
-  selected = {start: moment().subtract(3, 'days'), end: moment().add(3, 'days') };
+  selected = {start: dayjs().subtract(3, 'days'), end: dayjs().add(3, 'days') };
   @ViewChild(DaterangepickerDirective, { static: true }) daterangepicker: DaterangepickerDirective;
   constructor() {
     this.timePicker = false;

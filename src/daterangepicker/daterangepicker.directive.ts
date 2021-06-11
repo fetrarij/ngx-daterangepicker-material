@@ -20,10 +20,10 @@ import {
 } from '@angular/core';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as _moment from 'moment';
+import * as _dayjs from 'dayjs';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
-const moment = _moment;
+const dayjs = _dayjs;
 
 @Directive({
   selector: 'input[ngxDaterangepickerMd]',
@@ -49,9 +49,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private _value: any;
   private localeDiffer: KeyValueDiffer<string, any>;
   @Input()
-  minDate: _moment.Moment
+  minDate: _dayjs.Dayjs;
   @Input()
-  maxDate: _moment.Moment
+  maxDate: _dayjs.Dayjs;
   @Input()
   autoApply: boolean;
   @Input()
@@ -102,16 +102,16 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Input()
   showRangeLabelOnInput: boolean;
   @Input()
-  showCancel: boolean = false;
+  showCancel: Boolean = false;
   @Input()
-  lockStartDate: boolean = false;
+  lockStartDate: Boolean = false;
   // timepicker variables
   @Input()
   timePicker: Boolean = false;
   @Input()
   timePicker24Hour: Boolean = false;
   @Input()
-  timePickerIncrement: number = 1;
+  timePickerIncrement: Number = 1;
   @Input()
   timePickerSeconds: Boolean = false;
   @Input() closeOnAutoApply = true;
@@ -123,8 +123,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     return this._locale;
   }
   @Input()
-  private _endKey: string = 'endDate';
-  private _startKey: string = 'startDate';
+  private _endKey: string;
+  private _startKey: string;
   @Input() set startKey(value) {
     if (value !== null) {
       this._startKey = value;
@@ -169,6 +169,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     private _localeService: LocaleService,
     private elementRef: ElementRef
   ) {
+    this.endKey  = 'endDate';
+    this.startKey = 'startDate';
     this.drops = 'down';
     this.opens = 'auto';
     const componentFactory = this._componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
@@ -331,8 +333,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
           left: element.offsetLeft + 'px',
           right: 'auto'
         };
-      }
-      else {
+      } else {
         style = {
             top: containerTop,
             left: position + 'px',
@@ -356,11 +357,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     const dateString = e.target.value.split(this.picker.locale.separator);
     let start = null, end = null;
     if (dateString.length === 2) {
-      start = moment(dateString[0], this.picker.locale.format);
-      end = moment(dateString[1], this.picker.locale.format);
+      start = dayjs(dateString[0], this.picker.locale.format);
+      end = dayjs(dateString[1], this.picker.locale.format);
     }
     if (this.singleDatePicker || start === null || end === null) {
-      start = moment(e.target.value, this.picker.locale.format);
+      start = dayjs(e.target.value, this.picker.locale.format);
       end = start;
     }
     if (!start.isValid() || !end.isValid()) {
