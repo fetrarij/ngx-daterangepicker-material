@@ -1,9 +1,21 @@
-#### 4.0.1 (2020-09-01)
+# 5.0.0 (2021-06-11)
+
+##### Chores
+
+*  fix build ([76780d36](https://github.com/fetrarij/ngx-daterangepicker-material/commit/76780d367ad5a586a334dfb18a45dbe2b95fff42))
+
+* Add `ng add ngx-daterangepicker-material`
+
+* replace moment.js with dayjs
+* Support angular 11 and angular 12
+
+# 4.0.1 (2020-09-01)
 
 ##### Chores
 
 * **travis:**  fix build ([de52eea8](https://github.com/fetrarij/ngx-daterangepicker-material/commit/de52eea8b34acfd4afee513d5372f2560d9d94d0))
 
+* support angular 10
 ##### New Features
 
 * **emptyWeekColumnClass:**  add emptyWeekColumnClass attribute to add a custom class for all date in a week not in the current month Fixes [#315](https://github.com/fetrarij/ngx-daterangepicker-material/pull/315) [#294](https://github.com/fetrarij/ngx-daterangepicker-material/pull/294) [#126](https://github.com/fetrarij/ngx-daterangepicker-material/pull/126) ([ba1d136b](https://github.com/fetrarij/ngx-daterangepicker-material/commit/ba1d136bc2e822595a5626f142ea48558965f8bd))
