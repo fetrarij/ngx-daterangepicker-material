@@ -94,6 +94,9 @@
         "dayjs": "dayjs"
       }
     },
+    "allowedNonPeerDependencies": [
+      "dayjs"
+    ],
     "dest": "dist"
   },
   "dependencies": {
