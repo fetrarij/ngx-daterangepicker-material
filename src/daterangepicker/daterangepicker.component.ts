@@ -882,12 +882,12 @@ export class DaterangepickerComponent implements OnInit {
         this.calendarVariables[side].dropdowns.currentYear = year;
         this.calendarVariables[side].dropdowns.currentMonth = month;
         if (isLeft) {
-            this.leftCalendar.month.month(month).year(year);
+            this.leftCalendar.month = this.leftCalendar.month.month(month).year(year);
             if (this.linkedCalendars) {
                 this.rightCalendar.month = this.leftCalendar.month.clone().add(1, 'month');
             }
         } else {
-            this.rightCalendar.month.month(month).year(year);
+            this.rightCalendar.month = this.rightCalendar.month.month(month).year(year);
             if (this.linkedCalendars) {
                 this.leftCalendar.month = this.rightCalendar.month.clone().subtract(1, 'month');
             }
