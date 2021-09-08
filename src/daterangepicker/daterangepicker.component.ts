@@ -11,6 +11,9 @@ import * as LocalizedFormat from 'dayjs/plugin/localizedFormat';
 dayjs.extend(LocalizedFormat);
 import * as isoWeek from 'dayjs/plugin/isoWeek';
 dayjs.extend(isoWeek);
+import * as customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat);
+
 
 export enum SideEnum {
     left = 'left',
