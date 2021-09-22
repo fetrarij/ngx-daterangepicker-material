@@ -168,8 +168,8 @@ export class DaterangepickerComponent implements OnInit {
         }
         this.locale.daysOfWeek = daysOfWeek;
         if (this.inline) {
-            this._old.start = this.startDate.clone();
-            this._old.end = this.endDate.clone();
+            this._old.start = this.startDate ? this.startDate.clone() : null;
+            this._old.end = this.endDate ? this.endDate.clone() : null;
         }
 
         if (this.startDate && this.timePicker) {
@@ -614,9 +614,15 @@ export class DaterangepickerComponent implements OnInit {
                 this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
             }
         }
-        if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
-            this.rightCalendar.month = this.maxDate.clone().date(2);
-            this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
+        if (this.maxDate) {
+            if (this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) { 
+                this.rightCalendar.month = this.maxDate.clone().date(2);
+                this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
+            }
+            if (this.minDate) {
+                this.leftCalendar.month = this.minDate.clone().date(2);
+                this.rightCalendar.month = this.minDate.clone().date(2).add(1, 'month');
+            }
         }
     }
     /**
