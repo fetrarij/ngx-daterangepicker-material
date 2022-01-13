@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as _dayjs from 'dayjs';
 import { LocaleConfig } from './daterangepicker.config';
@@ -36,7 +36,7 @@ export enum SideEnum {
         multi: true
     }]
 })
-export class DaterangepickerComponent implements OnInit {
+export class DaterangepickerComponent implements OnInit, OnChanges {
     private _old: {start: any, end: any} = {start: null, end: null};
     chosenLabel: string;
     calendarVariables: {left: any, right: any} = {left: {}, right: {}};
@@ -188,6 +188,12 @@ export class DaterangepickerComponent implements OnInit {
         this.startDateChanged = new EventEmitter();
         this.endDateChanged = new EventEmitter();
         this.cancelClicked = new EventEmitter();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if ((changes.startDate || changes.endDate) && this.inline) {
+            this.updateView();
+        }
     }
 
     ngOnInit() {
