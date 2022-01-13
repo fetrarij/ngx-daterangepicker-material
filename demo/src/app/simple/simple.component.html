@@ -53,6 +53,7 @@
                                   [timePicker]="true"
                                   [locale]="{applyLabel: 'Done', firstDay: 1}"></ngx-daterangepicker-material>
     <br>
-    <p>Choosed date (after changes): {{inlineDateTime | json}}</p>
+    <p>Choosed date (after changes): {{selected | json}}</p>
+    <button (click)="increaseDateTime()">Increase dateTime</button>
   </div>
 </div>

@@ -34,7 +34,7 @@ export class SimpleComponent implements OnInit {
   }
 
   choosedDateTime(e) {
-    this.inlineDateTime = e;
+    this.selected = e;
   }
   open(e) {
     this.pickerDirective.open(e);
@@ -42,5 +42,8 @@ export class SimpleComponent implements OnInit {
   clear(e) {
     // this.picker.clear(); // we can do
     this.selected = null; // now we can do
+  }
+  increaseDateTime() {
+    this.selected.endDate = this.selected.endDate.clone().add(1, 'day').add(1, 'hour');
   }
 }
