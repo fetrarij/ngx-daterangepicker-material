@@ -1012,6 +1012,7 @@ export class DaterangepickerComponent implements OnInit {
             }
             this.rangeClicked.emit({label: label, dates: dates});
             if (!this.keepCalendarOpeningWithRange || this.autoApply) {
+                this.updateCalendars();
                 this.clickApply();
             } else {
                 if (!this.alwaysShowCalendars) {
