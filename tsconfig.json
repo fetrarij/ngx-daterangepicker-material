@@ -2,8 +2,8 @@
     "compilerOptions": {
         "downlevelIteration": true,
         "importHelpers": true,
-        "target": "es2015",
-        "module": "esnext",
+        "target": "es2017",
+        "module": "es2020",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
@@ -14,7 +14,7 @@
         "declaration": true,
         "sourceMap": false,
         "outDir": "dist",
-        "lib": ["es2018", "dom"],
+        "lib": ["es2020", "dom"],
         "baseUrl": "./",
         "types": ["node"]
     },
@@ -25,7 +25,8 @@
         "strictMetadataEmit": true,
         "annotationsAs": "decorators",
         "strictInjectionParameters": true,
-        "strictTemplates": true
+        "strictTemplates": true,
+        "experimentalDecorators": true,
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "**/*.spec.ts"]

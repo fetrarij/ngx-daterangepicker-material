@@ -1,6 +1,7 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-@import '../../node_modules/materialize-css/sass/materialize.scss';
+// @import '../../node_modules/materialize-css/sass/materialize.scss';
+@import "./prettify.css";
 .mycustomdate {
     background-color: #ccc8c8 !important;
     border-radius: 1px !important;
@@ -23,4 +24,25 @@
 }
 .first-next-day {
     background-color: rgb(229, 255, 0) !important;
+}
+.light-blue.lighten-1 {
+  background-color: #29b6f6 !important;
+}
+
+html, body { height: 100%; }
+body { margin:0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+h3 { font-weight: bold;}
+input { text-align: center; height: 40px; width: 100%; padding-top: 3px; padding-bottom: 3px; padding-right: 5px;}
+
+.form-control{
+  width: 100%;
+}
+.container {
+  margin: 40px; padding-left: 5px;
+}
+.row{
+  display:flex;
+}
+.s6{
+  flex-grow: 6;
 }
