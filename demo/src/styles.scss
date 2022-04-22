@@ -43,6 +43,10 @@ input { text-align: center; height: 40px; width: 100%; padding-top: 3px; padding
 .row{
   display:flex;
 }
+.col{
+  margin-left: 5px;
+  margin-right: 5px;
+}
 .s6{
   flex-grow: 6;
 }
