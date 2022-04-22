@@ -29,8 +29,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "demo:build": "ng build --prod",
-    "test": "./node_modules/.bin/ng test --watch=false",
+    "demo:build": "ng build --configuration production",
+    "test": "ng test --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
@@ -101,7 +101,7 @@
   },
   "dependencies": {
     "dayjs": "^1.11.1",
-    "tslib": "^2.3.0",
+    "tslib": "^2.3.0"
   },
   "schematics": "./schematics/collection.json"
 }
