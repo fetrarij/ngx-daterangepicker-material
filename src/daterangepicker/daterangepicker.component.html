@@ -23,7 +23,7 @@
         <div class="calendar-table">
             <table class="table-condensed" *ngIf="calendarVariables">
                 <thead>
-                    <tr>
+                    <tr class="month-header">
                         <th *ngIf="showWeekNumbers || showISOWeekNumbers"></th>
                         <ng-container *ngIf="!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars || true)">
                             <th (click)="clickPrev(sideEnum.left)" class="prev available" >
@@ -129,7 +129,7 @@
         <div class="calendar-table">
             <table class="table-condensed" *ngIf="calendarVariables">
                 <thead>
-                    <tr>
+                    <tr class="month-header">
                         <th *ngIf="showWeekNumbers || showISOWeekNumbers"></th>
                         <ng-container *ngIf="(!calendarVariables.right.minDate || calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && (!this.linkedCalendars)">
                             <th (click)="clickPrev(sideEnum.right)" class="prev available" >
