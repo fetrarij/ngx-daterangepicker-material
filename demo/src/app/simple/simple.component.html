@@ -1,14 +1,12 @@
 <mat-toolbar>Simple Date Range Picker</mat-toolbar>
 <div class="row">
     <div class="col s6">
-        <mat-form-field>
+        <mat-form-field class="form-control">
             <input
                 matInput
                 type="text"
                 ngxDaterangepickerMd
                 [(ngModel)]="selected"
-                class="form-control"
-                placeholder="Choose date"
                 [showDropdowns]="true"
                 [lockStartDate]="false"
                 [customRangeDirection]="false"
@@ -20,17 +18,24 @@
     </div>
     <div class="col s6 right-align">
         <br />
-        <button mat-button type="button" class="ngx-daterangepicker-action waves-effect waves-light btn" (click)="open($event)">
-            open from a button
+        <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            class="ngx-daterangepicker-action waves-effect waves-light btn"
+            (click)="open($event)"
+        >
+            OPEN FROM A BUTTON
         </button>
         <button
-            mat-button
+            mat-raised-button
             type="button"
+            color="warn"
             *ngIf="selected && selected.startDate"
             class="ngx-daterangepicker-action waves-effect waves-light btn red"
             (click)="clear($event)"
         >
-            Clear
+            CLEAR
         </button>
     </div>
 </div>
@@ -53,7 +58,7 @@
 <hr />
 <div class="row">
     <div class="col s12">
-        <h3>Inline daterangepicker</h3>
+        <h3 class="heading-3">Inline daterangepicker</h3>
         <ngx-daterangepicker-material
             (choosedDate)="choosedDate($event)"
             [locale]="{ applyLabel: 'Done', firstDay: 1 }"
@@ -65,7 +70,7 @@
 
 <div class="row">
     <div class="col s12">
-        <h3>Inline daterangepicker with time and auto-apply</h3>
+        <h3 class="heading-3">Inline daterangepicker with time and auto-apply</h3>
         <ngx-daterangepicker-material
             (choosedDate)="choosedDateTime($event)"
             [autoApply]="true"
@@ -78,6 +83,6 @@
         ></ngx-daterangepicker-material>
         <br />
         <p>Chosen date (after changes): {{ selected | json }}</p>
-        <button mat-button (click)="increaseDateTime()">Increase dateTime</button>
+        <button mat-raised-button type="button" (click)="increaseDateTime()" style="margin-bottom: 20px">Increase dateTime</button>
     </div>
 </div>
