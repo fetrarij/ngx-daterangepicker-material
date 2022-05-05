@@ -14,7 +14,7 @@
             <button type="button"
                     (click)="clickRange($event, range)"
                     [disabled]="disableRange(range)"
-                    [ngClass]="{'active': range === chosenRange}">{{range}}</button>
+                    [ngClass]="{'active': range === chosenRange, 'chevron-right': range === 'Custom Range'}">{{range}}</button>
           </li>
         </ul>
     </div>
