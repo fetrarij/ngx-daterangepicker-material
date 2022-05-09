@@ -197,6 +197,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         }
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if ((changes.startDate || changes.endDate) && this.inline) {
+            this.updateView();
+        }
+    }
+
     ngOnInit() {
         this._buildLocale();
         const daysOfWeek = [...this.locale.daysOfWeek];
@@ -470,14 +476,22 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         //
         // Display the calendar
         //
-        const minDate = side === 'left' ? this.getMinDate() : this.startDate;
+        let minDate = side === 'left' ? this.getMinDate() : this.startDate;
         let maxDate = this.getMaxDate();
         // adjust maxDate to reflect the dateLimit setting in order to
         // grey out end dates beyond the dateLimit
         if (this.endDate === null && this.dateLimit) {
             const maxLimit = this.startDate.clone().add(this.dateLimit, 'day').endOf('day');
-                if (!maxDate || maxLimit.isBefore(maxDate)) {
+            if (!maxDate || maxLimit.isBefore(maxDate)) {
                 maxDate = maxLimit;
+            }
+
+            if(this.customRangeDirection) {
+                minDate = this.getMinDate();
+                const minLimit = this.startDate.clone().subtract(this.dateLimit, 'day').endOf('day');
+                if (!minDate || minLimit.isAfter(minDate)) {
+                    minDate = minLimit;
+                }
             }
         }
         this.calendarVariables[side] = {
