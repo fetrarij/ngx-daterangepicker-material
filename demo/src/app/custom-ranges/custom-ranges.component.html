@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col s6">
-        <mat-form-field
+        <mat-form-field class="form-control"
             ><input
                 matInput
                 type="text"
@@ -21,8 +21,7 @@
                 (datesUpdated)="datesUpdated($event)"
                 [keepCalendarOpeningWithRange]="keepCalendarOpeningWithRange"
                 [showRangeLabelOnInput]="showRangeLabelOnInput"
-                class="form-control"
-                placeholder="Select please..."
+                [isCustomRangesField]="true"
         /></mat-form-field>
     </div>
     <div class="col s6">
@@ -67,7 +66,7 @@
   placeholder="Select please.../&gt;</code>
     </pre>
     </div>
-    <div class="col s6">
+    <div class="col s12">
         <b>Typescript code</b>
         <pre class="prettyprint"><code class="javascript">export class CustomRangesComponent implements OnInit {{ '{' }}
 selected: any;
@@ -113,6 +112,6 @@ constructor() {{ '{' }}
             [locale]="{ applyLabel: 'Done', firstDay: 1 }"
         ></ngx-daterangepicker-material>
         <br />
-        <p>Choosed date (after changes): {{ inlineDateTime | json }}</p>
+        <p>Chosen date (after changes): {{ inlineDateTime | json }}</p>
     </div>
 </div>

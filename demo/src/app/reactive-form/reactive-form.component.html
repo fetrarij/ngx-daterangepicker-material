@@ -3,13 +3,12 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="row">
         <div class="col s6">
-            <mat-form-field>
+            <mat-form-field class="form-control">
                 <input
                     matInput
                     type="text"
                     ngxDaterangepickerMd
                     formControlName="selected"
-                    class="form-control"
                     placeholder="Choose date"
                     [showDropdowns]="true"
                     showCancel="true"
@@ -18,7 +17,7 @@
         <div class="col s6">
             <br />
             <button
-                mat-button
+                mat-raised-button
                 class="ngx-daterangepicker-action waves-effect waves-light btn"
                 [ngClass]="{ red: !form.disabled, green: form.disabled }"
                 (click)="toggleDisable(form)"
@@ -26,7 +25,9 @@
                 {{ form.disabled ? 'Enable' : 'Disable' }}
             </button>
             &nbsp;
-            <button mat-button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn">Submit</button>
+            <button mat-raised-button type="submit" color="primary" class="ngx-daterangepicker-action waves-effect waves-light btn">
+                Submit
+            </button>
             &nbsp;
         </div>
     </div>
@@ -35,7 +36,7 @@
 <form [formGroup]="form2" (ngSubmit)="submit2()">
     <div class="row">
         <div class="col s6">
-            <mat-form-field>
+            <mat-form-field class="form-control">
                 <input
                     matInput
                     type="text"
@@ -51,7 +52,9 @@
         </div>
         <div class="col s6">
             <br />
-            <button mat-button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn">Submit</button>
+            <button mat-raised-button color="primary" type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn">
+                Submit
+            </button>
         </div>
     </div>
 </form>
