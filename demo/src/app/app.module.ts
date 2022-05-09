@@ -46,7 +46,7 @@ import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
     MatSelectModule,
     NgxDaterangepickerMd.forRoot({
       applyLabel: 'Okay',
-      firstDay: 3
+      firstDay: 0
     }),
     RouterModule.forRoot(AppRoutes),
   ],
