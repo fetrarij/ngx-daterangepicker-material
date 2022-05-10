@@ -17,17 +17,14 @@
         <div class="col s6">
             <br />
             <button
-                mat-raised-button
-                class="ngx-daterangepicker-action waves-effect waves-light btn"
+                class="ngx-daterangepicker-action waves-effect waves-light btn btn-light"
                 [ngClass]="{ red: !form.disabled, green: form.disabled }"
                 (click)="toggleDisable(form)"
             >
                 {{ form.disabled ? 'Enable' : 'Disable' }}
             </button>
             &nbsp;
-            <button mat-raised-button type="submit" color="primary" class="ngx-daterangepicker-action waves-effect waves-light btn">
-                Submit
-            </button>
+            <button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn btn-primary">Submit</button>
             &nbsp;
         </div>
     </div>
@@ -52,9 +49,7 @@
         </div>
         <div class="col s6">
             <br />
-            <button mat-raised-button color="primary" type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn">
-                Submit
-            </button>
+            <button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn btn-primary">Submit</button>
         </div>
     </div>
 </form>
