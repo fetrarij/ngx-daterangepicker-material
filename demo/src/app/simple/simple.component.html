@@ -18,21 +18,13 @@
     </div>
     <div class="col s6 right-align">
         <br />
-        <button
-            mat-raised-button
-            color="primary"
-            type="button"
-            class="ngx-daterangepicker-action waves-effect waves-light btn"
-            (click)="open($event)"
-        >
+        <button type="button" class="ngx-daterangepicker-action waves-effect waves-light btn btn-primary" (click)="open($event)">
             OPEN FROM A BUTTON
         </button>
         <button
-            mat-raised-button
             type="button"
-            color="warn"
             *ngIf="selected && selected.startDate"
-            class="ngx-daterangepicker-action waves-effect waves-light btn red"
+            class="ngx-daterangepicker-action waves-effect waves-light btn btn-danger"
             (click)="clear($event)"
         >
             CLEAR
