@@ -145,6 +145,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     @Output() startDateChanged: EventEmitter<Object>;
     @Output() endDateChanged: EventEmitter<Object>;
     @Output() cancelClicked: EventEmitter<Object>;
+    @Output() clearClicked: EventEmitter<void>;
     @ViewChild('pickerContainer', { static: true }) pickerContainer: ElementRef;
     // protected
     _minDate: _dayjs.Dayjs;
@@ -200,6 +201,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         this.startDateChanged = new EventEmitter();
         this.endDateChanged = new EventEmitter();
         this.cancelClicked = new EventEmitter();
+        this.clearClicked = new EventEmitter();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -1181,6 +1183,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         this.endDate = dayjs().endOf('day');
         this.choosedDate.emit({ chosenLabel: '', startDate: null, endDate: null });
         this.datesUpdated.emit({ startDate: null, endDate: null });
+        this.clearClicked.emit();
         this.hide();
     }
 

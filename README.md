@@ -250,6 +250,10 @@ You can use theses options:
 
  >Fires when the date model is updated, like applying (if you have activated the apply button), or when selecting a range or date without the apply button, and sends an object containing start and end dates, eg: `{startDate: Dayjs, endDate: Dayjs}`
 
+### \(clearClicked)
+
+ >Fired when clicked on the clear button
+
 ### Global locale
 
 For setting the global locale, pass this object to NgxDaterangepickerMd.forRoot().

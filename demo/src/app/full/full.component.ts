@@ -56,4 +56,7 @@ export class FullComponent implements OnInit {
   eventClicked(e): void {
     console.log({'eventClicked()': e});
   }
+  eventCleared(): void {
+    console.log('datepicker cleared');
+  }
 }
