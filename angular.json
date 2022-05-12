@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "26c25386-9ac4-4ad7-9680-55ee07a6dcff"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -22,6 +25,7 @@
               "demo/src/favicon.ico"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "demo/src/styles.scss"
             ],
             "scripts": []
@@ -37,7 +41,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -78,6 +81,7 @@
             "tsConfig": "demo/src/tsconfig.spec.json",
             "scripts": [],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "demo/src/styles.scss"
             ],
             "assets": [

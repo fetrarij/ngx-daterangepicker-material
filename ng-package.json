@@ -1,0 +1,10 @@
+{
+  "lib": {
+    "entryFile": "src/daterangepicker/index.ts"
+  },
+  "allowedNonPeerDependencies": [
+    "dayjs",
+    "@angular/animations"
+  ],
+  "dest": "dist"
+}

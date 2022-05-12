@@ -1,49 +1,55 @@
 <mat-toolbar>Reactive forms</mat-toolbar>
+<h3>Multi Select</h3>
 <form [formGroup]="form" (ngSubmit)="submit()">
-  <div class="row">
-    <div class="col s12">
-      <h6>Multi Select</h6>
+    <div class="row">
+        <div class="col s6">
+            <mat-form-field class="form-control">
+                <input
+                    matInput
+                    type="text"
+                    ngxDaterangepickerMd
+                    formControlName="selected"
+                    placeholder="Choose date"
+                    [showDropdowns]="true"
+                    showCancel="true"
+            /></mat-form-field>
+        </div>
+        <div class="col s6">
+            <br />
+            <button
+                class="ngx-daterangepicker-action waves-effect waves-light btn btn-light"
+                [ngClass]="{ red: !form.disabled, green: form.disabled }"
+                (click)="toggleDisable(form)"
+            >
+                {{ form.disabled ? 'Enable' : 'Disable' }}
+            </button>
+            &nbsp;
+            <button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn btn-primary">Submit</button>
+            &nbsp;
+        </div>
     </div>
-    <div class="col s6">
-        <input type="text" ngxDaterangepickerMd
-        formControlName="selected" class="form-control" placeholder="Choose date"
-        [showDropdowns]="true"
-        showCancel="true"
-        />
-    </div>
-    <div class="col s6">
-      <br/>
-      <button type="button" 
-      class="ngx-daterangepicker-action waves-effect waves-light btn"
-      [ngClass]="{'red': !form.disabled, 'green': form.disabled}"
-      (click)="toggleDisable(form)">
-          {{form.disabled ? 'Enable' : 'Disable'}}
-      </button>
-      &nbsp;
-      <button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn" >Submit</button>
-      &nbsp;
-    </div>
-  </div>
 </form>
-
+<h3>Single Select</h3>
 <form [formGroup]="form2" (ngSubmit)="submit2()">
-  <div class="row">
-    <div class="col s12">
-      <h6>Single Select</h6>
+    <div class="row">
+        <div class="col s6">
+            <mat-form-field class="form-control">
+                <input
+                    matInput
+                    type="text"
+                    ngxDaterangepickerMd
+                    formControlName="selected"
+                    class="form-control"
+                    placeholder="Choose date"
+                    [showDropdowns]="true"
+                    [singleDatePicker]="true"
+                    [locale]="locale"
+                    showCancel="true"
+            /></mat-form-field>
+        </div>
+        <div class="col s6">
+            <br />
+            <button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn btn-primary">Submit</button>
+        </div>
     </div>
-    <div class="col s6">
-        <input type="text" ngxDaterangepickerMd
-        formControlName="selected" class="form-control" placeholder="Choose date"
-        [showDropdowns]="true"
-        [singleDatePicker]="true"
-        [locale]="locale"
-        showCancel="true"
-        />
-    </div>
-    <div class="col s6">
-      <br/>
-      <button type="submit" class="ngx-daterangepicker-action waves-effect waves-light btn" >Submit</button>
-    </div>
-  </div>
 </form>
-
