@@ -35,7 +35,7 @@
     "e2e": "ng e2e",
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
     "gh-pages": "ng build --prod --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
-    "build": "ng-packagr -p package.json",
+    "build": "ng-packagr -p",
     "build:schematics": "tsc -p ./tsconfig.schematics.json",
     "copy:schematics": "cpr schematics/dist dist/schematics && cp ./schematics/collection.json ./dist/schematics && cp ./schematics/ng-add/schema.json ./dist/schematics/ng-add",
     "postbuild": "npm run build:schematics && npm run copy:schematics"
@@ -46,7 +46,12 @@
     "url": "https://github.com/fetrarij/ngx-daterangepicker-material.git"
   },
   "peerDependencies": {
-    "dayjs": "^1.11.1"
+    "dayjs": "^1.11.1",
+    "@angular/animations": "~13.3.0",
+    "@angular/cdk": "^13.3.4",
+    "@angular/forms": "~13.3.0",
+    "@angular/material": "^13.3.4",
+    "@ng-bootstrap/ng-bootstrap": "^12.1.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.3.3",
@@ -86,24 +91,7 @@
     "zone.js": "~0.11.4"
   },
   "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "ngPackage": {
-    "lib": {
-      "entryFile": "src/daterangepicker/index.ts",
-      "umdModuleIds": {
-        "dayjs": "dayjs"
-      }
-    },
-    "allowedNonPeerDependencies": [
-      "dayjs"
-    ],
-    "dest": "dist"
-  },
   "dependencies": {
-    "@angular/animations": "^13.0.0 || ^14.0.0-0",
-    "@angular/cdk": "~13.3.4",
-    "@angular/forms": "^13.0.0 || ^14.0.0-0",
-    "@angular/material": "~13.3.4",
-    "@ng-bootstrap/ng-bootstrap": "^12.1.1",
     "dayjs": "^1.11.1",
     "tslib": "^2.3.0"
   },
