@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as _dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 
-const dayjs = _dayjs;
 import * as  localeData from 'dayjs/plugin/localeData';
 dayjs.extend(localeData);
 import * as LocalizedFormat from 'dayjs/plugin/localizedFormat';
@@ -132,14 +131,14 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     @Output() clearClicked: EventEmitter<void>;
     @ViewChild('pickerContainer', { static: true }) pickerContainer: ElementRef;
     // protected
-    _minDate: _dayjs.Dayjs;
-    _maxDate: _dayjs.Dayjs;
+    _minDate: dayjs.Dayjs;
+    _maxDate: dayjs.Dayjs;
     _locale: LocaleConfig = {};
     _ranges: any = {};
     // accessors
     @Input()
-    set minDate(value: _dayjs.Dayjs | string) {
-        if (_dayjs.isDayjs(value)) {
+    set minDate(value: dayjs.Dayjs | string) {
+        if (dayjs.isDayjs(value)) {
             this._minDate = value;
         } else if (typeof value === 'string') {
             this._minDate = dayjs(value);
@@ -147,12 +146,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
             this._minDate = null;
         }
     }
-    getMinDate(): _dayjs.Dayjs | null {
+    getMinDate(): dayjs.Dayjs | null {
         return this._minDate;
     }
     @Input()
-    set maxDate(value: _dayjs.Dayjs | string) {
-        if (_dayjs.isDayjs(value)) {
+    set maxDate(value: dayjs.Dayjs | string) {
+        if (dayjs.isDayjs(value)) {
             this._maxDate = value;
         } else if (typeof value === 'string') {
             this._maxDate = dayjs(value);
@@ -160,7 +159,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
             this._maxDate = null;
         }
     }
-    getMaxDate(): _dayjs.Dayjs | null {
+    getMaxDate(): dayjs.Dayjs | null {
         return this._maxDate;
     }
     @Input() set locale(value) {
@@ -190,6 +189,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         this.endDateChanged = new EventEmitter();
         this.cancelClicked = new EventEmitter();
         this.clearClicked = new EventEmitter();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if ((changes.startDate || changes.endDate) && this.inline) {
+            this.updateView();
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -471,14 +476,22 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         //
         // Display the calendar
         //
-        const minDate = side === 'left' ? this.getMinDate() : this.startDate;
+        let minDate = side === 'left' ? this.getMinDate() : this.startDate;
         let maxDate = this.getMaxDate();
         // adjust maxDate to reflect the dateLimit setting in order to
         // grey out end dates beyond the dateLimit
         if (this.endDate === null && this.dateLimit) {
             const maxLimit = this.startDate.clone().add(this.dateLimit, 'day').endOf('day');
-                if (!maxDate || maxLimit.isBefore(maxDate)) {
+            if (!maxDate || maxLimit.isBefore(maxDate)) {
                 maxDate = maxLimit;
+            }
+
+            if(this.customRangeDirection) {
+                minDate = this.getMinDate();
+                const minLimit = this.startDate.clone().subtract(this.dateLimit, 'day').endOf('day');
+                if (!minDate || minLimit.isAfter(minDate)) {
+                    minDate = minLimit;
+                }
             }
         }
         this.calendarVariables[side] = {
@@ -1184,7 +1197,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
      * @param date the date to add time
      * @param side left or right
      */
-    private _getDateWithTime(date, side: SideEnum): _dayjs.Dayjs {
+    private _getDateWithTime(date, side: SideEnum): dayjs.Dayjs {
         let hour = parseInt(this.timepickerVariables[side].selectedHour, 10);
         if (!this.timePicker24Hour) {
             const ampm = this.timepickerVariables[side].ampmModel;
