@@ -20,10 +20,9 @@ import {
 } from '@angular/core';
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as _dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
-const dayjs = _dayjs;
 
 @Directive({
   selector: 'input[ngxDaterangepickerMd]',
@@ -49,9 +48,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private _value: any;
   private localeDiffer: KeyValueDiffer<string, any>;
   @Input()
-  minDate: _dayjs.Dayjs;
+  minDate: dayjs.Dayjs;
   @Input()
-  maxDate: _dayjs.Dayjs;
+  maxDate: dayjs.Dayjs;
   @Input()
   autoApply: boolean;
   @Input()
