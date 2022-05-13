@@ -197,12 +197,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         }
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if ((changes.startDate || changes.endDate) && this.inline) {
-            this.updateView();
-        }
-    }
-
     ngOnInit() {
         this._buildLocale();
         const daysOfWeek = [...this.locale.daysOfWeek];
