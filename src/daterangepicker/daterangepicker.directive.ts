@@ -157,6 +157,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Output('datesUpdated') datesUpdated: EventEmitter<Object> = new EventEmitter();
   @Output() startDateChanged: EventEmitter<Object> = new EventEmitter();
   @Output() endDateChanged: EventEmitter<Object> = new EventEmitter();
+  @Output() clearClicked: EventEmitter<void> = new EventEmitter();
   @HostBinding('disabled') get disabled() { return this._disabled; }
   constructor(
     public viewContainerRef: ViewContainerRef,
@@ -190,6 +191,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     });
     this.picker.datesUpdated.asObservable().subscribe((range: any) => {
       this.datesUpdated.emit(range);
+    });
+    this.picker.clearClicked.asObservable().subscribe(()=>{
+      this.clearClicked.emit();
     });
     this.picker.choosedDate.asObservable().subscribe((change: any) => {
       if (change) {
