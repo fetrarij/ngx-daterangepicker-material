@@ -1,6 +1,6 @@
 {
   "name": "ngx-daterangepicker-material",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Angular 9 and 10 date range picker (with material design theme)",
   "keywords": [
     "angular2",
@@ -45,7 +45,7 @@
     "url": "https://github.com/fetrarij/ngx-daterangepicker-material.git"
   },
   "peerDependencies": {
-    "dayjs": "^1.10.4"
+    "dayjs": "^1.10.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1102.1",

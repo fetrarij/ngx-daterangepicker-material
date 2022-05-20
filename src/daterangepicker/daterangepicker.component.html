@@ -8,10 +8,12 @@
     'double': !singleDatePicker && showCalInRanges,
     'show-ranges': rangesArray.length
 }" [class]="'drops-' + drops + '-' + opens">
-    <div class="ranges">
-        <ul>
-          <li *ngFor="let range of rangesArray">
-            <button type="button"
+    <ng-container *ngIf="rangesArray.length">
+        <div class="ranges">
+            <ul>
+              <li *ngFor="let range of rangesArray">
+                <button 
+                    type="button"
                     (click)="clickRange($event, range)"
                     [disabled]="disableRange(range)"
                     [ngClass]="{'active': range === chosenRange, 'chevron-right': range === 'Custom Range'}">{{range}}</button>
