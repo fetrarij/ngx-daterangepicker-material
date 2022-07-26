@@ -9,9 +9,9 @@
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
-        "target": "es5",
+        "target": "es2020",
         "typeRoots": ["node_modules/@types"],
-        "lib": ["es2017", "dom"]
+        "lib": ["es2020", "dom"]
     },
     "exclude": ["dist", ".ng_build", "integration"]
 }

@@ -3,7 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { AppRoutes } from './app.routing';
+import { appRoutes } from './app.routing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -20,7 +20,7 @@ import { SingleDatepickerComponent } from './single-datepicker/single-datepicker
 import { CustomRangesComponent } from './custom-ranges/custom-ranges.component';
 import { TimepickerComponent } from './timepicker/timepicker.component';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
-
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -48,9 +48,10 @@ import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
       applyLabel: 'Okay',
       firstDay: 0
     }),
-    RouterModule.forRoot(AppRoutes),
+    RouterModule.forRoot(appRoutes),
+    MatOptionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
