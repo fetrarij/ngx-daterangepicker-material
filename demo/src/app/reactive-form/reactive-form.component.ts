@@ -12,7 +12,7 @@ export class ReactiveFormComponent {
   form: FormGroup;
   form2: FormGroup;
   locale: LocaleConfig = {
-    format: 'YYYY-MM-DDTHH:mm:ss.SSSSZ',
+    format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
     displayFormat: 'YYYY-MM-DD'
   };
 

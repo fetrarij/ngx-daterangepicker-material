@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import * as dayjs from 'dayjs';
 import { DaterangepickerDirective } from '../../../../src/daterangepicker/daterangepicker.directive';
 import { EndDate, StartDate } from '../../../../src/daterangepicker/daterangepicker.component';
+import { LocaleConfig } from '../../../../src/daterangepicker';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -11,7 +12,7 @@ import { EndDate, StartDate } from '../../../../src/daterangepicker/daterangepic
 export class FullComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: true }) daterangepicker: DaterangepickerDirective;
   title = 'Pure angular daterangepicker';
-  options: any = {
+  options = {
     autoApply: false,
     alwaysShowCalendars: false,
     showCancel: false,
@@ -27,8 +28,8 @@ export class FullComponent implements OnInit {
 
   minDate: dayjs.Dayjs = dayjs().subtract(5, 'days');
   maxDate: dayjs.Dayjs = dayjs().add(2, 'month');
-  locale: any = {
-    format: 'YYYY-MM-DDTHH:mm:ss.SSSSZ',
+  locale: LocaleConfig = {
+    format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
     displayFormat: 'DD MMMM YYYY HH:mm',
     separator: ' To ',
     cancelLabel: 'Cancel',
@@ -58,7 +59,7 @@ export class FullComponent implements OnInit {
 
   eventClicked(e: StartDate | EndDate): void {
     // eslint-disable-next-line no-console
-    console.log({ 'eventClicked()': e });
+    console.log({ ['eventClicked()']: e });
   }
 
   eventCleared(): void {

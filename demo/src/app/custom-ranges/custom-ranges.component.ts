@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DateRange, TimePeriod } from '../../../../src/daterangepicker/daterangepicker.component';
+import { DateRange, DateRanges, TimePeriod } from '../../../../src/daterangepicker/daterangepicker.component';
 import { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 
@@ -22,7 +22,7 @@ export class CustomRangesComponent {
   ];
 
   inlineDateTime: TimePeriod;
-  ranges: any = {
+  ranges: DateRanges = {
     ['Today']: [dayjs(), dayjs()],
     ['Yesterday']: [dayjs().subtract(1, 'days'), dayjs().subtract(1, 'days')],
     ['Last 7 Days']: [dayjs().subtract(6, 'days'), dayjs()],
@@ -68,7 +68,7 @@ export class CustomRangesComponent {
     console.log('[datesUpdated] range is : ', range);
   }
 
-  choosedDateTime(e: TimePeriod): void {
+  chosenDateTime(e: TimePeriod): void {
     this.inlineDateTime = e;
   }
 }

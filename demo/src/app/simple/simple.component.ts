@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as dayjs from 'dayjs';
+import * as utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 import { DaterangepickerComponent, DaterangepickerDirective } from '../../../../src/daterangepicker';
 import { ChosenDate, TimePeriod } from '../../../../src/daterangepicker/daterangepicker.component';
 
@@ -11,8 +13,11 @@ import { ChosenDate, TimePeriod } from '../../../../src/daterangepicker/daterang
 export class SimpleComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: true }) pickerDirective: DaterangepickerDirective;
   selected: { startDate: dayjs.Dayjs; endDate: dayjs.Dayjs };
-  inlineDate: any;
+  inlineDate: ChosenDate;
   picker: DaterangepickerComponent;
+  startDate = dayjs().utc(true).subtract(5, 'days');
+  endDate = dayjs().utc(true).subtract(4, 'days');
+  maxDate = dayjs().utc(true).subtract(1, 'days');
   constructor() {
     this.selected = {
       startDate: dayjs('2015-11-18T00:00Z'),
@@ -26,19 +31,19 @@ export class SimpleComponent implements OnInit {
 
   ngModelChange(e: Event): void {
     // eslint-disable-next-line no-console
-    console.log({ 'ngModelChange()': e });
+    console.log({ ['ngModelChange()']: e });
   }
 
   change(e: TimePeriod | null): void {
     // eslint-disable-next-line no-console
-    console.log({ 'change()': e });
+    console.log({ ['change()']: e });
   }
 
-  choosedDate(e: ChosenDate): void {
+  chosenDate(e: ChosenDate): void {
     this.inlineDate = e;
   }
 
-  choosedDateTime(e: ChosenDate): void {
+  chosenDateTime(e: ChosenDate): void {
     this.selected = e;
   }
 
@@ -52,7 +57,11 @@ export class SimpleComponent implements OnInit {
     this.selected = null; // now we can do
   }
 
-  increaseDateTime(): void {
-    this.selected.endDate = this.selected.endDate.clone().add(1, 'day').add(1, 'hour');
+  increaseDate(): void {
+    this.selected.endDate = this.selected.endDate.clone().add(1, 'day');
+  }
+
+  increaseTime(): void {
+    this.selected.endDate = this.selected.endDate.clone().add(1, 'hour');
   }
 }

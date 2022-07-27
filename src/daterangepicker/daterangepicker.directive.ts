@@ -1,7 +1,6 @@
 import {
   Directive,
   ViewContainerRef,
-  ComponentFactoryResolver,
   ElementRef,
   HostListener,
   forwardRef,
@@ -18,7 +17,7 @@ import {
   Renderer2,
   HostBinding
 } from '@angular/core';
-import { DateRange, DaterangepickerComponent, EndDate, StartDate, TimePeriod } from './daterangepicker.component';
+import { ChosenDate, DateRange, DaterangepickerComponent, DateRanges, EndDate, StartDate, TimePeriod } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as dayjs from 'dayjs';
 import { LocaleConfig } from './daterangepicker.config';
@@ -96,7 +95,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   customRangeDirection: boolean;
 
   @Input()
-  ranges: any;
+  ranges: DateRanges;
 
   @Input()
   opens: string;
@@ -152,36 +151,19 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private endKeyHolder: string;
 
   public picker: DaterangepickerComponent;
-
   private startKeyHolder: string;
-
-  @Input() set startKey(value: string) {
-    if (value !== null) {
-      this.startKeyHolder = value;
-    } else {
-      this.startKeyHolder = 'startDate';
-    }
-  }
-
   private notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey'];
   private onChangeFn = Function.prototype;
   private onTouched = Function.prototype;
   private validatorChange = Function.prototype;
   private disabledHolder: boolean;
   private valueHolder: TimePeriod | null;
-
   private localeDiffer: KeyValueDiffer<string, any>;
-
   private localeHolder: LocaleConfig = {};
-
-  @HostBinding('disabled') get disabled(): boolean {
-    return this.disabledHolder;
-  }
 
   constructor(
     public viewContainerRef: ViewContainerRef,
     public ref: ChangeDetectorRef,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private el: ElementRef,
     private renderer: Renderer2,
     private differs: KeyValueDiffers,
@@ -192,19 +174,31 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.startKey = 'startDate';
     this.drops = 'down';
     this.opens = 'auto';
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
     viewContainerRef.clear();
-    const componentRef = viewContainerRef.createComponent(componentFactory);
+    const componentRef = viewContainerRef.createComponent(DaterangepickerComponent);
     this.picker = componentRef.instance as DaterangepickerComponent;
     this.picker.inline = false; // set inline to false for all directive usage
   }
 
-  @Input() set locale(value: LocaleConfig) {
-    this.localeHolder = { ...this.localeHolderService.config, ...value };
+  @HostBinding('disabled') get disabled(): boolean {
+    return this.disabledHolder;
   }
 
+  @Input() set startKey(value: string) {
+    if (value !== null) {
+      this.startKeyHolder = value;
+    } else {
+      this.startKeyHolder = 'startDate';
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   get locale(): LocaleConfig {
     return this.localeHolder;
+  }
+
+  @Input() set locale(value: LocaleConfig) {
+    this.localeHolder = { ...this.localeHolderService.config, ...value };
   }
 
   @Input() set endKey(value: string) {
@@ -215,6 +209,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   get value(): TimePeriod | null {
     return this.valueHolder || null;
   }
@@ -255,18 +250,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.onTouched();
   }
 
-  @HostListener('click', ['$event'])
-  open(event?: Event): void {
-    if (this.disabled) {
-      return;
-    }
-    this.picker.show(event);
-    setTimeout(() => {
-      this.setPosition();
-    });
-  }
-
-  @HostListener('click', ['$event'])
+  @HostListener('keyup', ['$event'])
   inputChanged(e: KeyboardEvent): void {
     if ((e.target as HTMLElement).tagName.toLowerCase() !== 'input') {
       return;
@@ -293,24 +277,35 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.updateView();
   }
 
+  @HostListener('click', ['$event'])
+  open(event?: Event): void {
+    if (this.disabled) {
+      return;
+    }
+    this.picker.show(event);
+    setTimeout(() => {
+      this.setPosition();
+    });
+  }
+
   // eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle
   ngOnInit(): void {
-    this.picker.startDateChanged.asObservable().subscribe((itemChanged: any) => {
+    this.picker.startDateChanged.asObservable().subscribe((itemChanged: StartDate) => {
       this.startDateChanged.emit(itemChanged);
     });
-    this.picker.endDateChanged.asObservable().subscribe((itemChanged: any) => {
+    this.picker.endDateChanged.asObservable().subscribe((itemChanged: EndDate) => {
       this.endDateChanged.emit(itemChanged);
     });
-    this.picker.rangeClicked.asObservable().subscribe((range: any) => {
+    this.picker.rangeClicked.asObservable().subscribe((range: DateRange) => {
       this.rangeClicked.emit(range);
     });
-    this.picker.datesUpdated.asObservable().subscribe((range: any) => {
+    this.picker.datesUpdated.asObservable().subscribe((range: TimePeriod) => {
       this.datesUpdated.emit(range);
     });
     this.picker.clearClicked.asObservable().subscribe(() => {
       this.clearClicked.emit();
     });
-    this.picker.choosedDate.asObservable().subscribe((change: any) => {
+    this.picker.choosedDate.asObservable().subscribe((change: ChosenDate) => {
       if (change) {
         const value = {
           [this.startKeyHolder]: change.startDate,
@@ -438,7 +433,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  private setValue(val: any) {
+  private setValue(val: TimePeriod) {
     if (val) {
       this.value = val;
       if (val[this.startKeyHolder]) {
