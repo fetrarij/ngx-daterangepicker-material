@@ -1,7 +1,7 @@
 {
   "name": "ngx-daterangepicker-material",
-  "version": "5.0.2",
-  "description": "Angular 9 and 10 date range picker (with material design theme)",
+  "version": "5.1.0",
+  "description": "Angular 9 - 13 date range picker (with material design theme)",
   "keywords": [
     "angular2",
     "angular4",
@@ -11,6 +11,9 @@
     "angular8",
     "angular9",
     "angular10",
+    "angular11",
+    "angular12",
+    "angular13",
     "ng2",
     "daterangepicker",
     "material",
@@ -33,7 +36,7 @@
     "lint": "ng lint",
     "ngc": "./node_modules/.bin/ngc -p tsconfig.json",
     "gh-pages": "ng build --configuration production --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
-    "build": "ng-packagr -p package.json",
+    "build": "ng-packagr -p ng-package.json -c tsconfig.json",
     "build:schematics": "tsc -p ./tsconfig.schematics.json",
     "copy:schematics": "cpr schematics/dist dist/schematics && cp ./schematics/collection.json ./dist/schematics && cp ./schematics/ng-add/schema.json ./dist/schematics/ng-add",
     "postbuild": "npm run build:schematics && npm run copy:schematics"
@@ -89,7 +92,7 @@
     "karma-jasmine": "~4.0.2",
     "karma-jasmine-html-reporter": "~2.0.0",
     "materialize-css": "^1.0.0",
-    "ng-packagr": "^13.3.1",
+    "ng-packagr": "^14.1.0",
     "prettier": "^2.7.1",
     "prettier-eslint": "^15.0.1",
     "rimraf": "^2.6.1",
@@ -97,16 +100,6 @@
     "ts-node": "~8.3.0",
     "typescript": "~4.6.4",
     "zone.js": "~0.11.4"
-  },
-  "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "ngPackage": {
-    "lib": {
-      "entryFile": "src/daterangepicker/index.ts"
-    },
-    "allowedNonPeerDependencies": [
-      "dayjs"
-    ],
-    "dest": "dist"
   },
   "dependencies": {
     "dayjs": "^1.11.4",

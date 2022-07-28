@@ -15,6 +15,7 @@
             "index": "demo/src/index.html",
             "main": "demo/src/main.ts",
             "tsConfig": "demo/src/tsconfig.app.json",
+            "aot": true,
             "polyfills": "demo/src/polyfills.ts",
             "assets": [
               "demo/src/assets",

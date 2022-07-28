@@ -5,6 +5,7 @@
         "target": "es2020",
         "module": "es2020",
         "moduleResolution": "node",
+        "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
         "emitDecoratorMetadata": true,
@@ -19,6 +20,7 @@
         "types": ["node"]
     },
     "angularCompilerOptions": {
+        "enableIvy": true,
         "fullTemplateTypeCheck": true,
         "skipTemplateCodegen": true,
         "skipMetadataEmit": false,

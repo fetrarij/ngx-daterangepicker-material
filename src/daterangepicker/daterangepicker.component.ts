@@ -18,12 +18,12 @@ import dayjs, { Dayjs } from 'dayjs';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 
-import * as localeData from 'dayjs/plugin/localeData';
-import * as LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import * as isoWeek from 'dayjs/plugin/isoWeek';
-import * as week from 'dayjs/plugin/weekOfYear';
-import * as customParseFormat from 'dayjs/plugin/customParseFormat';
-import * as utc from 'dayjs/plugin/utc';
+import localeData from 'dayjs/plugin/localeData';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import isoWeek from 'dayjs/plugin/isoWeek';
+import week from 'dayjs/plugin/weekOfYear';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(localeData);
 dayjs.extend(LocalizedFormat);
