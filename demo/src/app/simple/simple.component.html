@@ -51,30 +51,27 @@
         <h3>Inline daterangepicker</h3>
         <ngx-daterangepicker-material
             (choosedDate)="chosenDate($event)"
-            [startDate]="startDate"
-            [endDate]="endDate"
-            [maxDate]="maxDate"
             [locale]="{ applyLabel: 'Done', firstDay: 1 }"></ngx-daterangepicker-material>
         <br />
         Chosen date: {{ inlineDate | json }}
     </div>
 </div>
 
-<!--<div class="row">-->
-<!--    <div class="col s12">-->
-<!--        <h3>Inline daterangepicker with time and auto-apply</h3>-->
-<!--        <ngx-daterangepicker-material-->
-<!--            (choosedDate)="chosenDateTime($event)"-->
-<!--            [autoApply]="true"-->
-<!--            [timePicker24Hour]="true"-->
-<!--            [linkedCalendars]="true"-->
-<!--            [startDate]="selected?.startDate"-->
-<!--            [endDate]="selected?.endDate"-->
-<!--            [timePicker]="true"-->
-<!--            [locale]="{ applyLabel: 'Done', firstDay: 1 }"></ngx-daterangepicker-material>-->
-<!--        <br />-->
-<!--        <p>Chosen date (after changes): {{ selected | json }}</p>-->
-<!--        <button (click)="increaseDate()">Add a day</button>-->
-<!--        <button [style.margin-left]="'.5rem'" (click)="increaseTime()">Add an hour</button>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="row">
+    <div class="col s12">
+        <h3>Inline daterangepicker with time and auto-apply</h3>
+        <ngx-daterangepicker-material
+            (choosedDate)="chosenDateTime($event)"
+            [autoApply]="true"
+            [timePicker24Hour]="true"
+            [linkedCalendars]="true"
+            [startDate]="selected?.startDate"
+            [endDate]="selected?.endDate"
+            [timePicker]="true"
+            [locale]="{ applyLabel: 'Done', firstDay: 1 }"></ngx-daterangepicker-material>
+        <br />
+        <p>Chosen date (after changes): {{ selected | json }}</p>
+        <button (click)="increaseDate()">Add a day</button>
+        <button [style.margin-left]="'.5rem'" (click)="increaseTime()">Add an hour</button>
+    </div>
+</div>
