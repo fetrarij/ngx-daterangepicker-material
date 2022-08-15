@@ -27,7 +27,8 @@
         "strictMetadataEmit": true,
         "annotationsAs": "decorators",
         "strictInjectionParameters": true,
-        "strictTemplates": true
+        "strictTemplates": true,
+        "compilationMode": "partial"
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "**/*.spec.ts", "schematics"]
