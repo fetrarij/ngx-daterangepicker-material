@@ -1,7 +1,6 @@
 import {
   Directive,
   ViewContainerRef,
-  ComponentFactoryResolver,
   ElementRef,
   HostListener,
   forwardRef,
@@ -18,192 +17,304 @@ import {
   Renderer2,
   HostBinding
 } from '@angular/core';
-import { DaterangepickerComponent } from './daterangepicker.component';
+import { ChosenDate, DateRange, DaterangepickerComponent, DateRanges, EndDate, StartDate, TimePeriod } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'input[ngxDaterangepickerMd]',
-  host: {
-    '(keyup.esc)': 'hide()',
-    '(blur)': 'onBlur()',
-    '(click)': 'open()',
-    '(keyup)': 'inputChanged($event)'
-  },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DaterangepickerDirective), multi: true
+      useExisting: forwardRef(() => DaterangepickerDirective),
+      multi: true
     }
-]
+  ]
 })
+// eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle
 export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
-  public picker: DaterangepickerComponent;
-  private _onChange = Function.prototype;
-  private _onTouched = Function.prototype;
-  private _validatorChange = Function.prototype;
-  private _disabled: boolean;
-  private _value: any;
-  private localeDiffer: KeyValueDiffer<string, any>;
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix,@angular-eslint/no-output-native,@angular-eslint/no-output-rename
+  @Output('change') onChange: EventEmitter<TimePeriod | null> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-rename
+  @Output('rangeClicked') rangeClicked: EventEmitter<DateRange> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-rename
+  @Output('datesUpdated') datesUpdated: EventEmitter<TimePeriod> = new EventEmitter();
+  @Output() startDateChanged: EventEmitter<StartDate> = new EventEmitter();
+  @Output() endDateChanged: EventEmitter<EndDate> = new EventEmitter();
+  @Output() clearClicked: EventEmitter<void> = new EventEmitter();
+
   @Input()
   minDate: dayjs.Dayjs;
+
   @Input()
   maxDate: dayjs.Dayjs;
+
   @Input()
   autoApply: boolean;
+
   @Input()
   alwaysShowCalendars: boolean;
+
   @Input()
   showCustomRangeLabel: boolean;
+
   @Input()
   linkedCalendars: boolean;
+
   @Input()
   dateLimit: number = null;
+
   @Input()
   singleDatePicker: boolean;
+
   @Input()
   showWeekNumbers: boolean;
+
   @Input()
   showISOWeekNumbers: boolean;
+
   @Input()
   showDropdowns: boolean;
+
   @Input()
-  isInvalidDate: Function;
+  isInvalidDate: (Dayjs) => boolean;
+
   @Input()
-  isCustomDate: Function;
+  isCustomDate: (Dayjs) => string | boolean;
+
   @Input()
-  isTooltipDate: Function;
+  isTooltipDate: (Dayjs) => string | boolean | null;
+
   @Input()
   showClearButton: boolean;
+
   @Input()
   customRangeDirection: boolean;
+
   @Input()
-  ranges: any;
+  ranges: DateRanges;
+
   @Input()
   opens: string;
+
   @Input()
   drops: string;
+
+  @Input()
   firstMonthDayClass: string;
+
   @Input()
   lastMonthDayClass: string;
+
   @Input()
   emptyWeekRowClass: string;
+
   @Input()
   emptyWeekColumnClass: string;
+
   @Input()
   firstDayOfNextMonthClass: string;
+
   @Input()
   lastDayOfPreviousMonthClass: string;
+
   @Input()
   keepCalendarOpeningWithRange: boolean;
+
   @Input()
   showRangeLabelOnInput: boolean;
+
   @Input()
-  showCancel: Boolean = false;
+  showCancel = false;
+
   @Input()
-  lockStartDate: Boolean = false;
+  lockStartDate = false;
+
   // timepicker variables
   @Input()
-  timePicker: Boolean = false;
-  @Input()
-  timePicker24Hour: Boolean = false;
-  @Input()
-  timePickerIncrement: Number = 1;
-  @Input()
-  timePickerSeconds: Boolean = false;
-  @Input() closeOnAutoApply = true;
-  _locale: LocaleConfig = {};
-  @Input() set locale(value) {
-    this._locale = {...this._localeService.config, ...value};
-  }
-  get locale(): any {
-    return this._locale;
-  }
-  @Input()
-  private _endKey: string;
-  private _startKey: string;
-  @Input() set startKey(value) {
-    if (value !== null) {
-      this._startKey = value;
-    } else {
-      this._startKey = 'startDate';
-    }
-  }
-  @Input() set endKey(value) {
-    if (value !== null) {
-      this._endKey = value;
-    } else {
-      this._endKey = 'endDate';
-    }
-  }
-  notForChangesProperty: Array<string> = [
-    'locale',
-    'endKey',
-    'startKey'
-  ];
+  timePicker = false;
 
-  get value() {
-    return this._value || null;
-  }
-  set value(val) {
-    this._value = val;
-    this._onChange(val);
-    this._changeDetectorRef.markForCheck();
-  }
-  @Output('change') onChange: EventEmitter<Object> = new EventEmitter();
-  @Output('rangeClicked') rangeClicked: EventEmitter<Object> = new EventEmitter();
-  @Output('datesUpdated') datesUpdated: EventEmitter<Object> = new EventEmitter();
-  @Output() startDateChanged: EventEmitter<Object> = new EventEmitter();
-  @Output() endDateChanged: EventEmitter<Object> = new EventEmitter();
-  @Output() clearClicked: EventEmitter<void> = new EventEmitter();
-  @HostBinding('disabled') get disabled() { return this._disabled; }
+  @Input()
+  timePicker24Hour = false;
+
+  @Input()
+  timePickerIncrement = 1;
+
+  @Input()
+  timePickerSeconds = false;
+
+  @Input() closeOnAutoApply = true;
+  @Input()
+  private endKeyHolder: string;
+
+  public picker: DaterangepickerComponent;
+  private startKeyHolder: string;
+  private notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey'];
+  private onChangeFn = Function.prototype;
+  private onTouched = Function.prototype;
+  private validatorChange = Function.prototype;
+  private disabledHolder: boolean;
+  private valueHolder: TimePeriod | null;
+  private localeDiffer: KeyValueDiffer<string, any>;
+  private localeHolder: LocaleConfig = {};
+
   constructor(
     public viewContainerRef: ViewContainerRef,
-    public _changeDetectorRef: ChangeDetectorRef,
-    private _componentFactoryResolver: ComponentFactoryResolver,
-    private _el: ElementRef,
-    private _renderer: Renderer2,
+    public ref: ChangeDetectorRef,
+    private el: ElementRef,
+    private renderer: Renderer2,
     private differs: KeyValueDiffers,
-    private _localeService: LocaleService,
+    private localeHolderService: LocaleService,
     private elementRef: ElementRef
   ) {
-    this.endKey  = 'endDate';
+    this.endKey = 'endDate';
     this.startKey = 'startDate';
     this.drops = 'down';
     this.opens = 'auto';
-    const componentFactory = this._componentFactoryResolver.resolveComponentFactory(DaterangepickerComponent);
     viewContainerRef.clear();
-    const componentRef = viewContainerRef.createComponent(componentFactory);
-    this.picker = (<DaterangepickerComponent>componentRef.instance);
+    const componentRef = viewContainerRef.createComponent(DaterangepickerComponent);
+    this.picker = componentRef.instance as DaterangepickerComponent;
     this.picker.inline = false; // set inline to false for all directive usage
   }
-  ngOnInit() {
-    this.picker.startDateChanged.asObservable().subscribe((itemChanged: any) => {
+
+  @HostBinding('disabled') get disabled(): boolean {
+    return this.disabledHolder;
+  }
+
+  @Input() set startKey(value: string) {
+    if (value !== null) {
+      this.startKeyHolder = value;
+    } else {
+      this.startKeyHolder = 'startDate';
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  get locale(): LocaleConfig {
+    return this.localeHolder;
+  }
+
+  @Input() set locale(value: LocaleConfig) {
+    this.localeHolder = { ...this.localeHolderService.config, ...value };
+  }
+
+  @Input() set endKey(value: string) {
+    if (value !== null) {
+      this.endKeyHolder = value;
+    } else {
+      this.endKeyHolder = 'endDate';
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  get value(): TimePeriod | null {
+    return this.valueHolder || null;
+  }
+
+  set value(val: TimePeriod | null) {
+    this.valueHolder = val;
+    this.onChangeFn(val);
+    this.ref.markForCheck();
+  }
+
+  /**
+   * For click outside the calendar's container
+   *
+   * @param event event object
+   */
+  @HostListener('document:click', ['$event'])
+  outsideClick(event: Event): void {
+    if (!event.target) {
+      return;
+    }
+
+    if ((event.target as HTMLElement).classList.contains('ngx-daterangepicker-action')) {
+      return;
+    }
+
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.hide();
+    }
+  }
+
+  @HostListener('keyup.esc', ['$event'])
+  hide(e?: Event): void {
+    this.picker.hide(e);
+  }
+
+  @HostListener('blur')
+  onBlur(): void {
+    this.onTouched();
+  }
+
+  @HostListener('keyup', ['$event'])
+  inputChanged(e: KeyboardEvent): void {
+    if ((e.target as HTMLElement).tagName.toLowerCase() !== 'input') {
+      return;
+    }
+    if (!(e.target as HTMLInputElement).value.length) {
+      return;
+    }
+    const dateString = (e.target as HTMLInputElement).value.split(this.picker.locale.separator);
+    let start = null;
+    let end = null;
+    if (dateString.length === 2) {
+      start = dayjs(dateString[0], this.picker.locale.format);
+      end = dayjs(dateString[1], this.picker.locale.format);
+    }
+    if (this.singleDatePicker || start === null || end === null) {
+      start = dayjs((e.target as HTMLInputElement).value, this.picker.locale.format);
+      end = start;
+    }
+    if (!start.isValid() || !end.isValid()) {
+      return;
+    }
+    this.picker.setStartDate(start);
+    this.picker.setEndDate(end);
+    this.picker.updateView();
+  }
+
+  @HostListener('click', ['$event'])
+  open(event?: Event): void {
+    if (this.disabled) {
+      return;
+    }
+    this.picker.show(event);
+    setTimeout(() => {
+      this.setPosition();
+    });
+  }
+
+  // eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle
+  ngOnInit(): void {
+    this.picker.startDateChanged.asObservable().subscribe((itemChanged: StartDate) => {
       this.startDateChanged.emit(itemChanged);
     });
-    this.picker.endDateChanged.asObservable().subscribe((itemChanged: any) => {
+    this.picker.endDateChanged.asObservable().subscribe((itemChanged: EndDate) => {
       this.endDateChanged.emit(itemChanged);
     });
-    this.picker.rangeClicked.asObservable().subscribe((range: any) => {
+    this.picker.rangeClicked.asObservable().subscribe((range: DateRange) => {
       this.rangeClicked.emit(range);
     });
-    this.picker.datesUpdated.asObservable().subscribe((range: any) => {
+    this.picker.datesUpdated.asObservable().subscribe((range: TimePeriod) => {
       this.datesUpdated.emit(range);
     });
-    this.picker.clearClicked.asObservable().subscribe(()=>{
+    this.picker.clearClicked.asObservable().subscribe(() => {
       this.clearClicked.emit();
     });
-    this.picker.choosedDate.asObservable().subscribe((change: any) => {
+    this.picker.choosedDate.asObservable().subscribe((change: ChosenDate) => {
       if (change) {
-        const value = {};
-        value[this._startKey] = change.startDate;
-        value[this._endKey] = change.endDate;
-        this.value = value;
-        this.onChange.emit(value);
+        const value = {
+          [this.startKeyHolder]: change.startDate,
+          [this.endKeyHolder]: change.endDate
+        };
+        this.value = value as TimePeriod;
+        this.onChange.emit(value as TimePeriod);
         if (typeof change.chosenLabel === 'string') {
-          this._el.nativeElement.value = change.chosenLabel;
+          this.el.nativeElement.value = change.chosenLabel;
         }
       }
     });
@@ -219,9 +330,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.closeOnAutoApply = this.closeOnAutoApply;
   }
 
-  ngOnChanges(changes: SimpleChanges): void  {
+  // eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle
+  ngOnChanges(changes: SimpleChanges): void {
     for (const change in changes) {
-      if (changes.hasOwnProperty(change)) {
+      if (Object.prototype.hasOwnProperty.call(changes, change)) {
         if (this.notForChangesProperty.indexOf(change) === -1) {
           this.picker[change] = changes[change].currentValue;
         }
@@ -229,7 +341,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  ngDoCheck() {
+  // eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle
+  ngDoCheck(): void {
     if (this.localeDiffer) {
       const changes = this.localeDiffer.diff(this.locale);
       if (changes) {
@@ -238,24 +351,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  onBlur() {
-    this._onTouched();
-  }
-
-  open(event?: any) {
-    if (this.disabled) {
-      return;
-    }
-    this.picker.show(event);
-    setTimeout(() => {
-      this.setPosition();
-    });
-  }
-
-  hide(e?) {
-    this.picker.hide(e);
-  }
-  toggle(e?) {
+  toggle(e?: Event): void {
     if (this.picker.isShown) {
       this.hide(e);
     } else {
@@ -263,73 +359,59 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  clear() {
+  clear(): void {
     this.picker.clear();
   }
 
-  writeValue(value) {
+  writeValue(value: TimePeriod): void {
     this.setValue(value);
   }
-  registerOnChange(fn) {
-    this._onChange = fn;
+
+  registerOnChange(fn: () => TimePeriod | null): void {
+    this.onChangeFn = fn;
   }
-  registerOnTouched(fn) {
-    this._onTouched = fn;
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
   }
+
   setDisabledState(state: boolean): void {
-    this._disabled = state;
-}
-  private setValue(val: any) {
-    if (val) {
-      this.value = val;
-      if (val[this._startKey]) {
-        this.picker.setStartDate(val[this._startKey]);
-      }
-      if (val[this._endKey]) {
-        this.picker.setEndDate(val[this._endKey]);
-      }
-      this.picker.calculateChosenLabel();
-      if (this.picker.chosenLabel) {
-        this._el.nativeElement.value = this.picker.chosenLabel;
-      }
-    } else {
-      this.picker.clear();
-    }
+    this.disabledHolder = state;
   }
+
   /**
    * Set position of the calendar
    */
-  setPosition() {
+  setPosition(): void {
     let style;
     let containerTop;
     const container = this.picker.pickerContainer.nativeElement;
-    const element = this._el.nativeElement;
+    const element = this.el.nativeElement;
     if (this.drops && this.drops === 'up') {
-      containerTop = (element.offsetTop - container.clientHeight) + 'px';
+      containerTop = element.offsetTop - container.clientHeight + 'px';
     } else {
       containerTop = 'auto';
     }
     if (this.opens === 'left') {
       style = {
-          top: containerTop,
-          left: (element.offsetLeft - container.clientWidth + element.clientWidth) + 'px',
-          right: 'auto'
+        top: containerTop,
+        left: element.offsetLeft - container.clientWidth + element.clientWidth + 'px',
+        right: 'auto'
       };
     } else if (this.opens === 'center') {
-        style = {
-          top: containerTop,
-          left: (element.offsetLeft  +  element.clientWidth / 2
-                  - container.clientWidth / 2) + 'px',
-          right: 'auto'
-        };
+      style = {
+        top: containerTop,
+        left: element.offsetLeft + element.clientWidth / 2 - container.clientWidth / 2 + 'px',
+        right: 'auto'
+      };
     } else if (this.opens === 'right') {
-        style = {
-          top: containerTop,
-          left: element.offsetLeft  + 'px',
-          right: 'auto'
-        };
+      style = {
+        top: containerTop,
+        left: element.offsetLeft + 'px',
+        right: 'auto'
+      };
     } else {
-      const position = element.offsetLeft  +  element.clientWidth / 2 - container.clientWidth / 2;
+      const position = element.offsetLeft + element.clientWidth / 2 - container.clientWidth / 2;
       if (position < 0) {
         style = {
           top: containerTop,
@@ -338,59 +420,34 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         };
       } else {
         style = {
-            top: containerTop,
-            left: position + 'px',
-            right: 'auto'
+          top: containerTop,
+          left: position + 'px',
+          right: 'auto'
         };
       }
     }
     if (style) {
-      this._renderer.setStyle(container, 'top', style.top);
-      this._renderer.setStyle(container, 'left', style.left);
-      this._renderer.setStyle(container, 'right', style.right);
+      this.renderer.setStyle(container, 'top', style.top);
+      this.renderer.setStyle(container, 'left', style.left);
+      this.renderer.setStyle(container, 'right', style.right);
     }
   }
-  inputChanged(e) {
-    if (e.target.tagName.toLowerCase() !== 'input') {
-      return;
-    }
-    if (!e.target.value.length) {
-      return;
-    }
-    const dateString = e.target.value.split(this.picker.locale.separator);
-    let start = null, end = null;
-    if (dateString.length === 2) {
-      start = dayjs(dateString[0], this.picker.locale.format);
-      end = dayjs(dateString[1], this.picker.locale.format);
-    }
-    if (this.singleDatePicker || start === null || end === null) {
-      start = dayjs(e.target.value, this.picker.locale.format);
-      end = start;
-    }
-    if (!start.isValid() || !end.isValid()) {
-      return;
-    }
-    this.picker.setStartDate(start);
-    this.picker.setEndDate(end);
-    this.picker.updateView();
 
-  }
-  /**
-   * For click outside of the calendar's container
-   * @param event event object
-   */
-  @HostListener('document:click', ['$event'])
-  outsideClick(event): void {
-    if (!event.target) {
-      return;
-    }
-
-    if (event.target.classList.contains('ngx-daterangepicker-action')) {
-      return;
-    }
-
-    if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.hide();
+  private setValue(val: TimePeriod) {
+    if (val) {
+      this.value = val;
+      if (val[this.startKeyHolder]) {
+        this.picker.setStartDate(val[this.startKeyHolder]);
+      }
+      if (val[this.endKeyHolder]) {
+        this.picker.setEndDate(val[this.endKeyHolder]);
+      }
+      this.picker.calculateChosenLabel();
+      if (this.picker.chosenLabel) {
+        this.el.nativeElement.value = this.picker.chosenLabel;
+      }
+    } else {
+      this.picker.clear();
     }
   }
 }

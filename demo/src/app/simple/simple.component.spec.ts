@@ -13,14 +13,9 @@ describe('SimpleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SimpleComponent ],
-      imports: [
-        FormsModule,
-        NgxDaterangepickerMd.forRoot(),
-        MatToolbarModule
-      ]
-    })
-    .compileComponents();
+      declarations: [SimpleComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot(), MatToolbarModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -41,28 +36,28 @@ describe('SimpleComponent', () => {
     });
   });*/
   it('should call change and ngModelChange on select date range', fakeAsync(() => {
-      spyOn(component, 'change');
-      spyOn(component, 'ngModelChange');
-      fixture.debugElement.queryAll(By.css(opener))[0].nativeElement.click();
-      let table = fixture.nativeElement.querySelectorAll('table');
-      let trs = table[0].querySelectorAll('tr');
-      let tds = trs[4].querySelectorAll('td');
-      setTimeout(() => {
-        tds[0].click();
-        fixture.detectChanges();
-      }, 500);
-      tick(500);
-      setTimeout(() => {
-        tds[4].click();
-        fixture.detectChanges();
-      }, 500);
-      tick(500);
-      setTimeout(() => {
-        fixture.debugElement.queryAll(By.css('button'))[1].nativeElement.click();
-        fixture.detectChanges();
-      }, 200);
-      tick(200);
-      expect(component.change).toHaveBeenCalled();
-      expect(component.ngModelChange).toHaveBeenCalled();
-  }))
+    spyOn(component, 'change');
+    spyOn(component, 'ngModelChange');
+    fixture.debugElement.queryAll(By.css(opener))[0].nativeElement.click();
+    const table = fixture.nativeElement.querySelectorAll('table');
+    const trs = table[0].querySelectorAll('tr');
+    const tds = trs[4].querySelectorAll('td');
+    setTimeout(() => {
+      tds[0].click();
+      fixture.detectChanges();
+    }, 500);
+    tick(500);
+    setTimeout(() => {
+      tds[4].click();
+      fixture.detectChanges();
+    }, 500);
+    tick(500);
+    setTimeout(() => {
+      fixture.debugElement.queryAll(By.css('button'))[1].nativeElement.click();
+      fixture.detectChanges();
+    }, 200);
+    tick(200);
+    expect(component.change).toHaveBeenCalled();
+    expect(component.ngModelChange).toHaveBeenCalled();
+  }));
 });
