@@ -2,7 +2,7 @@
 
 > Angular 2+ Date range picker.
 
-[![Build Status](https://travis-ci.org/fetrarij/ngx-daterangepicker-material.svg?branch=master)](https://travis-ci.org/fetrarij/ngx-daterangepicker-material)
+[![Build Status](https://github.com/fetrarij/ngx-daterangepicker-material/actions/workflows/actions.yml/badge.svg)](https://github.com/fetrarij/ngx-daterangepicker-material/actions)
 [![npm version](https://badge.fury.io/js/ngx-daterangepicker-material.svg)](https://badge.fury.io/js/ngx-daterangepicker-material)
 [![last commit](https://img.shields.io/github/last-commit/fetrarij/ngx-daterangepicker-material.svg)](https://github.com/fetrarij/ngx-daterangepicker-material/commits/master)
 
