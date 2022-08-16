@@ -26,6 +26,6 @@ jobs:
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
           npm test
       - name: Build demo
-        run:  npx ng build --prod --base-href=/ngx-daterangepicker-material/  --repo=https://github.com/fetrarij/ngx-daterangepicker-material.git
+        run:  npx ng deploy --base-href=/ngx-daterangepicker-material/  --repo=https://github.com/fetrarij/ngx-daterangepicker-material.git
         env:
           PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
