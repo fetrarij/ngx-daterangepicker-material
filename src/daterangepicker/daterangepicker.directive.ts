@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { ChosenDate, DateRange, DaterangepickerComponent, DateRanges, EndDate, StartDate, TimePeriod } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 
