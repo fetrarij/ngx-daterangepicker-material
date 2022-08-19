@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import dayjs from 'dayjs/esm';
-import * as utc from 'dayjs/esm/plugin/utc';
+import utc from 'dayjs/esm/plugin/utc';
 dayjs.extend(utc);
 import { DaterangepickerComponent, DaterangepickerDirective } from '../../../../src/daterangepicker';
 import { ChosenDate, TimePeriod } from '../../../../src/daterangepicker/daterangepicker.component';
