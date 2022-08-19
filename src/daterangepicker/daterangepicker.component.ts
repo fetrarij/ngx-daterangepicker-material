@@ -14,16 +14,16 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 
-import localeData from 'dayjs/plugin/localeData';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import week from 'dayjs/plugin/weekOfYear';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import utc from 'dayjs/plugin/utc';
+import localeData from 'dayjs/esm/plugin/localeData';
+import LocalizedFormat from 'dayjs/esm/plugin/localizedFormat';
+import isoWeek from 'dayjs/esm/plugin/isoWeek';
+import week from 'dayjs/esm/plugin/weekOfYear';
+import customParseFormat from 'dayjs/esm/plugin/customParseFormat';
+import utc from 'dayjs/esm/plugin/utc';
 
 dayjs.extend(localeData);
 dayjs.extend(LocalizedFormat);
@@ -1263,6 +1263,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       this.showCalInRanges = true;
     } else {
       const dates = this.ranges[label];
+      console.log('1 ', dates);
       this.startDate = dates[0].clone();
       this.endDate = dates[1].clone();
       if (this.showRangeLabelOnInput && label !== this.locale.customRangeLabel) {
@@ -1295,8 +1296,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         } else {
           this.leftCalendar.month = this.leftCalendar.month.month(dates[0].month());
           this.leftCalendar.month = this.leftCalendar.month.year(dates[0].year());
-          // get the next year
-          const nextMonth = dates[0].clone().add(1, 'month');
+          // get the right calendar value
+          const nextMonth = !this.linkedCalendars ? dates[1].clone() : dates[0].clone().add(1, 'month');
           this.rightCalendar.month = this.rightCalendar.month.month(nextMonth.month());
           this.rightCalendar.month = this.rightCalendar.month.year(nextMonth.year());
         }

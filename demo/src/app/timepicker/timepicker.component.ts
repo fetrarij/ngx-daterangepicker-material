@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
