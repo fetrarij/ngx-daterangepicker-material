@@ -14,16 +14,16 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 
-import localeData from 'dayjs/plugin/localeData';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import week from 'dayjs/plugin/weekOfYear';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import utc from 'dayjs/plugin/utc';
+import localeData from 'dayjs/esm/plugin/localeData';
+import LocalizedFormat from 'dayjs/esm/plugin/localizedFormat';
+import isoWeek from 'dayjs/esm/plugin/isoWeek';
+import week from 'dayjs/esm/plugin/weekOfYear';
+import customParseFormat from 'dayjs/esm/plugin/customParseFormat';
+import utc from 'dayjs/esm/plugin/utc';
 
 dayjs.extend(localeData);
 dayjs.extend(LocalizedFormat);
