@@ -117,6 +117,12 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   _locale: LocaleConfig = {};
   @Input() set locale(value) {
     this._locale = {...this._localeService.config, ...value};
+    if(value.locale) {
+      import(`dayjs/locale/${value.locale}`)
+        .then(() => {
+          dayjs.locale(value.locale);
+        });
+    }
   }
   get locale(): any {
     return this._locale;
