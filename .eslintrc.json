@@ -1,0 +1,108 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*",
+    "schematics/**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json"
+        ],
+        "ecmaVersion": 2020,
+        "ecmaFeatures": {
+          "impliedStrict": true
+        },
+        "createDefaultProgram": false
+      },
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:prettier/recommended"
+      ],
+      "env": {
+        "shared-node-browser": true,
+        "node": true,
+        "amd": true,
+        "browser": true,
+        "jasmine": true
+      },
+      "rules": {
+        "space-in-parens": "off",
+        "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+        "lines-around-comment": "off",
+        "array-bracket-spacing": "off",
+        "space-before-function-paren": "off",
+        "computed-property-spacing": "off",
+        "quotes": ["error","single", { "allowTemplateLiterals": true }],
+        "consistent-return": ["off"],
+        "no-param-reassign": ["error", {"ignorePropertyModificationsFor": ["consoleElement"]}],
+        "no-console": ["warn", {"allow": ["warn", "error"]}],
+        "prettier/prettier": [
+          "error",
+          {
+            "trailingComma": "none",
+            "tabWidth": 2,
+            "semi": true,
+            "singleQuote": true,
+            "endOfLine":"auto"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "ngx-daterangepicker-material",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "ngx-daterangepicker-material",
+            "style": "kebab-case"
+          }
+        ]
+      }
+    },
+    // NOTE: We are not applying prettier in this override, only @angular-eslint/template,
+    {
+      "files": ["*.html"],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {}
+    },
+    // NOTE: we are not applying @angular-eslint/template in this override, only prettier
+    {
+      "files": [
+        "*.html"
+      ],
+      "excludedFiles": [
+        "*inline-template-*.component.html"
+      ],
+      "extends": [
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        // NOTE: we are overriding the default config to always set the parser to angular (see below)
+        "prettier/prettier": [
+          "error",
+          {
+            "parser": "angular",
+            "bracketSameLine": true
+          }
+        ]
+      }
+    }
+  ]
+}

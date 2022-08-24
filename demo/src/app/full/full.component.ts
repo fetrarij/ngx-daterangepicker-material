@@ -1,16 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs/esm';
 import { DaterangepickerDirective } from '../../../../src/daterangepicker/daterangepicker.directive';
+import { EndDate, StartDate } from '../../../../src/daterangepicker/daterangepicker.component';
+import { LocaleConfig } from '../../../../src/daterangepicker';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'full',
-  templateUrl: './full.component.html',
-  styleUrls: ['./full.component.scss']
+  templateUrl: './full.component.html'
 })
 export class FullComponent implements OnInit {
-
+  @ViewChild(DaterangepickerDirective, { static: true }) daterangepicker: DaterangepickerDirective;
   title = 'Pure angular daterangepicker';
-  options: any = {
+  options = {
     autoApply: false,
     alwaysShowCalendars: false,
     showCancel: false,
@@ -23,23 +25,23 @@ export class FullComponent implements OnInit {
     lockStartDate: false,
     closeOnAutoApply: true
   };
+
   minDate: dayjs.Dayjs = dayjs().subtract(5, 'days');
   maxDate: dayjs.Dayjs = dayjs().add(2, 'month');
-  locale: any = {
-    format: 'YYYY-MM-DDTHH:mm:ss.SSSSZ',
+  locale: LocaleConfig = {
+    format: 'YYYY-MM-DDTHH:mm:ss.SSSZ',
     displayFormat: 'DD MMMM YYYY HH:mm',
     separator: ' To ',
     cancelLabel: 'Cancel',
     applyLabel: 'Okay'
-  }
+  };
+
   opens: string;
   drops: string;
   timePicker: boolean;
   dateLimit: number;
-  click() {
-  }
-  selected = {start: dayjs().subtract(3, 'days'), end: dayjs().add(3, 'days') };
-  @ViewChild(DaterangepickerDirective, { static: true }) daterangepicker: DaterangepickerDirective;
+  selected = { start: dayjs().subtract(3, 'days'), end: dayjs().add(3, 'days') };
+
   constructor() {
     this.timePicker = false;
     this.opens = 'right';
@@ -47,16 +49,21 @@ export class FullComponent implements OnInit {
     this.dateLimit = 30;
   }
 
+  click(): void {}
+
   clear(): void {
     this.daterangepicker.clear();
   }
-  ngOnInit() {
+
+  ngOnInit(): void {}
+
+  eventClicked(e: StartDate | EndDate): void {
+    // eslint-disable-next-line no-console
+    console.log({ ['eventClicked()']: e });
   }
 
-  eventClicked(e): void {
-    console.log({'eventClicked()': e});
-  }
   eventCleared(): void {
+    // eslint-disable-next-line no-console
     console.log('datepicker cleared');
   }
 }

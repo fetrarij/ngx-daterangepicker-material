@@ -6,34 +6,34 @@ import { SingleDatepickerComponent } from './single-datepicker/single-datepicker
 import { TimepickerComponent } from './timepicker/timepicker.component';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 
-export const AppRoutes: Routes = [
-    {
-         path: '',
-         redirectTo: 'simple',
-         pathMatch: 'full'
-    },
-    {
-        path: 'simple',
-        component: SimpleComponent,
-    },
-    {
-        path: 'single-datepicker',
-        component: SingleDatepickerComponent,
-    },
-    {
-        path: 'with-timepicker',
-        component: TimepickerComponent,
-    },
-    {
-        path: 'full',
-        component: FullComponent,
-    },
-    {
-        path: 'custom-ranges',
-        component: CustomRangesComponent,
-    },
-    {
-        path: 'reactive-forms',
-        component: ReactiveFormComponent,
-    }
+export const appRoutes: Routes = [
+  {
+    path: '',
+    redirectTo: 'simple',
+    pathMatch: 'full'
+  },
+  {
+    path: 'simple',
+    component: SimpleComponent
+  },
+  {
+    path: 'single-datepicker',
+    component: SingleDatepickerComponent
+  },
+  {
+    path: 'with-timepicker',
+    component: TimepickerComponent
+  },
+  {
+    path: 'full',
+    component: FullComponent
+  },
+  {
+    path: 'custom-ranges',
+    component: CustomRangesComponent
+  },
+  {
+    path: 'reactive-forms',
+    component: ReactiveFormComponent
+  }
 ];

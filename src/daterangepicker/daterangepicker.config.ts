@@ -1,7 +1,6 @@
-import { InjectionToken, Injector } from '@angular/core';
-import * as _dayjs from 'dayjs';
-const dayjs = _dayjs;
-import * as  localeData from 'dayjs/plugin/localeData';
+import { InjectionToken } from '@angular/core';
+import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
 dayjs.extend(localeData);
 
 export const LOCALE_CONFIG = new InjectionToken<LocaleConfig>('daterangepicker.config');
@@ -26,15 +25,16 @@ export interface LocaleConfig {
 /**
  *  DefaultLocaleConfig
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const DefaultLocaleConfig: LocaleConfig = {
-    direction: 'ltr',
-    separator: ' - ',
-    weekLabel: 'W',
-    applyLabel: 'Apply',
-    cancelLabel: 'Cancel',
-    clearLabel: 'Clear',
-    customRangeLabel: 'Custom range',
-    daysOfWeek: dayjs.weekdaysMin(),
-    monthNames: dayjs.monthsShort(),
-    firstDay: dayjs.localeData().firstDayOfWeek()
+  direction: 'ltr',
+  separator: ' - ',
+  weekLabel: 'W',
+  applyLabel: 'Apply',
+  cancelLabel: 'Cancel',
+  clearLabel: 'Clear',
+  customRangeLabel: 'Custom range',
+  daysOfWeek: dayjs.weekdaysMin(),
+  monthNames: dayjs.monthsShort(),
+  firstDay: dayjs.localeData().firstDayOfWeek()
 };

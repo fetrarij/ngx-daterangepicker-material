@@ -4,20 +4,20 @@ import dayjs from "dayjs";
 
 @Injectable()
 export class LocaleService {
-  constructor(@Inject(LOCALE_CONFIG) private _config: LocaleConfig) {}
+  constructor(@Inject(LOCALE_CONFIG) private configHolder: LocaleConfig) {}
 
   get config() {
-    if (!this._config) {
+    if (!this.configHolder) {
       return DefaultLocaleConfig;
     }
 
-    if(this._config.locale) {
-      import(`dayjs/locale/${this._config.locale}`)
+    if(this.config.locale) {
+      import(`dayjs/locale/${this.config.locale}`)
         .then(() => {
-          dayjs.locale(this._config.locale);
+          dayjs.locale(this.config.locale);
         });
     }
 
-    return {... DefaultLocaleConfig, ...this._config};
+    return { ...DefaultLocaleConfig, ...this.configHolder };
   }
 }

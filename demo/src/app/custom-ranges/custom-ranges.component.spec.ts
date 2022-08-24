@@ -11,14 +11,9 @@ describe('CustomRangesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CustomRangesComponent ],
-      imports: [
-        FormsModule,
-        NgxDaterangepickerMd.forRoot(),
-        MatToolbarModule
-      ]
-    })
-    .compileComponents();
+      declarations: [CustomRangesComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot(), MatToolbarModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

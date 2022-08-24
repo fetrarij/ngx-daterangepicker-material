@@ -25,6 +25,7 @@
 .vscode/*
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage
@@ -47,3 +48,4 @@ Thumbs.db
 .ng_pkg_build/
 dist.tgz
 .history
+.angular/
