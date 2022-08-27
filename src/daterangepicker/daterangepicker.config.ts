@@ -8,18 +8,19 @@ export const LOCALE_CONFIG = new InjectionToken<LocaleConfig>('daterangepicker.c
  *  LocaleConfig Interface
  */
 export interface LocaleConfig {
-  direction?: string;
-  separator?: string;
-  weekLabel?: string;
-  applyLabel?: string;
-  cancelLabel?: string;
-  clearLabel?: string;
-  customRangeLabel?: string;
-  daysOfWeek?: string[];
-  monthNames?: string[];
-  firstDay?: number;
-  format?: string;
-  displayFormat?: string;
+    direction?: string;
+    separator?: string;
+    weekLabel?: string;
+    applyLabel?: string;
+    cancelLabel?: string;
+    clearLabel?: string;
+    customRangeLabel?: string;
+    daysOfWeek?: string[];
+    monthNames?:  string[];
+    firstDay?: number;
+    format?: string;
+    displayFormat?: string;
+    locale?: string;
 }
 /**
  *  DefaultLocaleConfig
