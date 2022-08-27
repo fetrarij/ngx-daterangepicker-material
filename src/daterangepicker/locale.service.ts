@@ -9,7 +9,17 @@ export class LocaleService {
     if (!this.configHolder) {
       return DefaultLocaleConfig;
     }
-
     return { ...DefaultLocaleConfig, ...this.configHolder };
+  }
+
+  configWithLocale(locale) {
+    if (!this.configHolder && !locale) {
+      return DefaultLocaleConfig;
+    }
+    return {
+      ...DefaultLocaleConfig,
+      ...{ daysOfWeek: locale.weekdaysMin, monthNames: locale.monthsShort, firstDay: locale.weekStart },
+      ...this.configHolder
+    };
   }
 }

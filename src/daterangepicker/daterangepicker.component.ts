@@ -324,6 +324,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   @Input() set locale(value: LocaleConfig) {
     this.localeHolder = { ...this.localeHolderService.config, ...value };
+    if (value.locale) {
+      this.localeHolder = this.localeHolderService.configWithLocale(value.locale);
+    }
   }
 
   // custom ranges
