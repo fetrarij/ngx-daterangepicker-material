@@ -1,0 +1,18 @@
+<mat-toolbar>Locale daterangepicker</mat-toolbar>
+<div class="row">
+    <div class="col s6">
+        <input
+            type="text"
+            ngxDaterangepickerMd
+            [(ngModel)]="selected"
+            class="form-control"
+            placeholder="Choose date"
+            [locale]="{ locale, applyLabel: 'Ack' }" />
+    </div>
+    <div class="col s6 right-align">
+        <select>
+            <option value="fr">French</option>
+            <option value="en">English</option>
+        </select>
+    </div>
+</div>

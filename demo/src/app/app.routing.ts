@@ -5,6 +5,7 @@ import { CustomRangesComponent } from './custom-ranges/custom-ranges.component';
 import { SingleDatepickerComponent } from './single-datepicker/single-datepicker.component';
 import { TimepickerComponent } from './timepicker/timepicker.component';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
+import { LocaleComponent } from './locale/locale.component';
 
 export const appRoutes: Routes = [
   {
@@ -15,6 +16,10 @@ export const appRoutes: Routes = [
   {
     path: 'simple',
     component: SimpleComponent
+  },
+  {
+    path: 'locale',
+    component: LocaleComponent
   },
   {
     path: 'single-datepicker',

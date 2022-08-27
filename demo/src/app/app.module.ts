@@ -21,11 +21,13 @@ import { CustomRangesComponent } from './custom-ranges/custom-ranges.component';
 import { TimepickerComponent } from './timepicker/timepicker.component';
 import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 import { MatOptionModule } from '@angular/material/core';
+import { LocaleComponent } from './locale/locale.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SimpleComponent,
+    LocaleComponent,
     FullComponent,
     SingleDatepickerComponent,
     CustomRangesComponent,
