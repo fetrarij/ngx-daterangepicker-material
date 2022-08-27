@@ -11,7 +11,8 @@
         "resolveJsonModule": true,
         "target": "es2020",
         "typeRoots": ["node_modules/@types"],
-        "lib": ["es2020", "dom"]
+        "lib": ["es2020", "dom"],
+        "module": "es2020"
     },
     "exclude": ["dist", ".ng_build", "integration"]
 }

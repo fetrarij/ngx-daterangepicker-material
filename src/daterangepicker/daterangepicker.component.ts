@@ -324,6 +324,13 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   @Input() set locale(value: LocaleConfig) {
     this.localeHolder = { ...this.localeHolderService.config, ...value };
+
+    if(value.locale) {
+      import(`dayjs/locale/${value.locale}`)
+        .then(() => {
+          dayjs.locale(value.locale);
+        });
+    }
   }
 
   // custom ranges
