@@ -1,6 +1,6 @@
 {
   "name": "ngx-daterangepicker-material",
-  "version": "2.4.2",
+  "version": "2.4.2-micord",
   "description": "Angular 2+ date range picker (with material design theme)",
   "keywords": [
     "angular2",
@@ -36,6 +36,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/fetrarij/ngx-daterangepicker-material.git"
+  },
+  "publishConfig": {
+    "registry": "https://repo.micord.ru/repository/npm-private/"
   },
   "peerDependencies": {
     "moment": "^2.21.0"

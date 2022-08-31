@@ -104,7 +104,9 @@ export class DaterangepickerComponent implements OnInit {
 
     @Input() set ranges(value) {
         this._ranges = value;
+      if(this.startDate && this.endDate) {
         this.renderRanges();
+      }
     }
     get ranges(): any {
         return this._ranges;
@@ -244,7 +246,7 @@ export class DaterangepickerComponent implements OnInit {
         }
 
     }
-    renderTimePicker(side: SideEnum) {        
+    renderTimePicker(side: SideEnum) {
         let selected, minDate;
         const maxDate = this.maxDate;
         if (side === SideEnum.left) {
@@ -299,7 +301,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.timepickerVariables[side].disabledHours.push(i);
             }
         }
-        
+
         // generate minutes
         for (let i = 0; i < 60; i += this.timePickerIncrement) {
             const padded = i < 10 ? '0' + i : i;
@@ -615,7 +617,7 @@ export class DaterangepickerComponent implements OnInit {
             }
         }
         if (this.maxDate) {
-            if (this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) { 
+            if (this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
                 this.rightCalendar.month = this.maxDate.clone().date(2);
                 this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
             }
@@ -791,7 +793,7 @@ export class DaterangepickerComponent implements OnInit {
                 this.setEndDate(start.clone());
             } else if(!this.endDate && this.timePicker){
                 const startClone = this._getDateWithTime(start, SideEnum.right);
-                
+
                 if(startClone.isBefore(start)){
                     this.timepickerVariables[SideEnum.right].selectedHour = hour;
                     this.timepickerVariables[SideEnum.right].selectedMinute = minute;
