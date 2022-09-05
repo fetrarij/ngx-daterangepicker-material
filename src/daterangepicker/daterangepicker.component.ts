@@ -39,6 +39,9 @@ export class DaterangepickerComponent implements OnInit {
     endDate = moment().endOf('day');
 
     @Input()
+    defaultRange: string = null;
+
+    @Input()
     dateLimit: number = null;
     // used in template for compile time support of enum values.
     sideEnum = SideEnum;
@@ -174,21 +177,20 @@ export class DaterangepickerComponent implements OnInit {
             this._old.end = this.endDate ? this.endDate.clone() : null;
         }
 
-        if (this.startDate && this.timePicker) {
-          this.setStartDate(this.startDate);
-          this.renderTimePicker(SideEnum.left);
+        if (this.defaultRange && this.defaultRange.length != 0) {
+          this.applyDefaultRange(this.defaultRange);
         }
-
-        if (this.endDate && this.timePicker) {
-          this.setEndDate(this.endDate);
-          this.renderTimePicker(SideEnum.right);
+        else {
+          if(this.startDate && this.endDate) {
+            this.setStartDate(this.startDate);
+            this.setEndDate(this.endDate);
+            this.updateView();
+            this.renderRanges();
+            this.changeApplyBtnDisabled();
+          }
         }
-
-        this.updateMonthsInView();
-        this.renderCalendar(SideEnum.left);
-        this.renderCalendar(SideEnum.right);
-        this.renderRanges();
     }
+
     renderRanges() {
         this.rangesArray = [];
         let start, end;
@@ -739,6 +741,7 @@ export class DaterangepickerComponent implements OnInit {
         if (this.inline) {
             this.updateView();
         }
+        this.changeApplyBtnDisabled();
         this.hide();
     }
     /**
@@ -979,9 +982,10 @@ export class DaterangepickerComponent implements OnInit {
           this.clickApply();
         }
 
+        this.changeApplyBtnDisabled();
+
         // This is to cancel the blur event handler if the mouse was in one of the inputs
         e.stopPropagation();
-
     }
     /**
      *  Click on the custom range
@@ -1038,12 +1042,10 @@ export class DaterangepickerComponent implements OnInit {
                     this.renderTimePicker(SideEnum.left);
                     this.renderTimePicker(SideEnum.right);
                 }
+              this.changeApplyBtnDisabled();
             }
-
         }
     }
-
-
 
     show(e?) {
         if (this.isShown) { return; }
@@ -1313,4 +1315,29 @@ export class DaterangepickerComponent implements OnInit {
         }
         return false;
     }
+
+  /**
+   * Apply button disabled until both date are picked
+   */
+  changeApplyBtnDisabled() {
+      this.applyBtn.disabled = !(this.startDate && this.endDate);
+    }
+
+  /**
+   * Applies default range
+   */
+  applyDefaultRange(label: string) {
+    this.chosenRange = label;
+    const dates = this.ranges[label];
+    this.startDate = dates[0].clone();
+    this.endDate = dates[1].clone();
+    this.chosenLabel = label;
+    this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
+
+    this.updateView();
+    this.renderRanges();
+    this.changeApplyBtnDisabled();
+    this.choosedDate.emit({chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate});
+    this.datesUpdated.emit({startDate: this.startDate, endDate: this.endDate});
+  }
 }

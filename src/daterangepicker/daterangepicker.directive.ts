@@ -49,6 +49,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private _value: any;
   private localeDiffer: KeyValueDiffer<string, any>;
   @Input()
+  defaultRange: string;
+  @Input()
   minDate: _moment.Moment
   @Input()
   maxDate: _moment.Moment
@@ -212,6 +214,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.opens = this.opens;
     this.localeDiffer = this.differs.find(this.locale).create();
     this.picker.closeOnAutoApply = this.closeOnAutoApply;
+    this.picker.defaultRange = this.defaultRange;
   }
 
   ngOnChanges(changes: SimpleChanges): void  {
