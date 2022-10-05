@@ -252,6 +252,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   @Input()
   customTimezone: string = null;
 
+  @Input()
+  blockRightCalendarByStartDate: boolean = true;
+
   @Input() drops: string;
   @Input() opens: string;
   @Input() closeOnAutoApply = true;
@@ -675,7 +678,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     //
     // Display the calendar
     //
-    let minDate = side === 'left' ? this.minDate : this.startDate;
+    let minDate = side === 'left' || !this.blockRightCalendarByStartDate ? this.minDate : this.startDate;
     let maxDate = this.maxDate;
     // adjust maxDate to reflect the dateLimit setting in order to
     // grey out end dates beyond the dateLimit
