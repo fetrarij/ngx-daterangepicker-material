@@ -302,7 +302,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   // accessors
-  get minDate(): dayjs.Dayjs | null {
+  get minDate(): dayjs.Dayjs {
     return this.minDateHolder;
   }
 
@@ -341,7 +341,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  get maxDate(): dayjs.Dayjs | null {
+  get maxDate(): dayjs.Dayjs {
     return this.maxDateHolder;
   }
 
