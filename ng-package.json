@@ -3,5 +3,8 @@
   "lib": {
     "entryFile": "src/daterangepicker/index.ts"
   },
+  "allowedNonPeerDependencies": [
+    "dayjs"
+  ],
   "dest": "dist"
 }
