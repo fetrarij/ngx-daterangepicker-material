@@ -47,7 +47,7 @@
     "url": "https://github.com/fetrarij/ngx-daterangepicker-material.git"
   },
   "peerDependencies": {
-    "dayjs": "^1.11.4"
+    "dayjs": "^1.11.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^13.3.9",
@@ -102,7 +102,7 @@
     "zone.js": "~0.11.4"
   },
   "dependencies": {
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.6",
     "tslib": "^2.0.0"
   },
   "schematics": "./schematics/collection.json"
