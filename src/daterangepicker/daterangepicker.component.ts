@@ -1266,7 +1266,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       this.showCalInRanges = true;
     } else {
       const dates = this.ranges[label];
-      console.log('1 ', dates);
       this.startDate = dates[0].clone();
       this.endDate = dates[1].clone();
       if (this.showRangeLabelOnInput && label !== this.locale.customRangeLabel) {
