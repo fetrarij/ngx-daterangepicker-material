@@ -608,9 +608,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     const mainCalendar: VisibleCalendar = side === SideEnum.left ? this.leftCalendar : this.rightCalendar;
     const month: number = mainCalendar.month.month();
     const year: number = mainCalendar.month.year();
-    const hour: number = mainCalendar.month.hour();
-    const minute: number = mainCalendar.month.minute();
-    const second: number = mainCalendar.month.second();
+    const hour: number = 0;
+    const minute: number = 0;
+    const second: number = 0;
     const daysInMonth: number = dayjs(new Date(year, month)).utc(true).daysInMonth();
     const firstDay: Dayjs = dayjs(new Date(year, month, 1)).utc(true);
     const lastDay: Dayjs = dayjs(new Date(year, month, daysInMonth)).utc(true);
@@ -749,7 +749,11 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
     if (typeof startDate === 'object') {
       this.pickingDate = true;
-      this.startDate = dayjs(startDate).utc(true);
+      if (this.customTimezone) {
+        this.startDate = dayjs(startDate).tz(this.customTimezone, true);
+      } else {
+        this.startDate = dayjs(startDate).utc(true);
+      }
     }
     if (!this.timePicker) {
       this.pickingDate = true;
@@ -787,9 +791,14 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
 
     if (typeof endDate === 'object') {
-      this.pickingDate = false;
-      this.endDate = dayjs(endDate).utc(true);
+      this.pickingDate = true;
+      if (this.customTimezone) {
+        this.endDate = dayjs(endDate).tz(this.customTimezone, true);
+      } else {
+        this.endDate = dayjs(endDate).utc(true);
+      }
     }
+
     if (!this.timePicker) {
       this.pickingDate = false;
       this.endDate = this.endDate.add(1, 'd').startOf('day').subtract(1, 'second');
@@ -1438,6 +1447,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   private buildCells(calendar, side: SideEnum) {
     const todayFormatted = this.customTimezone ? dayjs().tz(this.customTimezone).format('YYYY-MM-DD') : dayjs().utc(true).format('YYYY-MM-DD');
     const maxDayOfYearFormatted = this.calendarVariables[side].maxDate?.format('YYYY-MM-DD');
+    const startDateFormatted = this.startDate?.format('YYYY-MM-DD');
+    const endDateFormatted = this.endDate?.format('YYYY-MM-DD');
     for (let row = 0; row < 6; row++) {
       this.calendarVariables[side].classes[row] = { classList: '' };
       const rowClasses = [];
@@ -1514,18 +1525,18 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
           classes.push('off', 'disabled', 'invalid');
         }
         // highlight the currently selected start date
-        if (this.startDate && calendar[row][col].format('YYYY-MM-DD') === this.startDate.format('YYYY-MM-DD')) {
+        if (this.startDate && calendar[row][col].format('YYYY-MM-DD') === startDateFormatted) {
           classes.push('active', 'start-date');
         }
         // highlight the currently selected end date
-        if (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') === this.endDate.format('YYYY-MM-DD')) {
+        if (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') === endDateFormatted) {
           classes.push('active', 'end-date');
         }
         // highlight dates in-between the selected dates
         if (
           ((this.nowHoveredDate != null && this.pickingDate) || this.endDate != null) &&
-          calendar[row][col] > this.startDate &&
-          (calendar[row][col] < this.endDate || (calendar[row][col] < this.nowHoveredDate && this.pickingDate)) &&
+          calendar[row][col].format('YYYY-MM-DD') > startDateFormatted &&
+          (calendar[row][col].format('YYYY-MM-DD') < endDateFormatted || (calendar[row][col] < this.nowHoveredDate && this.pickingDate)) &&
           !classes.find((el) => el === 'off')
         ) {
           classes.push('in-range');
