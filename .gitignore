@@ -49,3 +49,7 @@ Thumbs.db
 dist.tgz
 .history
 .angular/
+
+ngx-daterangepicker-material
+*.tgz
+*.sh

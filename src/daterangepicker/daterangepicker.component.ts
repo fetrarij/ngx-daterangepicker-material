@@ -24,6 +24,7 @@ import isoWeek from 'dayjs/esm/plugin/isoWeek';
 import week from 'dayjs/esm/plugin/weekOfYear';
 import customParseFormat from 'dayjs/esm/plugin/customParseFormat';
 import utc from 'dayjs/esm/plugin/utc';
+import timezone from 'dayjs/esm/plugin/timezone';
 
 dayjs.extend(localeData);
 dayjs.extend(LocalizedFormat);
@@ -31,6 +32,7 @@ dayjs.extend(isoWeek);
 dayjs.extend(week);
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export enum SideEnum {
   left = 'left',
@@ -247,6 +249,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   @Input()
   customRangeDirection = false;
 
+  @Input()
+  customTimezone: string = null;
+
   @Input() drops: string;
   @Input() opens: string;
   @Input() closeOnAutoApply = true;
@@ -340,21 +345,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     this.renderRanges();
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  get maxDate(): dayjs.Dayjs {
-    return this.maxDateHolder;
-  }
-
-  @Input()
-  set maxDate(value: dayjs.Dayjs | string) {
-    if (dayjs.isDayjs(value)) {
-      this.maxDateHolder = value;
-    } else if (typeof value === 'string') {
-      this.maxDateHolder = dayjs(value).utc(true);
-    } else {
-      this.maxDateHolder = null;
-    }
-  }
+  maxDate: dayjs.Dayjs;
 
   @Input()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -393,6 +384,13 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    // Disallow custom max date to simplify the code
+    if (this.customTimezone) {
+      this.maxDate = dayjs().tz(this.customTimezone);
+    } else {
+      this.maxDate = dayjs().utc(true);
+    }
+
     this.buildLocale();
     const daysOfWeek = [...this.locale.daysOfWeek];
     this.locale.firstDay = this.locale.firstDay % 7;
@@ -436,12 +434,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
           if (typeof this.ranges[range][0] === 'string') {
             start = dayjs(this.ranges[range][0], this.locale.format).utc(true);
           } else {
-            start = dayjs(this.ranges[range][0]).utc(true);
+            start = this.ranges[range][0];
           }
           if (typeof this.ranges[range][1] === 'string') {
             end = dayjs(this.ranges[range][1], this.locale.format).utc(true);
           } else {
-            end = dayjs(this.ranges[range][1]).utc(true);
+            end = this.ranges[range][1];
           }
           // If the start or end date exceed those allowed by the minDate or maxSpan
           // options, shorten the range to the allowable period.
@@ -1438,6 +1436,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   private buildCells(calendar, side: SideEnum) {
+    const todayFormatted = this.customTimezone ? dayjs().tz(this.customTimezone).format('YYYY-MM-DD') : dayjs().utc(true).format('YYYY-MM-DD');
+    const maxDayOfYearFormatted = this.calendarVariables[side].maxDate?.format('YYYY-MM-DD');
     for (let row = 0; row < 6; row++) {
       this.calendarVariables[side].classes[row] = { classList: '' };
       const rowClasses = [];
@@ -1456,7 +1456,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
           }
         }
         // highlight today's date
-        if (calendar[row][col].isSame(dayjs().utc(true), 'day')) {
+        if (calendar[row][col].format('YYYY-MM-DD') === todayFormatted) {
           classes.push('today');
         }
         // highlight weekends
@@ -1506,7 +1506,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
           classes.push('off', 'disabled');
         }
         // don't allow selection of dates after the maximum date
-        if (this.calendarVariables[side].maxDate && calendar[row][col].isAfter(this.calendarVariables[side].maxDate, 'day')) {
+        if (maxDayOfYearFormatted && calendar[row][col].format('YYYY-MM-DD') > maxDayOfYearFormatted) {
           classes.push('off', 'disabled');
         }
         // don't allow selection of date if a custom function decides it's invalid
