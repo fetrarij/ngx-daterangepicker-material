@@ -1412,19 +1412,24 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
    * @param side left or right
    */
   private getDateWithTime(date, side: SideEnum): dayjs.Dayjs {
-    let hour = parseInt(String(this.timepickerVariables[side].selectedHour), 10);
-    if (!this.timePicker24Hour) {
-      const ampm = this.timepickerVariables[side].ampmModel;
-      if (ampm === 'PM' && hour < 12) {
-        hour += 12;
+    if(!!this.timepickerVariables[side]) {
+      let hour = parseInt(String(this.timepickerVariables[side].selectedHour), 10);
+      if (!this.timePicker24Hour) {
+        const ampm = this.timepickerVariables[side].ampmModel;
+        if (ampm === 'PM' && hour < 12) {
+          hour += 12;
+        }
+        if (ampm === 'AM' && hour === 12) {
+          hour = 0;
+        }
       }
-      if (ampm === 'AM' && hour === 12) {
-        hour = 0;
-      }
+      const minute = parseInt(String(this.timepickerVariables[side].selectedMinute), 10);
+      const second = this.timePickerSeconds ? parseInt(String(this.timepickerVariables[side].selectedSecond), 10) : 0;
+      return date.clone().hour(hour).minute(minute).second(second);
+  
+    }else{
+      return;
     }
-    const minute = parseInt(String(this.timepickerVariables[side].selectedMinute), 10);
-    const second = this.timePickerSeconds ? parseInt(String(this.timepickerVariables[side].selectedSecond), 10) : 0;
-    return date.clone().hour(hour).minute(minute).second(second);
   }
 
   /**
