@@ -93,6 +93,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
 
   @Input()
   customRangeDirection: boolean;
+  
+  @Input()
+  blockRightCalendarByStartDate: boolean;
 
   @Input()
   ranges: DateRanges;
