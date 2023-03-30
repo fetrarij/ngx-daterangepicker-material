@@ -1285,11 +1285,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       }
       this.showCalInRanges = !this.rangesArray.length || this.alwaysShowCalendars;
 
-      if (!this.timePicker) {
-        this.startDate = this.startDate.startOf('day');
-        this.endDate = this.endDate.endOf('day');
-      }
-
       if (!this.alwaysShowCalendars) {
         this.isShown = false; // hide calendars
       }
