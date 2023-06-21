@@ -957,8 +957,11 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   clickApply(e?: MouseEvent): void {
     if (!this.singleDatePicker && this.startDate && !this.endDate) {
-      this.endDate = this.getDateWithTime(this.startDate, SideEnum.right);
-
+      if (this.timePicker) {
+        this.endDate = this.getDateWithTime(this.startDate, SideEnum.right);
+      } else {
+        this.endDate = this.startDate.clone();
+      }
       this.calculateChosenLabel();
     }
     if (this.isInvalidDate && this.startDate && this.endDate) {
