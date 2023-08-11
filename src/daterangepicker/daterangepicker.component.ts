@@ -1274,8 +1274,16 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       this.showCalInRanges = true;
     } else {
       const dates = this.ranges[label];
-      this.startDate = dates[0].clone();
-      this.endDate = dates[1].clone();
+      if (this.minDate && dates[0].isBefore(this.minDate)) {
+        this.startDate = this.minDate;
+      } else {
+        this.startDate = dates[0].clone();
+      }
+      if (this.maxDate && dates[1].isAfter(this.maxDate)) {
+        this.endDate = this.maxDate;
+      } else {
+        this.endDate = dates[1].clone();
+      }
       if (this.showRangeLabelOnInput && label !== this.locale.customRangeLabel) {
         this.chosenLabel = label;
       } else {
