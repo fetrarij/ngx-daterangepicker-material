@@ -844,6 +844,11 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         return;
       }
       if (this.startDate) {
+        // we want to stay on whatever months are in view if date range is set and both calendar sides have a month already.  e.g. when 
+        // user clicks on the end date, we want to stay on current month in view
+        if (this.leftCalendar.month && this.rightCalendar.month) {
+          return;
+        }
         this.leftCalendar.month = this.startDate.clone().date(2);
         if (!this.linkedCalendars && (this.endDate.month() !== this.startDate.month() || this.endDate.year() !== this.startDate.year())) {
           this.rightCalendar.month = this.endDate.clone().date(2);
