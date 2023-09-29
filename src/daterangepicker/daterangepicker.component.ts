@@ -781,6 +781,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       }
     }
 
+    if (this.endDate) {
+      this.pickingDate = false;
+    }
+
     if (!this.isShown) {
       this.updateElement();
     }
@@ -821,6 +825,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
     if (this.dateLimit && this.startDate.clone().add(this.dateLimit, 'day').isBefore(this.endDate)) {
       this.endDate = this.startDate.clone().add(this.dateLimit, 'day');
+    }
+
+    if (this.startDate) {
+      this.pickingDate = false;
     }
 
     if (!this.isShown) {

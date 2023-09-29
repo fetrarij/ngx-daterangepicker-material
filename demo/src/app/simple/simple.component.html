@@ -68,6 +68,7 @@
             [startDate]="selected?.startDate"
             [endDate]="selected?.endDate"
             [timePicker]="true"
+            [customRangeDirection]="true"
             [locale]="{ applyLabel: 'Done', firstDay: 1 }"></ngx-daterangepicker-material>
         <br />
         <p>Chosen date (after changes): {{ selected | json }}</p>
