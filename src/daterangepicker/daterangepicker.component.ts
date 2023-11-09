@@ -798,7 +798,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
 
     if (this.timePicker && this.timePickerIncrement) {
-      this.endDate.minute(Math.round(this.endDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+      this.endDate = this.endDate.minute(Math.round(this.endDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
     }
 
     if (this.endDate.isBefore(this.startDate)) {
@@ -1438,7 +1438,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       const minute = parseInt(String(this.timepickerVariables[side].selectedMinute), 10);
       const second = this.timePickerSeconds ? parseInt(String(this.timepickerVariables[side].selectedSecond), 10) : 0;
       return date.clone().hour(hour).minute(minute).second(second);
-  
+
     }else{
       return;
     }
