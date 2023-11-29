@@ -250,7 +250,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   customRangeDirection = false;
 
   @Input()
-  customTimezone: string = null;
+  customTimezone: string | null = null;
 
   @Input()
   blockRightCalendarByStartDate: boolean = true;
