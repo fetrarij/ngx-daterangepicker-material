@@ -30,6 +30,6 @@
         "strictTemplates": true,
         "compilationMode": "partial"
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "plugin-overrides"],
     "exclude": ["node_modules", "**/*.spec.ts", "schematics"]
 }

@@ -3,6 +3,8 @@ import dayjs from 'dayjs/esm';
 import { DaterangepickerDirective } from '../../../../src/daterangepicker/daterangepicker.directive';
 import { EndDate, StartDate } from '../../../../src/daterangepicker/daterangepicker.component';
 import { LocaleConfig } from '../../../../src/daterangepicker';
+import timezone from '../../../../plugin-overrides/timezone';
+dayjs.extend(timezone)
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

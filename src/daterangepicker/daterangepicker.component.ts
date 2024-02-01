@@ -23,8 +23,8 @@ import LocalizedFormat from 'dayjs/esm/plugin/localizedFormat';
 import isoWeek from 'dayjs/esm/plugin/isoWeek';
 import week from 'dayjs/esm/plugin/weekOfYear';
 import customParseFormat from 'dayjs/esm/plugin/customParseFormat';
-import utc from 'dayjs/esm/plugin/utc';
-import timezone from 'dayjs/esm/plugin/timezone';
+import utc from '../../plugin-overrides/utc';
+import timezone from '../../plugin-overrides/timezone';
 
 dayjs.extend(localeData);
 dayjs.extend(LocalizedFormat);
