@@ -1396,7 +1396,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
    */
   disableRange(range: string): boolean {
     if (range === this.locale.customRangeLabel) {
-      return false;
+      return range !== this.chosenRange;
     }
     const rangeMarkers = this.ranges[range];
     const areBothBefore = rangeMarkers.every((date) => {
