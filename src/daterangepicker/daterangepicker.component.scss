@@ -503,6 +503,12 @@ $input-height: 3rem !default;
         color: $adscore-secondary-lighter;
         font-size: 0.85 rem;
       }
+      &::-webkit-calendar-picker-indicator{
+        display: none;
+      }
+      &::-webkit-input-placeholder{ 
+        visibility: hidden !important;
+      }
     }
   }
   
