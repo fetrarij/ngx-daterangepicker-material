@@ -509,6 +509,16 @@ $input-height: 3rem !default;
       &::-webkit-input-placeholder{ 
         visibility: hidden !important;
       }
+      &::-webkit-datetime-edit-year-field {
+         color: $adscore-secondary; 
+      }
+      &::-webkit-datetime-edit-month-field {
+         color: $adscore-secondary; 
+      }
+      &::-webkit-datetime-edit-day-field {
+         color: $adscore-secondary; 
+      }
+
     }
   }
   

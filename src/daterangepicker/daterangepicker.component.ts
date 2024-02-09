@@ -1469,6 +1469,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   setDateInput(evt: any, side: SideEnum) {
+    if(!evt.target.value) {
+      return
+    }
     const date = dayjs(evt.target.value);
     const dateTime = this.getDateWithTime(date, side);
 
@@ -1483,7 +1486,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
     
     this.updateView();
-    return true;
   }
 
   /**
