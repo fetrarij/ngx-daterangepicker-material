@@ -407,8 +407,12 @@ $input-height: 3rem !default;
     margin: 4px auto 0 auto;
     line-height: 30px;
     position: relative;
+    display: flex;
+    justify-content: space-around;
+
     .select {
       display: inline;
+      width: 100%;
       .select-item {
         display: inline-block;
         width: auto;
@@ -448,6 +452,56 @@ $input-height: 3rem !default;
           top: 10px;
           transition: 0.2s ease all;
         }
+      }
+
+    }
+  }
+
+  .timepicker {
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    padding: 0 4px;
+    font-family: kappa,Helvetica Neue,Arial,sans-serif;
+    font-weight: 700;
+
+    .select-header {
+      display: inline-block;
+      padding-right: 1em;
+      flex: 0;
+    }
+    .select-content {
+      display: inline-block;
+      flex: 1;
+    }
+
+    input {
+      $adscore-primary: #962431;
+      $adscore-neutral-lightest: #f5f7fa;
+      $adscore-neutral-lighter: mix($adscore-neutral-lightest, black, 94%);
+      $adscore-secondary: #032336;
+      $adscore-secondary-lighter: mix($adscore-secondary, white, 57%);
+
+      background-color: mix($adscore-neutral-lightest, black, 95%);
+      border: 1px solid $adscore-neutral-lighter;
+      border-radius: 0;
+      box-shadow: none;
+      color: $adscore-secondary;
+      font-size: 0.85rem;
+      font-weight: 700;
+
+      line-height: 1rem;
+      outline: 0 !important;
+      padding: 1rem 0.5rem;
+      margin-top: 0.75rem;
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      transition: background-color 0.25s ease;
+
+      &::-webkit-input-placeholder {
+        color: $adscore-secondary-lighter;
+        font-size: 0.85 rem;
       }
     }
   }
