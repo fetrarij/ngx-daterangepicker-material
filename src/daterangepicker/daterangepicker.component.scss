@@ -487,6 +487,7 @@ $input-height: 3rem !default;
       $adscore-neutral-lighter: mix($adscore-neutral-lightest, black, 94%);
       $adscore-secondary: #032336;
       $adscore-secondary-lighter: mix($adscore-secondary, white, 57%);
+      $adscore-grey-text: #6f828c;
 
       background-color: mix($adscore-neutral-lightest, black, 95%);
       border: 1px solid $adscore-neutral-lighter;
@@ -504,6 +505,10 @@ $input-height: 3rem !default;
       appearance: none;
       transition: background-color 0.25s ease;
 
+      &.disabled {
+        color: $adscore-grey-text !important;
+      }
+
       &::-webkit-input-placeholder {
         color: $adscore-secondary-lighter;
         font-size: 0.85 rem;
@@ -515,15 +520,14 @@ $input-height: 3rem !default;
         visibility: hidden !important;
       }
       &::-webkit-datetime-edit-year-field {
-         color: $adscore-secondary; 
+         color: $adscore-grey-text; 
       }
       &::-webkit-datetime-edit-month-field {
-         color: $adscore-secondary; 
+         color: $adscore-grey-text; 
       }
       &::-webkit-datetime-edit-day-field {
-         color: $adscore-secondary; 
+         color: $adscore-grey-text; 
       }
-
     }
 
     label {
