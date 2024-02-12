@@ -354,7 +354,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   maxDate: dayjs.Dayjs;
-  maxTime: String;
 
   @Input()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -859,10 +858,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
     if (!this.isShown) {
       // this.updateElement();
-    }
-
-    if (this.maxDate && this.endDate.startOf('day').isSame(this.maxDate.startOf('day'))) {
-      this.maxTime = this.maxDate.hour() + ":" + this.maxDate.minute();
     }
 
     this.timeEnd = this.endDate.format("HH:mm")
