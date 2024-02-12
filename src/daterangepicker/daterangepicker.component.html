@@ -287,8 +287,6 @@
                         [disabled]="!startDate"
                         [(ngModel)]="timeEnd"
                         (ngModelChange)="timeChanged($event, sideEnum.right)"
-                        pattern="(09|1[0-5]):[0-5]\d"
-                        [max]="maxTime"
                     />
                 </div>
             </div>
