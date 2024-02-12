@@ -136,16 +136,22 @@
         <div class="timepicker" *ngIf="timePicker">
             <div class="select-header">START: </div>
             <div class="select-content">
-                <input type="date" 
-                    disabled="true"
-                    [value]="dateStart | date:'yyyy-MM-dd'" 
-                    (input)="setDateInput($event, sideEnum.left)" 
-                    [max]="dateEnd | date:'yyyy-MM-dd'" />
-                <input type="time"
-                    [disabled]="!startDate"
-                    [(ngModel)]="timeStart"
-                    (ngModelChange)="timeChanged($event, sideEnum.left)"
-                    />
+                <div class="input-field">
+                    <label for="dateStart">Date</label>
+                    <input type="date" 
+                        disabled="true"
+                        [value]="dateStart | date:'yyyy-MM-dd'" 
+                        (input)="setDateInput($event, sideEnum.left)" 
+                        [max]="dateEnd | date:'yyyy-MM-dd'" />
+                </div>
+                <div class="input-field">
+                    <label for="dateStart">Time</label>
+                    <input type="time"
+                        [disabled]="!startDate"
+                        [(ngModel)]="timeStart"
+                        (ngModelChange)="timeChanged($event, sideEnum.left)"
+                        />
+                </div>
             </div>
         </div>
     </div>
@@ -263,19 +269,26 @@
         <div class="timepicker" *ngIf="timePicker">
             <div class="select-header">END: </div>
             <div class="select-content">
-                <input type="date" 
-                    disabled="true"
-                    [value]="dateEnd | date:'yyyy-MM-dd'" 
-                    (input)="setDateInput($event, sideEnum.right)" 
-                    [min]="dateStart | date:'yyyy-MM-dd'" 
-                    [max]="maxDate.format('YYYY-MM-DD')" />
-                <input type="time"
-                    [disabled]="!startDate"
-                    [(ngModel)]="timeEnd"
-                    (ngModelChange)="timeChanged($event, sideEnum.right)"
-                    pattern="(09|1[0-5]):[0-5]\d"
-                    [max]="maxTime"
-                />
+                <div class="input-field">
+                    <label for="dateStart">Date</label>
+                    <input type="date"
+                        name="dateStart" 
+                        disabled="true"
+                        [value]="dateEnd | date:'yyyy-MM-dd'" 
+                        (input)="setDateInput($event, sideEnum.right)" 
+                        [min]="dateStart | date:'yyyy-MM-dd'" 
+                        [max]="maxDate.format('YYYY-MM-DD')" />    
+                </div>
+                <div class="input-field">
+                    <label for="dateStart">Time</label>
+                    <input type="time"
+                        [disabled]="!startDate"
+                        [(ngModel)]="timeEnd"
+                        (ngModelChange)="timeChanged($event, sideEnum.right)"
+                        pattern="(09|1[0-5]):[0-5]\d"
+                        [max]="maxTime"
+                    />
+                </div>
             </div>
         </div>
     </div>

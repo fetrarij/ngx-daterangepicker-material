@@ -469,10 +469,16 @@ $input-height: 3rem !default;
       display: inline-block;
       padding-right: 1em;
       flex: 0;
+      margin-top: 0.75rem;
     }
     .select-content {
       display: inline-block;
       flex: 1;
+
+      .input-field {
+        position: relative;
+        margin-top: 0.75rem;
+      }
     }
 
     input {
@@ -492,8 +498,7 @@ $input-height: 3rem !default;
 
       line-height: 1rem;
       outline: 0 !important;
-      padding: 0.5rem;
-      margin-top: 0.75rem;
+      padding: 1.5rem 0.5rem 0.5rem;
       width: 100%;
       -webkit-appearance: none;
       appearance: none;
@@ -519,6 +524,26 @@ $input-height: 3rem !default;
          color: $adscore-secondary; 
       }
 
+    }
+
+    label {
+      font-weight: 700;
+      letter-spacing: 0.02rem;
+      left: 0.55rem;
+      text-transform: uppercase;
+      margin-bottom: 0;
+      padding-right: 1rem;
+    }
+
+    label,
+    &.required:after,
+    &.optional:after {
+      font-size: 0.75rem;
+      line-height: 1;
+      display: inline-block;
+      position: absolute;
+      top: 0.5rem;
+      z-index: 5;
     }
   }
   
