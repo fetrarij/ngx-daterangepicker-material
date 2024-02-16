@@ -812,7 +812,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
 
     this.timeStart = this.startDate.format("HH:mm")
-    this.dateStart = this.startDate.toDate();
+    this.dateStart = new Date(this.startDate.format("YYYY-MM-DD"));
+
     this.startDateChanged.emit({ startDate: this.startDate });
     this.updateMonthsInView();
   }
