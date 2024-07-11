@@ -323,10 +323,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   @Input() set locale(value: LocaleConfig) {
-    this.localeHolder = { ...this.localeHolderService.config, ...value };
-    if (value.locale) {
-      this.localeHolder = this.localeHolderService.configWithLocale(value.locale);
-    }
+    this.localeHolder = value.locale
+    ? { ...this.localeHolderService.configWithLocale(value.locale), ...value }
+    : { ...this.localeHolderService.config, ...value };
   }
 
   // custom ranges
@@ -844,7 +843,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         return;
       }
       if (this.startDate) {
-        // we want to stay on whatever months are in view if date range is set and both calendar sides have a month already.  e.g. when 
+        // we want to stay on whatever months are in view if date range is set and both calendar sides have a month already.  e.g. when
         // user clicks on the end date, we want to stay on current month in view
         if (this.leftCalendar.month && this.rightCalendar.month) {
           return;
