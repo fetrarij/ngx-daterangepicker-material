@@ -1578,8 +1578,11 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
           classes.push('active', 'start-date');
         }
         // highlight the currently selected end date
+        // for singleDatePicker, don't add end-date class if it's the same as start date
         if (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') === this.endDate.format('YYYY-MM-DD')) {
-          classes.push('active', 'end-date');
+          if (!this.singleDatePicker || this.endDate.format('YYYY-MM-DD') !== this.startDate.format('YYYY-MM-DD')) {
+            classes.push('active', 'end-date');
+          }
         }
         // highlight dates in-between the selected dates
         if (
