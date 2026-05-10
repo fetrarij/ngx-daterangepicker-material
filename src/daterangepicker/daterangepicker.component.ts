@@ -669,15 +669,15 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       startDay = daysInLastMonth - 6;
     }
 
-    let curDate = dayjs(new Date(lastYear, lastMonth, startDay, 12, minute, second)).utc(true);
+    let curDate = dayjs(new Date(lastYear, lastMonth, startDay, 12, 0, 0)).utc(true);
 
-    for (let i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = dayjs(curDate).utc(true).add(24, 'hours')) {
+    for (let i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = dayjs(new Date(curDate.year(), curDate.month(), curDate.date(), 12, 0, 0)).utc(true).add(24, 'hours')) {
       if (i > 0 && col % 7 === 0) {
         col = 0;
         row++;
       }
-      calendar[row][col] = curDate.clone().hour(hour).minute(minute).second(second);
-      curDate = curDate.hour(12);
+      calendar[row][col] = dayjs(new Date(curDate.year(), curDate.month(), curDate.date(), 0, 0, 0)).utc(true);
+      curDate = dayjs(new Date(curDate.year(), curDate.month(), curDate.date(), 12, 0, 0)).utc(true);
 
       if (
         this.minDate &&
@@ -1463,7 +1463,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
    * @param side left or right
    */
   private getDateWithTime(date, side: SideEnum): dayjs.Dayjs {
-    if(!!this.timepickerVariables[side]) {
+    if (!!this.timepickerVariables[side]) {
       let hour = parseInt(String(this.timepickerVariables[side].selectedHour), 10);
       if (!this.timePicker24Hour) {
         const ampm = this.timepickerVariables[side].ampmModel;
@@ -1477,8 +1477,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       const minute = parseInt(String(this.timepickerVariables[side].selectedMinute), 10);
       const second = this.timePickerSeconds ? parseInt(String(this.timepickerVariables[side].selectedSecond), 10) : 0;
       return date.clone().hour(hour).minute(minute).second(second);
-      
-    }else{
+
+    } else {
       return;
     }
   }
@@ -1584,12 +1584,16 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         // highlight dates in-between the selected dates
         if (
           ((this.nowHoveredDate != null && this.pickingDate) || this.endDate != null) &&
-          calendar[row][col] > this.startDate &&
-          (calendar[row][col] < this.endDate || (calendar[row][col] < this.nowHoveredDate && this.pickingDate)) &&
+          calendar[row][col].isAfter(this.startDate, 'day') &&
+          (
+            (this.endDate != null && calendar[row][col].isBefore(this.endDate, 'day')) ||
+            (this.nowHoveredDate != null && this.pickingDate && calendar[row][col].isBefore(this.nowHoveredDate, 'day'))
+          ) &&
           !classes.find((el) => el === 'off')
         ) {
           classes.push('in-range');
         }
+
         // apply custom classes for this date
         const isCustom = this.isCustomDate(calendar[row][col]);
         if (isCustom !== false) {
