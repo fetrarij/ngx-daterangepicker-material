@@ -7,8 +7,9 @@
  */
 
 import { chain, Rule, Tree } from '@angular-devkit/schematics';
-import { addModuleImportToRootModule, getProjectFromWorkspace } from '@angular/cdk/schematics';
+import { addModuleImportToRootModule } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+
 import {Schema} from './schema';
 
 const moduleName = 'NgxDaterangepickerMd';
@@ -30,14 +31,13 @@ export default function (options: Schema): Rule {
  * option is set to false, we still add the `NoopAnimationsModule` because otherwise various
  * components of Angular Material will throw an exception.
  */
-function addDateRangePickerModule(options: any) {
-    return (host: Tree) => {
-        (async () => {
-            const workspace = await getWorkspace(host);
-            const project = getProjectFromWorkspace(workspace, options.project);
-
-            addModuleImportToRootModule(host, moduleName + '.forRoot()', 'ngx-daterangepicker-material', project);
-        })();
-        return host;
+function addDateRangePickerModule(options: any): Rule {
+    return async (host: Tree) => {
+        const workspace = await getWorkspace(host);
+        const project = workspace.projects.get(options.project);
+        if (!project) {
+            throw new Error(`Project "${options.project}" not found in workspace.`);
+        }
+        addModuleImportToRootModule(host, moduleName + '.forRoot()', 'ngx-daterangepicker-material', project as any);
     };
 }
