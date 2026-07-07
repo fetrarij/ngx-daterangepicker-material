@@ -1273,6 +1273,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       if (date.isBefore(this.startDate, 'day') === true && this.customRangeDirection === true) {
         this.setEndDate(this.startDate);
         this.setStartDate(date.clone());
+        this.pickingDate = false;
       } else {
         this.setEndDate(date.clone());
       }
