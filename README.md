@@ -35,6 +35,16 @@ Since v16, the package's major version tracks the Angular major version it suppo
 
  `npm install ngx-daterangepicker-material --save` .
 
+ This library depends on `dayjs`, which requires `esModuleInterop` (or `allowSyntheticDefaultImports`)
+ to be enabled in your `tsconfig.json`:
+ ```json
+ {
+   "compilerOptions": {
+     "esModuleInterop": true
+   }
+ }
+ ```
+
  import **NgxDaterangepickerMd** in your module:
 
 ````typescript
