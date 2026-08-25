@@ -84,6 +84,7 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "demo/src/polyfills.ts",
             "tsConfig": "demo/src/tsconfig.spec.json",
+            "include": ["**/*.spec.ts", "../../src/**/*.spec.ts"],
             "scripts": [],
             "styles": [
               "demo/src/styles.scss"
