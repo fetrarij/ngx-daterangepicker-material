@@ -37,15 +37,44 @@
       },
       "rules": {
         "space-in-parens": "off",
-        "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+        "lines-between-class-members": [
+          "error",
+          "always",
+          {
+            "exceptAfterSingleLine": true
+          }
+        ],
         "lines-around-comment": "off",
         "array-bracket-spacing": "off",
         "space-before-function-paren": "off",
         "computed-property-spacing": "off",
-        "quotes": ["error","single", { "allowTemplateLiterals": true }],
-        "consistent-return": ["off"],
-        "no-param-reassign": ["error", {"ignorePropertyModificationsFor": ["consoleElement"]}],
-        "no-console": ["warn", {"allow": ["warn", "error"]}],
+        "quotes": [
+          "error",
+          "single",
+          {
+            "allowTemplateLiterals": true
+          }
+        ],
+        "consistent-return": [
+          "off"
+        ],
+        "no-param-reassign": [
+          "error",
+          {
+            "ignorePropertyModificationsFor": [
+              "consoleElement"
+            ]
+          }
+        ],
+        "no-console": [
+          "warn",
+          {
+            "allow": [
+              "warn",
+              "error"
+            ]
+          }
+        ],
         "prettier/prettier": [
           "error",
           {
@@ -53,7 +82,7 @@
             "tabWidth": 2,
             "semi": true,
             "singleQuote": true,
-            "endOfLine":"auto"
+            "endOfLine": "auto"
           }
         ],
         "@angular-eslint/directive-selector": [
@@ -74,15 +103,15 @@
         ]
       }
     },
-    // NOTE: We are not applying prettier in this override, only @angular-eslint/template,
     {
-      "files": ["*.html"],
+      "files": [
+        "*.html"
+      ],
       "extends": [
         "plugin:@angular-eslint/template/recommended"
       ],
       "rules": {}
     },
-    // NOTE: we are not applying @angular-eslint/template in this override, only prettier
     {
       "files": [
         "*.html"
@@ -94,7 +123,6 @@
         "plugin:prettier/recommended"
       ],
       "rules": {
-        // NOTE: we are overriding the default config to always set the parser to angular (see below)
         "prettier/prettier": [
           "error",
           {

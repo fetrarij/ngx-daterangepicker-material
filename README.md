@@ -18,11 +18,14 @@ Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
 
 | Angular| ngx-daterangepicker-material|
 | ------|:------:|
-| >=12.0.0  | v6.x.x |
+| 16.x.x  | v16.x.x |
+| 12.0.0 - 15.x.x  | v6.x.x |
 | <=11.0.0  | v5.x.x |
 | >=9.0.0  | v4.x.x |
 | <9.0.0  | v2.x.x |
 | ~~>=9.0.0 depends on @angular/material~~ |~~v3.x~~ |
+
+Since v16, the package's major version tracks the Angular major version it supports
 
 ---
 

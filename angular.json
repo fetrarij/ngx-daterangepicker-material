@@ -110,7 +110,6 @@
       }
     }
   },
-  "defaultProject": "ngx-daterangepicker-material",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "",
@@ -121,6 +120,8 @@
     }
   },
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
