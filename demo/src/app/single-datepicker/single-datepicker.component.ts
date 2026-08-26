@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import dayjs from 'dayjs/esm';
 import 'dayjs/locale/fr';
 import { LocaleConfig } from '../../../../src/daterangepicker';
@@ -12,7 +12,7 @@ dayjs.locale('fr');
   selector: 'single-datepicker',
   templateUrl: './single-datepicker.component.html'
 })
-export class SingleDatepickerComponent implements OnInit {
+export class SingleDatepickerComponent {
   selected = dayjs();
   locale: LocaleConfig = {
     applyLabel: 'Appliquer',
@@ -21,9 +21,6 @@ export class SingleDatepickerComponent implements OnInit {
     monthNames: dayjs.monthsShort(),
     firstDay: dayjs.localeData().firstDayOfWeek()
   };
-
-  constructor() {}
-  ngOnInit(): void {}
 
   isInvalidDate(date: Dayjs): boolean {
     return date.weekday() === 0;

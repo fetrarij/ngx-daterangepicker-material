@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import dayjs from 'dayjs/esm';
 import { DaterangepickerDirective } from '../../../../src/daterangepicker/daterangepicker.directive';
 import { EndDate, StartDate } from '../../../../src/daterangepicker/daterangepicker.component';
@@ -9,7 +9,7 @@ import { LocaleConfig } from '../../../../src/daterangepicker';
   selector: 'full',
   templateUrl: './full.component.html'
 })
-export class FullComponent implements OnInit {
+export class FullComponent {
   @ViewChild(DaterangepickerDirective, { static: true }) daterangepicker: DaterangepickerDirective;
   title = 'Pure angular daterangepicker';
   options = {
@@ -54,8 +54,6 @@ export class FullComponent implements OnInit {
   clear(): void {
     this.daterangepicker.clear();
   }
-
-  ngOnInit(): void {}
 
   eventClicked(e: StartDate | EndDate): void {
     // eslint-disable-next-line no-console
