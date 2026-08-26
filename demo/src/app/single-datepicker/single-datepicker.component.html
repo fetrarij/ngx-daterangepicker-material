@@ -42,20 +42,20 @@ export class SingleDatepickerComponent {{ '{' }}
     daysOfWeek: moment.weekdaysMin(),
     monthNames: moment.monthsShort(),
     firstDay: moment.localeData().firstDayOfWeek(),
-  }
+  &#125;
   constructor() {{ '{' }}
     this.alwaysShowCalendars = true;
-  }
+  &#125;
   isInvalidDate(date) {{ '{' }}
     return date.weekday() === 0;
-  }
+  &#125;
   isCustomDate(date) {{ '{' }}
     return  (
       date.weekday() === 0 ||
       date.weekday() === 6
     )  ? 'mycustomdate' : false;
-  }
-}</code>
+  &#125;
+&#125;</code>
     </pre>
     </div>
 </div>
