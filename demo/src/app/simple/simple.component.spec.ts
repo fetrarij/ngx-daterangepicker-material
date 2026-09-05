@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxDaterangepickerMd } from '../../../../src/daterangepicker';
@@ -11,7 +11,7 @@ describe('SimpleComponent', () => {
   let fixture: ComponentFixture<SimpleComponent>;
   const opener = '.form-control';
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SimpleComponent],
       imports: [FormsModule, NgxDaterangepickerMd.forRoot(), MatToolbarModule]

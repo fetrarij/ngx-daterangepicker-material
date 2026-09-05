@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxDaterangepickerMd } from '../../../../src/daterangepicker';
@@ -9,7 +9,7 @@ describe('CustomRangesComponent', () => {
   let component: CustomRangesComponent;
   let fixture: ComponentFixture<CustomRangesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CustomRangesComponent],
       imports: [FormsModule, NgxDaterangepickerMd.forRoot(), MatToolbarModule]

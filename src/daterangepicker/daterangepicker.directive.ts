@@ -26,6 +26,7 @@ import { LocaleService } from './locale.service';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'input[ngxDaterangepickerMd]',
+  standalone: false,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

@@ -3,6 +3,7 @@ import { DateRange, DateRanges, TimePeriod } from '../../../../src/daterangepick
 import dayjs, { Dayjs } from 'dayjs/esm';
 
 @Component({
+  standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'custom-ranges',
   templateUrl: './custom-ranges.component.html'

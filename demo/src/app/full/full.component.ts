@@ -5,6 +5,7 @@ import { EndDate, StartDate } from '../../../../src/daterangepicker/daterangepic
 import { LocaleConfig } from '../../../../src/daterangepicker';
 
 @Component({
+  standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'full',
   templateUrl: './full.component.html'
