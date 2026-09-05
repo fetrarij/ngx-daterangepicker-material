@@ -196,7 +196,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   get locale(): LocaleConfig {
     return this.localeHolder;
   }
@@ -213,7 +212,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   get value(): TimePeriod | null {
     return this.valueHolder || null;
   }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import dayjs from 'dayjs/esm';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LocaleConfig } from '../../../../src/daterangepicker';
@@ -7,6 +7,7 @@ import { LocaleConfig } from '../../../../src/daterangepicker';
   standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'reactive-form',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './reactive-form.component.html'
 })
 export class ReactiveFormComponent {

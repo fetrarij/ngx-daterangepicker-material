@@ -11,7 +11,8 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs/esm';
@@ -149,6 +150,7 @@ interface VisibleCalendar {
   styleUrls: ['./daterangepicker.component.scss'],
   templateUrl: './daterangepicker.component.html',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -295,7 +297,11 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   protected rangesHolder: DateRanges = {};
   private cachedVersion: { start: Dayjs; end: Dayjs } = { start: null, end: null };
 
-  constructor(private el: ElementRef, private ref: ChangeDetectorRef, private localeHolderService: LocaleService) {
+  constructor(
+    private el: ElementRef,
+    private ref: ChangeDetectorRef,
+    private localeHolderService: LocaleService
+  ) {
     this.choosedDate = new EventEmitter();
     this.rangeClicked = new EventEmitter();
     this.datesUpdated = new EventEmitter();
@@ -321,7 +327,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   get locale(): LocaleConfig {
     return this.localeHolder;
   }
@@ -342,7 +347,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   // custom ranges
-  // eslint-disable-next-line @typescript-eslint/member-ordering
+
   get ranges(): DateRanges {
     return this.rangesHolder;
   }
@@ -352,7 +357,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     this.renderRanges();
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   get maxDate(): dayjs.Dayjs {
     return this.maxDateHolder;
   }
@@ -373,14 +377,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   isInvalidDate(date: Dayjs): boolean {
     return false;
   }
-  // eslint-disable-next-line @typescript-eslint/member-ordering
 
   @Input()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isCustomDate(date: Dayjs): boolean {
     return false;
   }
-  // eslint-disable-next-line @typescript-eslint/member-ordering
 
   @Input()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -1465,7 +1467,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
    * @param side left or right
    */
   private getDateWithTime(date, side: SideEnum): dayjs.Dayjs {
-    if(!!this.timepickerVariables[side]) {
+    if (this.timepickerVariables[side]) {
       let hour = parseInt(String(this.timepickerVariables[side].selectedHour), 10);
       if (!this.timePicker24Hour) {
         const ampm = this.timepickerVariables[side].ampmModel;
@@ -1479,8 +1481,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       const minute = parseInt(String(this.timepickerVariables[side].selectedMinute), 10);
       const second = this.timePickerSeconds ? parseInt(String(this.timepickerVariables[side].selectedSecond), 10) : 0;
       return date.clone().hour(hour).minute(minute).second(second);
-      
-    }else{
+    } else {
       return;
     }
   }

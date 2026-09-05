@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import dayjs from 'dayjs/esm';
 import { DaterangepickerDirective } from '../../../../src/daterangepicker/daterangepicker.directive';
 import { EndDate, StartDate } from '../../../../src/daterangepicker/daterangepicker.component';
@@ -8,6 +8,7 @@ import { LocaleConfig } from '../../../../src/daterangepicker';
   standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'full',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './full.component.html'
 })
 export class FullComponent {

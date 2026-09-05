@@ -20,13 +20,13 @@
             open from a button
         </button>
         @if (selected && selected.startDate) {
-        <button
-            type="button"
-            [style.margin-left]="'.5rem'"
-            class="ngx-daterangepicker-action waves-effect waves-light btn red"
-            (click)="clear($event)">
-            Clear
-        </button>
+            <button
+                type="button"
+                [style.margin-left]="'.5rem'"
+                class="ngx-daterangepicker-action waves-effect waves-light btn red"
+                (click)="clear($event)">
+                Clear
+            </button>
         }
     </div>
 </div>
@@ -66,8 +66,8 @@
             [autoApply]="true"
             [timePicker24Hour]="true"
             [linkedCalendars]="true"
-            [startDate]="selected?.startDate"
-            [endDate]="selected?.endDate"
+            [startDate]="$safeNavigationMigration(selected?.startDate)"
+            [endDate]="$safeNavigationMigration(selected?.endDate)"
             [timePicker]="true"
             [locale]="{ applyLabel: 'Done', firstDay: 1 }"></ngx-daterangepicker-material>
         <br />
