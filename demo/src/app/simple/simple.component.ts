@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import dayjs from 'dayjs/esm';
 import utc from 'dayjs/esm/plugin/utc';
 dayjs.extend(utc);
@@ -9,6 +9,7 @@ import { ChosenDate, TimePeriod } from '../../../../src/daterangepicker/daterang
   standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'simple',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './simple.component.html'
 })
 export class SimpleComponent implements OnInit {

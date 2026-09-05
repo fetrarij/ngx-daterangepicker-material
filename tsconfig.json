@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "downlevelIteration": true,
+        "strict": false,
         "importHelpers": true,
         "target": "es2020",
         "module": "es2020",
@@ -15,7 +15,6 @@
         "declaration": true,
         "sourceMap": false,
         "outDir": "dist",
-        "baseUrl": "./",
         "types": ["node"]
     },
     "angularCompilerOptions": {

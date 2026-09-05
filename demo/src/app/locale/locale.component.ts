@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import dayjs from 'dayjs/esm';
 import utc from 'dayjs/esm/plugin/utc';
 import * as fr from 'dayjs/locale/fr';
@@ -9,6 +9,7 @@ dayjs.extend(utc);
   standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'locale',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './locale.component.html'
 })
 export class LocaleComponent {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { DateRange, DateRanges, TimePeriod } from '../../../../src/daterangepicker/daterangepicker.component';
 import dayjs, { Dayjs } from 'dayjs/esm';
 
@@ -6,6 +6,7 @@ import dayjs, { Dayjs } from 'dayjs/esm';
   standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'custom-ranges',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './custom-ranges.component.html'
 })
 export class CustomRangesComponent {

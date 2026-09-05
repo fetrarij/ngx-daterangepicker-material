@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import dayjs from 'dayjs/esm';
 import 'dayjs/locale/fr';
 import { LocaleConfig } from '../../../../src/daterangepicker';
@@ -11,6 +11,7 @@ dayjs.locale('fr');
   standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'single-datepicker',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './single-datepicker.component.html'
 })
 export class SingleDatepickerComponent {

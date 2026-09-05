@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import dayjs from 'dayjs/esm';
 
 @Component({
   standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'timepicker',
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './timepicker.component.html'
 })
 export class TimepickerComponent {

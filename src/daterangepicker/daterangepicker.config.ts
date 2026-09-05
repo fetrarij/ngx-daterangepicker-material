@@ -25,7 +25,7 @@ export interface LocaleConfig {
 /**
  *  DefaultLocaleConfig
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
+
 export const DefaultLocaleConfig: LocaleConfig = {
   direction: 'ltr',
   separator: ' - ',
