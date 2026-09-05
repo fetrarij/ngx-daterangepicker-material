@@ -19,30 +19,31 @@
         <button type="button" class="ngx-daterangepicker-action waves-effect waves-light btn" (click)="open($event)">
             open from a button
         </button>
+        @if (selected && selected.startDate) {
         <button
             type="button"
-            *ngIf="selected && selected.startDate"
             [style.margin-left]="'.5rem'"
             class="ngx-daterangepicker-action waves-effect waves-light btn red"
             (click)="clear($event)">
             Clear
         </button>
+        }
     </div>
 </div>
 <div class="row">
     <div class="col s12">
         <b>Using the change event :</b>
         <pre class="prettyprint"><code class="html">&lt;input type="text" ngxDaterangepickerMd
-[(ngModel)]="selected" placeholder="Choose date" (change)="change($event)"/&gt;</code>
-    </pre>
+    [(ngModel)]="selected" placeholder="Choose date" (change)="change($event)"/&gt;</code>
+  </pre>
 
         <b>Or with ngModel :</b>
 
         <pre class="prettyprint"><code class="html">&lt;input type="text" ngxDaterangepickerMd
-        [lockStartDate]="false"
-[(ngModel)]="selected" placeholder="Choose date"
-(ngModelChange)="ngModelChange($event)"/&gt;</code>
-    </pre>
+    [lockStartDate]="false"
+    [(ngModel)]="selected" placeholder="Choose date"
+  (ngModelChange)="ngModelChange($event)"/&gt;</code>
+</pre>
     </div>
 </div>
 <hr />
