@@ -6,6 +6,7 @@ import { DateRanges } from '../../../../src/daterangepicker/daterangepicker.comp
 dayjs.extend(utc);
 
 @Component({
+  standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'locale',
   templateUrl: './locale.component.html'

@@ -99,7 +99,8 @@
             "prefix": "ngx-daterangepicker-material",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@angular-eslint/prefer-standalone": "off"
       }
     },
     {

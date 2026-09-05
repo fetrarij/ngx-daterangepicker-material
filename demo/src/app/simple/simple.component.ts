@@ -6,6 +6,7 @@ import { DaterangepickerComponent, DaterangepickerDirective } from '../../../../
 import { ChosenDate, TimePeriod } from '../../../../src/daterangepicker/daterangepicker.component';
 
 @Component({
+  standalone: false,
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'simple',
   templateUrl: './simple.component.html'
