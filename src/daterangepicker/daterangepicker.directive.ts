@@ -296,16 +296,22 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this.picker.initialDates = this.initialDates;
     }
     this.picker.startDateChanged.asObservable().subscribe((itemChanged: StartDate) => {
-      this.startDateChanged.emit(itemChanged);
+      this.startDateChanged.emit({ startDate: this.toExternalDate(itemChanged.startDate) });
     });
     this.picker.endDateChanged.asObservable().subscribe((itemChanged: EndDate) => {
-      this.endDateChanged.emit(itemChanged);
+      this.endDateChanged.emit({ endDate: this.toExternalDate(itemChanged.endDate) });
     });
     this.picker.rangeClicked.asObservable().subscribe((range: DateRange) => {
-      this.rangeClicked.emit(range);
+      this.rangeClicked.emit({
+        label: range.label,
+        dates: [this.toExternalDate(range.dates[0]), this.toExternalDate(range.dates[1])]
+      });
     });
     this.picker.datesUpdated.asObservable().subscribe((range: TimePeriod) => {
-      this.datesUpdated.emit(range);
+      this.datesUpdated.emit({
+        startDate: this.toExternalDate(range.startDate),
+        endDate: this.toExternalDate(range.endDate)
+      });
     });
     this.picker.clearClicked.asObservable().subscribe(() => {
       this.clearClicked.emit();
@@ -313,8 +319,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.choosedDate.asObservable().subscribe((change: ChosenDate) => {
       if (change) {
         const value = {
-          [this.startKeyHolder]: change.startDate,
-          [this.endKeyHolder]: change.endDate
+          [this.startKeyHolder]: this.toExternalDate(change.startDate),
+          [this.endKeyHolder]: this.toExternalDate(change.endDate)
         };
         this.value = value as TimePeriod;
         this.onChange.emit(value as TimePeriod);
@@ -382,6 +388,17 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
 
   setDisabledState(state: boolean): void {
     this.disabledHolder = state;
+  }
+
+  /**
+   * Fix issue #562
+   */
+  private toExternalDate(date: dayjs.Dayjs): dayjs.Dayjs;
+  private toExternalDate(date: dayjs.Dayjs | null): dayjs.Dayjs | null {
+    if (!date) {
+      return date;
+    }
+    return dayjs(date.format('YYYY-MM-DDTHH:mm:ss.SSS'));
   }
 
   /**
