@@ -171,7 +171,7 @@ You can use the component directly in your templates, which will set its `inline
 
 ### minDate, maxDate
 
- >To set the minimal and maximal date, these options are either a dayjs date or string in [ISO](https://www.w3.org/QA/Tips/iso-date) format
+ >To set the minimal and maximal date, these options are a dayjs date, a native `Date`, or a string in [ISO](https://www.w3.org/QA/Tips/iso-date) format
 
 ### dateLimit
 
