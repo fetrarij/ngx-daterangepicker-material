@@ -70,6 +70,47 @@ import { App } from './app';
 export class AppModule {}
 ````
 
+### Standalone components
+
+`NgxDaterangepickerMd` is still an `NgModule` internally, but it works with standalone
+applications too. Register `NgxDaterangepickerMd.forRoot()`'s providers once with
+`importProvidersFrom` in your app config:
+
+````typescript
+// app.config.ts
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    importProvidersFrom(NgxDaterangepickerMd.forRoot())
+  ]
+};
+````
+
+Then import `NgxDaterangepickerMd` directly in any standalone component that uses the
+directive:
+
+````typescript
+// app.ts
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [FormsModule, NgxDaterangepickerMd],
+  templateUrl: './app.html'
+})
+export class App {
+  selected: { startDate: unknown; endDate: unknown } | null = null;
+}
+````
+
+`forRoot()` must only be called once, from `app.config.ts` — do not add it again to a
+component's own `imports` array.
+
 ## Usage example
 
 Html:
