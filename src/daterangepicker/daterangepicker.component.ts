@@ -317,10 +317,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   @Input()
-  set minDate(value: dayjs.Dayjs | string) {
+  set minDate(value: dayjs.Dayjs | Date | string) {
     if (dayjs.isDayjs(value)) {
       this.minDateHolder = value;
-    } else if (typeof value === 'string') {
+    } else if (typeof value === 'string' || value instanceof Date) {
       this.minDateHolder = dayjs(value).utc(true);
     } else {
       this.minDateHolder = null;
@@ -362,10 +362,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   @Input()
-  set maxDate(value: dayjs.Dayjs | string) {
+  set maxDate(value: dayjs.Dayjs | Date | string) {
     if (dayjs.isDayjs(value)) {
       this.maxDateHolder = value;
-    } else if (typeof value === 'string') {
+    } else if (typeof value === 'string' || value instanceof Date) {
       this.maxDateHolder = dayjs(value).utc(true);
     } else {
       this.maxDateHolder = null;

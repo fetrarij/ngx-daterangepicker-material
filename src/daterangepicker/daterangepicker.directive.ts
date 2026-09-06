@@ -48,10 +48,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   @Output() clearClicked: EventEmitter<void> = new EventEmitter();
 
   @Input()
-  minDate: dayjs.Dayjs;
+  minDate: dayjs.Dayjs | Date | string;
 
   @Input()
-  maxDate: dayjs.Dayjs;
+  maxDate: dayjs.Dayjs | Date | string;
 
   @Input()
   autoApply: boolean;
