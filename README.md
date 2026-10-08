@@ -111,6 +111,19 @@ export class App {
 `forRoot()` must only be called once, from `app.config.ts` — do not add it again to a
 component's own `imports` array.
 
+### Testing with Jest
+
+The library imports `dayjs/esm`, which Jest can't load as is (`SyntaxError: Cannot use import statement outside a module`). Point Jest to the CommonJS build of dayjs in your `jest.config.js`:
+
+```js
+moduleNameMapper: {
+  '^dayjs/esm$': 'dayjs',
+  '^dayjs/esm/(.*)$': 'dayjs/$1'
+}
+```
+
+Keep `esModuleInterop: true` in the tsconfig used by your tests. Alternatively, let Jest transform dayjs: `transformIgnorePatterns: ['node_modules/(?!(dayjs|.*\\.mjs$))']`.
+
 ## Usage example
 
 Html:
