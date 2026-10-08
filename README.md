@@ -237,6 +237,18 @@ example:
 
 the model we got would be:  `{start: Date, end: Date}`
 
+### Required validation
+
+Use `dateRangeRequired()` instead of `Validators.required`: after "Clear", the value is `{ startDate: null, endDate: null }`, which `Validators.required` treats as filled.
+
+```typescript
+import { dateRangeRequired } from 'ngx-daterangepicker-material';
+
+dates = new FormControl(null, dateRangeRequired());
+```
+
+With custom keys, pass them in the same order: `dateRangeRequired('start', 'end')`.
+
 ### ranges
 
 (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range. As an example:
