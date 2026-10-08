@@ -177,6 +177,19 @@ You can use the component directly in your templates, which will set its `inline
 
  >To set max number of the date we can choose
 
+### initialDates
+
+ >To set the months shown in the left and right calendars when the picker opens with no selected date. It's an array of two dates (dayjs dates or strings in [ISO](https://www.w3.org/QA/Tips/iso-date) format), it doesn't select any date.
+
+For example, to open on the previous and current month instead of the current and next month:
+```html
+<input type="text" ngxDaterangepickerMd [initialDates]="[previousMonth, currentMonth]" [(ngModel)]="selected" />
+```
+```typescript
+previousMonth = dayjs().subtract(1, 'month');
+currentMonth = dayjs();
+```
+
 ### locale
 
 >the locale options is an object with:
