@@ -73,6 +73,7 @@ interface TimePickerVariables {
   selectedMinute: number;
   selectedSecond: number;
   hours: number[];
+  hoursLabel: string[];
   seconds: number[];
   disabledHours: number[];
   disabledMinutes: number[];
@@ -541,6 +542,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     const end = this.timePicker24Hour ? 23 : 12;
     this.timepickerVariables[side] = {
       hours: [],
+      hoursLabel: [],
       minutes: [],
       minutesLabel: [],
       seconds: [],
@@ -570,6 +572,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       }
 
       this.timepickerVariables[side].hours.push(i);
+      this.timepickerVariables[side].hoursLabel.push(this.timePicker24Hour && i < 10 ? `0${i}` : `${i}`);
       if (iIn24 === selected.hour() && !disabled) {
         this.timepickerVariables[side].selectedHour = i;
       } else if (disabled) {

@@ -268,3 +268,37 @@ describe('DaterangepickerComponent Apply with only a start date (issue #549)', (
     expect(lastUpdate.endDate.date()).toBe(4);
   });
 });
+
+describe('DaterangepickerComponent hour labels (issue #539)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function hourOptions(timePicker24Hour: boolean): { text: string; value: string }[] {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    fixture.componentInstance.inline = true;
+    fixture.componentInstance.timePicker = true;
+    fixture.componentInstance.timePicker24Hour = timePicker24Hour;
+    fixture.detectChanges();
+    const select: HTMLSelectElement = fixture.nativeElement.querySelector('.hourselect');
+    return Array.from(select.options).map((option) => ({ text: option.textContent.trim(), value: option.value }));
+  }
+
+  it('pads hours with a zero in 24-hour mode', () => {
+    const options = hourOptions(true);
+
+    expect(options.slice(0, 11).map((option) => option.text)).toEqual(['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10']);
+    expect(options[23].text).toBe('23');
+    expect(options[5].value).toBe('5');
+  });
+
+  it('keeps unpadded hours in 12-hour mode', () => {
+    const options = hourOptions(false);
+
+    expect(options.map((option) => option.text)).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+  });
+});
