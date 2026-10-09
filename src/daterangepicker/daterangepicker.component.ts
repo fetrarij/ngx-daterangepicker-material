@@ -1007,7 +1007,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       if (this.timePicker) {
         this.endDate = this.getDateWithTime(this.startDate, SideEnum.right);
       } else {
-        this.endDate = this.startDate.clone();
+        // setEndDate() moves the end to the end of the day, like a second click on the same day.
+        this.setEndDate(this.startDate.clone());
       }
       this.calculateChosenLabel();
     }

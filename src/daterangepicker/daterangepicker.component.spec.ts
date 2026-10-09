@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NgxDaterangepickerMd } from './daterangepicker.module';
-import { DaterangepickerComponent } from './daterangepicker.component';
+import { DaterangepickerComponent, TimePeriod } from './daterangepicker.component';
 
 describe('DaterangepickerComponent minDate/maxDate native Date support (issue #561)', () => {
   let fixture: ComponentFixture<DaterangepickerComponent>;
@@ -209,5 +209,62 @@ describe('DaterangepickerComponent inline Cancel (issue #554)', () => {
     clickButton('Cancel');
 
     expect(selectedDays()).toEqual(afterClear);
+  });
+});
+
+describe('DaterangepickerComponent Apply with only a start date (issue #549)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+  let lastUpdate: TimePeriod;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function create(timePicker: boolean): void {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.inline = true;
+    component.timePicker = timePicker;
+    fixture.detectChanges();
+    component.datesUpdated.subscribe((range: TimePeriod) => (lastUpdate = range));
+  }
+
+  function clickDay(day: number): void {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  function apply(): void {
+    const buttons: HTMLButtonElement[] = Array.from(fixture.nativeElement.querySelectorAll('.buttons button'));
+    buttons.find((button) => button.textContent.trim() === 'Apply').click();
+    fixture.detectChanges();
+  }
+
+  it('ends at the end of the day without timePicker, like clicking the day twice', () => {
+    create(false);
+    clickDay(4);
+    clickDay(4);
+    apply();
+    const twoClicks = lastUpdate.endDate.format();
+
+    clickDay(4);
+    apply();
+
+    expect(lastUpdate.endDate.format()).toBe(twoClicks);
+    expect(lastUpdate.endDate.format('HH:mm:ss')).toBe('23:59:59');
+    expect(lastUpdate.startDate.format('YYYY-MM-DD HH:mm')).toBe(lastUpdate.endDate.format('YYYY-MM-DD') + ' 00:00');
+  });
+
+  it('keeps the right time picker value with timePicker', () => {
+    create(true);
+    clickDay(4);
+    apply();
+
+    expect(lastUpdate.endDate.format('HH:mm')).toBe('23:59');
+    expect(lastUpdate.endDate.date()).toBe(4);
   });
 });
