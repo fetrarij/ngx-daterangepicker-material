@@ -44,3 +44,56 @@ describe('DaterangepickerComponent minDate/maxDate native Date support (issue #5
     expect(fromDate).toBe(fromString);
   });
 });
+
+describe('DaterangepickerComponent year dropdown bounds (issue #525)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function create(singleDatePicker: boolean, maxDate?: string): void {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.showDropdowns = true;
+    component.singleDatePicker = singleDatePicker;
+    if (maxDate) {
+      component.maxDate = maxDate;
+    }
+    fixture.detectChanges();
+  }
+
+  function selectYear(year: number): void {
+    // The first year select is always the left calendar's, even in single mode where it has the "right" class.
+    const select: HTMLSelectElement = fixture.nativeElement.querySelector('.yearselect');
+    select.value = String(year);
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+  }
+
+  for (const singleDatePicker of [true, false]) {
+    const mode = singleDatePicker ? 'single' : 'range';
+
+    it(`renders the first and last default years without minDate/maxDate (${mode})`, () => {
+      create(singleDatePicker);
+      const { minYear, maxYear } = component.calendarVariables.left.dropdowns;
+
+      expect(() => selectYear(maxYear)).not.toThrow();
+      expect(() => selectYear(minYear)).not.toThrow();
+    });
+  }
+
+  it('still disables the months after maxDate in the last year', () => {
+    create(true, '2030-06-15');
+    selectYear(2030);
+
+    const select: HTMLSelectElement = fixture.nativeElement.querySelector('.monthselect');
+    const disabled = Array.from(select.options).map((option) => option.disabled);
+
+    expect(disabled.slice(0, 6).every((value) => !value)).toBeTrue();
+    expect(disabled.slice(6).every((value) => value)).toBeTrue();
+  });
+});

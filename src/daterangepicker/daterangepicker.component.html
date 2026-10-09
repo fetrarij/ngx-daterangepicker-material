@@ -55,8 +55,12 @@
                                     @for (m of calendarVariables.left.dropdowns.monthArrays; track m) {
                                     <option
                                         [disabled]="
-                                            (calendarVariables.left.dropdowns.inMinYear && m < calendarVariables.left.minDate.month()) ||
-                                            (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())
+                                            (calendarVariables.left.dropdowns.inMinYear &&
+                                                calendarVariables.left.minDate &&
+                                                m < calendarVariables.left.minDate.month()) ||
+                                            (calendarVariables.left.dropdowns.inMaxYear &&
+                                                calendarVariables.left.maxDate &&
+                                                m > calendarVariables.left.maxDate.month())
                                         "
                                         [value]="m"
                                         [selected]="calendarVariables.left.dropdowns.currentMonth === m"
