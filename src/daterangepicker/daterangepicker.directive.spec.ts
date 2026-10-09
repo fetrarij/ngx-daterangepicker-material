@@ -74,3 +74,44 @@ describe('DaterangepickerDirective external date instants (issue #562)', () => {
     expect(host.selected.endDate.toISOString()).toBe(originalInstant.toISOString());
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [singleDatePicker]="true"
+    [autoApply]="true"
+    [(ngModel)]="selected"
+    (ngModelChange)="changes = changes + 1"
+  />`
+})
+class SingleAutoApplyHostComponent {
+  selected: TimePeriod;
+  changes = 0;
+}
+
+describe('DaterangepickerDirective single autoApply (issue #526)', () => {
+  let fixture: ComponentFixture<SingleAutoApplyHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [SingleAutoApplyHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('updates the model once per click and closes the picker', () => {
+    fixture = TestBed.createComponent(SingleAutoApplyHostComponent);
+    fixture.detectChanges();
+    const directive = fixture.debugElement.query(By.directive(DaterangepickerDirective)).injector.get(DaterangepickerDirective);
+    directive.open();
+    fixture.detectChanges();
+
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === '10').click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.changes).toBe(1);
+    expect(directive.picker.isShown).toBeFalse();
+  });
+});

@@ -97,3 +97,55 @@ describe('DaterangepickerComponent year dropdown bounds (issue #525)', () => {
     expect(disabled.slice(6).every((value) => value)).toBeTrue();
   });
 });
+
+describe('DaterangepickerComponent autoApply emits once (issue #526)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+  let emitted: { choosedDate: number; datesUpdated: number };
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function create(singleDatePicker: boolean, autoApply: boolean): void {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.singleDatePicker = singleDatePicker;
+    component.autoApply = autoApply;
+    fixture.detectChanges();
+    emitted = { choosedDate: 0, datesUpdated: 0 };
+    component.choosedDate.subscribe(() => emitted.choosedDate++);
+    component.datesUpdated.subscribe(() => emitted.datesUpdated++);
+  }
+
+  function clickDay(day: number): void {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  it('emits once per click in single mode with autoApply', () => {
+    create(true, true);
+    clickDay(10);
+
+    expect(emitted).toEqual({ choosedDate: 1, datesUpdated: 1 });
+  });
+
+  it('does not emit on click in single mode without autoApply', () => {
+    create(true, false);
+    clickDay(10);
+
+    expect(emitted).toEqual({ choosedDate: 0, datesUpdated: 0 });
+  });
+
+  it('emits once after the end date in range mode with autoApply', () => {
+    create(false, true);
+    clickDay(10);
+    expect(emitted).toEqual({ choosedDate: 0, datesUpdated: 0 });
+
+    clickDay(12);
+    expect(emitted).toEqual({ choosedDate: 1, datesUpdated: 1 });
+  });
+});

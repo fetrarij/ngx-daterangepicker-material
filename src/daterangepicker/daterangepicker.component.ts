@@ -1289,9 +1289,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     if (this.singleDatePicker) {
       this.setEndDate(this.startDate);
       this.updateElement();
-      if (this.autoApply) {
-        this.clickApply();
-      }
     }
 
     this.updateView();
