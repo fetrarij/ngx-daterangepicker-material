@@ -392,3 +392,70 @@ describe('DaterangepickerComponent locale change at runtime (issues #519, #462)'
     expect(firstGridDay()).toBe(0);
   });
 });
+
+describe('DaterangepickerComponent inline emitted instants (issue #547)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.inline = true;
+    component.alwaysShowCalendars = true;
+    component.ranges = { Week: [dayjs('2026-10-05T00:00:00'), dayjs('2026-10-11T23:59:59')] };
+    fixture.detectChanges();
+  });
+
+  // The local instant of a wall-clock time in the browser's timezone.
+  function local(wallClock: string): string {
+    return dayjs(wallClock).toISOString();
+  }
+
+  function clickDay(day: number): void {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  it('emits local instants from datesUpdated, choosedDate, startDateChanged and endDateChanged', () => {
+    const month = component.leftCalendar.month.format('YYYY-MM');
+    const emitted: Record<string, string> = {};
+    component.datesUpdated.subscribe((range: TimePeriod) => (emitted.updatedStart = range.startDate.toISOString()));
+    component.choosedDate.subscribe((range) => (emitted.chosenEnd = range.endDate.toISOString()));
+    component.startDateChanged.subscribe((value) => (emitted.start = value.startDate.toISOString()));
+    component.endDateChanged.subscribe((value) => (emitted.end = value.endDate.toISOString()));
+
+    clickDay(4);
+    clickDay(6);
+    component.clickApply();
+
+    expect(emitted.start).toBe(local(`${month}-04T00:00:00`));
+    expect(emitted.updatedStart).toBe(local(`${month}-04T00:00:00`));
+    expect(emitted.end).toBe(local(`${month}-06T23:59:59`));
+    expect(emitted.chosenEnd).toBe(local(`${month}-06T23:59:59`));
+  });
+
+  it('emits local instants from rangeClicked', () => {
+    let start: string;
+    component.rangeClicked.subscribe((range) => (start = range.dates[0].toISOString()));
+
+    component.clickRange(new MouseEvent('click'), 'Week');
+
+    expect(start).toBe(local('2026-10-05T00:00:00'));
+  });
+
+  it('still emits null dates on Clear', () => {
+    let cleared: TimePeriod;
+    component.datesUpdated.subscribe((range: TimePeriod) => (cleared = range));
+
+    component.clear();
+
+    expect(cleared).toEqual({ startDate: null, endDate: null });
+  });
+});

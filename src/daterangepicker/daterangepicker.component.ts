@@ -18,6 +18,7 @@ import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
+import { toExternalDate } from './external-date';
 
 import localeData from 'dayjs/esm/plugin/localeData';
 import LocalizedFormat from 'dayjs/esm/plugin/localizedFormat';
@@ -800,7 +801,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     if (!this.isShown) {
       this.updateElement();
     }
-    this.startDateChanged.emit({ startDate: this.startDate });
+    this.startDateChanged.emit({ startDate: this.toOutput(this.startDate) });
     this.updateMonthsInView();
   }
 
@@ -837,7 +838,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     if (!this.isShown) {
       // this.updateElement();
     }
-    this.endDateChanged.emit({ endDate: this.endDate });
+    this.endDateChanged.emit({ endDate: this.toOutput(this.endDate) });
     this.updateMonthsInView();
   }
 
@@ -1014,10 +1015,14 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       }
     }
     if (this.chosenLabel) {
-      this.choosedDate.emit({ chosenLabel: this.chosenLabel, startDate: this.startDate, endDate: this.endDate });
+      this.choosedDate.emit({
+        chosenLabel: this.chosenLabel,
+        startDate: this.toOutput(this.startDate),
+        endDate: this.toOutput(this.endDate)
+      });
     }
 
-    this.datesUpdated.emit({ startDate: this.startDate, endDate: this.endDate });
+    this.datesUpdated.emit({ startDate: this.toOutput(this.startDate), endDate: this.toOutput(this.endDate) });
     // Inline pickers never call show(), so Cancel needs the cache refreshed here.
     this.cachedVersion.start = this.startDate?.clone();
     this.cachedVersion.end = this.endDate?.clone();
@@ -1331,7 +1336,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       if (!this.alwaysShowCalendars) {
         this.isShown = false; // hide calendars
       }
-      this.rangeClicked.emit({ label, dates });
+      this.rangeClicked.emit({ label, dates: [this.toOutput(dates[0]), this.toOutput(dates[1])] });
       if (!this.keepCalendarOpeningWithRange || this.autoApply) {
         this.clickApply();
       } else {
@@ -1473,6 +1478,13 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   /**
    *  build the locale config
    */
+  /**
+   * Dates leaving the inline component. The directive converts them itself, so it gets the internal dates.
+   */
+  private toOutput(date: Dayjs | null): Dayjs | null {
+    return this.inline ? toExternalDate(date) : date;
+  }
+
   /**
    * Merge a locale input with the global config. A dayjs `locale` provides the day and month names and the first day.
    */
