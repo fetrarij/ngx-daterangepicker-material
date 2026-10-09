@@ -115,3 +115,69 @@ describe('DaterangepickerDirective single autoApply (issue #526)', () => {
     expect(directive.picker.isShown).toBeFalse();
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [singleDatePicker]="true"
+    [autoApply]="autoApply"
+    [ranges]="ranges"
+    [showCustomRangeLabel]="true"
+    [(ngModel)]="selected"
+  />`
+})
+class SingleCustomRangeHostComponent {
+  selected: TimePeriod;
+  autoApply = false;
+  ranges = { Today: [dayjs(), dayjs()] };
+}
+
+describe('DaterangepickerDirective single date with custom range (issue #555)', () => {
+  let fixture: ComponentFixture<SingleCustomRangeHostComponent>;
+  let directive: DaterangepickerDirective;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [SingleCustomRangeHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function openCustomRange(autoApply: boolean): void {
+    fixture = TestBed.createComponent(SingleCustomRangeHostComponent);
+    fixture.componentInstance.autoApply = autoApply;
+    fixture.detectChanges();
+    directive = fixture.debugElement.query(By.directive(DaterangepickerDirective)).injector.get(DaterangepickerDirective);
+    directive.open();
+    fixture.detectChanges();
+    findButton('.ranges button', 'Custom range').click();
+    fixture.detectChanges();
+  }
+
+  function findButton(selector: string, label: string): HTMLButtonElement | undefined {
+    const buttons: HTMLButtonElement[] = Array.from(fixture.nativeElement.querySelectorAll(selector));
+    return buttons.find((button) => button.textContent.trim() === label);
+  }
+
+  it('shows the Apply button and applies the clicked day', () => {
+    openCustomRange(false);
+    const apply = findButton('.buttons button', 'Apply');
+    expect(apply).toBeTruthy();
+
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === '10').click();
+    apply.click();
+    fixture.detectChanges();
+
+    const selected = fixture.componentInstance.selected;
+    expect(selected.startDate.date()).toBe(10);
+    expect(selected.endDate.date()).toBe(10);
+  });
+
+  it('has no Apply button with autoApply', () => {
+    openCustomRange(true);
+
+    expect(findButton('.buttons button', 'Apply')).toBeUndefined();
+  });
+});
