@@ -281,7 +281,7 @@ You can use bellow options when using the ranges. The default are `false`.
 
 #### Open datepicker from outside
 
-It is possible to open datepicker from outside. You should create an input with attached datepicker directive and a button with "ngx-daterangepicker-action" class (to prevent triggering of clickOutside).
+It is possible to open datepicker from outside. You should create an input with attached datepicker directive and a button with "ngx-daterangepicker-action" class (to prevent triggering of clickOutside). Clicks on its content (an icon, a `mat-icon`, an `svg`) count too.
 ```html
     <input
       ngxDaterangepickerMd

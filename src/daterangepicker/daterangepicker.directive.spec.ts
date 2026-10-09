@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -179,5 +179,53 @@ describe('DaterangepickerDirective single date with custom range (issue #555)', 
     openCustomRange(true);
 
     expect(findButton('.buttons button', 'Apply')).toBeUndefined();
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [(ngModel)]="selected" />
+    <button class="ngx-daterangepicker-action" type="button" (click)="open()">
+      <svg width="20" height="20"><rect class="icon-part" width="20" height="20" /></svg>
+    </button>`
+})
+class ActionIconHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  selected: TimePeriod;
+
+  open(): void {
+    this.picker.open();
+  }
+}
+
+describe('DaterangepickerDirective open from an action element (issue #537)', () => {
+  let fixture: ComponentFixture<ActionIconHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ActionIconHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('stays open when the click lands on a child of the action element', () => {
+    fixture = TestBed.createComponent(ActionIconHostComponent);
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('.icon-part').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.picker.picker.isShown).toBeTrue();
+  });
+
+  it('still closes on a click outside', () => {
+    fixture = TestBed.createComponent(ActionIconHostComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.open();
+
+    document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.picker.picker.isShown).toBeFalse();
   });
 });
