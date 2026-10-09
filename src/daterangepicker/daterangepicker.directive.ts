@@ -359,6 +359,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       const changes = this.localeDiffer.diff(this.locale);
       if (changes) {
         this.picker.updateLocale(this.locale);
+        if (this.value && this.picker.chosenLabel) {
+          this.el.nativeElement.value = this.picker.chosenLabel;
+        }
       }
     }
   }

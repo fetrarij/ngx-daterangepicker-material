@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import dayjs, { Dayjs } from 'dayjs/esm';
+import fr from 'dayjs/esm/locale/fr';
 
 import { NgxDaterangepickerMd } from './daterangepicker.module';
 import { DaterangepickerComponent, TimePeriod } from './daterangepicker.component';
@@ -347,5 +348,47 @@ describe('DaterangepickerDirective callback typings (issue #534)', () => {
     directive.isInvalidDate = (date: Dayjs) => date.day() === 6;
 
     expect(directive.isCustomDate(dayjs('2026-10-11'))).toEqual(['weekend', 'sunday']);
+  });
+});
+
+describe('DaterangepickerComponent locale change at runtime (issues #519, #462)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.inline = true;
+    fixture.detectChanges();
+  });
+
+  function headers(): string[] {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar thead tr:last-child th'));
+    return cells.map((cell) => cell.textContent.trim()).slice(-7);
+  }
+
+  function firstGridDay(): number {
+    return component.calendarVariables.left.calendar[0][0].day();
+  }
+
+  it('re-orders the weekday headers and the grid together', () => {
+    fixture.componentRef.setInput('locale', { locale: fr });
+    fixture.detectChanges();
+
+    expect(headers()).toEqual(['lu', 'ma', 'me', 'je', 've', 'sa', 'di']);
+    expect(firstGridDay()).toBe(1);
+    expect(fixture.nativeElement.querySelector('.month').textContent).toContain(fr.monthsShort[component.leftCalendar.month.month()]);
+
+    fixture.componentRef.setInput('locale', { format: 'MM/DD/YYYY' });
+    fixture.detectChanges();
+
+    expect(headers()).toEqual(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']);
+    expect(firstGridDay()).toBe(0);
   });
 });

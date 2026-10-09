@@ -100,7 +100,7 @@
                         <th class="week">
                             <span>{{ this.locale.weekLabel }}</span>
                         </th>
-                        } @for (dayofweek of locale.daysOfWeek; track dayofweek) {
+                        } @for (dayofweek of weekDays; track dayofweek) {
                         <th>
                             <span>{{ dayofweek }}</span>
                         </th>
@@ -272,7 +272,7 @@
                         <th class="week">
                             <span>{{ this.locale.weekLabel }}</span>
                         </th>
-                        } @for (dayofweek of locale.daysOfWeek; track dayofweek) {
+                        } @for (dayofweek of weekDays; track dayofweek) {
                         <th>
                             <span>{{ dayofweek }}</span>
                         </th>

@@ -224,6 +224,21 @@ currentMonth = dayjs();
     firstDay: 1 // first day is monday
 }
 ```
+
+To use a language, pass a dayjs locale as `locale`. It gives the day and month names, the first day of the week, and the language of the dates shown in the input:
+
+```typescript
+import fr from 'dayjs/esm/locale/fr';
+
+frLocale = { locale: fr, format: 'D MMMM YYYY', applyLabel: 'Appliquer' };
+```
+
+```html
+<input ngxDaterangepickerMd [locale]="frLocale" [(ngModel)]="selected" />
+```
+
+The `[locale]` input can be changed at runtime, for example when the user switches language.
+
 [Check here](#global-locale) for setting the global locale
 
 ### startKey and endKey

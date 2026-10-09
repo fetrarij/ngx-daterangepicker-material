@@ -295,6 +295,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   protected minDateHolder: dayjs.Dayjs;
   protected maxDateHolder: dayjs.Dayjs;
   protected localeHolder: LocaleConfig = {};
+  weekDays: string[] = [];
+  private initialized = false;
   protected rangesHolder: DateRanges = {};
   private cachedVersion: { start: Dayjs; end: Dayjs } = { start: null, end: null };
 
@@ -333,17 +335,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   @Input() set locale(value: LocaleConfig) {
-    this.localeHolder = { ...this.localeHolderService.config, ...value };
-
-    if (value.locale) {
-      const tempValue = { ...value }; // make copy of value
-      // remove fields being applied from value.locale
-      delete tempValue.daysOfWeek;
-      delete tempValue.monthNames;
-      delete tempValue.firstDay;
-
-      // combine config with locale and customized LocaleConfig
-      this.localeHolder = { ...this.localeHolderService.configWithLocale(value.locale), ...tempValue };
+    this.localeHolder = this.resolveLocale(value);
+    if (this.initialized) {
+      this.refreshLocale();
     }
   }
 
@@ -409,17 +403,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.buildLocale();
-    const daysOfWeek = [...this.locale.daysOfWeek];
-    this.locale.firstDay = this.locale.firstDay % 7;
-    if (this.locale.firstDay !== 0) {
-      let iterator = this.locale.firstDay;
-
-      while (iterator > 0) {
-        daysOfWeek.push(daysOfWeek.shift());
-        iterator--;
-      }
-    }
-    this.locale.daysOfWeek = daysOfWeek;
+    this.updateWeekDays();
 
     // Initialize with initialDates if provided
     let leftMonth: Dayjs;
@@ -458,6 +442,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     this.renderCalendar(SideEnum.left);
     this.renderCalendar(SideEnum.right);
     this.renderRanges();
+    this.initialized = true;
   }
 
   renderRanges(): void {
@@ -1418,14 +1403,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
    * @param locale
    */
   updateLocale(locale: LocaleConfig): void {
-    for (const key in locale) {
-      if (Object.prototype.hasOwnProperty.call(locale, key)) {
-        this.locale[key] = locale[key];
-        if (key === 'customRangeLabel') {
-          this.renderRanges();
-        }
-      }
-    }
+    this.locale = locale;
   }
 
   /**
@@ -1495,8 +1473,45 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   /**
    *  build the locale config
    */
+  /**
+   * Merge a locale input with the global config. A dayjs `locale` provides the day and month names and the first day.
+   */
+  private resolveLocale(value: LocaleConfig): LocaleConfig {
+    if (!value.locale) {
+      return { ...this.localeHolderService.config, ...value };
+    }
+    const custom = { ...value };
+    delete custom.daysOfWeek;
+    delete custom.monthNames;
+    delete custom.firstDay;
+    return { ...this.localeHolderService.configWithLocale(value.locale), ...custom };
+  }
+
+  /**
+   * Weekday headers starting on `locale.firstDay`. `locale.daysOfWeek` itself always starts on Sunday.
+   */
+  private updateWeekDays(): void {
+    this.locale.firstDay = this.locale.firstDay % 7;
+    const days = [...this.locale.daysOfWeek];
+    for (let i = 0; i < this.locale.firstDay; i++) {
+      days.push(days.shift());
+    }
+    this.weekDays = days;
+  }
+
+  /**
+   * Redraw everything that depends on the locale after it changed at runtime.
+   */
+  private refreshLocale(): void {
+    this.buildLocale();
+    this.updateWeekDays();
+    this.renderRanges();
+    this.updateView();
+    this.updateElement();
+  }
+
   private buildLocale() {
-    this.locale = { ...this.localeHolderService.config, ...this.locale };
+    this.localeHolder = this.resolveLocale({ ...this.localeHolderService.config, ...this.locale });
     if (!this.locale.format) {
       if (this.timePicker) {
         this.locale.format = dayjs.localeData().longDateFormat('lll');

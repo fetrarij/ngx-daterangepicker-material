@@ -3,10 +3,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import dayjs from 'dayjs/esm';
+import fr from 'dayjs/esm/locale/fr';
 
 import { NgxDaterangepickerMd } from './daterangepicker.module';
 import { DaterangepickerDirective } from './daterangepicker.directive';
 import { TimePeriod } from './daterangepicker.component';
+import { LocaleConfig } from './daterangepicker.config';
 
 @Component({
   standalone: false,
@@ -227,5 +229,36 @@ describe('DaterangepickerDirective open from an action element (issue #537)', ()
     fixture.detectChanges();
 
     expect(fixture.componentInstance.picker.picker.isShown).toBeFalse();
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [locale]="locale" [(ngModel)]="selected" />`
+})
+class LocaleSwitchHostComponent {
+  locale: LocaleConfig = { format: 'D MMMM YYYY', separator: ' - ' };
+  selected = { startDate: dayjs('2026-10-05'), endDate: dayjs('2026-10-20') };
+}
+
+describe('DaterangepickerDirective locale change at runtime (issue #462)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [LocaleSwitchHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('re-formats the input text in the new language', async () => {
+    const fixture = TestBed.createComponent(LocaleSwitchHostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    expect(input.value).toBe('5 October 2026 - 20 October 2026');
+
+    fixture.componentInstance.locale = { locale: fr, format: 'D MMMM YYYY', separator: ' - ' };
+    fixture.detectChanges();
+
+    expect(input.value).toBe('5 octobre 2026 - 20 octobre 2026');
   });
 });
