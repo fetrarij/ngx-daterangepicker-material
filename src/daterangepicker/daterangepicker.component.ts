@@ -381,7 +381,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   @Input()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isCustomDate(date: Dayjs): boolean {
+  isCustomDate(date: Dayjs): string | string[] | boolean {
     return false;
   }
 
@@ -1604,12 +1604,11 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         }
         // apply custom classes for this date
         const isCustom = this.isCustomDate(calendar[row][col]);
-        if (isCustom !== false) {
-          if (typeof isCustom === 'string') {
-            classes.push(isCustom);
-          } else {
-            Array.prototype.push.apply(classes, isCustom);
-          }
+        // Only strings and arrays are class names, booleans are ignored.
+        if (typeof isCustom === 'string') {
+          classes.push(isCustom);
+        } else if (Array.isArray(isCustom)) {
+          classes.push(...isCustom);
         }
         // apply custom tooltip for this date
         // const isTooltip = this.isTooltipDate(calendar[row][col]);

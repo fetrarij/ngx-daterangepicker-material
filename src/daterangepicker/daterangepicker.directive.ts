@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { ChosenDate, DateRange, DaterangepickerComponent, DateRanges, EndDate, StartDate, TimePeriod } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import dayjs from 'dayjs/esm';
+import dayjs, { Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 
@@ -81,13 +81,13 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   showDropdowns: boolean;
 
   @Input()
-  isInvalidDate: (Dayjs) => boolean;
+  isInvalidDate: (date: Dayjs) => boolean;
 
   @Input()
-  isCustomDate: (Dayjs) => string | boolean;
+  isCustomDate: (date: Dayjs) => string | string[] | boolean;
 
   @Input()
-  isTooltipDate: (Dayjs) => string | boolean | null;
+  isTooltipDate: (date: Dayjs) => string | boolean | null;
 
   @Input()
   showClearButton: boolean;

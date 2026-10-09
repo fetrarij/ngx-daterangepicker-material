@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import dayjs, { Dayjs } from 'dayjs/esm';
 
 import { NgxDaterangepickerMd } from './daterangepicker.module';
 import { DaterangepickerComponent, TimePeriod } from './daterangepicker.component';
+import { DaterangepickerDirective } from './daterangepicker.directive';
 
 describe('DaterangepickerComponent minDate/maxDate native Date support (issue #561)', () => {
   let fixture: ComponentFixture<DaterangepickerComponent>;
@@ -300,5 +302,50 @@ describe('DaterangepickerComponent hour labels (issue #539)', () => {
     const options = hourOptions(false);
 
     expect(options.map((option) => option.text)).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+  });
+});
+
+describe('DaterangepickerComponent isCustomDate (issue #534)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function classesOfDay10(isCustomDate: (date: Dayjs) => string | string[] | boolean): string[] {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    fixture.componentInstance.inline = true;
+    fixture.componentInstance.isCustomDate = (date: Dayjs) => (date.date() === 10 ? isCustomDate(date) : false);
+    fixture.detectChanges();
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar td.available:not(.off)'));
+    return Array.from(cells.find((cell) => cell.textContent.trim() === '10').classList);
+  }
+
+  it('adds a class name', () => {
+    expect(classesOfDay10(() => 'holiday')).toContain('holiday');
+  });
+
+  it('adds a list of class names', () => {
+    const classes = classesOfDay10(() => ['holiday', 'busy']);
+
+    expect(classes).toContain('holiday');
+    expect(classes).toContain('busy');
+  });
+
+  it('ignores false and true without breaking the rendering', () => {
+    expect(classesOfDay10(() => false)).toContain('available');
+    expect(classesOfDay10(() => true)).toContain('available');
+  });
+});
+
+describe('DaterangepickerDirective callback typings (issue #534)', () => {
+  it('accepts a list of classes from isCustomDate', () => {
+    const directive = {} as DaterangepickerDirective;
+    directive.isCustomDate = (date: Dayjs) => (date.day() === 0 ? ['weekend', 'sunday'] : false);
+    directive.isInvalidDate = (date: Dayjs) => date.day() === 6;
+
+    expect(directive.isCustomDate(dayjs('2026-10-11'))).toEqual(['weekend', 'sunday']);
   });
 });
