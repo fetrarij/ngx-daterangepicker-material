@@ -1029,6 +1029,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
 
     this.datesUpdated.emit({ startDate: this.startDate, endDate: this.endDate });
+    // Inline pickers never call show(), so Cancel needs the cache refreshed here.
+    this.cachedVersion.start = this.startDate?.clone();
+    this.cachedVersion.end = this.endDate?.clone();
     if (e || (this.closeOnAutoApply && !e)) {
       this.hide();
     }
@@ -1427,6 +1430,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   clear(): void {
     this.startDate = dayjs().utc(true).startOf('day');
     this.endDate = dayjs().utc(true).endOf('day');
+    this.cachedVersion.start = this.startDate.clone();
+    this.cachedVersion.end = this.endDate.clone();
     this.choosedDate.emit({ chosenLabel: '', startDate: null, endDate: null });
     this.datesUpdated.emit({ startDate: null, endDate: null });
     this.clearClicked.emit();

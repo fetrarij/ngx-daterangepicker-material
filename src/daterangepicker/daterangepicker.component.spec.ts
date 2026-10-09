@@ -149,3 +149,65 @@ describe('DaterangepickerComponent autoApply emits once (issue #526)', () => {
     expect(emitted).toEqual({ choosedDate: 1, datesUpdated: 1 });
   });
 });
+
+describe('DaterangepickerComponent inline Cancel (issue #554)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.inline = true;
+    component.showCancel = true;
+    component.showClearButton = true;
+    fixture.detectChanges();
+  });
+
+  function clickDay(day: number): void {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  function clickButton(label: string): void {
+    const buttons: HTMLButtonElement[] = Array.from(fixture.nativeElement.querySelectorAll('.buttons button'));
+    buttons.find((button) => button.textContent.trim().startsWith(label)).click();
+    fixture.detectChanges();
+  }
+
+  function selectedDays(): number[] {
+    return [component.startDate.date(), component.endDate.date()];
+  }
+
+  it('restores the last applied range', () => {
+    clickDay(3);
+    clickDay(6);
+    clickButton('Apply');
+
+    clickDay(10);
+    clickDay(12);
+    clickButton('Cancel');
+
+    expect(selectedDays()).toEqual([3, 6]);
+  });
+
+  it('does not bring back a range applied before Clear', () => {
+    clickDay(3);
+    clickDay(6);
+    clickButton('Apply');
+    clickButton('Clear');
+    const afterClear = selectedDays();
+
+    clickDay(10);
+    clickDay(12);
+    clickButton('Cancel');
+
+    expect(selectedDays()).toEqual(afterClear);
+  });
+});
