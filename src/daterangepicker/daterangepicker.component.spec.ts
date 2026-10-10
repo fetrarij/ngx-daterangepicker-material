@@ -616,3 +616,41 @@ describe('DaterangepickerComponent dates clamped to minDate/maxDate (issue #486)
     expect(component.startDate.format('YYYY-MM-DD HH:mm')).toBe(`${month}-10 09:00`);
   });
 });
+
+describe('DaterangepickerComponent time picker enabled after init (issue #518)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    fixture.componentRef.setInput('autoApply', true);
+    fixture.detectChanges();
+  });
+
+  it('renders the time picker when timePicker becomes true, then false, then true again', () => {
+    for (const value of [true, false, true]) {
+      fixture.componentRef.setInput('timePicker', value);
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelectorAll('select.hourselect').length).toBe(value ? 2 : 0);
+    }
+  });
+
+  it('lets the user pick a range after the time picker was enabled', () => {
+    fixture.componentRef.setInput('timePicker', true);
+    fixture.detectChanges();
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar.left tbody td.available:not(.off)'));
+
+    cells[0].click();
+    fixture.detectChanges();
+    cells[2].click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.endDate.isAfter(fixture.componentInstance.startDate)).toBeTrue();
+  });
+});

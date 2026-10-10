@@ -207,7 +207,17 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   // timepicker variables
   @Input()
-  timePicker = false;
+  get timePicker(): boolean {
+    return this.timePickerHolder;
+  }
+
+  set timePicker(value: boolean) {
+    this.timePickerHolder = value;
+    // The time picker data is computed at init, so compute it when the time picker is turned on later (issue #518).
+    if (value && this.initialized && this.startDate) {
+      this.updateView();
+    }
+  }
 
   @Input()
   timePicker24Hour = false;
@@ -295,6 +305,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   protected minDateHolder: dayjs.Dayjs;
   protected maxDateHolder: dayjs.Dayjs;
+  protected timePickerHolder = false;
   protected localeHolder: LocaleConfig = {};
   weekDays: string[] = [];
   private initialized = false;
