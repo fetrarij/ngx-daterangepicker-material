@@ -654,3 +654,24 @@ describe('DaterangepickerComponent time picker enabled after init (issue #518)',
     expect(fixture.componentInstance.endDate.isAfter(fixture.componentInstance.startDate)).toBeTrue();
   });
 });
+
+describe('DaterangepickerComponent inline keyboard focus (issue #540)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('keeps the inline picker visible and its buttons focusable', () => {
+    const fixture = TestBed.createComponent(DaterangepickerComponent);
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('.buttons button');
+
+    button.focus();
+
+    expect(getComputedStyle(fixture.nativeElement.querySelector('.md-drppicker')).visibility).toBe('visible');
+    expect(document.activeElement).toBe(button);
+    fixture.nativeElement.remove();
+  });
+});
