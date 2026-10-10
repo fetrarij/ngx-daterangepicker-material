@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, signal } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -260,5 +260,40 @@ describe('DaterangepickerDirective locale change at runtime (issue #462)', () =>
     fixture.detectChanges();
 
     expect(input.value).toBe('5 octobre 2026 - 20 octobre 2026');
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [timePicker]="timePicker()" [(ngModel)]="selected" />`
+})
+class TimePickerToggleHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  // A signal, because the host is OnPush by default and a plain field change would not refresh it.
+  timePicker = signal(false);
+  selected: TimePeriod;
+}
+
+describe('DaterangepickerDirective time picker enabled after init (issue #518)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [TimePickerToggleHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('renders the time picker when timePicker becomes true, then false, then true again', () => {
+    const fixture = TestBed.createComponent(TimePickerToggleHostComponent);
+    fixture.detectChanges();
+
+    for (const value of [true, false, true]) {
+      fixture.componentInstance.timePicker.set(value);
+      fixture.detectChanges();
+      fixture.componentInstance.picker.open();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelectorAll('select.hourselect').length).toBe(value ? 2 : 0);
+    }
+    expect(fixture.componentInstance.picker.picker.timepickerVariables.left.selectedHour).toBeDefined();
   });
 });
