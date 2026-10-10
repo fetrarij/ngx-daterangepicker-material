@@ -766,6 +766,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
     if (this.minDate && this.startDate.isBefore(this.minDate)) {
       this.startDate = this.minDate.clone();
+      // Without time picker, a date range covers whole days.
+      if (!this.timePicker) {
+        this.startDate = this.startDate.startOf('day');
+      }
       if (this.timePicker && this.timePickerIncrement) {
         this.startDate = this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
       }
@@ -809,6 +813,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
     if (this.maxDate && this.endDate.isAfter(this.maxDate)) {
       this.endDate = this.maxDate.clone();
+      // Without time picker, the end is the end of the maxDate day, like any other end date (issue #486).
+      if (!this.timePicker) {
+        this.endDate = this.endDate.add(1, 'd').startOf('day').subtract(1, 'second');
+      }
     }
 
     if (this.dateLimit && this.startDate.clone().add(this.dateLimit, 'day').isBefore(this.endDate)) {
