@@ -541,3 +541,78 @@ describe('DaterangepickerComponent dates from another copy of dayjs (issues #521
     expect(component.endDate.format('YYYY-MM-DD HH:mm:ss')).toBe(`${month}-05 23:59:59`);
   });
 });
+
+describe('DaterangepickerComponent dates clamped to minDate/maxDate (issue #486)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+  let month: string;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function create(timePicker: boolean, minDate: string | Dayjs, maxDate: string | Dayjs): void {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.timePicker = timePicker;
+    component.minDate = minDate;
+    component.maxDate = maxDate;
+    fixture.detectChanges();
+  }
+
+  function clickDay(day: number): void {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar.left tbody td:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  beforeEach(() => (month = dayjs().format('YYYY-MM')));
+
+  it('ends at the end of the maxDate day when the end is clamped (dayjs maxDate with a time)', () => {
+    create(false, null, dayjs(`${month}-20T15:30:00`));
+    let end: string;
+    component.endDateChanged.subscribe((value) => (end = value.endDate.format('YYYY-MM-DD HH:mm:ss')));
+
+    clickDay(18);
+    clickDay(20);
+
+    expect(component.endDate.format('YYYY-MM-DD HH:mm:ss')).toBe(`${month}-20 23:59:59`);
+    expect(end).toBe(`${month}-20 23:59:59`);
+  });
+
+  it('ends at the end of the maxDate day when maxDate is a date string', () => {
+    create(false, null, `${month}-20`);
+
+    clickDay(18);
+    clickDay(20);
+
+    expect(component.endDate.format('YYYY-MM-DD HH:mm:ss')).toBe(`${month}-20 23:59:59`);
+  });
+
+  it('keeps maxDate exactly with the time picker', () => {
+    create(true, null, dayjs(`${month}-20T15:30:00`));
+
+    component.setStartDate(dayjs(`${month}-18T10:00:00`));
+    component.setEndDate(dayjs(`${month}-20T18:00:00`));
+
+    expect(component.endDate.format('YYYY-MM-DD HH:mm')).toBe(`${month}-20 15:30`);
+  });
+
+  it('starts at the beginning of the minDate day when the start is clamped', () => {
+    create(false, dayjs(`${month}-10T09:00:00`), null);
+
+    component.setStartDate(dayjs(`${month}-05`));
+
+    expect(component.startDate.format('YYYY-MM-DD HH:mm:ss')).toBe(`${month}-10 00:00:00`);
+  });
+
+  it('keeps minDate exactly with the time picker', () => {
+    create(true, dayjs(`${month}-10T09:00:00`), null);
+
+    component.setStartDate(dayjs(`${month}-05T08:00:00`));
+
+    expect(component.startDate.format('YYYY-MM-DD HH:mm')).toBe(`${month}-10 09:00`);
+  });
+});
