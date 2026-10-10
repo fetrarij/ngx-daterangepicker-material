@@ -18,7 +18,7 @@ import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
-import { toExternalDate } from './external-date';
+import { toExternalDate, toInternalDate } from './external-date';
 
 import localeData from 'dayjs/esm/plugin/localeData';
 import LocalizedFormat from 'dayjs/esm/plugin/localizedFormat';
@@ -322,13 +322,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   @Input()
   set minDate(value: dayjs.Dayjs | Date | string) {
-    if (dayjs.isDayjs(value)) {
-      this.minDateHolder = value;
-    } else if (typeof value === 'string' || value instanceof Date) {
-      this.minDateHolder = dayjs(value).utc(true);
-    } else {
-      this.minDateHolder = null;
-    }
+    this.minDateHolder = toInternalDate(value);
   }
 
   get locale(): LocaleConfig {
@@ -359,13 +353,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   @Input()
   set maxDate(value: dayjs.Dayjs | Date | string) {
-    if (dayjs.isDayjs(value)) {
-      this.maxDateHolder = value;
-    } else if (typeof value === 'string' || value instanceof Date) {
-      this.maxDateHolder = dayjs(value).utc(true);
-    } else {
-      this.maxDateHolder = null;
-    }
+    this.maxDateHolder = toInternalDate(value);
   }
 
   @Input()
@@ -411,8 +399,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     let rightMonth: Dayjs;
 
     if (this.initialDates && this.initialDates.length === 2) {
-      leftMonth = dayjs.isDayjs(this.initialDates[0]) ? this.initialDates[0].clone() : dayjs(this.initialDates[0]).utc(true);
-      rightMonth = dayjs.isDayjs(this.initialDates[1]) ? this.initialDates[1].clone() : dayjs(this.initialDates[1]).utc(true);
+      leftMonth = toInternalDate(this.initialDates[0]);
+      rightMonth = toInternalDate(this.initialDates[1]);
     } else {
       leftMonth = dayjs().utc(true);
       rightMonth = leftMonth.clone().add(1, 'month');
@@ -453,16 +441,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     if (typeof this.ranges === 'object') {
       for (const range in this.ranges) {
         if (this.ranges[range]) {
-          if (typeof this.ranges[range][0] === 'string') {
-            start = dayjs(this.ranges[range][0], this.locale.format).utc(true);
-          } else {
-            start = dayjs(this.ranges[range][0]).utc(true);
-          }
-          if (typeof this.ranges[range][1] === 'string') {
-            end = dayjs(this.ranges[range][1], this.locale.format).utc(true);
-          } else {
-            end = dayjs(this.ranges[range][1]).utc(true);
-          }
+          start = toInternalDate(this.ranges[range][0], this.locale.format);
+          end = toInternalDate(this.ranges[range][1], this.locale.format);
           // If the start or end date exceed those allowed by the minDate or maxSpan
           // options, shorten the range to the allowable period.
           if (this.minDate && start.isBefore(this.minDate)) {
@@ -768,12 +748,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   setStartDate(startDate: string | Dayjs): void {
     if (typeof startDate === 'string') {
-      this.startDate = dayjs(startDate, this.locale.format).utc(true);
+      this.startDate = toInternalDate(startDate, this.locale.format);
     }
 
     if (typeof startDate === 'object') {
       this.pickingDate = true;
-      this.startDate = dayjs(startDate).utc(true);
+      this.startDate = toInternalDate(startDate);
     }
     if (!this.timePicker) {
       this.pickingDate = true;
@@ -807,12 +787,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
   setEndDate(endDate: string | Dayjs): void {
     if (typeof endDate === 'string') {
-      this.endDate = dayjs(endDate, this.locale.format).utc(true);
+      this.endDate = toInternalDate(endDate, this.locale.format);
     }
 
     if (typeof endDate === 'object') {
       this.pickingDate = false;
-      this.endDate = dayjs(endDate).utc(true);
+      this.endDate = toInternalDate(endDate);
     }
     if (!this.timePicker) {
       this.pickingDate = false;

@@ -186,6 +186,8 @@ You can use the component directly in your templates, which will set its `inline
 
  >To set the minimal and maximal date, these options are a dayjs date, a native `Date`, or a string in [ISO](https://www.w3.org/QA/Tips/iso-date) format
 
+Dayjs dates can come from `import dayjs from 'dayjs'` or from `'dayjs/esm'`, both work (this also applies to `ranges`, `startDate` and `endDate`). An unknown value is ignored, with a warning in the console in dev mode.
+
 With `showDropdowns`, the year list goes from the year of `minDate` to the year of `maxDate`. Without them, it goes from 50 years ago to 5 years ahead.
 
 ### dateLimit

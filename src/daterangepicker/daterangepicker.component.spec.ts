@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import dayjs, { Dayjs } from 'dayjs/esm';
 import fr from 'dayjs/esm/locale/fr';
+import dayjsCjs from 'dayjs';
 
 import { NgxDaterangepickerMd } from './daterangepicker.module';
 import { DaterangepickerComponent, TimePeriod } from './daterangepicker.component';
@@ -457,5 +458,86 @@ describe('DaterangepickerComponent inline emitted instants (issue #547)', () => 
     component.clear();
 
     expect(cleared).toEqual({ startDate: null, endDate: null });
+  });
+});
+
+describe('DaterangepickerComponent dates from another copy of dayjs (issues #521, #486)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+  let month: string;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    month = dayjs().format('YYYY-MM');
+  });
+
+  function enabledDays(): number[] {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar.left tbody td:not(.off)'));
+    return cells.filter((cell) => !cell.classList.contains('disabled')).map((cell) => Number(cell.textContent.trim()));
+  }
+
+  // The CommonJS copy is left without the utc plugin, like in a consumer app.
+  it('uses the CommonJS build for "dayjs" in this test, so the copies really differ', () => {
+    expect(dayjsCjs() instanceof dayjs().constructor).toBeFalse();
+  });
+
+  it('applies minDate/maxDate created with the CommonJS dayjs', () => {
+    component.minDate = dayjsCjs(`${month}-10`) as unknown as Dayjs;
+    component.maxDate = dayjsCjs(`${month}-20T15:30:00`) as unknown as Dayjs;
+    fixture.detectChanges();
+
+    expect(component.minDate.format('YYYY-MM-DD HH:mm')).toBe(`${month}-10 00:00`);
+    expect(component.maxDate.format('YYYY-MM-DD HH:mm')).toBe(`${month}-20 15:30`);
+    expect(component.maxDate.isUTC()).toBeTrue();
+    expect(enabledDays()).toEqual([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+  });
+
+  it('accepts a dayjs-like object that isDayjs() does not recognize (dayjs < 1.11.10)', () => {
+    const foreign = { format: () => `${month}-12T00:00:00.000`, isValid: () => true };
+
+    component.minDate = foreign as unknown as Dayjs;
+
+    expect(component.minDate.format('YYYY-MM-DD')).toBe(`${month}-12`);
+  });
+
+  it('drops an unknown value with a warning instead of failing silently', () => {
+    spyOn(console, 'warn');
+
+    component.maxDate = {} as unknown as Dayjs;
+
+    expect(component.maxDate).toBeNull();
+    expect(console.warn).toHaveBeenCalled();
+  });
+
+  it('renders ranges made of CommonJS dayjs objects and emits them on click', () => {
+    component.inline = true;
+    component.alwaysShowCalendars = true;
+    component.ranges = { Week: [dayjsCjs('2026-10-05T00:00:00'), dayjsCjs('2026-10-11T23:59:59')] as unknown as [Dayjs, Dayjs] };
+    fixture.detectChanges();
+    let dates: Dayjs[];
+    component.rangeClicked.subscribe((range) => (dates = range.dates));
+
+    component.clickRange(new MouseEvent('click'), 'Week');
+
+    expect(component.rangesArray).toContain('Week');
+    expect(dates[0].toISOString()).toBe(dayjs('2026-10-05T00:00:00').toISOString());
+    expect(dates[1].toISOString()).toBe(dayjs('2026-10-11T23:59:59').toISOString());
+  });
+
+  it('accepts CommonJS dayjs objects in setStartDate/setEndDate', () => {
+    fixture.detectChanges();
+
+    component.setStartDate(dayjsCjs(`${month}-03`) as unknown as Dayjs);
+    component.setEndDate(dayjsCjs(`${month}-05`) as unknown as Dayjs);
+
+    expect(component.startDate.format('YYYY-MM-DD HH:mm:ss')).toBe(`${month}-03 00:00:00`);
+    expect(component.endDate.format('YYYY-MM-DD HH:mm:ss')).toBe(`${month}-05 23:59:59`);
   });
 });
