@@ -297,3 +297,55 @@ describe('DaterangepickerDirective time picker enabled after init (issue #518)',
     expect(fixture.componentInstance.picker.picker.timepickerVariables.left.selectedHour).toBeDefined();
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [ranges]="ranges" [(ngModel)]="selected" />`
+})
+class FocusHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  ranges = { Today: [dayjs().startOf('day'), dayjs().endOf('day')] };
+  selected: TimePeriod;
+}
+
+describe('DaterangepickerDirective keyboard focus when closed (issue #540)', () => {
+  let fixture: ComponentFixture<FocusHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [FocusHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(FocusHostComponent);
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.nativeElement.remove());
+
+  function rangeButton(): HTMLButtonElement {
+    return fixture.nativeElement.querySelector('.ranges button');
+  }
+
+  it('keeps the buttons of the closed picker out of the tab order', () => {
+    const picker: HTMLElement = fixture.nativeElement.querySelector('.md-drppicker');
+
+    rangeButton().focus();
+
+    expect(getComputedStyle(picker).visibility).toBe('hidden');
+    expect(document.activeElement).not.toBe(rangeButton());
+  });
+
+  it('lets the buttons take the focus once the picker is open', () => {
+    fixture.nativeElement.querySelector('input').click();
+    fixture.detectChanges();
+
+    rangeButton().focus();
+
+    expect(getComputedStyle(fixture.nativeElement.querySelector('.md-drppicker')).visibility).toBe('visible');
+    expect(document.activeElement).toBe(rangeButton());
+  });
+});
