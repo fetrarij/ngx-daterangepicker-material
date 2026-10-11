@@ -43,9 +43,9 @@ jobs:
         if: github.event_name == 'push'
         run: |
           npx ng deploy --base-href=/ngx-daterangepicker-material/ \
+            --dir=demo/dist \
             --repo=https://github.com/fetrarij/ngx-daterangepicker-material.git \
             --name="github-actions[bot]" \
-            --email="github-actions[bot]@users.noreply.github.com" \
-            --no-silent
+            --email="github-actions[bot]@users.noreply.github.com"
         env:
           PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
