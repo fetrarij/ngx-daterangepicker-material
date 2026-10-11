@@ -179,6 +179,8 @@ You can use the component directly in your templates, which will set its `inline
 ### isInvalidDate
 >(function) A function that is passed each date in the two calendars before they are displayed, and may return true or false to indicate whether that date should be available for selection or not.
 
+Both functions get a local dayjs date. The time of that date is not always midnight, so compare by day: `date.isSame(other, 'day')`.
+
 ### isTooltipDate
 >(function) A function that is passed each date in the two calendars before they are displayed, and may return a text to be displayed as a tooltip.
 

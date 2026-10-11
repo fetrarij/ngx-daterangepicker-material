@@ -1002,7 +1002,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
 
       let d = this.startDate.clone();
       while (d.isBefore(this.endDate)) {
-        if (this.isInvalidDate(d)) {
+        // Consumer callbacks get real local dates, like the outputs (issue #455).
+        if (this.isInvalidDate(toExternalDate(d))) {
           this.endDate = d.subtract(1, 'days');
           this.calculateChosenLabel();
           break;
@@ -1601,8 +1602,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         if (this.calendarVariables[side].maxDate && calendar[row][col].isAfter(this.calendarVariables[side].maxDate, 'day')) {
           classes.push('off', 'disabled');
         }
+        // Consumer callbacks get real local dates, like the outputs (issue #455).
+        const externalDate = toExternalDate(calendar[row][col]);
         // don't allow selection of date if a custom function decides it's invalid
-        if (this.isInvalidDate(calendar[row][col])) {
+        if (this.isInvalidDate(externalDate)) {
           classes.push('off', 'disabled', 'invalid');
         }
         // highlight the currently selected start date
@@ -1626,7 +1629,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
           classes.push('in-range');
         }
         // apply custom classes for this date
-        const isCustom = this.isCustomDate(calendar[row][col]);
+        const isCustom = this.isCustomDate(externalDate);
         // Only strings and arrays are class names, booleans are ignored.
         if (typeof isCustom === 'string') {
           classes.push(isCustom);

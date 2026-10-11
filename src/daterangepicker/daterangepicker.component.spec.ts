@@ -700,3 +700,75 @@ describe('DaterangepickerComponent ranges without DOM access (issue #171)', () =
     expect(labels).toContain('Últimos 7 días');
   });
 });
+
+describe('DaterangepickerComponent callbacks get local dates (issue #455)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  // Shows October 2026, with day cells at local midnight.
+  function create(setup: (c: DaterangepickerComponent) => void): void {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.inline = true;
+    setup(component);
+    component.setStartDate(dayjs('2026-10-10'));
+    component.setEndDate(dayjs('2026-10-20'));
+    fixture.detectChanges();
+  }
+
+  // Looks only in the October table: the other calendar may show another month.
+  function cellOfDay(day: number): HTMLTableCellElement {
+    const october: HTMLElement = Array.from(fixture.nativeElement.querySelectorAll('.calendar')).find((calendar: HTMLElement) =>
+      calendar.querySelector('th.month').textContent.includes('Oct')
+    ) as HTMLElement;
+    // Days 8 to 22 appear once per table, even counting the greyed days of nearby months.
+    const cells: HTMLTableCellElement[] = Array.from(october.querySelectorAll('td'));
+    return cells.find((cell) => cell.textContent.trim() === String(day));
+  }
+
+  it('passes local dates, not UTC-tagged ones, to isInvalidDate and isCustomDate', () => {
+    const received: Dayjs[] = [];
+    create((c) => {
+      c.isInvalidDate = (date: Dayjs) => (received.push(date), false);
+      c.isCustomDate = (date: Dayjs) => (received.push(date), false);
+    });
+
+    const oct1 = received.filter((date) => date.format('YYYY-MM-DD') === '2026-10-01');
+    expect(oct1.length).toBeGreaterThan(0);
+    oct1.forEach((date) => {
+      expect(date.isUTC()).toBeFalse();
+      // Same instant as a consumer's own local date, so plain comparisons work.
+      expect(date.valueOf()).toBe(dayjs('2026-10-01').valueOf());
+    });
+  });
+
+  it('marks the right day when the callbacks compare with local dates', () => {
+    const holiday = dayjs('2026-10-15');
+    create((c) => {
+      c.isInvalidDate = (date: Dayjs) => date.isSame(holiday);
+      c.isCustomDate = (date: Dayjs) => (date.isSame(holiday) ? 'holiday' : false);
+    });
+
+    expect(cellOfDay(15).classList).toContain('invalid');
+    expect(cellOfDay(15).classList).toContain('holiday');
+    expect(cellOfDay(14).classList).not.toContain('invalid');
+  });
+
+  it('cuts the applied range before the first invalid date', () => {
+    const holiday = dayjs('2026-10-15');
+    const received: Dayjs[] = [];
+    create((c) => (c.isInvalidDate = (date: Dayjs) => (received.push(date), date.isSame(holiday, 'day'))));
+    received.length = 0;
+
+    component.clickApply();
+
+    expect(received.every((date) => !date.isUTC())).toBeTrue();
+    expect(component.endDate.format('YYYY-MM-DD')).toBe('2026-10-14');
+  });
+});
