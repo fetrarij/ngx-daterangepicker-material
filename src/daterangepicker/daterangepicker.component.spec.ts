@@ -675,3 +675,28 @@ describe('DaterangepickerComponent inline keyboard focus (issue #540)', () => {
     fixture.nativeElement.remove();
   });
 });
+
+describe('DaterangepickerComponent ranges without DOM access (issue #171)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('renders range names as given, without creating DOM elements (SSR has no document)', () => {
+    const fixture = TestBed.createComponent(DaterangepickerComponent);
+    const component = fixture.componentInstance;
+    const createElement = spyOn(document, 'createElement').and.callThrough();
+
+    component.ranges = {
+      'Aujourd’hui': [dayjs(), dayjs()],
+      'Últimos 7 días': [dayjs().subtract(6, 'days'), dayjs()]
+    };
+    fixture.detectChanges();
+
+    expect(createElement).not.toHaveBeenCalledWith('textarea');
+    const labels = Array.from(fixture.nativeElement.querySelectorAll('.ranges button')).map((b: HTMLElement) => b.textContent.trim());
+    expect(labels).toContain('Aujourd’hui');
+    expect(labels).toContain('Últimos 7 días');
+  });
+});

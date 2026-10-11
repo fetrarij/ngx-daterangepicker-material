@@ -474,11 +474,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
           ) {
             continue;
           }
-          // Support unicode chars in the range names.
-          const elem = document.createElement('textarea');
-          elem.innerHTML = range;
-          const rangeHtml = elem.value;
-          this.ranges[rangeHtml] = [start, end];
+          // Keep the name as is: Angular interpolation already shows unicode, and no DOM access keeps SSR working.
+          this.ranges[range] = [start, end];
         }
       }
       for (const range in this.ranges) {
