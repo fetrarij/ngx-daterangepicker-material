@@ -355,6 +355,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         }
       }
     }
+    // The picker recomputes its label for new ranges; show it like a locale change does (issue #388).
+    if (changes['ranges'] && !changes['ranges'].firstChange && this.value && this.picker.chosenLabel) {
+      this.el.nativeElement.value = this.picker.chosenLabel;
+    }
   }
 
   // eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle

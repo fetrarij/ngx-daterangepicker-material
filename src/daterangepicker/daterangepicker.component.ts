@@ -356,6 +356,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   @Input() set ranges(value: DateRanges) {
     this.rangesHolder = value;
     this.renderRanges();
+    // New range names must reach the label of the chosen range too (issue #388).
+    if (this.initialized && this.startDate && this.endDate) {
+      this.calculateChosenLabel();
+    }
   }
 
   get maxDate(): dayjs.Dayjs {
