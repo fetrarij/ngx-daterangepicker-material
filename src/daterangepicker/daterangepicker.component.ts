@@ -400,6 +400,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.startDate || changes.singleDatePicker) {
+      this.alignSingleEndDate();
+    }
     if ((changes.startDate || changes.endDate) && this.inline) {
       this.updateView();
     }
@@ -431,6 +434,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       this.cachedVersion.start = this.startDate?.clone();
       this.cachedVersion.end = this.endDate?.clone();
     }
+
+    this.alignSingleEndDate();
 
     if (this.startDate && this.timePicker) {
       this.setStartDate(this.startDate);
@@ -1433,6 +1438,14 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     this.datesUpdated.emit({ startDate: null, endDate: null });
     this.clearClicked.emit();
     this.hide();
+  }
+
+  // One date: the end is the start, else it stays on today and the calendar draws a range (issue #537).
+  private alignSingleEndDate(): void {
+    if (this.singleDatePicker && this.startDate) {
+      // Same end of day as setEndDate() without time picker.
+      this.endDate = this.timePicker ? this.startDate.clone() : this.startDate.clone().add(1, 'd').startOf('day').subtract(1, 'second');
+    }
   }
 
   /** Puts the picker back on today without emitting anything, for an empty value given by the app. */

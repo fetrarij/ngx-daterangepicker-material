@@ -459,11 +459,18 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private setValue(val: TimePeriod) {
     if (this.hasDates(val)) {
       this.value = val;
-      if (val[this.startKeyHolder]) {
-        this.picker.setStartDate(val[this.startKeyHolder]);
-      }
-      if (val[this.endKeyHolder]) {
-        this.picker.setEndDate(val[this.endKeyHolder]);
+      if (this.picker.singleDatePicker) {
+        // One date: the end is the start, else it stays on today and the calendar draws a range (issue #537).
+        const date = val[this.startKeyHolder] || val[this.endKeyHolder];
+        this.picker.setStartDate(date);
+        this.picker.setEndDate(date);
+      } else {
+        if (val[this.startKeyHolder]) {
+          this.picker.setStartDate(val[this.startKeyHolder]);
+        }
+        if (val[this.endKeyHolder]) {
+          this.picker.setEndDate(val[this.endKeyHolder]);
+        }
       }
       this.picker.calculateChosenLabel();
       if (this.picker.chosenLabel) {
