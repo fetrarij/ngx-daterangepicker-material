@@ -936,6 +936,18 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
   }
 
+  // Week numbers follow the instance locale, not the global dayjs locale (issue #378).
+  weekOfRow(side: SideEnum, row: number): number {
+    const day = this.calendarVariables[side].calendar[row][0];
+    return (this.localeHolder.locale ? day.locale(this.localeHolder.locale) : day).week();
+  }
+
+  // An ISO week is the week of its Thursday; the first cell can be a Sunday from the week before (issue #378).
+  isoWeekOfRow(side: SideEnum, row: number): number {
+    const days: Dayjs[] = this.calendarVariables[side].calendar[row];
+    return days.find((day) => day.day() === 4).isoWeek();
+  }
+
   remove(): void {
     this.isShown = false;
   }

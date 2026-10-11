@@ -828,3 +828,48 @@ describe('DaterangepickerComponent week number columns fit (issue #341)', () => 
     expectNoOverflow(picker);
   });
 });
+
+describe('DaterangepickerComponent week numbers (issue #378)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  // Week numbers of the row with January 1st 2027 (a Friday) and of the next row, in the January table.
+  function weeksAroundNewYear(setup: (c: DaterangepickerComponent) => void): string[] {
+    const fixture = TestBed.createComponent(DaterangepickerComponent);
+    const component = fixture.componentInstance;
+    component.inline = true;
+    component.initialDates = [dayjs('2027-01-01'), dayjs('2027-02-01')];
+    setup(component);
+    fixture.detectChanges();
+    const rows: HTMLTableRowElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar.left tbody tr'));
+    const index = rows.findIndex((row) =>
+      Array.from(row.querySelectorAll('td:not(.week)')).some((cell) => !cell.classList.contains('off') && cell.textContent.trim() === '1')
+    );
+    return [rows[index], rows[index + 1]].map((row) => row.querySelector('td.week').textContent.trim());
+  }
+
+  it('gives ISO weeks by the Thursday of the row when weeks start on Sunday', () => {
+    expect(weeksAroundNewYear((c) => (c.showISOWeekNumbers = true))).toEqual(['53', '1']);
+  });
+
+  it('gives the same ISO weeks when weeks start on Monday', () => {
+    expect(
+      weeksAroundNewYear((c) => {
+        c.showISOWeekNumbers = true;
+        c.locale = { firstDay: 1 };
+      })
+    ).toEqual(['53', '1']);
+  });
+
+  it('uses the week rule of the instance locale', () => {
+    expect(
+      weeksAroundNewYear((c) => {
+        c.showWeekNumbers = true;
+        c.locale = { locale: fr };
+      })
+    ).toEqual(['53', '1']);
+  });
+});

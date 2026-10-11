@@ -120,11 +120,11 @@
                         <!-- add week number -->
                         @if (showWeekNumbers) {
                         <td class="week">
-                            <span>{{ calendarVariables.left.calendar[row][0].week() }}</span>
+                            <span>{{ weekOfRow(sideEnum.left, row) }}</span>
                         </td>
                         } @if (showISOWeekNumbers) {
                         <td class="week">
-                            <span>{{ calendarVariables.left.calendar[row][0].isoWeek() }}</span>
+                            <span>{{ isoWeekOfRow(sideEnum.left, row) }}</span>
                         </td>
                         }
                         <!-- cal -->
@@ -297,11 +297,11 @@
                     <tr [class]="calendarVariables.right.classes[row].classList">
                         @if (showWeekNumbers) {
                         <td class="week">
-                            <span>{{ calendarVariables.right.calendar[row][0].week() }}</span>
+                            <span>{{ weekOfRow(sideEnum.right, row) }}</span>
                         </td>
                         } @if (showISOWeekNumbers) {
                         <td class="week">
-                            <span>{{ calendarVariables.right.calendar[row][0].isoWeek() }}</span>
+                            <span>{{ isoWeekOfRow(sideEnum.right, row) }}</span>
                         </td>
                         } @for (col of calendarVariables.right.calCols; track col) {
                         <td
