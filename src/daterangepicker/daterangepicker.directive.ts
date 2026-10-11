@@ -356,7 +356,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       }
     }
     // The picker recomputes its label for new ranges; show it like a locale change does (issue #388).
-    if (changes['ranges'] && !changes['ranges'].firstChange && this.value && this.picker.chosenLabel) {
+    if (changes['ranges'] && !changes['ranges'].firstChange && this.hasDates(this.value) && this.picker.chosenLabel) {
       this.el.nativeElement.value = this.picker.chosenLabel;
     }
   }
@@ -367,7 +367,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       const changes = this.localeDiffer.diff(this.locale);
       if (changes) {
         this.picker.updateLocale(this.locale);
-        if (this.value && this.picker.chosenLabel) {
+        if (this.hasDates(this.value) && this.picker.chosenLabel) {
           this.el.nativeElement.value = this.picker.chosenLabel;
         }
       }
@@ -457,7 +457,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   }
 
   private setValue(val: TimePeriod) {
-    if (val) {
+    if (this.hasDates(val)) {
       this.value = val;
       if (val[this.startKeyHolder]) {
         this.picker.setStartDate(val[this.startKeyHolder]);
@@ -469,8 +469,19 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       if (this.picker.chosenLabel) {
         this.el.nativeElement.value = this.picker.chosenLabel;
       }
+    } else if (val) {
+      // A value without dates, like { startDate: null, endDate: null }, shows nothing (issue #311).
+      // No emit here: clear() would send a new empty object back, and two inputs on one model would loop.
+      this.valueHolder = val;
+      this.picker.resetDates();
+      this.el.nativeElement.value = '';
     } else {
       this.picker.clear();
     }
+  }
+
+  // False for null and for a value without dates, like the one emitted by Clear.
+  private hasDates(val: TimePeriod | null): boolean {
+    return !!val && !!(val[this.startKeyHolder] || val[this.endKeyHolder]);
   }
 }
