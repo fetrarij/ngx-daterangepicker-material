@@ -85,6 +85,16 @@ $input-height: 3rem !default;
     position: relative;
     display: inline-block;
   }
+  // Week number columns make the table wider than the fixed calendar width (issue #341).
+  &.show-week-numbers {
+    width: auto;
+    .calendar {
+      max-width: none;
+    }
+    th.week, td.week {
+      min-width: 24px;
+    }
+  }
 
   &:before, &:after {
     position: absolute;
