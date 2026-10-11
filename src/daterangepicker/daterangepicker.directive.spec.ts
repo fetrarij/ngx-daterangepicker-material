@@ -584,3 +584,56 @@ describe('DaterangepickerDirective label after an empty value (issue #311)', () 
     expect(input.value).toBe('');
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [singleDatePicker]="true" [timePicker]="timePicker" [(ngModel)]="selected" />`
+})
+class SingleStartOnlyHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  timePicker = false;
+  selected: TimePeriod;
+}
+
+describe('DaterangepickerDirective single date with only a start date (issue #537)', () => {
+  let fixture: ComponentFixture<SingleStartOnlyHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [SingleStartOnlyHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  async function create(timePicker: boolean, value: Partial<TimePeriod>): Promise<void> {
+    fixture = TestBed.createComponent(SingleStartOnlyHostComponent);
+    fixture.componentInstance.timePicker = timePicker;
+    fixture.componentInstance.selected = value as TimePeriod;
+    fixture.detectChanges();
+    await fixture.whenStable();
+  }
+
+  it('ends on the start day instead of today, so no range is drawn', async () => {
+    await create(false, { startDate: dayjs('2026-03-10') });
+    const directive = fixture.componentInstance.picker;
+    directive.open();
+    fixture.detectChanges();
+
+    expect(directive.picker.endDate.format('YYYY-MM-DD HH:mm:ss')).toBe('2026-03-10 23:59:59');
+    // The selected cell itself can carry in-range, depending on the time of day; no other cell may.
+    expect(document.querySelectorAll('.md-drppicker.shown td.in-range:not(.active)').length).toBe(0);
+    directive.hide();
+  });
+
+  it('ignores a different end date', async () => {
+    await create(false, { startDate: dayjs('2026-03-10'), endDate: dayjs('2026-03-20') });
+
+    expect(fixture.componentInstance.picker.picker.endDate.format('YYYY-MM-DD')).toBe('2026-03-10');
+  });
+
+  it('keeps the start time with the time picker', async () => {
+    await create(true, { startDate: dayjs('2026-03-10T14:30:00') });
+
+    expect(fixture.componentInstance.picker.picker.endDate.format('YYYY-MM-DD HH:mm')).toBe('2026-03-10 14:30');
+  });
+});

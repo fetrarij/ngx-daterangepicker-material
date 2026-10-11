@@ -873,3 +873,23 @@ describe('DaterangepickerComponent week numbers (issue #378)', () => {
     ).toEqual(['53', '1']);
   });
 });
+
+describe('DaterangepickerComponent inline single date with only a start date (issue #537)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('ends on the start day instead of today', () => {
+    const fixture = TestBed.createComponent(DaterangepickerComponent);
+    const component = fixture.componentInstance;
+    component.inline = true;
+    component.singleDatePicker = true;
+    component.startDate = dayjs().utc(true).subtract(40, 'day').startOf('day');
+    fixture.detectChanges();
+
+    expect(component.endDate.format('YYYY-MM-DD')).toBe(component.startDate.format('YYYY-MM-DD'));
+    expect(fixture.nativeElement.querySelectorAll('td.in-range:not(.active)').length).toBe(0);
+  });
+});
