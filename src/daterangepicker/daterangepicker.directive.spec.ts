@@ -1,4 +1,4 @@
-import { Component, ViewChild, signal } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation, signal } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -347,5 +347,63 @@ describe('DaterangepickerDirective keyboard focus when closed (issue #540)', () 
 
     expect(getComputedStyle(fixture.nativeElement.querySelector('.md-drppicker')).visibility).toBe('visible');
     expect(document.activeElement).toBe(rangeButton());
+  });
+});
+
+@Component({
+  standalone: false,
+  encapsulation: ViewEncapsulation.ShadowDom,
+  template: `<input ngxDaterangepickerMd [(ngModel)]="selected" />
+    <button type="button" class="ngx-daterangepicker-action" (click)="open()"><svg class="icon-part"></svg></button>`
+})
+class ShadowDomHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  selected: TimePeriod;
+
+  open(): void {
+    this.picker.open();
+  }
+}
+
+describe('DaterangepickerDirective inside a shadow root (issue #372)', () => {
+  let fixture: ComponentFixture<ShadowDomHostComponent>;
+  let shadowRoot: ShadowRoot;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ShadowDomHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ShadowDomHostComponent);
+    fixture.detectChanges();
+    shadowRoot = fixture.nativeElement.shadowRoot;
+  });
+
+  it('opens when the input is clicked', () => {
+    // click() is composed, like a real click, so document listeners see it.
+    shadowRoot.querySelector('input').click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.picker.picker.isShown).toBeTrue();
+  });
+
+  it('stays open when the click lands on a child of an action element', () => {
+    shadowRoot.querySelector('.icon-part').dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.picker.picker.isShown).toBeTrue();
+  });
+
+  it('closes on a click outside the shadow host', () => {
+    shadowRoot.querySelector('input').click();
+    fixture.detectChanges();
+
+    document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.picker.picker.isShown).toBeFalse();
   });
 });
