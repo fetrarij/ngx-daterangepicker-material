@@ -772,3 +772,59 @@ describe('DaterangepickerComponent callbacks get local dates (issue #455)', () =
     expect(component.endDate.format('YYYY-MM-DD')).toBe('2026-10-14');
   });
 });
+
+describe('DaterangepickerComponent week number columns fit (issue #341)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function render(setup: (c: DaterangepickerComponent) => void): HTMLElement {
+    const fixture = TestBed.createComponent(DaterangepickerComponent);
+    fixture.componentInstance.inline = true;
+    setup(fixture.componentInstance);
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+    return fixture.nativeElement.querySelector('.md-drppicker');
+  }
+
+  function expectNoOverflow(picker: HTMLElement): void {
+    expect(picker.scrollWidth).toBeLessThanOrEqual(picker.clientWidth);
+    picker.querySelectorAll('.calendar').forEach((calendar) => {
+      const table = calendar.querySelector('table');
+      expect(table.getBoundingClientRect().right).toBeLessThanOrEqual(calendar.getBoundingClientRect().right);
+      // Header rows have one cell per body column, week columns included.
+      expect(table.querySelector('thead tr.week-days').children.length).toBe(table.querySelector('tbody tr').children.length);
+    });
+    picker.parentElement.remove();
+  }
+
+  it('fits one week column', () => {
+    expectNoOverflow(render((c) => (c.showWeekNumbers = true)));
+  });
+
+  it('fits both week columns', () => {
+    expectNoOverflow(
+      render((c) => {
+        c.showWeekNumbers = true;
+        c.showISOWeekNumbers = true;
+      })
+    );
+  });
+
+  it('fits a single calendar with ISO weeks', () => {
+    expectNoOverflow(
+      render((c) => {
+        c.singleDatePicker = true;
+        c.showISOWeekNumbers = true;
+      })
+    );
+  });
+
+  it('keeps the usual layout without week numbers', () => {
+    const picker = render(() => undefined);
+    expect(picker.classList).not.toContain('show-week-numbers');
+    expectNoOverflow(picker);
+  });
+});

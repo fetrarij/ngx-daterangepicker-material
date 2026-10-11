@@ -8,7 +8,8 @@
         hidden: !isShown && !inline,
         inline: inline,
         double: !singleDatePicker && showCalInRanges,
-        'show-ranges': rangesArray.length
+        'show-ranges': rangesArray.length,
+        'show-week-numbers': showWeekNumbers || showISOWeekNumbers
     }"
     [class]="'drops-' + drops + '-' + opens"
 >
@@ -36,7 +37,9 @@
             <table class="table-condensed">
                 <thead>
                     <tr>
-                        @if (showWeekNumbers || showISOWeekNumbers) {
+                        @if (showWeekNumbers) {
+                        <th></th>
+                        } @if (showISOWeekNumbers) {
                         <th></th>
                         } @if ( !calendarVariables.left.minDate ||
                         (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars ||
@@ -96,7 +99,11 @@
                         }
                     </tr>
                     <tr class="week-days">
-                        @if (showWeekNumbers || showISOWeekNumbers) {
+                        @if (showWeekNumbers) {
+                        <th class="week">
+                            <span>{{ this.locale.weekLabel }}</span>
+                        </th>
+                        } @if (showISOWeekNumbers) {
                         <th class="week">
                             <span>{{ this.locale.weekLabel }}</span>
                         </th>
@@ -210,7 +217,9 @@
             <table class="table-condensed">
                 <thead>
                     <tr>
-                        @if (showWeekNumbers || showISOWeekNumbers) {
+                        @if (showWeekNumbers) {
+                        <th></th>
+                        } @if (showISOWeekNumbers) {
                         <th></th>
                         } @if ( (!calendarVariables.right.minDate ||
                         calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars ) {
@@ -268,7 +277,11 @@
                         }
                     </tr>
                     <tr class="week-days">
-                        @if (showWeekNumbers || showISOWeekNumbers) {
+                        @if (showWeekNumbers) {
+                        <th class="week">
+                            <span>{{ this.locale.weekLabel }}</span>
+                        </th>
+                        } @if (showISOWeekNumbers) {
                         <th class="week">
                             <span>{{ this.locale.weekLabel }}</span>
                         </th>
