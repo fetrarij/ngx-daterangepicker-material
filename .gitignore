@@ -8,6 +8,7 @@
 /tmp
 /out-tsc
 /schematics/dist
+/schematics/dist-spec
 
 # dependencies
 /node_modules

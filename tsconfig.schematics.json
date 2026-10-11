@@ -20,5 +20,5 @@
         "types": ["jasmine", "node"]
     },
     "include": ["schematics/**/*"],
-    "exclude": ["schematics/dist/**/*"]
+    "exclude": ["schematics/dist/**/*", "schematics/dist-spec/**/*", "schematics/**/*.spec.ts"]
 }

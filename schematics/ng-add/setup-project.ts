@@ -7,7 +7,7 @@
  */
 
 import { chain, Rule, Tree } from '@angular-devkit/schematics';
-import { addModuleImportToRootModule } from '@angular/cdk/schematics';
+import { addRootImport } from '@schematics/angular/utility';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import {Schema} from './schema';
 
@@ -37,6 +37,6 @@ function addDateRangePickerModule(options: any): Rule {
         if (!project) {
             throw new Error(`Project "${options.project}" not found in workspace.`);
         }
-        addModuleImportToRootModule(host, moduleName + '.forRoot()', 'ngx-daterangepicker-material', project as any);
+        return addRootImport(options.project, ({ code, external }) => code`${external(moduleName, 'ngx-daterangepicker-material')}.forRoot()`);
     };
 }
