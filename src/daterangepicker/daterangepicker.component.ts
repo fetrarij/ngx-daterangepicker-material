@@ -1428,14 +1428,21 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
    *  clear the daterange picker
    */
   clear(): void {
-    this.startDate = dayjs().utc(true).startOf('day');
-    this.endDate = dayjs().utc(true).endOf('day');
-    this.cachedVersion.start = this.startDate.clone();
-    this.cachedVersion.end = this.endDate.clone();
+    this.resetDates();
     this.choosedDate.emit({ chosenLabel: '', startDate: null, endDate: null });
     this.datesUpdated.emit({ startDate: null, endDate: null });
     this.clearClicked.emit();
     this.hide();
+  }
+
+  /** Puts the picker back on today without emitting anything, for an empty value given by the app. */
+  resetDates(): void {
+    this.startDate = dayjs().utc(true).startOf('day');
+    this.endDate = dayjs().utc(true).endOf('day');
+    this.cachedVersion.start = this.startDate.clone();
+    this.cachedVersion.end = this.endDate.clone();
+    // Otherwise a later locale or ranges change would show the old label again.
+    this.chosenLabel = null;
   }
 
   /**

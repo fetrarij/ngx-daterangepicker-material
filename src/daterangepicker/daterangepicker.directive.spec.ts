@@ -1,6 +1,6 @@
 import { Component, ViewChild, ViewEncapsulation, signal } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import dayjs from 'dayjs/esm';
 import fr from 'dayjs/esm/locale/fr';
@@ -482,5 +482,105 @@ describe('DaterangepickerDirective ranges change at runtime (issue #388)', () =>
     fixture.detectChanges();
 
     expect(input.value).toBe('2026-10-05 - 2026-10-11');
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input id="model" ngxDaterangepickerMd [locale]="locale" [(ngModel)]="selected" />
+    <input id="control" ngxDaterangepickerMd [locale]="locale" [formControl]="control" />`
+})
+class EmptyObjectHostComponent {
+  locale: LocaleConfig = { format: 'YYYY-MM-DD', separator: ' - ' };
+  selected = { startDate: null, endDate: null };
+  control = new FormControl<TimePeriod>(null);
+}
+
+describe('DaterangepickerDirective value without dates (issue #311)', () => {
+  let fixture: ComponentFixture<EmptyObjectHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [EmptyObjectHostComponent],
+      imports: [FormsModule, ReactiveFormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(async () => {
+    fixture = TestBed.createComponent(EmptyObjectHostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+  });
+
+  it('leaves the input empty for an ngModel with null dates', () => {
+    expect(fixture.nativeElement.querySelector('#model').value).toBe('');
+  });
+
+  it('empties the input when a form control gets null dates', () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('#control');
+    fixture.componentInstance.control.setValue({ startDate: dayjs('2026-10-05'), endDate: dayjs('2026-10-20') });
+    expect(input.value).toBe('2026-10-05 - 2026-10-20');
+
+    fixture.componentInstance.control.setValue({ startDate: null, endDate: null });
+
+    expect(input.value).toBe('');
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input id="first" ngxDaterangepickerMd [(ngModel)]="selected" (ngModelChange)="changes = changes + 1" />
+    <input id="second" ngxDaterangepickerMd [(ngModel)]="selected" />`
+})
+class SharedModelHostComponent {
+  selected: TimePeriod = null;
+  changes = 0;
+}
+
+describe('DaterangepickerDirective two inputs on one empty model (issue #311)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [SharedModelHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('settles instead of passing a new empty value back and forth', async () => {
+    const fixture = TestBed.createComponent(SharedModelHostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const changesAfterInit = fixture.componentInstance.changes;
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.changes).toBe(changesAfterInit);
+    expect(fixture.nativeElement.querySelector('#first').value).toBe('');
+    expect(fixture.nativeElement.querySelector('#second').value).toBe('');
+  });
+});
+
+describe('DaterangepickerDirective label after an empty value (issue #311)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [EmptyObjectHostComponent],
+      imports: [FormsModule, ReactiveFormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('keeps the input empty when the locale changes after null dates', async () => {
+    const fixture = TestBed.createComponent(EmptyObjectHostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('#control');
+    fixture.componentInstance.control.setValue({ startDate: dayjs('2026-10-05'), endDate: dayjs('2026-10-20') });
+    fixture.componentInstance.control.setValue({ startDate: null, endDate: null });
+
+    fixture.componentInstance.locale = { format: 'DD/MM/YYYY', separator: ' - ' };
+    fixture.detectChanges();
+
+    expect(input.value).toBe('');
   });
 });
