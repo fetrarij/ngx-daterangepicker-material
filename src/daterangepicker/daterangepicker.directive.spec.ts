@@ -407,3 +407,80 @@ describe('DaterangepickerDirective inside a shadow root (issue #372)', () => {
     expect(fixture.componentInstance.picker.picker.isShown).toBeFalse();
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [ranges]="ranges()"
+    [showRangeLabelOnInput]="showLabel"
+    [locale]="{ format: 'YYYY-MM-DD', separator: ' - ' }"
+    [(ngModel)]="selected"
+  />`
+})
+class RangesSwitchHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  ranges = signal<Record<string, [dayjs.Dayjs, dayjs.Dayjs]>>({
+    'First week': [dayjs('2026-10-05'), dayjs('2026-10-11')],
+    'Second week': [dayjs('2026-10-12'), dayjs('2026-10-18')]
+  });
+
+  showLabel = true;
+  selected: TimePeriod;
+}
+
+describe('DaterangepickerDirective ranges change at runtime (issue #388)', () => {
+  let fixture: ComponentFixture<RangesSwitchHostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [RangesSwitchHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function chooseFirstWeek(showLabel: boolean): void {
+    fixture = TestBed.createComponent(RangesSwitchHostComponent);
+    fixture.componentInstance.showLabel = showLabel;
+    fixture.detectChanges();
+    input = fixture.nativeElement.querySelector('input');
+    input.click();
+    fixture.detectChanges();
+    const buttons: HTMLButtonElement[] = Array.from(document.querySelectorAll('.ranges button'));
+    buttons.find((button) => button.textContent.trim() === 'First week').click();
+    fixture.detectChanges();
+  }
+
+  it('shows the new name of the chosen range', () => {
+    chooseFirstWeek(true);
+    expect(input.value).toBe('First week');
+
+    fixture.componentInstance.ranges.set({
+      'Première semaine': [dayjs('2026-10-05'), dayjs('2026-10-11')],
+      'Deuxième semaine': [dayjs('2026-10-12'), dayjs('2026-10-18')]
+    });
+    fixture.detectChanges();
+
+    expect(input.value).toBe('Première semaine');
+  });
+
+  it('shows the dates when the chosen range is gone', () => {
+    chooseFirstWeek(true);
+
+    fixture.componentInstance.ranges.set({ 'Second week': [dayjs('2026-10-12'), dayjs('2026-10-18')] });
+    fixture.detectChanges();
+
+    expect(input.value).toBe('2026-10-05 - 2026-10-11');
+  });
+
+  it('keeps the dates without showRangeLabelOnInput', () => {
+    chooseFirstWeek(false);
+    expect(input.value).toBe('2026-10-05 - 2026-10-11');
+
+    fixture.componentInstance.ranges.set({ 'Première semaine': [dayjs('2026-10-05'), dayjs('2026-10-11')] });
+    fixture.detectChanges();
+
+    expect(input.value).toBe('2026-10-05 - 2026-10-11');
+  });
+});
