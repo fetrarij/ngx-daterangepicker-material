@@ -37,6 +37,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build demo
+        if: github.event_name == 'pull_request'
+        run: npm run demo:build
+      - name: Deploy demo
+        if: github.event_name == 'push'
         run: |
           npx ng deploy --base-href=/ngx-daterangepicker-material/ \
             --repo=https://github.com/fetrarij/ngx-daterangepicker-material.git \
