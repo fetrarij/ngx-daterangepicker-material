@@ -234,12 +234,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       return;
     }
 
-    // closest() also matches clicks on children of the action element, like an icon's svg.
-    if ((event.target as Element).closest('.ngx-daterangepicker-action')) {
+    // composedPath() sees inside shadow roots, where event.target is only the shadow host.
+    const path = event.composedPath();
+
+    // Also matches clicks on children of the action element, like an icon's svg.
+    if (path.some((node) => node instanceof Element && node.classList.contains('ngx-daterangepicker-action'))) {
       return;
     }
 
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    if (!path.includes(this.elementRef.nativeElement)) {
       this.hide();
     }
   }
