@@ -42,7 +42,7 @@
     "gh-pages": "ng build --configuration production --base-href=\"/ngx-daterangepicker-material/\" && ngh --dir demo/dist",
     "build": "ng-packagr -p ng-package.json -c tsconfig.json",
     "build:schematics": "tsc -p ./tsconfig.schematics.json",
-    "copy:schematics": "cpr schematics/dist dist/schematics && cp ./schematics/collection.json ./dist/schematics && cp ./schematics/ng-add/schema.json ./dist/schematics/ng-add",
+    "copy:schematics": "cpr schematics/dist dist/schematics && cp ./schematics/collection.json ./dist/schematics && cp ./schematics/ng-add/schema.json ./dist/schematics/ng-add && cp ./schematics/package.json ./dist/schematics",
     "postbuild": "npm run build:schematics && npm run copy:schematics"
   },
   "author": "Fetrarijaona R.",
