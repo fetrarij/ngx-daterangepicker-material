@@ -1,6 +1,6 @@
 {
   "name": "ngx-daterangepicker-material",
-  "version": "22.1.4",
+  "version": "22.2.0",
   "description": "Date range picker for Angular 16-22. Predefined ranges, time picker, Material look. Works with standalone, SSR and zoneless apps. Built on dayjs.",
   "keywords": [
     "angular",
