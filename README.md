@@ -282,7 +282,36 @@ The `[locale]` input can be changed at runtime, for example when the user switch
 
 Dates typed in the input are read with `format` and the month names of this locale, like `5 enero 2026 - 10 enero 2026` in Spanish.
 
-[Check here](#global-locale) for setting the global locale
+#### Global locale
+
+To set the locale for every picker of the app, pass it to `NgxDaterangepickerMd.forRoot()`. In a standalone app:
+
+```typescript
+// app.config.ts
+providers: [
+  importProvidersFrom(NgxDaterangepickerMd.forRoot({
+    separator: ' - ',
+    applyLabel: 'Okay',
+  }))
+]
+```
+
+In an NgModule app:
+
+```typescript
+@NgModule({
+    imports: [
+        ... ,
+        FormsModule,
+        NgxDaterangepickerMd.forRoot({
+            separator: ' - ',
+            applyLabel: 'Okay',
+        })
+    ],
+    declarations: [App],
+    bootstrap:    [App]
+})
+```
 
 ### startKey and endKey
 
@@ -416,43 +445,6 @@ You can use theses options:
 
  >Fires when a date or range is chosen, and sends the dates, eg: `{startDate: Dayjs, endDate: Dayjs}`. It has the same name as the native `change` event of the input, so after typing in the input, your handler also gets that DOM `Event`. To get only the dates, use `(datesUpdated)` or `(ngModelChange)`.
 
-### Global locale
+## Contributing
 
-For setting the global locale, pass this object to NgxDaterangepickerMd.forRoot().
-
-eg:
-
-```
-@NgModule({
-    imports: [
-        ... ,
-        FormsModule,
-        NgxDaterangepickerMd.forRoot({
-            separator: ' - ',
-            applyLabel: 'Okay',
-        })
-    ],
-    declarations: [App],
-    bootstrap:    [App]
-})
-```
-
-## Development
-
-### Prepare your environment
-
-Install local dependencies: `npm install`.
-
-### Development server
-
-Run `npm start` to start a development server on a port 4200.
-
-Open `http//:localhost:4200` on your browser.
-
-## Tests
-
-Run `npm test` or `ng test` to run tests.
-
-
-## [License](https://github.com/fetrarij/ngx-daterangepicker-material/blob/master/LICENSE)
-MIT
+See [CONTRIBUTING.md](CONTRIBUTING.md).

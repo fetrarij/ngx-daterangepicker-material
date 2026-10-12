@@ -1,3 +1,5 @@
+From v16, release notes are on [GitHub Releases](https://github.com/fetrarij/ngx-daterangepicker-material/releases).
+
 # 5.0.0 (2021-06-11)
 
 ##### Chores
