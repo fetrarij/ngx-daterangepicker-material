@@ -817,7 +817,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
     if (!this.timePicker) {
       this.pickingDate = false;
-      this.endDate = this.endDate.add(1, 'd').startOf('day').subtract(1, 'second');
+      // Same end as the ranges and the default value: 23:59:59.999.
+      this.endDate = this.endDate.endOf('day');
     }
 
     if (this.timePicker && this.timePickerIncrement) {
@@ -832,7 +833,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       this.endDate = this.maxDate.clone();
       // Without time picker, the end is the end of the maxDate day, like any other end date (issue #486).
       if (!this.timePicker) {
-        this.endDate = this.endDate.add(1, 'd').startOf('day').subtract(1, 'second');
+        this.endDate = this.endDate.endOf('day');
       }
     }
 
@@ -1444,7 +1445,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   private alignSingleEndDate(): void {
     if (this.singleDatePicker && this.startDate) {
       // Same end of day as setEndDate() without time picker.
-      this.endDate = this.timePicker ? this.startDate.clone() : this.startDate.clone().add(1, 'd').startOf('day').subtract(1, 'second');
+      this.endDate = this.timePicker ? this.startDate.clone() : this.startDate.clone().endOf('day');
     }
   }
 

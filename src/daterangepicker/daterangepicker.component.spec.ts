@@ -307,6 +307,89 @@ describe('DaterangepickerComponent hour labels (issue #539)', () => {
   });
 });
 
+describe('DaterangepickerComponent midnight in 12-hour mode (issue #142)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  it('shows midnight as 12 AM', async () => {
+    const fixture = TestBed.createComponent(DaterangepickerComponent);
+    const component = fixture.componentInstance;
+    component.inline = true;
+    component.timePicker = true;
+    component.timePicker24Hour = false;
+    component.startDate = dayjs('2026-10-04 00:00');
+    component.endDate = dayjs('2026-10-06 00:00');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const hour: HTMLSelectElement = fixture.nativeElement.querySelector('.calendar.left .hourselect');
+    const ampm: HTMLSelectElement = fixture.nativeElement.querySelector('.calendar.left .ampmselect');
+    expect(hour.selectedOptions[0]?.textContent.trim()).toBe('12');
+    expect(ampm.value).toBe('AM');
+  });
+});
+
+describe('DaterangepickerComponent range end time without timePicker', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+  let lastUpdate: TimePeriod;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function create(setup: (picker: DaterangepickerComponent) => void = () => undefined): void {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.inline = true;
+    setup(component);
+    fixture.detectChanges();
+    component.datesUpdated.subscribe((range: TimePeriod) => (lastUpdate = range));
+  }
+
+  function clickDay(day: number): void {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  function apply(): void {
+    const buttons: HTMLButtonElement[] = Array.from(fixture.nativeElement.querySelectorAll('.buttons button'));
+    buttons.find((button) => button.textContent.trim() === 'Apply').click();
+    fixture.detectChanges();
+  }
+
+  it('ends at 23:59:59.999 after two clicks, like the ranges', () => {
+    create();
+    clickDay(4);
+    clickDay(6);
+    apply();
+
+    expect(lastUpdate.endDate.format('HH:mm:ss.SSS')).toBe('23:59:59.999');
+  });
+
+  it('ends at 23:59:59.999 in single date mode', () => {
+    create((picker) => (picker.singleDatePicker = true));
+    clickDay(4);
+
+    expect(component.endDate.format('HH:mm:ss.SSS')).toBe('23:59:59.999');
+  });
+
+  it('ends at 23:59:59.999 when the end is cut to maxDate', () => {
+    create((picker) => (picker.maxDate = dayjs().date(5)));
+    component.setStartDate(dayjs().date(2));
+    component.setEndDate(dayjs().date(20));
+
+    expect(component.endDate.format('D HH:mm:ss.SSS')).toBe('5 23:59:59.999');
+  });
+});
+
 describe('DaterangepickerComponent isCustomDate (issue #534)', () => {
   let fixture: ComponentFixture<DaterangepickerComponent>;
 
@@ -438,8 +521,8 @@ describe('DaterangepickerComponent inline emitted instants (issue #547)', () => 
 
     expect(emitted.start).toBe(local(`${month}-04T00:00:00`));
     expect(emitted.updatedStart).toBe(local(`${month}-04T00:00:00`));
-    expect(emitted.end).toBe(local(`${month}-06T23:59:59`));
-    expect(emitted.chosenEnd).toBe(local(`${month}-06T23:59:59`));
+    expect(emitted.end).toBe(local(`${month}-06T23:59:59.999`));
+    expect(emitted.chosenEnd).toBe(local(`${month}-06T23:59:59.999`));
   });
 
   it('emits local instants from rangeClicked', () => {
