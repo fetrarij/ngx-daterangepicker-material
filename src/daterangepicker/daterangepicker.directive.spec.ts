@@ -637,3 +637,224 @@ describe('DaterangepickerDirective single date with only a start date (issue #53
     expect(fixture.componentInstance.picker.picker.endDate.format('YYYY-MM-DD HH:mm')).toBe('2026-03-10 14:30');
   });
 });
+
+interface MonthsOptions {
+  singleDatePicker: boolean;
+  linkedCalendars: boolean;
+  minDate: dayjs.Dayjs;
+  maxDate: dayjs.Dayjs;
+  initialDates: [dayjs.Dayjs, dayjs.Dayjs];
+  ranges: Record<string, [dayjs.Dayjs, dayjs.Dayjs]>;
+  autoApply: boolean;
+  closeOnAutoApply: boolean;
+  alwaysShowCalendars: boolean;
+  keepCalendarOpeningWithRange: boolean;
+  timePicker: boolean;
+}
+
+@Component({
+  standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [singleDatePicker]="o.singleDatePicker"
+    [linkedCalendars]="o.linkedCalendars"
+    [minDate]="o.minDate"
+    [maxDate]="o.maxDate"
+    [initialDates]="o.initialDates"
+    [ranges]="o.ranges"
+    [autoApply]="o.autoApply"
+    [closeOnAutoApply]="o.closeOnAutoApply"
+    [alwaysShowCalendars]="o.alwaysShowCalendars"
+    [keepCalendarOpeningWithRange]="o.keepCalendarOpeningWithRange"
+    [timePicker]="o.timePicker"
+    [(ngModel)]="selected"
+  />`
+})
+class MonthsHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  o: MonthsOptions;
+  selected: TimePeriod = null;
+}
+
+describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416, #277, #111, #142)', () => {
+  let fixture: ComponentFixture<MonthsHostComponent>;
+  const today = dayjs();
+  const month = (offset: number): string => today.add(offset, 'month').format('YYYY-MM');
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [MonthsHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  async function open(options: Partial<MonthsOptions> = {}, value: Partial<TimePeriod> = null): Promise<void> {
+    fixture = TestBed.createComponent(MonthsHostComponent);
+    fixture.componentInstance.o = {
+      singleDatePicker: false,
+      linkedCalendars: false,
+      minDate: null,
+      maxDate: null,
+      initialDates: null,
+      ranges: {},
+      autoApply: false,
+      closeOnAutoApply: true,
+      alwaysShowCalendars: false,
+      keepCalendarOpeningWithRange: false,
+      timePicker: false,
+      ...options
+    };
+    fixture.componentInstance.selected = value as TimePeriod;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentInstance.picker.open();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function view(): string[] {
+    const picker = fixture.componentInstance.picker.picker;
+    return [picker.leftCalendar.month.format('YYYY-MM'), picker.rightCalendar.month.format('YYYY-MM')];
+  }
+
+  function cells(side: 'left' | 'right', selector: string): string[] {
+    return Array.from(document.querySelectorAll(`.md-drppicker.shown .calendar.${side} td${selector}:not(.off)`)).map((cell) =>
+      cell.textContent.trim()
+    );
+  }
+
+  function clickCell(side: 'left' | 'right', day: number): void {
+    const cell = Array.from(document.querySelectorAll<HTMLElement>(`.md-drppicker.shown .calendar.${side} td.available:not(.off)`)).find(
+      (td) => td.textContent.trim() === String(day)
+    );
+    cell.click();
+    fixture.detectChanges();
+  }
+
+  function clickRange(label: string): void {
+    const button = Array.from(document.querySelectorAll<HTMLButtonElement>('.md-drppicker.shown .ranges button')).find(
+      (b) => b.textContent.trim() === label
+    );
+    button.click();
+    fixture.detectChanges();
+  }
+
+  it('opens on the month of a single date from the model (#400)', async () => {
+    await open(
+      { singleDatePicker: true },
+      { startDate: today.subtract(2, 'month').date(14), endDate: today.subtract(2, 'month').date(14) }
+    );
+
+    expect(view()[0]).toBe(month(-2));
+    // In single mode the only calendar has the "right" class.
+    expect(cells('right', '.active')).toEqual(['14']);
+  });
+
+  it('opens on the start month of a range from the model', async () => {
+    await open({}, { startDate: today.add(3, 'month').date(10), endDate: today.add(3, 'month').date(12) });
+
+    expect(view()[0]).toBe(month(3));
+  });
+
+  it('moves to the month of a typed range (#450)', async () => {
+    await open();
+    const directive = fixture.componentInstance.picker;
+    const format = directive.picker.locale.format;
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    input.value = `${today.add(5, 'month').date(3).format(format)} - ${today.add(5, 'month').date(8).format(format)}`;
+    input.dispatchEvent(new KeyboardEvent('keyup'));
+    fixture.detectChanges();
+
+    expect(view()[0]).toBe(month(5));
+  });
+
+  it('shows the maxDate month on the right with linked calendars (#398)', async () => {
+    await open({ linkedCalendars: true, maxDate: today.endOf('month') });
+
+    expect(view()).toEqual([month(-1), month(0)]);
+  });
+
+  it('shows the maxDate month on the right with unlinked calendars (#111)', async () => {
+    await open({ maxDate: today.endOf('month') });
+
+    expect(view()).toEqual([month(-1), month(0)]);
+  });
+
+  it('opens on the minDate month when minDate is in a later month (#277)', async () => {
+    await open({ minDate: today.add(3, 'month').startOf('month') });
+
+    expect(view()[0]).toBe(month(3));
+  });
+
+  it('starts the time picker at minDate when no date is chosen (#142)', async () => {
+    await open({ singleDatePicker: true, timePicker: true, minDate: today.hour(22).minute(12) });
+
+    const hour: HTMLSelectElement = document.querySelector('.md-drppicker.shown .calendar.right .hourselect');
+    const minute: HTMLSelectElement = document.querySelector('.md-drppicker.shown .calendar.right .minuteselect');
+    const ampm: HTMLSelectElement = document.querySelector('.md-drppicker.shown .calendar.right .ampmselect');
+    expect(hour.selectedOptions[0]?.textContent.trim()).toBe('10');
+    expect(minute.selectedOptions[0]?.textContent.trim()).toBe('12');
+    expect(ampm.value).toBe('PM');
+  });
+
+  it('opens on initialDates when no date is chosen', async () => {
+    await open({ initialDates: [today.subtract(4, 'month'), today.subtract(3, 'month')] });
+
+    expect(view()).toEqual([month(-4), month(-3)]);
+  });
+
+  it('keeps the months in view when the end date is clicked after moving away', async () => {
+    await open();
+    clickCell('left', 10);
+    const component = fixture.componentInstance.picker.picker;
+    component.clickNext(component.sideEnum.left);
+    component.clickNext(component.sideEnum.left);
+    component.clickNext(component.sideEnum.left);
+    fixture.detectChanges();
+    clickCell('left', 12);
+
+    expect(view()[0]).toBe(month(3));
+  });
+
+  it('shows the clicked range when autoApply keeps the picker open (#416)', async () => {
+    const start = today.add(2, 'month').date(5);
+    await open({
+      ranges: { Later: [start, start.date(9)] },
+      autoApply: true,
+      closeOnAutoApply: false,
+      alwaysShowCalendars: true
+    });
+    clickRange('Later');
+
+    expect(view()[0]).toBe(month(2));
+    expect(cells('left', '.start-date')).toEqual(['5']);
+    expect(cells('left', '.end-date')).toEqual(['9']);
+  });
+
+  it('shows two different months after a range inside one month (#416)', async () => {
+    const start = today.add(2, 'month').date(5);
+    await open({
+      ranges: { Later: [start, start.date(9)] },
+      alwaysShowCalendars: true,
+      keepCalendarOpeningWithRange: true
+    });
+    clickRange('Later');
+
+    expect(view()).toEqual([month(2), month(3)]);
+  });
+
+  it('keeps the maxDate month on the right after a range click (#411)', async () => {
+    await open({
+      ranges: { 'This Month': [today.startOf('month'), today] },
+      maxDate: today,
+      alwaysShowCalendars: true,
+      keepCalendarOpeningWithRange: true
+    });
+    clickRange('This Month');
+
+    expect(view()).toEqual([month(-1), month(0)]);
+  });
+});
