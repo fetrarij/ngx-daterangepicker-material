@@ -1,4 +1,7 @@
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import dayjs, { Dayjs } from 'dayjs/esm';
 import fr from 'dayjs/esm/locale/fr';
 import dayjsCjs from 'dayjs';
@@ -976,5 +979,129 @@ describe('DaterangepickerComponent inline single date with only a start date (is
 
     expect(component.endDate.format('YYYY-MM-DD')).toBe(component.startDate.format('YYYY-MM-DD'));
     expect(fixture.nativeElement.querySelectorAll('td.in-range:not(.active)').length).toBe(0);
+  });
+});
+
+@Component({
+  template: `
+    <ngx-daterangepicker-material
+      [(ngModel)]="selected"
+      [showClearButton]="true"
+      [singleDatePicker]="single()"
+    ></ngx-daterangepicker-material>
+  `,
+  imports: [NgxDaterangepickerMd, FormsModule]
+})
+class InlineModelHostComponent {
+  selected = signal<unknown>({ startDate: dayjs('2026-03-03'), endDate: dayjs('2026-03-06') });
+  single = signal(false);
+}
+
+@Component({
+  template: `<ngx-daterangepicker-material [formControl]="control"></ngx-daterangepicker-material>`,
+  imports: [NgxDaterangepickerMd, ReactiveFormsModule]
+})
+class InlineControlHostComponent {
+  control = new FormControl<unknown>({ startDate: dayjs('2026-05-11'), endDate: dayjs('2026-05-14') });
+}
+
+describe('DaterangepickerComponent with ngModel and formControl (issue #527)', () => {
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function picker(fixture: ComponentFixture<unknown>): DaterangepickerComponent {
+    return fixture.debugElement.query(By.directive(DaterangepickerComponent)).componentInstance;
+  }
+
+  function clickDay(fixture: ComponentFixture<unknown>, day: number): void {
+    const root = fixture.nativeElement as HTMLElement;
+    const cells = Array.from(root.querySelectorAll<HTMLTableCellElement>('.calendar td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  function clickButton(fixture: ComponentFixture<unknown>, label: string): void {
+    const root = fixture.nativeElement as HTMLElement;
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('.buttons button'));
+    buttons.find((button) => button.textContent.trim().startsWith(label)).click();
+    fixture.detectChanges();
+  }
+
+  async function createModelHost(): Promise<ComponentFixture<InlineModelHostComponent>> {
+    const fixture = TestBed.createComponent(InlineModelHostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  it('shows the ngModel value in the calendar', async () => {
+    const fixture = await createModelHost();
+    const root = fixture.nativeElement as HTMLElement;
+
+    expect(picker(fixture).startDate.format('YYYY-MM-DD')).toBe('2026-03-03');
+    expect(picker(fixture).endDate.format('YYYY-MM-DD')).toBe('2026-03-06');
+    expect(root.querySelector('td.start-date').textContent.trim()).toBe('3');
+    expect(root.querySelector('td.end-date').textContent.trim()).toBe('6');
+  });
+
+  it('updates the model on Apply, not on day clicks', async () => {
+    const fixture = await createModelHost();
+    const host = fixture.componentInstance;
+    const before = host.selected();
+
+    clickDay(fixture, 10);
+    clickDay(fixture, 12);
+    expect(host.selected()).toBe(before);
+
+    clickButton(fixture, 'Apply');
+    const value = host.selected() as TimePeriod;
+    expect(value.startDate.format('YYYY-MM-DD')).toBe('2026-03-10');
+    expect(value.endDate.format('YYYY-MM-DD')).toBe('2026-03-12');
+  });
+
+  it('sends empty dates to the model on Clear', async () => {
+    const fixture = await createModelHost();
+
+    clickButton(fixture, 'Clear');
+
+    expect(fixture.componentInstance.selected()).toEqual({ startDate: null, endDate: null });
+  });
+
+  it('reads a plain date in single mode', async () => {
+    const fixture = await createModelHost();
+    fixture.componentInstance.single.set(true);
+    fixture.detectChanges();
+    fixture.componentInstance.selected.set('2026-07-20');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(picker(fixture).startDate.format('YYYY-MM-DD')).toBe('2026-07-20');
+    expect(picker(fixture).endDate.format('YYYY-MM-DD')).toBe('2026-07-20');
+  });
+
+  it('follows formControl value and disabled state', async () => {
+    const fixture = TestBed.createComponent(InlineControlHostComponent);
+    fixture.detectChanges();
+    const control = fixture.componentInstance.control;
+    const container = (fixture.nativeElement as HTMLElement).querySelector('.md-drppicker');
+
+    expect(picker(fixture).startDate.format('YYYY-MM-DD')).toBe('2026-05-11');
+
+    control.setValue({ startDate: dayjs('2026-06-01'), endDate: dayjs('2026-06-02') });
+    fixture.detectChanges();
+    expect(picker(fixture).endDate.format('YYYY-MM-DD')).toBe('2026-06-02');
+
+    control.disable();
+    fixture.detectChanges();
+    expect(container.classList).toContain('disabled');
+    expect(container.hasAttribute('inert')).toBeTrue();
+
+    control.enable();
+    fixture.detectChanges();
+    expect(container.classList).not.toContain('disabled');
   });
 });

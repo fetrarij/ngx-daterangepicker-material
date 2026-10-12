@@ -14,11 +14,11 @@ import {
   ViewEncapsulation,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
-import { toExternalDate, toInternalDate } from './external-date';
+import { isPlainDate, toExternalDate, toInternalDate } from './external-date';
 
 import localeData from 'dayjs/esm/plugin/localeData';
 import LocalizedFormat from 'dayjs/esm/plugin/localizedFormat';
@@ -161,7 +161,7 @@ interface VisibleCalendar {
     }
   ]
 })
-export class DaterangepickerComponent implements OnInit, OnChanges {
+export class DaterangepickerComponent implements OnInit, OnChanges, ControlValueAccessor {
   @Input()
   initialDates: [string | Dayjs, string | Dayjs] = null;
 
@@ -317,6 +317,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   // Set during a day click, so picking the end date does not move the months in view.
   private keepMonthsInView = false;
   private cachedVersion: { start: Dayjs; end: Dayjs } = { start: null, end: null };
+  // Set by ngModel or formControl on the inline component (issue #527).
+  public isDisabled = false;
+  private onChangeFn: (value: TimePeriod) => void = () => undefined;
+  private onTouchedFn: () => void = () => undefined;
+  // formControl can write a value before ngOnInit; it is applied once the calendar is ready.
+  private pendingValue: { value: TimePeriod | Dayjs | Date | string | null } = null;
 
   constructor(
     private el: ElementRef,
@@ -467,6 +473,31 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     this.renderCalendar(SideEnum.right);
     this.renderRanges();
     this.initialized = true;
+    if (this.pendingValue) {
+      this.applyValue(this.pendingValue.value);
+      this.pendingValue = null;
+    }
+  }
+
+  writeValue(value: TimePeriod | Dayjs | Date | string | null): void {
+    if (this.initialized) {
+      this.applyValue(value);
+    } else {
+      this.pendingValue = { value };
+    }
+  }
+
+  registerOnChange(fn: (value: TimePeriod) => void): void {
+    this.onChangeFn = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouchedFn = fn;
+  }
+
+  setDisabledState(state: boolean): void {
+    this.isDisabled = state;
+    this.ref.markForCheck();
   }
 
   renderRanges(): void {
@@ -1063,6 +1094,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
 
     this.datesUpdated.emit({ startDate: this.toOutput(this.startDate), endDate: this.toOutput(this.endDate) });
+    this.onChangeFn({ startDate: this.toOutput(this.startDate), endDate: this.toOutput(this.endDate) });
+    this.onTouchedFn();
     // Inline pickers never call show(), so Cancel needs the cache refreshed here.
     this.cachedVersion.start = this.startDate?.clone();
     this.cachedVersion.end = this.endDate?.clone();
@@ -1445,6 +1478,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     this.resetDates();
     this.choosedDate.emit({ chosenLabel: '', startDate: null, endDate: null });
     this.datesUpdated.emit({ startDate: null, endDate: null });
+    this.onChangeFn({ startDate: null, endDate: null });
+    this.onTouchedFn();
     this.clearClicked.emit();
     this.hide();
   }
@@ -1476,6 +1511,38 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       // Same end of day as setEndDate() without time picker.
       this.endDate = this.timePicker ? this.startDate.clone() : this.startDate.clone().endOf('day');
     }
+  }
+
+  // A value from ngModel or formControl; like the input, a plain date is read as one day in single mode.
+  private applyValue(value: TimePeriod | Dayjs | Date | string | null): void {
+    const period = value as TimePeriod;
+    let start = period?.startDate || null;
+    let end = period?.endDate || null;
+    if (this.singleDatePicker && isPlainDate(value)) {
+      const date = toInternalDate(value as Dayjs | Date | string);
+      start = end = date?.isValid() ? toExternalDate(date) : null;
+    }
+    if (!start && !end) {
+      this.resetDates();
+      this.updateView();
+      return;
+    }
+    if (this.singleDatePicker) {
+      this.setStartDate(start || end);
+      this.setEndDate(start || end);
+    } else {
+      if (start) {
+        this.setStartDate(start);
+      }
+      if (end) {
+        this.setEndDate(end);
+      }
+    }
+    this.hasSelection = true;
+    this.cachedVersion.start = this.startDate.clone();
+    this.cachedVersion.end = this.endDate.clone();
+    this.calculateChosenLabel();
+    this.updateView();
   }
 
   /** Puts the picker back on today without emitting anything, for an empty value given by the app. */

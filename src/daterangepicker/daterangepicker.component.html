@@ -9,9 +9,11 @@
         inline: inline,
         double: !singleDatePicker && showCalInRanges,
         'show-ranges': rangesArray.length,
-        'show-week-numbers': showWeekNumbers || showISOWeekNumbers
+        'show-week-numbers': showWeekNumbers || showISOWeekNumbers,
+        disabled: isDisabled
     }"
     [class]="'drops-' + drops + '-' + opens"
+    [attr.inert]="isDisabled ? '' : null"
 >
     @if (rangesArray.length) {
     <div class="ranges">
