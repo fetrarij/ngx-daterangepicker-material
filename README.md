@@ -12,7 +12,7 @@ A date range picker with a Material look. It works with Angular 22, standalone c
 
 Actively maintained again since 2026. New issues get a reply.
 
-![](screen.png)
+![Demo: picking a predefined range, then a custom range](screen.gif)
 
 Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
 
