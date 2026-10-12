@@ -15,8 +15,13 @@ import {
   Output,
   EventEmitter,
   Renderer2,
-  HostBinding
+  HostBinding,
+  ComponentRef,
+  Inject,
+  NgZone,
+  OnDestroy
 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { ChosenDate, DateRange, DaterangepickerComponent, DateRanges, EndDate, StartDate, TimePeriod } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs/esm';
@@ -37,7 +42,7 @@ import { isPlainDate, parseDate, toExternalDate, toInternalDate } from './extern
   ]
 })
 // eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle
-export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
+export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix,@angular-eslint/no-output-native,@angular-eslint/no-output-rename
   @Output('change') onChange: EventEmitter<TimePeriod | null> = new EventEmitter();
   // eslint-disable-next-line @angular-eslint/no-output-rename
@@ -152,12 +157,14 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   initialDates: [string | dayjs.Dayjs, string | dayjs.Dayjs];
 
   @Input() closeOnAutoApply = true;
+  // Moves the calendar to <body>, so a parent with overflow: hidden (like mat-form-field) cannot clip it (issue #565).
+  @Input() appendToBody = false;
   @Input()
   private endKeyHolder: string;
 
   public picker: DaterangepickerComponent;
   private startKeyHolder: string;
-  private notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey', 'initialDates'];
+  private notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey', 'initialDates', 'appendToBody'];
   private onChangeFn = Function.prototype;
   private onTouched = Function.prototype;
   private validatorChange = Function.prototype;
@@ -165,6 +172,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private valueHolder: TimePeriod | null;
   private localeDiffer: KeyValueDiffer<string, any>;
   private localeHolder: LocaleConfig = {};
+  private componentRef: ComponentRef<DaterangepickerComponent>;
+  private resizeObserver: ResizeObserver | null = null;
+  private stopWindowListeners: (() => void) | null = null;
 
   constructor(
     public viewContainerRef: ViewContainerRef,
@@ -173,15 +183,17 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     private renderer: Renderer2,
     private differs: KeyValueDiffers,
     private localeHolderService: LocaleService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private zone: NgZone,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.endKey = 'endDate';
     this.startKey = 'startDate';
     this.drops = 'down';
     this.opens = 'auto';
     viewContainerRef.clear();
-    const componentRef = viewContainerRef.createComponent(DaterangepickerComponent);
-    this.picker = componentRef.instance as DaterangepickerComponent;
+    this.componentRef = viewContainerRef.createComponent(DaterangepickerComponent);
+    this.picker = this.componentRef.instance as DaterangepickerComponent;
     this.picker.inline = false; // set inline to false for all directive usage
   }
 
@@ -299,9 +311,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     if (this.disabled) {
       return;
     }
+    this.placePickerHost();
     this.picker.show(event);
     setTimeout(() => {
       this.setPosition();
+      this.watchPosition();
     });
   }
 
@@ -385,6 +399,14 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
+  ngOnDestroy(): void {
+    this.unwatchPosition();
+    const host = this.componentRef.location.nativeElement;
+    if (host.parentNode === this.document.body) {
+      this.renderer.removeChild(this.document.body, host);
+    }
+  }
+
   toggle(e?: Event): void {
     if (this.picker.isShown) {
       this.hide(e);
@@ -417,54 +439,110 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
    * Set position of the calendar
    */
   setPosition(): void {
-    let style;
-    let containerTop;
-    const container = this.picker.pickerContainer.nativeElement;
-    const element = this.el.nativeElement;
-    if (this.drops && this.drops === 'up') {
-      containerTop = element.offsetTop - container.clientHeight + 'px';
-    } else {
-      containerTop = 'auto';
-    }
+    const container: HTMLElement = this.picker.pickerContainer.nativeElement;
+    const element: HTMLElement = this.el.nativeElement;
+    // Set first: the width is measured in the final layout.
+    this.renderer.setStyle(container, 'position', this.appendToBody ? 'fixed' : '');
+    // The -10px margin from the styles assumes the in-flow position; with appendToBody, start right under the input.
+    this.renderer.setStyle(container, 'margin-top', this.appendToBody ? '0' : '');
+    // Viewport coordinates: they stay right when a parent is scrolled (issue #466).
+    const input = element.getBoundingClientRect();
+    const width = container.offsetWidth;
+    let left: number;
     if (this.opens === 'left') {
-      style = {
-        top: containerTop,
-        left: element.offsetLeft - container.clientWidth + element.clientWidth + 'px',
-        right: 'auto'
-      };
+      left = input.left + element.clientWidth - width;
     } else if (this.opens === 'center') {
-      style = {
-        top: containerTop,
-        left: element.offsetLeft + element.clientWidth / 2 - container.clientWidth / 2 + 'px',
-        right: 'auto'
-      };
+      left = input.left + element.clientWidth / 2 - width / 2;
     } else if (this.opens === 'right') {
-      style = {
-        top: containerTop,
-        left: element.offsetLeft + 'px',
-        right: 'auto'
-      };
+      left = input.left;
     } else {
-      const position = element.offsetLeft + element.clientWidth / 2 - container.clientWidth / 2;
-      if (position < 0) {
-        style = {
-          top: containerTop,
-          left: element.offsetLeft + 'px',
-          right: 'auto'
-        };
-      } else {
-        style = {
-          top: containerTop,
-          left: position + 'px',
-          right: 'auto'
+      left = input.left + element.clientWidth / 2 - width / 2;
+      if (left < 0) {
+        left = input.left;
+      }
+    }
+    // Keep the calendar inside the window (issue #542).
+    const viewportWidth = this.document.documentElement.clientWidth;
+    left = Math.max(0, Math.min(left, viewportWidth - width));
+
+    let top: number | null = null;
+    if (this.drops === 'up') {
+      top = input.top - container.offsetHeight;
+    } else if (this.appendToBody) {
+      top = input.bottom;
+    }
+
+    const origin = this.containerOrigin(container);
+    this.renderer.setStyle(container, 'top', top === null ? 'auto' : top - origin.y + 'px');
+    this.renderer.setStyle(container, 'left', left - origin.x + 'px');
+    this.renderer.setStyle(container, 'right', 'auto');
+  }
+
+  // Where the calendar's containing block starts, in viewport coordinates, so top and left can be converted to it.
+  private containerOrigin(container: HTMLElement): { x: number; y: number } {
+    if (this.appendToBody) {
+      return { x: 0, y: 0 };
+    }
+    const view = this.document.defaultView;
+    for (let parent = container.parentElement; parent; parent = parent.parentElement) {
+      const style = view.getComputedStyle(parent);
+      if (style.position !== 'static' || style.transform !== 'none') {
+        if (parent === this.document.body || parent === this.document.documentElement) {
+          break;
+        }
+        const rect = parent.getBoundingClientRect();
+        return {
+          x: rect.left + parent.clientLeft - parent.scrollLeft,
+          y: rect.top + parent.clientTop - parent.scrollTop
         };
       }
     }
-    if (style) {
-      this.renderer.setStyle(container, 'top', style.top);
-      this.renderer.setStyle(container, 'left', style.left);
-      this.renderer.setStyle(container, 'right', style.right);
+    // No positioned parent: the calendar is placed relative to the page.
+    return { x: -view.scrollX, y: -view.scrollY };
+  }
+
+  // Puts the calendar under <body> with appendToBody, or back next to the input without it.
+  private placePickerHost(): void {
+    const host = this.componentRef.location.nativeElement;
+    const element = this.el.nativeElement;
+    if (this.appendToBody && host.parentNode !== this.document.body) {
+      this.renderer.appendChild(this.document.body, host);
+    } else if (!this.appendToBody && host.parentNode === this.document.body && element.parentNode) {
+      this.renderer.insertBefore(element.parentNode, host, element.nextSibling);
     }
+  }
+
+  // While open, follow size changes (Custom range, issue #385) and, with appendToBody, scrolling.
+  private watchPosition(): void {
+    this.unwatchPosition();
+    const view = this.document.defaultView;
+    if (!this.picker.isShown || !view) {
+      return;
+    }
+    // Outside Angular: moving the calendar needs no change detection.
+    this.zone.runOutsideAngular(() => {
+      const update = (): void => (this.picker.isShown ? this.setPosition() : this.unwatchPosition());
+      if (typeof view.ResizeObserver !== 'undefined') {
+        this.resizeObserver = new view.ResizeObserver(update);
+        this.resizeObserver.observe(this.picker.pickerContainer.nativeElement);
+      }
+      if (this.appendToBody) {
+        // Capture also catches the scroll of any parent, not only of the page.
+        view.addEventListener('scroll', update, true);
+        view.addEventListener('resize', update);
+        this.stopWindowListeners = () => {
+          view.removeEventListener('scroll', update, true);
+          view.removeEventListener('resize', update);
+        };
+      }
+    });
+  }
+
+  private unwatchPosition(): void {
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = null;
+    this.stopWindowListeners?.();
+    this.stopWindowListeners = null;
   }
 
   private setValue(value: TimePeriod) {
