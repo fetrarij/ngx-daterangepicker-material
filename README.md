@@ -373,6 +373,10 @@ You can use theses options:
 
  >Fired when clicked on the clear button
 
+### \(change)
+
+ >Fires when a date or range is chosen, and sends the dates, eg: `{startDate: Dayjs, endDate: Dayjs}`. It has the same name as the native `change` event of the input, so after typing in the input, your handler also gets that DOM `Event`. To get only the dates, use `(datesUpdated)` or `(ngModelChange)`.
+
 ### Global locale
 
 For setting the global locale, pass this object to NgxDaterangepickerMd.forRoot().
