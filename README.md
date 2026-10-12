@@ -440,6 +440,20 @@ Inside a `mat-form-field`, the calendar can be cut by the field. Use `appendToBo
 
 With `appendToBody`, your CSS rules on `.md-drppicker` must not depend on a parent of the input. It does not work when the input is inside a shadow root.
 
+### Disable the picker
+
+Use `[disabled]` on the input, with or without a form. With reactive forms, use `control.disable()`. A disabled input does not open the calendar.
+
+### Typed text
+
+Text typed or pasted in the input updates the calendar when it is a valid date. Press Enter to apply it. A script can do the same:
+
+```typescript
+input.value = '03/10/2026 - 03/12/2026';
+input.dispatchEvent(new Event('input'));
+input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+```
+
 ## Available events
 
 ### \(rangeClicked)
@@ -453,6 +467,14 @@ With `appendToBody`, your CSS rules on `.md-drppicker` must not depend on a pare
 ### \(clearClicked)
 
  >Fired when clicked on the clear button
+
+### \(cancelClicked)
+
+ >Fired when clicked on the cancel button (since 22.2.0)
+
+### \(customRangeClicked)
+
+ >Fired when clicked on "Custom range". It sends nothing: the dates come later with `(datesUpdated)` (since 22.2.0)
 
 ### \(change)
 

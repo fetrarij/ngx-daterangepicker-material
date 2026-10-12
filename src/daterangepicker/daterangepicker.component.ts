@@ -275,6 +275,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   @Output() endDateChanged: EventEmitter<EndDate>;
   @Output() cancelClicked: EventEmitter<void>;
   @Output() clearClicked: EventEmitter<void>;
+  // "Custom range" has no dates yet, so it does not go through rangeClicked (issue #522).
+  @Output() customRangeClicked: EventEmitter<void>;
   @ViewChild('pickerContainer', { static: true }) pickerContainer: ElementRef;
 
   public chosenLabel: string;
@@ -328,6 +330,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     this.endDateChanged = new EventEmitter();
     this.cancelClicked = new EventEmitter();
     this.clearClicked = new EventEmitter();
+    this.customRangeClicked = new EventEmitter();
   }
 
   // accessors
@@ -1348,6 +1351,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     if (label === this.locale.customRangeLabel) {
       this.isShown = true; // show calendars
       this.showCalInRanges = true;
+      this.customRangeClicked.emit();
     } else {
       this.hasSelection = true;
       const dates = this.ranges[label];
