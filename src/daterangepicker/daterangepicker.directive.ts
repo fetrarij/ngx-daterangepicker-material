@@ -22,7 +22,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
-import { toExternalDate } from './external-date';
+import { isPlainDate, parseDate, toExternalDate, toInternalDate } from './external-date';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
@@ -249,7 +249,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
 
   @HostListener('keyup.esc', ['$event'])
   hide(e?: Event): void {
+    const wasShown = this.picker.isShown;
     this.picker.hide(e);
+    if (wasShown) {
+      this.writeAppliedValue();
+    }
   }
 
   @HostListener('blur')
@@ -265,15 +269,16 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     if (!(e.target as HTMLInputElement).value.length) {
       return;
     }
-    const dateString = (e.target as HTMLInputElement).value.split(this.picker.locale.separator);
+    const { format, separator, locale } = this.picker.locale;
+    const dateString = (e.target as HTMLInputElement).value.split(separator);
     let start = null;
     let end = null;
     if (dateString.length === 2) {
-      start = dayjs(dateString[0], this.picker.locale.format);
-      end = dayjs(dateString[1], this.picker.locale.format);
+      start = parseDate(dateString[0], format, locale);
+      end = parseDate(dateString[1], format, locale);
     }
     if (this.singleDatePicker || start === null || end === null) {
-      start = dayjs((e.target as HTMLInputElement).value, this.picker.locale.format);
+      start = parseDate((e.target as HTMLInputElement).value, format, locale);
       end = start;
     }
     if (!start.isValid() || !end.isValid()) {
@@ -282,6 +287,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.setStartDate(start);
     this.picker.setEndDate(end);
     this.picker.updateView();
+    // Enter applies a valid typed value; closing without it brings the applied value back (issue #172).
+    if (e.key === 'Enter') {
+      this.picker.clickApply();
+      this.picker.hide();
+    }
   }
 
   @HostListener('click', ['$event'])
@@ -318,6 +328,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
         endDate: toExternalDate(range.endDate)
       });
     });
+    this.picker.cancelClicked.asObservable().subscribe(() => this.writeAppliedValue());
     this.picker.clearClicked.asObservable().subscribe(() => {
       this.clearClicked.emit();
     });
@@ -456,7 +467,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  private setValue(val: TimePeriod) {
+  private setValue(value: TimePeriod) {
+    let val = value;
+    // In single mode a plain date (dayjs, Date or ISO string) is read as the start and the end (issue #141).
+    if (this.picker.singleDatePicker && isPlainDate(value)) {
+      const date = toInternalDate(value);
+      if (date?.isValid()) {
+        val = { [this.startKeyHolder]: toExternalDate(date), [this.endKeyHolder]: toExternalDate(date) } as TimePeriod;
+      }
+    }
     if (this.hasDates(val)) {
       this.value = val;
       if (this.picker.singleDatePicker) {
@@ -484,6 +503,19 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this.el.nativeElement.value = '';
     } else {
       this.picker.clear();
+    }
+  }
+
+  // After closing without Apply, the input shows the applied value again instead of the typed text (issue #172).
+  private writeAppliedValue(): void {
+    if (!this.picker.autoUpdateInput) {
+      return;
+    }
+    if (this.hasDates(this.value)) {
+      this.picker.calculateChosenLabel();
+      this.el.nativeElement.value = this.picker.chosenLabel ?? '';
+    } else {
+      this.el.nativeElement.value = '';
     }
   }
 

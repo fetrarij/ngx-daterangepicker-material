@@ -473,8 +473,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     if (typeof this.ranges === 'object') {
       for (const range in this.ranges) {
         if (this.ranges[range]) {
-          start = toInternalDate(this.ranges[range][0], this.locale.format);
-          end = toInternalDate(this.ranges[range][1], this.locale.format);
+          start = toInternalDate(this.ranges[range][0], this.locale.format, this.locale.locale);
+          end = toInternalDate(this.ranges[range][1], this.locale.format, this.locale.locale);
           // If the start or end date exceed those allowed by the minDate or maxSpan
           // options, shorten the range to the allowable period.
           if (this.minDate && start.isBefore(this.minDate)) {
@@ -778,7 +778,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   setStartDate(startDate: string | Dayjs): void {
     this.hasSelection = true;
     if (typeof startDate === 'string') {
-      this.startDate = toInternalDate(startDate, this.locale.format);
+      this.startDate = toInternalDate(startDate, this.locale.format, this.locale.locale);
     }
 
     if (typeof startDate === 'object') {
@@ -822,7 +822,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   setEndDate(endDate: string | Dayjs): void {
     this.hasSelection = true;
     if (typeof endDate === 'string') {
-      this.endDate = toInternalDate(endDate, this.locale.format);
+      this.endDate = toInternalDate(endDate, this.locale.format, this.locale.locale);
     }
 
     if (typeof endDate === 'object') {
@@ -1411,19 +1411,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     if (!this.isShown) {
       return;
     }
-    // incomplete date selection, revert to last values
-    if (!this.endDate) {
-      if (this.cachedVersion.start) {
-        this.startDate = this.cachedVersion.start.clone();
-      }
-      if (this.cachedVersion.end) {
-        this.endDate = this.cachedVersion.end.clone();
-      }
-    }
-
-    // if a new date range was selected, invoke the user callback function
-    if (!this.startDate.isSame(this.cachedVersion.start) || !this.endDate.isSame(this.cachedVersion.end)) {
-      // this.callback(this.startDate, this.endDate, this.chosenLabel);
+    // Closing without Apply drops the selection: the last applied dates come back (issue #399).
+    const { start, end } = this.cachedVersion;
+    if ((start && !this.startDate?.isSame(start)) || (end && !this.endDate?.isSame(end))) {
+      this.startDate = start ? start.clone() : this.startDate;
+      this.endDate = end ? end.clone() : this.endDate;
+      this.calculateChosenLabel();
     }
 
     // if picker is attached to a text input, update it
@@ -1466,7 +1459,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     } else {
       return;
     }
-    this.startDate = this.timePicker ? start.second(0).millisecond(0) : start.startOf('day');
+    this.startDate = this.timePicker ? start : start.startOf('day');
     this.endDate = this.startDate.endOf('day');
     if (this.timePicker && this.maxDate && this.endDate.isAfter(this.maxDate)) {
       this.endDate = this.maxDate.clone();

@@ -136,6 +136,10 @@ Typescript:
 ````typescript
 selected: {startDate: Dayjs, endDate: Dayjs};
 ````
+
+The user can also type the dates in the input and press Enter to apply them. Closing the picker without Apply (click outside, Escape or Cancel) keeps the last applied value.
+
+With `singleDatePicker`, the value can also be a single date (dayjs date, native `Date` or ISO string). The picker still sends `{startDate, endDate}` back.
 ### with some options:
 Html:
 
@@ -242,6 +246,8 @@ frLocale = { locale: fr, format: 'D MMMM YYYY', applyLabel: 'Appliquer' };
 ```
 
 The `[locale]` input can be changed at runtime, for example when the user switches language.
+
+Dates typed in the input are read with `format` and the month names of this locale, like `5 enero 2026 - 10 enero 2026` in Spanish.
 
 [Check here](#global-locale) for setting the global locale
 

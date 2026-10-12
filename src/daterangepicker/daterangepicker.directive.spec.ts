@@ -4,6 +4,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import dayjs from 'dayjs/esm';
 import fr from 'dayjs/esm/locale/fr';
+import es from 'dayjs/esm/locale/es';
+import pt from 'dayjs/esm/locale/pt';
 
 import { NgxDaterangepickerMd } from './daterangepicker.module';
 import { DaterangepickerDirective } from './daterangepicker.directive';
@@ -709,7 +711,8 @@ describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416
     fixture.componentInstance.selected = value as TimePeriod;
     fixture.detectChanges();
     await fixture.whenStable();
-    fixture.componentInstance.picker.open();
+    // A real click: the host is OnPush (Angular 22 default), and the click marks it for check.
+    fixture.nativeElement.querySelector('input').click();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -721,23 +724,23 @@ describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416
   }
 
   function cells(side: 'left' | 'right', selector: string): string[] {
-    return Array.from(document.querySelectorAll(`.md-drppicker.shown .calendar.${side} td${selector}:not(.off)`)).map((cell) =>
-      cell.textContent.trim()
-    );
+    return Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll(`.md-drppicker.shown .calendar.${side} td${selector}:not(.off)`)
+    ).map((cell) => cell.textContent.trim());
   }
 
   function clickCell(side: 'left' | 'right', day: number): void {
-    const cell = Array.from(document.querySelectorAll<HTMLElement>(`.md-drppicker.shown .calendar.${side} td.available:not(.off)`)).find(
-      (td) => td.textContent.trim() === String(day)
-    );
+    const cell = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>(`.md-drppicker.shown .calendar.${side} td.available:not(.off)`)
+    ).find((td) => td.textContent.trim() === String(day));
     cell.click();
     fixture.detectChanges();
   }
 
   function clickRange(label: string): void {
-    const button = Array.from(document.querySelectorAll<HTMLButtonElement>('.md-drppicker.shown .ranges button')).find(
-      (b) => b.textContent.trim() === label
-    );
+    const button = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('.md-drppicker.shown .ranges button')
+    ).find((b) => b.textContent.trim() === label);
     button.click();
     fixture.detectChanges();
   }
@@ -792,9 +795,11 @@ describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416
   it('starts the time picker at minDate when no date is chosen (#142)', async () => {
     await open({ singleDatePicker: true, timePicker: true, minDate: today.hour(22).minute(12) });
 
-    const hour: HTMLSelectElement = document.querySelector('.md-drppicker.shown .calendar.right .hourselect');
-    const minute: HTMLSelectElement = document.querySelector('.md-drppicker.shown .calendar.right .minuteselect');
-    const ampm: HTMLSelectElement = document.querySelector('.md-drppicker.shown .calendar.right .ampmselect');
+    const hour: HTMLSelectElement = (fixture.nativeElement as HTMLElement).querySelector('.md-drppicker.shown .calendar.right .hourselect');
+    const minute: HTMLSelectElement = (fixture.nativeElement as HTMLElement).querySelector(
+      '.md-drppicker.shown .calendar.right .minuteselect'
+    );
+    const ampm: HTMLSelectElement = (fixture.nativeElement as HTMLElement).querySelector('.md-drppicker.shown .calendar.right .ampmselect');
     expect(hour.selectedOptions[0]?.textContent.trim()).toBe('10');
     expect(minute.selectedOptions[0]?.textContent.trim()).toBe('12');
     expect(ampm.value).toBe('PM');
@@ -856,5 +861,231 @@ describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416
     clickRange('This Month');
 
     expect(view()).toEqual([month(-1), month(0)]);
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [singleDatePicker]="single"
+    [locale]="locale"
+    [(ngModel)]="selected"
+    (datesUpdated)="updates.push($event)"
+  />`
+})
+class KeyboardHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  single = false;
+  locale: LocaleConfig = {};
+  // A plain date is allowed in single mode (issue #141).
+  selected: unknown = null;
+  updates: TimePeriod[] = [];
+}
+
+describe('DaterangepickerDirective keyboard and closing (issues #399, #172, #450, #141)', () => {
+  let fixture: ComponentFixture<KeyboardHostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [KeyboardHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  async function create(setup: (host: KeyboardHostComponent) => void = () => undefined): Promise<void> {
+    fixture = TestBed.createComponent(KeyboardHostComponent);
+    setup(fixture.componentInstance);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    input = fixture.nativeElement.querySelector('input');
+  }
+
+  // A real click: the host is OnPush (Angular 22 default), and the click marks it for check.
+  async function open(): Promise<void> {
+    input.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function type(text: string, key = 'a'): void {
+    input.value = text;
+    input.dispatchEvent(new KeyboardEvent('keyup', { key }));
+    fixture.detectChanges();
+  }
+
+  function clickDay(day: number): void {
+    const cell = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.md-drppicker.shown .calendar.left td.available:not(.off)')
+    ).find((td) => td.textContent.trim() === String(day));
+    cell.click();
+    fixture.detectChanges();
+  }
+
+  function clickOutside(): void {
+    document.body.click();
+    fixture.detectChanges();
+  }
+
+  function pickerDates(): string {
+    const picker = fixture.componentInstance.picker.picker;
+    return `${picker.startDate.format('YYYY-MM-DD')} ${picker.endDate.format('YYYY-MM-DD')}`;
+  }
+
+  const applied = { startDate: dayjs('2026-03-02'), endDate: dayjs('2026-03-04') };
+
+  it('drops a selection that was not applied when clicking outside (#399)', async () => {
+    await create((host) => (host.selected = applied));
+    await open();
+    clickDay(20);
+    clickDay(23);
+    clickOutside();
+    await open();
+
+    expect(pickerDates()).toBe('2026-03-02 2026-03-04');
+    expect(
+      Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.md-drppicker.shown .calendar.left td.active:not(.off)')).map(
+        (td) => td.textContent.trim()
+      )
+    ).toEqual(['2', '4']);
+  });
+
+  it('drops a selection that was not applied when pressing Escape (#399)', async () => {
+    await create((host) => (host.selected = applied));
+    await open();
+    clickDay(20);
+    clickDay(23);
+    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
+    fixture.detectChanges();
+    await open();
+
+    expect(pickerDates()).toBe('2026-03-02 2026-03-04');
+  });
+
+  it('keeps an applied selection when opening again', async () => {
+    await create((host) => (host.selected = applied));
+    await open();
+    clickDay(20);
+    clickDay(23);
+    fixture.componentInstance.picker.picker.clickApply(new MouseEvent('click'));
+    fixture.detectChanges();
+    await open();
+
+    expect(pickerDates()).toBe('2026-03-20 2026-03-23');
+  });
+
+  it('applies a typed range with Enter (#172)', async () => {
+    await create();
+    await open();
+    type('03/05/2026 - 03/08/2026');
+    type('03/05/2026 - 03/08/2026', 'Enter');
+    await fixture.whenStable();
+
+    const selected = fixture.componentInstance.selected as TimePeriod;
+    expect(selected.startDate.format('YYYY-MM-DD')).toBe('2026-03-05');
+    expect(selected.endDate.format('YYYY-MM-DD')).toBe('2026-03-08');
+    expect(fixture.componentInstance.updates.length).toBeGreaterThan(0);
+  });
+
+  it('emits nothing for an invalid text with Enter (#172)', async () => {
+    await create();
+    await open();
+    const updates = fixture.componentInstance.updates.length;
+    type('not a date', 'Enter');
+
+    expect(fixture.componentInstance.updates.length).toBe(updates);
+    expect((fixture.componentInstance.selected as TimePeriod)?.startDate ?? null).toBeNull();
+  });
+
+  it('writes the applied value back when closing after typing (#172)', async () => {
+    await create((host) => (host.selected = applied));
+    const text = input.value;
+    await open();
+    type('03/05/2026 - 03/08/2026');
+    clickOutside();
+
+    expect(input.value).toBe(text);
+    expect((fixture.componentInstance.selected as TimePeriod).startDate.format('YYYY-MM-DD')).toBe('2026-03-02');
+  });
+
+  it('empties the input when closing after typing with an empty model (#172)', async () => {
+    await create();
+    await open();
+    type('03/05/2026 - 03/08/2026');
+    clickOutside();
+
+    expect(input.value).toBe('');
+    expect((fixture.componentInstance.selected as TimePeriod)?.startDate ?? null).toBeNull();
+  });
+
+  it('writes the applied value back on Cancel after typing (#172)', async () => {
+    await create((host) => (host.selected = applied));
+    const text = input.value;
+    await open();
+    type('03/05/2026 - 03/08/2026');
+    fixture.componentInstance.picker.picker.clickCancel(new MouseEvent('click'));
+    fixture.detectChanges();
+
+    expect(input.value).toBe(text);
+  });
+
+  it('reads month names in the instance locale (#450)', async () => {
+    await create((host) => (host.locale = { locale: es, format: 'D MMMM YYYY' }));
+    await open();
+    type('5 enero 2026 - 10 enero 2026');
+
+    expect(pickerDates()).toBe('2026-01-05 2026-01-10');
+  });
+
+  it('reads short month names in the instance locale (#450)', async () => {
+    await create((host) => (host.locale = { locale: pt, format: 'DD MMM YYYY' }));
+    await open();
+    type('05 jan 2026 - 10 fev 2026');
+
+    expect(pickerDates()).toBe('2026-01-05 2026-02-10');
+  });
+
+  it('still reads numeric dates (#450)', async () => {
+    await create((host) => (host.locale = { locale: es, format: 'DD/MM/YYYY' }));
+    await open();
+    type('05/01/2026 - 10/01/2026');
+
+    expect(pickerDates()).toBe('2026-01-05 2026-01-10');
+  });
+
+  for (const [name, value] of [
+    ['a dayjs date', dayjs('2026-03-10')],
+    ['a native Date', new Date(2026, 2, 10)],
+    ['an ISO string', '2026-03-10']
+  ] as [string, unknown][]) {
+    it(`shows ${name} given as the value in single mode (#141)`, async () => {
+      await create((host) => {
+        host.single = true;
+        host.selected = value;
+      });
+
+      expect(input.value).toBe('03/10/2026');
+      expect(pickerDates()).toBe('2026-03-10 2026-03-10');
+    });
+  }
+
+  it('still reads { startDate, endDate } in single mode (#141)', async () => {
+    await create((host) => {
+      host.single = true;
+      host.selected = { startDate: dayjs('2026-03-10'), endDate: dayjs('2026-03-10') };
+    });
+
+    expect(input.value).toBe('03/10/2026');
+  });
+
+  it('ignores a plain date in range mode, as before (#141)', async () => {
+    await create((host) => (host.selected = dayjs('2026-03-10')));
+
+    expect(input.value).toBe('');
   });
 });
