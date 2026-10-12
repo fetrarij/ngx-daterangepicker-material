@@ -310,6 +310,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   weekDays: string[] = [];
   private initialized = false;
   protected rangesHolder: DateRanges = {};
+  // False while the dates are only today's placeholder, so the view can follow initialDates and the bounds.
+  private hasSelection = false;
+  // Set during a day click, so picking the end date does not move the months in view.
+  private keepMonthsInView = false;
   private cachedVersion: { start: Dayjs; end: Dayjs } = { start: null, end: null };
 
   constructor(
@@ -400,6 +404,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.startDate || changes.endDate) {
+      this.hasSelection = true;
+    }
     if (changes.startDate || changes.singleDatePicker) {
       this.alignSingleEndDate();
     }
@@ -435,8 +442,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       this.cachedVersion.end = this.endDate?.clone();
     }
 
+    if (!this.hasSelection) {
+      this.fitDefaultDatesInBounds();
+    }
     this.alignSingleEndDate();
 
+    const hasSelection = this.hasSelection;
     if (this.startDate && this.timePicker) {
       this.setStartDate(this.startDate);
       this.renderTimePicker(SideEnum.left);
@@ -446,6 +457,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       this.setEndDate(this.endDate);
       this.renderTimePicker(SideEnum.right);
     }
+    this.hasSelection = hasSelection;
 
     this.updateMonthsInView();
     this.renderCalendar(SideEnum.left);
@@ -764,6 +776,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   setStartDate(startDate: string | Dayjs): void {
+    this.hasSelection = true;
     if (typeof startDate === 'string') {
       this.startDate = toInternalDate(startDate, this.locale.format);
     }
@@ -807,6 +820,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   setEndDate(endDate: string | Dayjs): void {
+    this.hasSelection = true;
     if (typeof endDate === 'string') {
       this.endDate = toInternalDate(endDate, this.locale.format);
     }
@@ -858,25 +872,25 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   }
 
   updateMonthsInView(): void {
+    // Nothing chosen yet: keep the months asked by initialDates.
+    if (!this.hasSelection && this.initialDates && this.leftCalendar.month && this.rightCalendar.month) {
+      return;
+    }
+    // A day click keeps the months the user moved to (picking the end date after browsing).
+    if (this.keepMonthsInView && this.leftCalendar.month && this.rightCalendar.month) {
+      return;
+    }
     if (this.endDate) {
-      // if both dates are visible already, do nothing
-      if (
+      // if both dates are visible already, do not move the months
+      const bothVisible =
         !this.singleDatePicker &&
         this.leftCalendar.month &&
         this.rightCalendar.month &&
         ((this.startDate && this.leftCalendar && this.startDate.format('YYYY-MM') === this.leftCalendar.month.format('YYYY-MM')) ||
           (this.startDate && this.rightCalendar && this.startDate.format('YYYY-MM') === this.rightCalendar.month.format('YYYY-MM'))) &&
         (this.endDate.format('YYYY-MM') === this.leftCalendar.month.format('YYYY-MM') ||
-          this.endDate.format('YYYY-MM') === this.rightCalendar.month.format('YYYY-MM'))
-      ) {
-        return;
-      }
-      if (this.startDate) {
-        // we want to stay on whatever months are in view if date range is set and both calendar sides have a month already.  e.g. when
-        // user clicks on the end date, we want to stay on current month in view
-        if (this.leftCalendar.month && this.rightCalendar.month) {
-          return;
-        }
+          this.endDate.format('YYYY-MM') === this.rightCalendar.month.format('YYYY-MM'));
+      if (!bothVisible && this.startDate) {
         this.leftCalendar.month = this.startDate.clone().date(2);
         if (!this.linkedCalendars && (this.endDate.month() !== this.startDate.month() || this.endDate.year() !== this.startDate.year())) {
           this.rightCalendar.month = this.endDate.clone().date(2);
@@ -893,9 +907,13 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
         this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
       }
     }
-    if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
-      this.rightCalendar.month = this.maxDate.clone().date(2);
-      this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
+    // Linked or not, the right calendar must not be a month after maxDate (issues #398, #111), unless it hides the start date.
+    if (this.maxDate && !this.singleDatePicker && this.rightCalendar.month.isAfter(this.maxDate, 'month')) {
+      const left = this.maxDate.clone().date(2).subtract(1, 'month');
+      if (!this.startDate || !this.startDate.isBefore(left, 'month')) {
+        this.rightCalendar.month = this.maxDate.clone().date(2);
+        this.leftCalendar.month = left;
+      }
     }
   }
 
@@ -1272,6 +1290,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     }
 
     let date = side === SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+    this.keepMonthsInView = true;
 
     if ((this.endDate || (date.isBefore(this.startDate, 'day') && this.customRangeDirection === false)) && this.lockStartDate === false) {
       // picking start
@@ -1312,6 +1331,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     if (this.autoApply && this.startDate && this.endDate) {
       this.clickApply();
     }
+    this.keepMonthsInView = false;
 
     // This is to cancel the blur event handler if the mouse was in one of the inputs
     e.stopPropagation();
@@ -1329,6 +1349,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       this.isShown = true; // show calendars
       this.showCalInRanges = true;
     } else {
+      this.hasSelection = true;
       const dates = this.ranges[label];
       if (this.minDate && dates[0].isBefore(this.minDate)) {
         this.startDate = this.minDate;
@@ -1358,28 +1379,14 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
       this.rangeClicked.emit({ label, dates: [this.toOutput(dates[0]), this.toOutput(dates[1])] });
       if (!this.keepCalendarOpeningWithRange || this.autoApply) {
         this.clickApply();
+        // The picker can stay open (closeOnAutoApply false): show the new range, not the old one (issue #416).
+        this.updateView();
       } else {
         if (!this.alwaysShowCalendars) {
           return this.clickApply();
         }
-        if (this.maxDate && this.maxDate.isSame(dates[0], 'month')) {
-          this.rightCalendar.month = this.rightCalendar.month.month(dates[0].month());
-          this.rightCalendar.month = this.rightCalendar.month.year(dates[0].year());
-          this.leftCalendar.month = this.leftCalendar.month.month(dates[0].month() - 1);
-          this.leftCalendar.month = this.leftCalendar.month.year(dates[1].year());
-        } else {
-          this.leftCalendar.month = this.leftCalendar.month.month(dates[0].month());
-          this.leftCalendar.month = this.leftCalendar.month.year(dates[0].year());
-          // get the right calendar value
-          const nextMonth = !this.linkedCalendars ? dates[1].clone() : dates[0].clone().add(1, 'month');
-          this.rightCalendar.month = this.rightCalendar.month.month(nextMonth.month());
-          this.rightCalendar.month = this.rightCalendar.month.year(nextMonth.year());
-        }
-        this.updateCalendars();
-        if (this.timePicker) {
-          this.renderTimePicker(SideEnum.left);
-          this.renderTimePicker(SideEnum.right);
-        }
+        // Same month rules as any other selection, so a range in one month is not shown twice (issue #416).
+        this.updateView();
       }
     }
   }
@@ -1388,6 +1395,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   show(e?: Event): void {
     if (this.isShown) {
       return;
+    }
+    // minDate or maxDate may have changed since the placeholder dates were set.
+    if (!this.hasSelection) {
+      this.resetDates();
     }
     this.cachedVersion.start = this.startDate.clone();
     this.cachedVersion.end = this.endDate.clone();
@@ -1441,6 +1452,27 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
     this.hide();
   }
 
+  // Today may be outside minDate/maxDate: start on the nearest day the user can pick (issues #277, #142).
+  private fitDefaultDatesInBounds(): void {
+    const increment = this.timePicker && this.timePickerIncrement ? this.timePickerIncrement : 1;
+    let start: Dayjs;
+    if (this.minDate && this.startDate.isBefore(this.minDate)) {
+      start = this.minDate.clone();
+      // Round up, so the time stays after minDate.
+      start = start.minute(Math.ceil(start.minute() / increment) * increment);
+    } else if (this.maxDate && this.startDate.isAfter(this.maxDate)) {
+      start = this.maxDate.clone();
+      start = start.minute(Math.floor(start.minute() / increment) * increment);
+    } else {
+      return;
+    }
+    this.startDate = this.timePicker ? start.second(0).millisecond(0) : start.startOf('day');
+    this.endDate = this.startDate.endOf('day');
+    if (this.timePicker && this.maxDate && this.endDate.isAfter(this.maxDate)) {
+      this.endDate = this.maxDate.clone();
+    }
+  }
+
   // One date: the end is the start, else it stays on today and the calendar draws a range (issue #537).
   private alignSingleEndDate(): void {
     if (this.singleDatePicker && this.startDate) {
@@ -1453,6 +1485,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges {
   resetDates(): void {
     this.startDate = dayjs().utc(true).startOf('day');
     this.endDate = dayjs().utc(true).endOf('day');
+    this.hasSelection = false;
+    this.fitDefaultDatesInBounds();
+    this.alignSingleEndDate();
     this.cachedVersion.start = this.startDate.clone();
     this.cachedVersion.end = this.endDate.clone();
     // Otherwise a later locale or ranges change would show the old label again.

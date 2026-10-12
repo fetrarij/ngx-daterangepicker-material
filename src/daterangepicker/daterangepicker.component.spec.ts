@@ -561,8 +561,9 @@ describe('DaterangepickerComponent dates from another copy of dayjs (issues #521
     month = dayjs().format('YYYY-MM');
   });
 
+  // maxDate is in the current month, so that month is shown on the right (issue #111).
   function enabledDays(): number[] {
-    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar.left tbody td:not(.off)'));
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar.right tbody td:not(.off)'));
     return cells.filter((cell) => !cell.classList.contains('disabled')).map((cell) => Number(cell.textContent.trim()));
   }
 
@@ -645,8 +646,9 @@ describe('DaterangepickerComponent dates clamped to minDate/maxDate (issue #486)
     fixture.detectChanges();
   }
 
+  // The tests that click use a maxDate in the current month, so that month is shown on the right (issue #111).
   function clickDay(day: number): void {
-    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar.left tbody td:not(.off)'));
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar.right tbody td:not(.off)'));
     cells.find((cell) => cell.textContent.trim() === String(day)).click();
     fixture.detectChanges();
   }
