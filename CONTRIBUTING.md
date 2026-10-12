@@ -10,7 +10,7 @@ In the issue, give:
 
 - the version of `ngx-daterangepicker-material` and of Angular;
 - what you did, what you expected, and what happened;
-- a small reproduction, if you can. A [StackBlitz](https://stackblitz.com) is the best.
+- a small reproduction, if you can. The best is to fork [our StackBlitz example](https://stackblitz.com/github/fetrarij/ngx-daterangepicker-material/tree/master/examples/stackblitz), change `src/app/app.ts` to show the bug, and share the link.
 
 ## Set up the project
 
@@ -29,6 +29,7 @@ Where the code is:
   `daterangepicker.component.ts` holds the calendar.
 - `demo/`: the demo app.
 - `schematics/ng-add/`: the `ng add` schematic.
+- `examples/stackblitz/`: a small app that installs the library from npm, opened by the StackBlitz link. Update its version at each new major.
 
 `npm run lint` only checks `demo/`. To lint the library, run `npx eslint "src/**/*.ts"`.
 

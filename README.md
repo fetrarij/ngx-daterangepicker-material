@@ -16,6 +16,8 @@ Actively maintained again since 2026. New issues get a reply.
 
 Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
 
+Try it online: [open the example on StackBlitz](https://stackblitz.com/github/fetrarij/ngx-daterangepicker-material/tree/master/examples/stackblitz)
+
 ## Why this library
 
 Compared to the Angular Material date range picker, it gives you:
