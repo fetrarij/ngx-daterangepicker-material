@@ -426,6 +426,19 @@ You can use theses options:
 | --- | --- |--- |
 | opens | left, center, right | position the calendar from the input element |
 | drops | up, down | position the calendar to the up or down of the calendar |
+| appendToBody | boolean, default `false` | move the calendar to `<body>`, so a parent with `overflow: hidden` can't cut it (since 22.2.0) |
+
+When it opens, the calendar is kept inside the window. With `appendToBody`, it also follows the input when the page or a parent scrolls.
+
+Inside a `mat-form-field`, the calendar can be cut by the field. Use `appendToBody`:
+
+```html
+<mat-form-field>
+  <input matInput ngxDaterangepickerMd [appendToBody]="true" [(ngModel)]="selected" />
+</mat-form-field>
+```
+
+With `appendToBody`, your CSS rules on `.md-drppicker` must not depend on a parent of the input. It does not work when the input is inside a shadow root.
 
 ## Available events
 

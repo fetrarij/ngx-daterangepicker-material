@@ -1089,3 +1089,151 @@ describe('DaterangepickerDirective keyboard and closing (issues #399, #172, #450
     expect(input.value).toBe('');
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<div class="frame" [style.overflow-x]="scroll ? 'auto' : 'visible'" style="width: 300px">
+    <div [style.width.px]="scroll ? 2000 : null" [style.padding-left.px]="inputLeft">
+      <input
+        ngxDaterangepickerMd
+        [(ngModel)]="selected"
+        [opens]="opens"
+        [drops]="drops"
+        [ranges]="ranges"
+        [appendToBody]="appendToBody"
+        [showCustomRangeLabel]="true"
+        style="width: 200px"
+      />
+    </div>
+  </div>`
+})
+class PositionHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  selected: TimePeriod;
+  opens = 'right';
+  drops = 'down';
+  ranges = {};
+  appendToBody = false;
+  scroll = false;
+  inputLeft = 0;
+}
+
+describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', () => {
+  let fixture: ComponentFixture<PositionHostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [PositionHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.destroy());
+
+  // Waits past the 0.1s open transition, which also animates top and left.
+  const settle = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 250));
+
+  async function open(setup: (host: PositionHostComponent) => void = () => undefined): Promise<void> {
+    fixture = TestBed.createComponent(PositionHostComponent);
+    setup(fixture.componentInstance);
+    // Attached to the page, so the measures are real.
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    input = fixture.nativeElement.querySelector('input');
+    const frame: HTMLElement = fixture.nativeElement.querySelector('.frame');
+    frame.scrollLeft = 500;
+    input.click();
+    fixture.detectChanges();
+    await settle();
+  }
+
+  const pickerBox = (): DOMRect => fixture.componentInstance.picker.picker.pickerContainer.nativeElement.getBoundingClientRect();
+
+  it('opens under the input inside a scrolled parent (#466)', async () => {
+    await open((host) => {
+      host.scroll = true;
+      host.inputLeft = 600;
+    });
+
+    expect(Math.abs(pickerBox().left - input.getBoundingClientRect().left)).toBeLessThan(2);
+  });
+
+  it('stays aligned with opens="left" after Custom range makes it wider (#385)', async () => {
+    await open((host) => {
+      host.opens = 'left';
+      host.inputLeft = 500;
+      host.ranges = { Today: [dayjs(), dayjs()] };
+    });
+    const custom = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('.ranges button')).find(
+      (b) => b.textContent.trim() === 'Custom range'
+    );
+    custom.click();
+    fixture.detectChanges();
+    await settle();
+
+    expect(pickerBox().width).toBeGreaterThan(400);
+    expect(Math.abs(pickerBox().right - input.getBoundingClientRect().right)).toBeLessThan(2);
+  });
+
+  it('stays inside the window near the right edge (#542)', async () => {
+    await open((host) => (host.inputLeft = document.documentElement.clientWidth - 100));
+
+    expect(pickerBox().right).toBeLessThanOrEqual(document.documentElement.clientWidth + 1);
+    expect(pickerBox().left).toBeGreaterThanOrEqual(0);
+  });
+
+  it('keeps the same double width wherever it opens (#542)', async () => {
+    // No ranges: the two months are shown at once.
+    await open();
+    const width = pickerBox().width;
+    fixture.destroy();
+
+    await open((host) => (host.inputLeft = document.documentElement.clientWidth - 250));
+
+    expect(pickerBox().width).toBe(width);
+  });
+
+  it('moves the calendar to <body> and under the input with appendToBody (#565)', async () => {
+    await open((host) => (host.appendToBody = true));
+    const host = fixture.componentInstance.picker.picker.pickerContainer.nativeElement.parentElement;
+
+    expect(host.parentElement).toBe(document.body);
+    expect(Math.abs(pickerBox().left - input.getBoundingClientRect().left)).toBeLessThan(2);
+    expect(Math.abs(pickerBox().top - input.getBoundingClientRect().bottom)).toBeLessThan(2);
+
+    fixture.destroy();
+
+    expect(document.body.contains(host)).toBeFalse();
+  });
+
+  for (const appendToBody of [false, true]) {
+    it(`opens above the input with drops="up" (appendToBody ${appendToBody})`, async () => {
+      await open((host) => {
+        host.drops = 'up';
+        host.appendToBody = appendToBody;
+      });
+      const gap = input.getBoundingClientRect().top - pickerBox().bottom;
+
+      // Without appendToBody the -10px margin from the styles leaves a small gap, as before.
+      expect(gap).toBeGreaterThanOrEqual(-1);
+      expect(gap).toBeLessThan(12);
+    });
+  }
+
+  it('is not clipped by a parent with overflow hidden with appendToBody (#565)', async () => {
+    await open((host) => (host.appendToBody = true));
+    const frame: HTMLElement = fixture.nativeElement.querySelector('.frame');
+    // Like the mat-form-field wrapper: positioned, overflow hidden.
+    frame.style.position = 'relative';
+    frame.style.overflow = 'hidden';
+    frame.style.height = '40px';
+    await settle();
+
+    const box = pickerBox();
+    const hit = document.elementFromPoint(box.left + box.width / 2, box.bottom - 20);
+
+    expect(fixture.componentInstance.picker.picker.pickerContainer.nativeElement.contains(hit)).toBeTrue();
+  });
+});
