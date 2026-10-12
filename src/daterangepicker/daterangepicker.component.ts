@@ -12,7 +12,9 @@ import {
   SimpleChanges,
   ViewChild,
   ViewEncapsulation,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  effect,
+  untracked
 } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs/esm';
@@ -309,6 +311,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   protected maxDateHolder: dayjs.Dayjs;
   protected timePickerHolder = false;
   protected localeHolder: LocaleConfig = {};
+  // The [locale] input as given, so a new global config can be merged with it again.
+  private localeInput: LocaleConfig = {};
   weekDays: string[] = [];
   private initialized = false;
   protected rangesHolder: DateRanges = {};
@@ -337,6 +341,15 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     this.cancelClicked = new EventEmitter();
     this.clearClicked = new EventEmitter();
     this.customRangeClicked = new EventEmitter();
+    let seenConfig = untracked(this.localeHolderService.configChanges);
+    effect(() => {
+      const config = this.localeHolderService.configChanges();
+      // The directive redraws its own picker, then updates the input text.
+      if (config !== seenConfig && this.inline && this.initialized) {
+        untracked(() => this.refreshLocale());
+      }
+      seenConfig = config;
+    });
   }
 
   // accessors
@@ -354,7 +367,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   }
 
   @Input() set locale(value: LocaleConfig) {
-    this.localeHolder = this.resolveLocale(value);
+    this.localeInput = value || {};
+    this.localeHolder = this.resolveLocale(this.localeInput);
     if (this.initialized) {
       this.refreshLocale();
     }
@@ -1622,14 +1636,16 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
    * Merge a locale input with the global config. A dayjs `locale` provides the day and month names and the first day.
    */
   private resolveLocale(value: LocaleConfig): LocaleConfig {
-    if (!value.locale) {
+    // Without a dayjs locale on the instance, the one from the global config gives the names (issue #519).
+    const dayjsLocale = value.locale || this.localeHolderService.config.locale;
+    if (!dayjsLocale) {
       return { ...this.localeHolderService.config, ...value };
     }
     const custom = { ...value };
     delete custom.daysOfWeek;
     delete custom.monthNames;
     delete custom.firstDay;
-    return { ...this.localeHolderService.configWithLocale(value.locale), ...custom };
+    return { ...this.localeHolderService.configWithLocale(dayjsLocale), ...custom };
   }
 
   /**
@@ -1653,10 +1669,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     this.renderRanges();
     this.updateView();
     this.updateElement();
+    // A global config change comes from outside change detection; an OnPush parent would skip the redraw.
+    this.ref.markForCheck();
   }
 
   private buildLocale() {
-    this.localeHolder = this.resolveLocale({ ...this.localeHolderService.config, ...this.locale });
+    this.localeHolder = this.resolveLocale(this.localeInput);
     if (!this.locale.format) {
       if (this.timePicker) {
         this.locale.format = dayjs.localeData().longDateFormat('lll');

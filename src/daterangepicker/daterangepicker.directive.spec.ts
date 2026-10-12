@@ -11,6 +11,7 @@ import { NgxDaterangepickerMd } from './daterangepicker.module';
 import { DaterangepickerDirective } from './daterangepicker.directive';
 import { TimePeriod } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
+import { LocaleService } from './locale.service';
 
 @Component({
   standalone: false,
@@ -1356,5 +1357,94 @@ describe('DaterangepickerDirective outputs and disabled (issues #289, #522, #428
     fixture.detectChanges();
 
     expect(fixture.componentInstance.events).toContain('change');
+  });
+});
+
+@Component({
+  template: `
+    <input class="plain" ngxDaterangepickerMd [(ngModel)]="selected" />
+    <input class="own" ngxDaterangepickerMd [locale]="{ applyLabel: 'Mine' }" [(ngModel)]="selected" />
+    <ngx-daterangepicker-material></ngx-daterangepicker-material>
+  `,
+  imports: [NgxDaterangepickerMd, FormsModule]
+})
+class GlobalConfigHostComponent {
+  selected = signal<unknown>({ startDate: dayjs('2026-10-05'), endDate: dayjs('2026-10-20') });
+}
+
+describe('DaterangepickerDirective global config change (issue #519)', () => {
+  const source = signal<LocaleConfig>({ applyLabel: 'Go' });
+
+  async function create(config: LocaleConfig | typeof source): Promise<ComponentFixture<GlobalConfigHostComponent>> {
+    TestBed.configureTestingModule({ imports: [NgxDaterangepickerMd.forRoot(config)] });
+    const fixture = TestBed.createComponent(GlobalConfigHostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  async function settle(fixture: ComponentFixture<unknown>): Promise<void> {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function containers(fixture: ComponentFixture<unknown>): HTMLElement[] {
+    return fixture.debugElement.queryAll(By.css('.md-drppicker')).map((el) => el.nativeElement);
+  }
+
+  function applyText(container: HTMLElement): string {
+    const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>('.buttons button'));
+    return buttons[buttons.length - 1].textContent.trim();
+  }
+
+  it('redraws labels, input text and keeps the instance locale after setConfig()', async () => {
+    const fixture = await create({});
+    const [plain, own, inline] = containers(fixture);
+    const input = (fixture.nativeElement as HTMLElement).querySelector<HTMLInputElement>('input.plain');
+    expect(applyText(plain)).toBe('Apply');
+
+    TestBed.inject(LocaleService).setConfig({ applyLabel: 'OK', displayFormat: 'YYYY/MM/DD' });
+    await settle(fixture);
+
+    expect(applyText(plain)).toBe('OK');
+    expect(applyText(inline)).toBe('OK');
+    expect(applyText(own)).toBe('Mine');
+    expect(input.value).toBe('2026/10/05 - 2026/10/20');
+  });
+
+  it('re-orders the weekday headers after setConfig() with firstDay', async () => {
+    const fixture = await create({});
+    const inline = containers(fixture)[2];
+    const firstHeader = (): string => inline.querySelector('.calendar thead tr:last-child th').textContent.trim();
+    expect(firstHeader()).toBe('Su');
+
+    TestBed.inject(LocaleService).setConfig({ firstDay: 1 });
+    await settle(fixture);
+
+    expect(firstHeader()).toBe('Mo');
+  });
+
+  it('takes the day names from a dayjs locale in the global config', async () => {
+    const fixture = await create({});
+    const inline = containers(fixture)[2];
+
+    TestBed.inject(LocaleService).setConfig({ locale: fr });
+    await settle(fixture);
+
+    const headers = Array.from(inline.querySelectorAll('.calendar thead tr:last-child th')).map((th) => th.textContent.trim());
+    expect(headers.slice(0, 2)).toEqual(['lu', 'ma']);
+  });
+
+  it('follows a signal given to forRoot()', async () => {
+    const fixture = await create(source);
+    const inline = containers(fixture)[2];
+    expect(applyText(inline)).toBe('Go');
+
+    source.set({ applyLabel: 'Vas-y' });
+    await settle(fixture);
+
+    expect(applyText(inline)).toBe('Vas-y');
   });
 });

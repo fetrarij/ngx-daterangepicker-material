@@ -1,9 +1,11 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, Signal } from '@angular/core';
 import dayjs from 'dayjs/esm';
 import localeData from 'dayjs/esm/plugin/localeData';
 dayjs.extend(localeData);
 
 export const LOCALE_CONFIG = new InjectionToken<LocaleConfig>('daterangepicker.config');
+// Set when forRoot() gets a signal; LOCALE_CONFIG keeps a plain object for apps that inject it.
+export const LOCALE_CONFIG_SIGNAL = new InjectionToken<Signal<LocaleConfig>>('daterangepicker.config.signal');
 /**
  *  LocaleConfig Interface
  */

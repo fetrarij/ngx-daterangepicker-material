@@ -19,7 +19,9 @@ import {
   ComponentRef,
   Inject,
   NgZone,
-  OnDestroy
+  OnDestroy,
+  effect,
+  untracked
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ChosenDate, DateRange, DaterangepickerComponent, DateRanges, EndDate, StartDate, TimePeriod } from './daterangepicker.component';
@@ -174,7 +176,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   private disabledHolder: boolean;
   private valueHolder: TimePeriod | null;
   private localeDiffer: KeyValueDiffer<string, any>;
-  private localeHolder: LocaleConfig = {};
+  // The [locale] input as given; the global config is merged in when read, so it can change (issue #519).
+  private localeInput: LocaleConfig = {};
   private componentRef: ComponentRef<DaterangepickerComponent>;
   private resizeObserver: ResizeObserver | null = null;
   private stopWindowListeners: (() => void) | null = null;
@@ -198,6 +201,14 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     this.componentRef = viewContainerRef.createComponent(DaterangepickerComponent);
     this.picker = this.componentRef.instance as DaterangepickerComponent;
     this.picker.inline = false; // set inline to false for all directive usage
+    let seenConfig = untracked(this.localeHolderService.configChanges);
+    effect(() => {
+      const config = this.localeHolderService.configChanges();
+      if (config !== seenConfig && this.localeDiffer) {
+        untracked(() => this.refreshLocale());
+      }
+      seenConfig = config;
+    });
   }
 
   get disabled(): boolean {
@@ -218,11 +229,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   }
 
   get locale(): LocaleConfig {
-    return this.localeHolder;
+    return { ...this.localeHolderService.config, ...this.localeInput };
   }
 
   @Input() set locale(value: LocaleConfig) {
-    this.localeHolder = { ...this.localeHolderService.config, ...value };
+    this.localeInput = value || {};
   }
 
   @Input() set endKey(value: string) {
@@ -361,7 +372,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     this.picker.lastDayOfPreviousMonthClass = this.lastDayOfPreviousMonthClass;
     this.picker.drops = this.drops;
     this.picker.opens = this.opens;
-    this.localeDiffer = this.differs.find(this.locale).create();
+    this.localeDiffer = this.differs.find(this.localeInput).create();
     this.picker.closeOnAutoApply = this.closeOnAutoApply;
   }
 
@@ -383,12 +394,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   // eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle
   ngDoCheck(): void {
     if (this.localeDiffer) {
-      const changes = this.localeDiffer.diff(this.locale);
+      const changes = this.localeDiffer.diff(this.localeInput);
       if (changes) {
-        this.picker.updateLocale(this.locale);
-        if (this.hasDates(this.value) && this.picker.chosenLabel) {
-          this.el.nativeElement.value = this.picker.chosenLabel;
-        }
+        this.refreshLocale();
       }
     }
   }
@@ -429,6 +437,14 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     this.disabledHolder = state;
     if (state) {
       this.hide();
+    }
+  }
+
+  // Gives the picker the new locale, then shows the text again in that locale.
+  private refreshLocale(): void {
+    this.picker.updateLocale(this.localeInput);
+    if (this.hasDates(this.value) && this.picker.chosenLabel) {
+      this.el.nativeElement.value = this.picker.chosenLabel;
     }
   }
 
