@@ -1237,3 +1237,124 @@ describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', ()
     expect(fixture.componentInstance.picker.picker.pickerContainer.nativeElement.contains(hit)).toBeTrue();
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [ranges]="ranges"
+    [showCancel]="true"
+    [showCustomRangeLabel]="true"
+    [disabled]="off()"
+    (cancelClicked)="events.push('cancel')"
+    (customRangeClicked)="events.push('custom')"
+    (rangeClicked)="events.push('range')"
+    (change)="events.push('change')"
+  />`
+})
+class EventsHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  ranges = { Today: [dayjs(), dayjs()] };
+  off = signal(false);
+  events: string[] = [];
+}
+
+describe('DaterangepickerDirective outputs and disabled (issues #289, #522, #428, #553)', () => {
+  let fixture: ComponentFixture<EventsHostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [EventsHostComponent],
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  async function create(setup: (host: EventsHostComponent) => void = () => undefined): Promise<void> {
+    fixture = TestBed.createComponent(EventsHostComponent);
+    setup(fixture.componentInstance);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    input = fixture.nativeElement.querySelector('input');
+  }
+
+  async function open(): Promise<void> {
+    input.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function clickButton(selector: string, label: string): void {
+    const button = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>(selector)).find(
+      (b) => b.textContent.trim() === label
+    );
+    button.click();
+    fixture.detectChanges();
+  }
+
+  it('emits cancelClicked on the input (#289)', async () => {
+    await create();
+    await open();
+    clickButton('.md-drppicker.shown .ranges button', 'Custom range');
+    clickButton('.md-drppicker.shown .buttons button', 'Cancel');
+
+    expect(fixture.componentInstance.events).toContain('cancel');
+  });
+
+  it('emits customRangeClicked only for "Custom range" (#522)', async () => {
+    await create();
+    await open();
+    clickButton('.md-drppicker.shown .ranges button', 'Today');
+
+    expect(fixture.componentInstance.events).not.toContain('custom');
+
+    await open();
+    clickButton('.md-drppicker.shown .ranges button', 'Custom range');
+
+    expect(fixture.componentInstance.events).toContain('custom');
+    expect(fixture.componentInstance.events.filter((e) => e === 'range').length).toBe(1);
+  });
+
+  it('honors [disabled] without a form (#428)', async () => {
+    await create((host) => host.off.set(true));
+
+    expect(input.disabled).toBeTrue();
+    fixture.componentInstance.picker.open();
+    expect(fixture.componentInstance.picker.picker.isShown).toBeFalse();
+
+    fixture.componentInstance.off.set(false);
+    fixture.detectChanges();
+
+    expect(input.disabled).toBeFalse();
+    await open();
+    expect(fixture.componentInstance.picker.picker.isShown).toBeTrue();
+  });
+
+  it('closes the calendar when it gets disabled (#428)', async () => {
+    await create();
+    await open();
+    fixture.componentInstance.off.set(true);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.picker.picker.isShown).toBeFalse();
+  });
+
+  it('reads text set without a key, but applies it only with Enter (#553)', async () => {
+    await create();
+    input.value = '03/10/2026 - 03/12/2026';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    const picker = fixture.componentInstance.picker.picker;
+
+    expect(`${picker.startDate.format('YYYY-MM-DD')} ${picker.endDate.format('YYYY-MM-DD')}`).toBe('2026-03-10 2026-03-12');
+    expect(fixture.componentInstance.events).not.toContain('change');
+
+    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.events).toContain('change');
+  });
+});

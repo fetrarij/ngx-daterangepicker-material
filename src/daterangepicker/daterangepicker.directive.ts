@@ -15,7 +15,7 @@ import {
   Output,
   EventEmitter,
   Renderer2,
-  HostBinding,
+  booleanAttribute,
   ComponentRef,
   Inject,
   NgZone,
@@ -33,6 +33,7 @@ import { isPlainDate, parseDate, toExternalDate, toInternalDate } from './extern
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'input[ngxDaterangepickerMd]',
   standalone: false,
+  host: { '[disabled]': 'disabled' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -52,6 +53,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   @Output() startDateChanged: EventEmitter<StartDate> = new EventEmitter();
   @Output() endDateChanged: EventEmitter<EndDate> = new EventEmitter();
   @Output() clearClicked: EventEmitter<void> = new EventEmitter();
+  @Output() cancelClicked: EventEmitter<void> = new EventEmitter();
+  @Output() customRangeClicked: EventEmitter<void> = new EventEmitter();
 
   @Input()
   minDate: dayjs.Dayjs | Date | string;
@@ -164,7 +167,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
 
   public picker: DaterangepickerComponent;
   private startKeyHolder: string;
-  private notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey', 'initialDates', 'appendToBody'];
+  private notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey', 'initialDates', 'appendToBody', 'disabled'];
   private onChangeFn = Function.prototype;
   private onTouched = Function.prototype;
   private validatorChange = Function.prototype;
@@ -197,8 +200,13 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     this.picker.inline = false; // set inline to false for all directive usage
   }
 
-  @HostBinding('disabled') get disabled(): boolean {
+  get disabled(): boolean {
     return this.disabledHolder;
+  }
+
+  // Without this input the host binding wins over [disabled] when there is no form (issue #428).
+  @Input({ transform: booleanAttribute }) set disabled(value: boolean) {
+    this.setDisabledState(value);
   }
 
   @Input() set startKey(value: string) {
@@ -275,35 +283,17 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
 
   @HostListener('keyup', ['$event'])
   inputChanged(e: KeyboardEvent): void {
-    if ((e.target as HTMLElement).tagName.toLowerCase() !== 'input') {
-      return;
-    }
-    if (!(e.target as HTMLInputElement).value.length) {
-      return;
-    }
-    const { format, separator, locale } = this.picker.locale;
-    const dateString = (e.target as HTMLInputElement).value.split(separator);
-    let start = null;
-    let end = null;
-    if (dateString.length === 2) {
-      start = parseDate(dateString[0], format, locale);
-      end = parseDate(dateString[1], format, locale);
-    }
-    if (this.singleDatePicker || start === null || end === null) {
-      start = parseDate((e.target as HTMLInputElement).value, format, locale);
-      end = start;
-    }
-    if (!start.isValid() || !end.isValid()) {
-      return;
-    }
-    this.picker.setStartDate(start);
-    this.picker.setEndDate(end);
-    this.picker.updateView();
     // Enter applies a valid typed value; closing without it brings the applied value back (issue #172).
-    if (e.key === 'Enter') {
+    if (this.readTypedValue(e) && e.key === 'Enter') {
       this.picker.clickApply();
       this.picker.hide();
     }
+  }
+
+  // Paste, autofill and scripts change the text without a key (issue #553). The value is still applied with Enter.
+  @HostListener('input', ['$event'])
+  inputEdited(e: Event): void {
+    this.readTypedValue(e);
   }
 
   @HostListener('click', ['$event'])
@@ -342,7 +332,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
         endDate: toExternalDate(range.endDate)
       });
     });
-    this.picker.cancelClicked.asObservable().subscribe(() => this.writeAppliedValue());
+    this.picker.cancelClicked.asObservable().subscribe(() => {
+      this.writeAppliedValue();
+      this.cancelClicked.emit();
+    });
+    this.picker.customRangeClicked.asObservable().subscribe(() => this.customRangeClicked.emit());
     this.picker.clearClicked.asObservable().subscribe(() => {
       this.clearClicked.emit();
     });
@@ -433,6 +427,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
 
   setDisabledState(state: boolean): void {
     this.disabledHolder = state;
+    if (state) {
+      this.hide();
+    }
   }
 
   /**
@@ -543,6 +540,33 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     this.resizeObserver = null;
     this.stopWindowListeners?.();
     this.stopWindowListeners = null;
+  }
+
+  // Shows a valid typed date range in the calendar. Returns false when the text is not a valid date.
+  private readTypedValue(e: Event): boolean {
+    const target = e.target as HTMLInputElement;
+    if (target.tagName.toLowerCase() !== 'input' || !target.value.length) {
+      return false;
+    }
+    const { format, separator, locale } = this.picker.locale;
+    const dateString = target.value.split(separator);
+    let start = null;
+    let end = null;
+    if (dateString.length === 2) {
+      start = parseDate(dateString[0], format, locale);
+      end = parseDate(dateString[1], format, locale);
+    }
+    if (this.singleDatePicker || start === null || end === null) {
+      start = parseDate(target.value, format, locale);
+      end = start;
+    }
+    if (!start.isValid() || !end.isValid()) {
+      return false;
+    }
+    this.picker.setStartDate(start);
+    this.picker.setEndDate(end);
+    this.picker.updateView();
+    return true;
   }
 
   private setValue(value: TimePeriod) {
