@@ -322,6 +322,35 @@ In an NgModule app:
 })
 ```
 
+#### Change the global locale at runtime
+
+Since 22.2.0, call `LocaleService.setConfig()`. It replaces the config given to `forRoot()`, and the pickers already on the page are redrawn. A `[locale]` set on one picker still wins over it.
+
+```typescript
+import { LocaleService } from 'ngx-daterangepicker-material';
+import fr from 'dayjs/esm/locale/fr';
+
+export class LanguageSwitcher {
+  private pickerLocale = inject(LocaleService);
+
+  useFrench(): void {
+    this.pickerLocale.setConfig({ locale: fr, applyLabel: 'Valider', format: 'DD/MM/YYYY' });
+  }
+}
+```
+
+You can also give a signal to `forRoot()`. The pickers follow it:
+
+```typescript
+// app.config.ts
+export const pickerConfig = signal<LocaleConfig>({ applyLabel: 'Okay' });
+
+providers: [importProvidersFrom(NgxDaterangepickerMd.forRoot(pickerConfig))]
+
+// later
+pickerConfig.set({ applyLabel: 'Valider' });
+```
+
 ### startKey and endKey
 
 Theses 2 options are for the key you want for the value, default are `startDate` and `endDate`, it means the value we have from ngModel are: `{startDate: Date, endDate: Date}` by default;
