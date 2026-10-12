@@ -202,6 +202,15 @@ You can use the component directly in your templates, which will set its `inline
 </ngx-daterangepicker-material>
 ```
 
+Since 22.2.0, the inline component also works with `ngModel` and `formControl`:
+
+```html
+<ngx-daterangepicker-material [(ngModel)]="selected"></ngx-daterangepicker-material>
+<ngx-daterangepicker-material [formControl]="range"></ngx-daterangepicker-material>
+```
+
+The value is `{ startDate: Dayjs, endDate: Dayjs }`. It changes on Apply (or on each selection with `autoApply`) and on Clear, not on each day click. In single mode you can also give a plain date. `control.disable()` greys out the calendar and blocks clicks. `startKey` and `endKey` only work on the input.
+
 
 ## Available options
 
