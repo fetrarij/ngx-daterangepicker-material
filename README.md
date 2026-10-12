@@ -1,16 +1,28 @@
 # ngx-daterangepicker-material
 
-> Angular 2+ Date range picker.
+> Date range picker for Angular, with predefined ranges and a time picker.
 
 [![Build Status](https://github.com/fetrarij/ngx-daterangepicker-material/actions/workflows/actions.yml/badge.svg)](https://github.com/fetrarij/ngx-daterangepicker-material/actions)
 [![npm version](https://badge.fury.io/js/ngx-daterangepicker-material.svg)](https://badge.fury.io/js/ngx-daterangepicker-material)
+[![npm downloads](https://img.shields.io/npm/dm/ngx-daterangepicker-material.svg)](https://www.npmjs.com/package/ngx-daterangepicker-material)
+[![license](https://img.shields.io/npm/l/ngx-daterangepicker-material.svg)](https://github.com/fetrarij/ngx-daterangepicker-material/blob/master/LICENSE)
 [![last commit](https://img.shields.io/github/last-commit/fetrarij/ngx-daterangepicker-material.svg)](https://github.com/fetrarij/ngx-daterangepicker-material/commits/master)
 
-This `Angular Material` plugin is compatible with Angular 2+ and is Ivy compatible. It leverages `dayjs` to handle date manipulation and parsing. The base for this plugin was originally the [Bootstrap Date Range Picker](http://www.daterangepicker.com), but its dependencies on jQuery, Bootstrap and dayjs.js were removed.
+A date range picker with a Material look. It works with Angular 22, standalone components, SSR and zoneless apps. It uses `dayjs` to handle dates. It started as a port of the [Bootstrap Date Range Picker](http://www.daterangepicker.com), without its jQuery, Bootstrap and moment.js dependencies.
+
+Actively maintained again since 2026. New issues get a reply.
 
 ![](screen.png)
 
 Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
+
+## Why this library
+
+Compared to the Angular Material date range picker, it gives you:
+
+- predefined ranges (Today, Last 7 days, This month...), or your own;
+- an optional time picker;
+- one input where users can type or pick the whole range.
 
 ---
 
@@ -36,41 +48,27 @@ Since v16, the package's major version tracks the Angular major version it suppo
 
 ## Installation
 
- Install the plugin from npm:
+### With ng add
 
- `npm install ngx-daterangepicker-material --save` .
+```bash
+ng add ngx-daterangepicker-material
+```
 
- This library depends on `dayjs`, which requires `esModuleInterop` (or `allowSyntheticDefaultImports`)
- to be enabled in your `tsconfig.json`:
- ```json
- {
-   "compilerOptions": {
-     "esModuleInterop": true
-   }
- }
- ```
+It installs the package and registers `NgxDaterangepickerMd.forRoot()` for you: in
+`app.config.ts` for a standalone app, or in your root `NgModule`. Available since v22.1.3.
 
- import **NgxDaterangepickerMd** in your module:
+Then import `NgxDaterangepickerMd` and `FormsModule` in the component that uses the picker
+(see the component example below).
 
-````typescript
-...
-import { FormsModule } from '@angular/forms';
-import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import { App } from './app';
+### Manual setup
 
-@NgModule({
-    imports: [
-        ... ,
-        FormsModule,
-        NgxDaterangepickerMd.forRoot()
-    ],
-    declarations: [App],
-    bootstrap:    [App]
-})
-export class AppModule {}
-````
+Install the package from npm:
 
-### Standalone components
+```bash
+npm install ngx-daterangepicker-material
+```
+
+#### Standalone apps
 
 `NgxDaterangepickerMd` is still an `NgModule` internally, but it works with standalone
 applications too. Register `NgxDaterangepickerMd.forRoot()`'s providers once with
@@ -99,7 +97,6 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [FormsModule, NgxDaterangepickerMd],
   templateUrl: './app.html'
 })
@@ -110,6 +107,42 @@ export class App {
 
 `forRoot()` must only be called once, from `app.config.ts` — do not add it again to a
 component's own `imports` array.
+
+#### NgModule apps
+
+Import **NgxDaterangepickerMd** in your module:
+
+````typescript
+...
+import { FormsModule } from '@angular/forms';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { App } from './app';
+
+@NgModule({
+    imports: [
+        ... ,
+        FormsModule,
+        NgxDaterangepickerMd.forRoot()
+    ],
+    declarations: [App],
+    bootstrap:    [App]
+})
+export class AppModule {}
+````
+
+### Older apps: TS1259 error
+
+`dayjs` needs `esModuleInterop` (or `allowSyntheticDefaultImports`). Apps created with
+Angular CLI 20 or later already have it (through `"module": "preserve"`), so there is nothing
+to do. In an older app, if the build fails with `TS1259`, add this to your `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "esModuleInterop": true
+  }
+}
+```
 
 ### Testing with Jest
 
