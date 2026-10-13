@@ -87,6 +87,7 @@ $input-height: 3rem !default;
   &.inline {
     position: relative;
     display: inline-block;
+    z-index: auto;
   }
   // Disabled by a form; inert also keeps the keyboard out.
   &.disabled {
