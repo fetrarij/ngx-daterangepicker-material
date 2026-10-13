@@ -34,8 +34,7 @@ class TestHostComponent {
 
 @Component({
   standalone: false,
-  template: `<input ngxDaterangepickerMd [(ngModel)]="selected" />
-    <ngx-daterangepicker-material></ngx-daterangepicker-material>`
+  template: `<input ngxDaterangepickerMd [(ngModel)]="selected" /> <ngx-daterangepicker-material></ngx-daterangepicker-material>`
 })
 class InlineAndPopupHostComponent {
   selected: TimePeriod;
