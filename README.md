@@ -46,6 +46,28 @@ Compared to the Angular Material date range picker, it gives you:
 
 Since v16, the package's major version tracks the Angular major version it supports
 
+### Upgrade from 6.x
+
+`"^6.0.4"` in your `package.json` never moves to a newer major. To get the new versions, install the one that matches your Angular major (see the table above), for example:
+
+```bash
+npm install ngx-daterangepicker-material@22   # Angular 22
+```
+
+The bug fixes made since 2026 are in v22 only. v16 to v21 mainly add support for their Angular version.
+
+The setup and the API stay the same: `NgxDaterangepickerMd.forRoot()`, the same inputs and outputs. In a standalone app, see [Standalone apps](#standalone-apps).
+
+What you may notice when you move from 6.x to 22.x (details in the [release notes](https://github.com/fetrarij/ngx-daterangepicker-material/releases)):
+
+- The emitted dates are the real local dates. If you fixed a timezone shift yourself (for example with `toISOString().substring(...)` or by adding the UTC offset), remove that code.
+- `isInvalidDate` and `isCustomDate` also get local dates. Compare by day: `date.isSame(other, 'day')`.
+- Without time picker, the end date is the end of the day (`23:59:59.999`).
+- A value like `{ startDate: null, endDate: null }` leaves the input empty instead of showing today. For a required field, use [`dateRangeRequired()`](#required-validation) instead of `Validators.required`.
+- Closing the picker without Apply drops the unapplied selection.
+- A dayjs `locale` given to `forRoot()` also sets the day and month names.
+- dayjs 1.11.10 or newer is needed.
+
 ---
 
 ## Installation
