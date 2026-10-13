@@ -213,6 +213,29 @@ Since 22.2.0, the inline component also works with `ngModel` and `formControl`:
 
 The value is `{ startDate: Dayjs, endDate: Dayjs }`. It changes on Apply (or on each selection with `autoApply`) and on Clear, not on each day click. In single mode you can also give a plain date. `control.disable()` greys out the calendar and blocks clicks. `startKey` and `endKey` only work on the input.
 
+## Signal Forms
+
+Since 22.2.1, the input and the inline component work with Angular Signal Forms (`@angular/forms/signals`) through `[formField]`:
+
+```typescript
+import { FormField, disabled, form } from '@angular/forms/signals';
+
+@Component({
+  imports: [NgxDaterangepickerMd, FormField],
+  template: `
+    <input ngxDaterangepickerMd [formField]="bookingForm.dates" />
+    <ngx-daterangepicker-material [formField]="bookingForm.dates"></ngx-daterangepicker-material>
+  `
+})
+export class BookingComponent {
+  locked = signal(false);
+  booking = signal<{ dates: TimePeriod }>({ dates: { startDate: dayjs(), endDate: dayjs().add(3, 'day') } });
+  bookingForm = form(this.booking, (path) => disabled(path.dates, () => this.locked()));
+}
+```
+
+The value has the same shape as with `ngModel`, and the `disabled()` rule disables the picker.
+
 
 ## Available options
 

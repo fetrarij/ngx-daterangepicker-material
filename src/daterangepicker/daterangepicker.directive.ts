@@ -443,6 +443,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   // Gives the picker the new locale, then shows the text again in that locale.
   private refreshLocale(): void {
     this.picker.updateLocale(this.localeInput);
+    if (this.hasDates(this.value)) {
+      // [formField] writes the value before the first locale is set, so the label is rebuilt here.
+      this.picker.calculateChosenLabel();
+    }
     if (this.hasDates(this.value) && this.picker.chosenLabel) {
       this.el.nativeElement.value = this.picker.chosenLabel;
     }
