@@ -32,6 +32,57 @@ class TestHostComponent {
   }
 }
 
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [(ngModel)]="selected" />
+    <ngx-daterangepicker-material></ngx-daterangepicker-material>`
+})
+class InlineAndPopupHostComponent {
+  selected: TimePeriod;
+}
+
+describe('DaterangepickerDirective popup stacking with an inline calendar (issue #601)', () => {
+  let fixture: ComponentFixture<InlineAndPopupHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [InlineAndPopupHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.destroy());
+
+  it('keeps the opened input popup above the inline calendar', async () => {
+    fixture = TestBed.createComponent(InlineAndPopupHostComponent);
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    (fixture.nativeElement.querySelector('input') as HTMLInputElement).click();
+    fixture.detectChanges();
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    fixture.detectChanges();
+
+    const popup = fixture.nativeElement.querySelector('.md-drppicker:not(.inline)') as HTMLElement;
+    const inline = fixture.nativeElement.querySelector('.md-drppicker.inline') as HTMLElement;
+    const inlineRect = inline.getBoundingClientRect();
+    const popupCells = Array.from(popup.querySelectorAll<HTMLElement>('td.available:not(.off)'));
+    const popupCell = popupCells.find((cell) => {
+      const rect = cell.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      return x >= inlineRect.left && x < inlineRect.right && y >= inlineRect.top && y < inlineRect.bottom;
+    });
+    expect(popupCell).toBeDefined();
+    const popupCellRect = popupCell.getBoundingClientRect();
+    const x = Math.floor(popupCellRect.left + popupCellRect.width / 2);
+    const y = Math.floor(popupCellRect.top + popupCellRect.height / 2);
+
+    expect(popup.contains(document.elementFromPoint(x, y))).toBeTrue();
+  });
+});
+
 describe('DaterangepickerDirective external date instants (issue #562)', () => {
   let fixture: ComponentFixture<TestHostComponent>;
   let host: TestHostComponent;
