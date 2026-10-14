@@ -46,8 +46,13 @@ import { isPlainDate, parseDate, toExternalDate, toInternalDate } from './extern
 })
 // eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle
 export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnDestroy {
+  /**
+   * @deprecated Use `(dateChange)`. `(change)` also gets the native change event of the input (issue #344).
+   * It will be removed in v23.
+   */
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix,@angular-eslint/no-output-native,@angular-eslint/no-output-rename
   @Output('change') onChange: EventEmitter<TimePeriod | null> = new EventEmitter();
+  @Output() dateChange: EventEmitter<TimePeriod> = new EventEmitter();
   // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('rangeClicked') rangeClicked: EventEmitter<DateRange> = new EventEmitter();
   // eslint-disable-next-line @angular-eslint/no-output-rename
@@ -359,6 +364,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
         };
         this.value = value as TimePeriod;
         this.onChange.emit(value as TimePeriod);
+        this.dateChange.emit(value as TimePeriod);
         if (typeof change.chosenLabel === 'string') {
           this.el.nativeElement.value = change.chosenLabel;
         }

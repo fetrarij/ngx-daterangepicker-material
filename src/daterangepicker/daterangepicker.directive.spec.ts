@@ -1411,6 +1411,74 @@ describe('DaterangepickerDirective outputs and disabled (issues #289, #522, #428
 });
 
 @Component({
+  template: `<input
+    ngxDaterangepickerMd
+    [ranges]="ranges"
+    startKey="from"
+    endKey="to"
+    (dateChange)="dateChanges.push($event)"
+    (change)="changes.push($event)"
+  />`,
+  imports: [NgxDaterangepickerMd]
+})
+class DateChangeHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  ranges = { Today: [dayjs(), dayjs()] };
+  dateChanges: unknown[] = [];
+  changes: unknown[] = [];
+}
+
+describe('DaterangepickerDirective dateChange output (issue #344)', () => {
+  let fixture: ComponentFixture<DateChangeHostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({ imports: [DateChangeHostComponent, NgxDaterangepickerMd.forRoot()] });
+    fixture = TestBed.createComponent(DateChangeHostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    input = fixture.nativeElement.querySelector('input');
+  });
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  it('gets only dates, never the native change event of the input', () => {
+    input.value = '03/10/2026 - 03/12/2026';
+    input.dispatchEvent(new Event('input'));
+    input.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    // The deprecated (change) output is mixed with the DOM event, dateChange is not.
+    expect(fixture.componentInstance.changes[0] instanceof Event).toBeTrue();
+    expect(fixture.componentInstance.dateChanges).toEqual([]);
+
+    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+    fixture.detectChanges();
+
+    const value = fixture.componentInstance.dateChanges[0] as Record<string, dayjs.Dayjs>;
+    expect(fixture.componentInstance.dateChanges.length).toBe(1);
+    expect(`${value.from.format('YYYY-MM-DD')} ${value.to.format('YYYY-MM-DD')}`).toBe('2026-03-10 2026-03-12');
+  });
+
+  it('emits the dates of a clicked range with startKey and endKey', async () => {
+    input.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const today = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('.md-drppicker.shown .ranges button')
+    ).find((b) => b.textContent.trim() === 'Today');
+    today.click();
+    fixture.detectChanges();
+
+    const value = fixture.componentInstance.dateChanges[0] as Record<string, dayjs.Dayjs>;
+    expect(fixture.componentInstance.dateChanges.length).toBe(1);
+    expect(value.from.format('YYYY-MM-DD')).toBe(dayjs().format('YYYY-MM-DD'));
+    expect(value.to.format('YYYY-MM-DD')).toBe(dayjs().format('YYYY-MM-DD'));
+  });
+});
+
+@Component({
   template: `
     <input class="plain" ngxDaterangepickerMd [(ngModel)]="selected" />
     <input class="own" ngxDaterangepickerMd [locale]="{ applyLabel: 'Mine' }" [(ngModel)]="selected" />

@@ -561,9 +561,13 @@ input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
 
  >Fired when clicked on "Custom range". It sends nothing: the dates come later with `(datesUpdated)` (since 22.2.0)
 
+### \(dateChange)
+
+ >Fires when a date or range is chosen, and sends the dates with your `startKey`/`endKey`, eg: `{startDate: Dayjs, endDate: Dayjs}` (since 22.3.0)
+
 ### \(change)
 
- >Fires when a date or range is chosen, and sends the dates, eg: `{startDate: Dayjs, endDate: Dayjs}`. It has the same name as the native `change` event of the input, so after typing in the input, your handler also gets that DOM `Event`. To get only the dates, use `(datesUpdated)` or `(ngModelChange)`.
+ >**Deprecated, use `(dateChange)`. It will be removed in v23.** Same as `(dateChange)`, but it has the same name as the native `change` event of the input, so after typing in the input, your handler also gets that DOM `Event`.
 
 ## Contributing
 
