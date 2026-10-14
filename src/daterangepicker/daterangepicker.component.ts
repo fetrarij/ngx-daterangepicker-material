@@ -556,9 +556,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
         this.rangesArray.push(this.locale.customRangeLabel);
       }
       this.showCalInRanges = !this.rangesArray.length || this.alwaysShowCalendars;
+      // endDate is null between the two clicks of a selection (issue #349).
       if (!this.timePicker) {
-        this.startDate = this.startDate.startOf('day');
-        this.endDate = this.endDate.endOf('day');
+        this.startDate = this.startDate?.startOf('day') ?? null;
+        this.endDate = this.endDate?.endOf('day') ?? null;
       }
     }
   }
