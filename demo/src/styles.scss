@@ -24,3 +24,20 @@
 .first-next-day {
     background-color: rgb(229, 255, 0) !important;
 }
+
+// materialize.css floats every .left/.right with !important, and the picker uses these class names.
+// Restore the picker's own floats: stacked on small screens, side by side from 564px.
+.md-drppicker .calendar.left,
+.md-drppicker .calendar.right {
+    float: none !important;
+}
+@media (min-width: 564px) {
+    .md-drppicker.ltr .calendar.left,
+    .md-drppicker.ltr .calendar.right {
+        float: left !important;
+    }
+    .md-drppicker.rtl .calendar.left,
+    .md-drppicker.rtl .calendar.right {
+        float: right !important;
+    }
+}
