@@ -393,6 +393,56 @@ describe('DaterangepickerComponent range end time without timePicker', () => {
   });
 });
 
+describe('DaterangepickerComponent ranges or locale change during a selection (issue #349)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.inline = true;
+    component.alwaysShowCalendars = true;
+    fixture.componentRef.setInput('ranges', { Today: [dayjs(), dayjs()] });
+    fixture.detectChanges();
+  });
+
+  function clickDay(day: number): void {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  it('accepts new ranges after the first click, then finishes the range', () => {
+    clickDay(4);
+    expect(component.endDate).toBeNull();
+
+    expect(() => {
+      fixture.componentRef.setInput('ranges', { Yesterday: [dayjs().subtract(1, 'day'), dayjs().subtract(1, 'day')] });
+      fixture.detectChanges();
+    }).not.toThrow();
+
+    clickDay(6);
+    expect(component.startDate.format('D HH:mm')).toBe('4 00:00');
+    expect(component.endDate.format('D HH:mm:ss')).toBe('6 23:59:59');
+  });
+
+  it('accepts a new locale after the first click', () => {
+    clickDay(4);
+
+    expect(() => {
+      fixture.componentRef.setInput('locale', { applyLabel: 'OK' });
+      fixture.detectChanges();
+    }).not.toThrow();
+    expect(component.startDate.format('D')).toBe('4');
+  });
+});
+
 describe('DaterangepickerComponent isCustomDate (issue #534)', () => {
   let fixture: ComponentFixture<DaterangepickerComponent>;
 
