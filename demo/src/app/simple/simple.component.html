@@ -11,7 +11,7 @@
             [lockStartDate]="false"
             [customRangeDirection]="false"
             (ngModelChange)="ngModelChange($event)"
-            (change)="change($event)"
+            (dateChange)="change($event)"
             showCancel="true" />
     </div>
     <div class="col s6 right-align">
@@ -34,7 +34,7 @@
     <div class="col s12">
         <b>Using the change event :</b>
         <pre class="prettyprint"><code class="html">&lt;input type="text" ngxDaterangepickerMd
-    [(ngModel)]="selected" placeholder="Choose date" (change)="change($event)"/&gt;</code>
+    [(ngModel)]="selected" placeholder="Choose date" (dateChange)="change($event)"/&gt;</code>
   </pre>
 
         <b>Or with ngModel :</b>
