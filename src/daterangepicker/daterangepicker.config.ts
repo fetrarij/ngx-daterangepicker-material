@@ -17,6 +17,8 @@ export interface LocaleConfig {
   cancelLabel?: string;
   clearLabel?: string;
   customRangeLabel?: string;
+  // Input text when allowEmptyEndDate is on and there is no end date, e.g. 'From {start}'.
+  emptyEndDateLabel?: string;
   daysOfWeek?: string[];
   monthNames?: string[];
   firstDay?: number;

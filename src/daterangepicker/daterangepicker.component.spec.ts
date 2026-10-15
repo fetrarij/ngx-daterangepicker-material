@@ -1155,3 +1155,73 @@ describe('DaterangepickerComponent with ngModel and formControl (issue #527)', (
     expect(container.classList).not.toContain('disabled');
   });
 });
+
+@Component({
+  template: `<ngx-daterangepicker-material
+    [allowEmptyEndDate]="true"
+    [showCancel]="true"
+    [formControl]="control"
+  ></ngx-daterangepicker-material>`,
+  imports: [NgxDaterangepickerMd, ReactiveFormsModule]
+})
+class InlineEmptyEndHostComponent {
+  control = new FormControl<TimePeriod>({ startDate: dayjs('2026-05-11'), endDate: null });
+}
+
+describe('DaterangepickerComponent allowEmptyEndDate (issue #502)', () => {
+  let fixture: ComponentFixture<InlineEmptyEndHostComponent>;
+  let root: HTMLElement;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(InlineEmptyEndHostComponent);
+    fixture.detectChanges();
+    root = fixture.nativeElement as HTMLElement;
+  });
+
+  function picker(): DaterangepickerComponent {
+    return fixture.debugElement.query(By.directive(DaterangepickerComponent)).componentInstance;
+  }
+
+  function clickDay(day: number): void {
+    const cells = Array.from(root.querySelectorAll<HTMLTableCellElement>('.calendar.left td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  function clickButton(label: string): void {
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('.buttons button'));
+    buttons.find((button) => button.textContent.trim().startsWith(label)).click();
+    fixture.detectChanges();
+  }
+
+  it('shows a form value without end date', () => {
+    expect(picker().startDate.format('YYYY-MM-DD')).toBe('2026-05-11');
+    expect(picker().endDate).toBeNull();
+    expect(root.querySelector('.calendar.left td.start-date').textContent.trim()).toBe('11');
+    expect(root.querySelector('.calendar.left td.end-date')).toBeNull();
+  });
+
+  it('applies a start date alone', () => {
+    clickDay(20);
+    clickButton('Apply');
+
+    const value = fixture.componentInstance.control.value;
+    expect(value.startDate.format('YYYY-MM-DD')).toBe('2026-05-20');
+    expect(value.endDate).toBeNull();
+  });
+
+  it('brings the empty end date back on Cancel', () => {
+    clickDay(20);
+    clickDay(23);
+    clickButton('Cancel');
+
+    expect(picker().startDate.format('YYYY-MM-DD')).toBe('2026-05-11');
+    expect(picker().endDate).toBeNull();
+  });
+});

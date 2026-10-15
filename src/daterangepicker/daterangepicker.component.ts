@@ -207,6 +207,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   @Input()
   lockStartDate = false;
 
+  // Apply can keep the end date empty, for an open range like "from X" (issue #502).
+  @Input()
+  allowEmptyEndDate = false;
+
   // timepicker variables
   @Input()
   get timePicker(): boolean {
@@ -321,6 +325,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   // Set during a day click, so picking the end date does not move the months in view.
   private keepMonthsInView = false;
   private cachedVersion: { start: Dayjs; end: Dayjs } = { start: null, end: null };
+  // An applied empty end date, not one still being picked: the next day click starts a new selection.
+  private emptyEndApplied = false;
   // Set by ngModel or formControl on the inline component (issue #527).
   public isDisabled = false;
   private onChangeFn: (value: TimePeriod) => void = () => undefined;
@@ -869,6 +875,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   }
 
   setEndDate(endDate: string | Dayjs): void {
+    this.emptyEndApplied = false;
     this.hasSelection = true;
     if (typeof endDate === 'string') {
       this.endDate = toInternalDate(endDate, this.locale.format, this.locale.locale);
@@ -982,7 +989,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   updateElement(): void {
     const format = this.locale.displayFormat ? this.locale.displayFormat : this.locale.format;
     if (!this.singleDatePicker && this.autoUpdateInput) {
-      if (this.startDate && this.endDate) {
+      if (this.startDate && !this.endDate && this.allowEmptyEndDate) {
+        this.chosenLabel = this.emptyEndDateLabel(format);
+      } else if (this.startDate && this.endDate) {
         // if we use ranges and should show range label on input
         if (
           this.rangesArray.length &&
@@ -1007,6 +1016,13 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
         ? this.startDate.locale(this.localeHolder.locale).format(format)
         : this.startDate.format(format);
     }
+  }
+
+  // Without a template, the separator stays so the text still reads as a range.
+  private emptyEndDateLabel(format: string): string {
+    const start = this.localeHolder.locale ? this.startDate.locale(this.localeHolder.locale).format(format) : this.startDate.format(format);
+    const template = this.locale.emptyEndDateLabel;
+    return template ? template.replace('{start}', start) : start + this.locale.separator;
   }
 
   // Week numbers follow the instance locale, not the global dayjs locale (issue #378).
@@ -1034,7 +1050,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     }
     let customRange = true;
     let i = 0;
-    if (this.rangesArray.length > 0) {
+    // An empty end date matches no predefined range.
+    if (this.rangesArray.length > 0 && this.endDate) {
       for (const range in this.ranges) {
         if (this.ranges[range]) {
           if (this.timePicker) {
@@ -1078,11 +1095,16 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
 
   clickApply(e?: MouseEvent): void {
     if (!this.singleDatePicker && this.startDate && !this.endDate) {
-      if (this.timePicker) {
-        this.endDate = this.getDateWithTime(this.startDate, SideEnum.right);
+      // With allowEmptyEndDate the start date is applied alone (issue #502).
+      if (this.allowEmptyEndDate) {
+        this.emptyEndApplied = true;
       } else {
-        // setEndDate() moves the end to the end of the day, like a second click on the same day.
-        this.setEndDate(this.startDate.clone());
+        if (this.timePicker) {
+          this.endDate = this.getDateWithTime(this.startDate, SideEnum.right);
+        } else {
+          // setEndDate() moves the end to the end of the day, like a second click on the same day.
+          this.setEndDate(this.startDate.clone());
+        }
       }
       this.calculateChosenLabel();
     }
@@ -1123,6 +1145,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   clickCancel(e: MouseEvent): void {
     this.startDate = this.cachedVersion.start;
     this.endDate = this.cachedVersion.end;
+    this.emptyEndApplied = this.allowEmptyEndDate && !!this.startDate && !this.endDate;
     if (this.inline) {
       this.updateView();
     }
@@ -1343,8 +1366,12 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     let date = side === SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
     this.keepMonthsInView = true;
 
-    if ((this.endDate || (date.isBefore(this.startDate, 'day') && this.customRangeDirection === false)) && this.lockStartDate === false) {
+    if (
+      (this.endDate || this.emptyEndApplied || (date.isBefore(this.startDate, 'day') && this.customRangeDirection === false)) &&
+      this.lockStartDate === false
+    ) {
       // picking start
+      this.emptyEndApplied = false;
       if (this.timePicker) {
         date = this.getDateWithTime(date, SideEnum.left);
       }
@@ -1453,7 +1480,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
       this.resetDates();
     }
     this.cachedVersion.start = this.startDate.clone();
-    this.cachedVersion.end = this.endDate.clone();
+    this.cachedVersion.end = this.endDate?.clone() ?? null;
     this.isShown = true;
     this.updateView();
   }
@@ -1465,10 +1492,15 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     }
     // Closing without Apply drops the selection: the last applied dates come back (issue #399).
     const { start, end } = this.cachedVersion;
-    if ((start && !this.startDate?.isSame(start)) || (end && !this.endDate?.isSame(end))) {
+    // The applied value may have an empty end date (allowEmptyEndDate).
+    const emptyEnd = this.allowEmptyEndDate && start && !end;
+    if ((start && !this.startDate?.isSame(start)) || (end && !this.endDate?.isSame(end)) || (emptyEnd && this.endDate)) {
       this.startDate = start ? start.clone() : this.startDate;
-      this.endDate = end ? end.clone() : this.endDate;
+      this.endDate = end ? end.clone() : emptyEnd ? null : this.endDate;
       this.calculateChosenLabel();
+    }
+    if (emptyEnd) {
+      this.emptyEndApplied = true;
     }
 
     // if picker is attached to a text input, update it
@@ -1551,17 +1583,26 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
       }
       if (end) {
         this.setEndDate(end);
+      } else if (this.allowEmptyEndDate) {
+        this.clearEndDate();
       }
     }
     this.hasSelection = true;
     this.cachedVersion.start = this.startDate.clone();
-    this.cachedVersion.end = this.endDate.clone();
+    this.cachedVersion.end = this.endDate?.clone() ?? null;
     this.calculateChosenLabel();
     this.updateView();
   }
 
+  /** Sets an applied empty end date (allowEmptyEndDate), like a value "from X". */
+  clearEndDate(): void {
+    this.endDate = null;
+    this.emptyEndApplied = true;
+  }
+
   /** Puts the picker back on today without emitting anything, for an empty value given by the app. */
   resetDates(): void {
+    this.emptyEndApplied = false;
     this.startDate = dayjs().utc(true).startOf('day');
     this.endDate = dayjs().utc(true).endOf('day');
     this.hasSelection = false;
