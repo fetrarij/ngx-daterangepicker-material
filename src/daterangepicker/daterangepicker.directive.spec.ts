@@ -1566,3 +1566,196 @@ describe('DaterangepickerDirective global config change (issue #519)', () => {
     expect(applyText(inline)).toBe('Vas-y');
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [allowEmptyEndDate]="allow"
+    [timePicker]="timePicker"
+    [locale]="locale"
+    [(ngModel)]="selected"
+    (dateChange)="changes.push($event)"
+    (datesUpdated)="updates.push($event)"
+  />`
+})
+class EmptyEndDateHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  allow = true;
+  timePicker = false;
+  locale: LocaleConfig = { format: 'YYYY-MM-DD' };
+  selected: TimePeriod = null;
+  changes: TimePeriod[] = [];
+  updates: TimePeriod[] = [];
+}
+
+describe('DaterangepickerDirective allowEmptyEndDate (issue #502)', () => {
+  let fixture: ComponentFixture<EmptyEndDateHostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [EmptyEndDateHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  async function create(setup: (host: EmptyEndDateHostComponent) => void = () => undefined): Promise<void> {
+    fixture = TestBed.createComponent(EmptyEndDateHostComponent);
+    setup(fixture.componentInstance);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    input = fixture.nativeElement.querySelector('input');
+  }
+
+  async function open(): Promise<void> {
+    input.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function clickDay(day: number): void {
+    const cell = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.md-drppicker.shown .calendar.left td.available:not(.off)')
+    ).find((td) => td.textContent.trim() === String(day));
+    cell.click();
+    fixture.detectChanges();
+  }
+
+  async function apply(): Promise<void> {
+    fixture.componentInstance.picker.picker.clickApply(new MouseEvent('click'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+  }
+
+  function activeDays(): string[] {
+    const root = fixture.nativeElement as HTMLElement;
+    return Array.from(root.querySelectorAll('.md-drppicker.shown .calendar.left td.active:not(.off)')).map((td) => td.textContent.trim());
+  }
+
+  const day = (d: number): string => dayjs().date(d).format('YYYY-MM-DD');
+  const applied = { startDate: dayjs('2026-03-02'), endDate: null as dayjs.Dayjs };
+
+  it('applies a start date alone and emits an empty end date', async () => {
+    await create();
+    await open();
+    clickDay(20);
+    await apply();
+
+    const host = fixture.componentInstance;
+    expect(host.selected.startDate.format('YYYY-MM-DD')).toBe(day(20));
+    expect(host.selected.endDate).toBeNull();
+    expect(host.changes.pop().endDate).toBeNull();
+    expect(host.updates.pop().endDate).toBeNull();
+    expect(input.value).toBe(`${day(20)} - `);
+  });
+
+  it('shows the emptyEndDateLabel template from the locale', async () => {
+    await create((host) => (host.locale = { format: 'YYYY-MM-DD', emptyEndDateLabel: 'From {start}' }));
+    await open();
+    clickDay(20);
+    await apply();
+
+    expect(input.value).toBe(`From ${day(20)}`);
+  });
+
+  it('still applies a full range', async () => {
+    await create();
+    await open();
+    clickDay(20);
+    clickDay(23);
+    await apply();
+
+    expect(fixture.componentInstance.selected.endDate.format('YYYY-MM-DD')).toBe(day(23));
+    expect(input.value).toBe(`${day(20)} - ${day(23)}`);
+  });
+
+  it('keeps the end date as the start date when the option is off', async () => {
+    await create((host) => (host.allow = false));
+    await open();
+    clickDay(20);
+    await apply();
+
+    expect(fixture.componentInstance.selected.endDate.format('YYYY-MM-DD')).toBe(day(20));
+  });
+
+  it('keeps the end date empty with the time picker', async () => {
+    await create((host) => (host.timePicker = true));
+    await open();
+    clickDay(20);
+    await apply();
+
+    expect(fixture.componentInstance.selected.endDate).toBeNull();
+  });
+
+  it('shows a model value without end date', async () => {
+    await create((host) => (host.selected = applied));
+
+    expect(input.value).toBe('2026-03-02 - ');
+    expect(fixture.componentInstance.picker.picker.endDate).toBeNull();
+  });
+
+  it('opens again on the start date alone', async () => {
+    await create((host) => (host.selected = applied));
+    await open();
+
+    expect(activeDays()).toEqual(['2']);
+    expect(fixture.componentInstance.picker.picker.endDate).toBeNull();
+  });
+
+  it('starts a new selection on the first click after opening again', async () => {
+    await create((host) => (host.selected = applied));
+    await open();
+    clickDay(20);
+
+    const picker = fixture.componentInstance.picker.picker;
+    expect(picker.startDate.format('YYYY-MM-DD')).toBe('2026-03-20');
+    expect(picker.endDate).toBeNull();
+
+    clickDay(23);
+    expect(picker.endDate.format('YYYY-MM-DD')).toBe('2026-03-23');
+  });
+
+  it('still starts a new selection after a click left without Apply', async () => {
+    await create((host) => (host.selected = applied));
+    await open();
+    clickDay(2);
+    document.body.click();
+    fixture.detectChanges();
+    await open();
+    clickDay(20);
+
+    expect(fixture.componentInstance.picker.picker.startDate.format('YYYY-MM-DD')).toBe('2026-03-20');
+    expect(fixture.componentInstance.picker.picker.endDate).toBeNull();
+  });
+
+  it('brings the empty end date back when closing without Apply', async () => {
+    await create((host) => (host.selected = applied));
+    await open();
+    clickDay(20);
+    clickDay(23);
+    document.body.click();
+    fixture.detectChanges();
+
+    const picker = fixture.componentInstance.picker.picker;
+    expect(picker.startDate.format('YYYY-MM-DD')).toBe('2026-03-02');
+    expect(picker.endDate).toBeNull();
+    expect(input.value).toBe('2026-03-02 - ');
+  });
+
+  it('brings the empty end date back on Cancel', async () => {
+    await create((host) => (host.selected = applied));
+    await open();
+    clickDay(20);
+    clickDay(23);
+    fixture.componentInstance.picker.picker.clickCancel(new MouseEvent('click'));
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.picker.picker.endDate).toBeNull();
+    expect(input.value).toBe('2026-03-02 - ');
+  });
+});

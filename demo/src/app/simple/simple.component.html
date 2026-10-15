@@ -46,6 +46,20 @@
 </pre>
     </div>
 </div>
+<div class="row">
+    <div class="col s6">
+        <b>With an empty end date allowed (apply a start date alone):</b>
+        <input
+            type="text"
+            ngxDaterangepickerMd
+            [(ngModel)]="openRange"
+            class="form-control"
+            placeholder="From..."
+            [allowEmptyEndDate]="true"
+            [locale]="{ emptyEndDateLabel: 'From {start}' }" />
+        <p>Value: {{ openRange | json }}</p>
+    </div>
+</div>
 <hr />
 <div class="row">
     <div class="col s12">
