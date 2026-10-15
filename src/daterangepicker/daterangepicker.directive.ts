@@ -150,6 +150,10 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   @Input()
   lockStartDate = false;
 
+  // Apply can keep the end date empty, for an open range like "from X" (issue #502).
+  @Input()
+  allowEmptyEndDate = false;
+
   // timepicker variables
   @Input()
   timePicker = false;
@@ -617,6 +621,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
         }
         if (val[this.endKeyHolder]) {
           this.picker.setEndDate(val[this.endKeyHolder]);
+        } else if (this.allowEmptyEndDate) {
+          this.picker.clearEndDate();
         }
       }
       this.picker.calculateChosenLabel();

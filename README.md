@@ -302,6 +302,18 @@ previousMonth = dayjs().subtract(1, 'month');
 currentMonth = dayjs();
 ```
 
+### allowEmptyEndDate
+
+ >Set to `true` to let the user apply a start date alone, for an open range like "from October 1". Default is `false`, where Apply with only a start date ends the range on the same day.
+
+The value then has an empty end date: `{ startDate: dayjs, endDate: null }`. The input shows the start date and the separator, like `10/01/2026 - `. To show another text, set `emptyEndDateLabel` in the [locale](#locale), where `{start}` is replaced by the start date:
+
+```html
+<input ngxDaterangepickerMd [allowEmptyEndDate]="true" [locale]="{ emptyEndDateLabel: 'From {start}' }" [(ngModel)]="selected" />
+```
+
+A value with `endDate: null` from ngModel or a form control is shown the same way. When the picker opens again, the first click starts a new selection.
+
 ### locale
 
 >the locale options is an object with:
@@ -316,6 +328,7 @@ currentMonth = dayjs();
     applyLabel: 'Okay', // detault is 'Apply'
     clearLabel: 'Clear', // detault is 'Clear'
     customRangeLabel: 'Custom range',
+    emptyEndDateLabel: 'From {start}', // only with allowEmptyEndDate, default is the start date and the separator
     daysOfWeek: dayjs.weekdaysMin(),
     monthNames: dayjs.monthsShort(),
     firstDay: 1 // first day is monday

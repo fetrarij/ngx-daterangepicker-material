@@ -16,6 +16,7 @@ export class SimpleComponent implements OnInit {
   @ViewChild(DaterangepickerDirective, { static: true }) pickerDirective: DaterangepickerDirective;
   selected: { startDate: dayjs.Dayjs; endDate: dayjs.Dayjs };
   inlineDate: ChosenDate;
+  openRange: { startDate: dayjs.Dayjs; endDate: dayjs.Dayjs | null } = null;
   picker: DaterangepickerComponent;
   startDate = dayjs().utc(true).subtract(5, 'days');
   endDate = dayjs().utc(true).subtract(4, 'days');
