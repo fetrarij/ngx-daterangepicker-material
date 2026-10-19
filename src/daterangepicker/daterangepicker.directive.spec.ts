@@ -1182,9 +1182,21 @@ describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', ()
     }).compileComponents();
   }));
 
+  // These tests measure the final position. The opening animation would make them depend on the browser
+  // drawing frames, which a CI browser may not do for content out of view.
+  let noAnimation: HTMLStyleElement;
+
+  beforeAll(() => {
+    noAnimation = document.createElement('style');
+    noAnimation.textContent = '.md-drppicker { transition: none !important; }';
+    document.head.appendChild(noAnimation);
+  });
+
+  afterAll(() => noAnimation.remove());
+
   afterEach(() => fixture.destroy());
 
-  // Waits past the 0.1s open transition, which also animates top and left.
+  // Waits for the position set after opening and for the ResizeObserver.
   const settle = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 250));
 
   async function open(setup: (host: PositionHostComponent) => void = () => undefined): Promise<void> {

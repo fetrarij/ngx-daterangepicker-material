@@ -79,8 +79,11 @@ describe('Demo examples', () => {
     fixture.detectChanges();
   }
 
+  // Also takes the fixture out of the page, so later tests do not run below a long list of calendars.
   afterEach(() => {
+    const element = fixture?.nativeElement as HTMLElement;
     fixture?.destroy();
+    element?.remove();
     fixture = undefined;
   });
 
