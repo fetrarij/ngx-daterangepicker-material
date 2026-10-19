@@ -1144,7 +1144,7 @@ describe('DaterangepickerDirective keyboard and closing (issues #399, #172, #450
 @Component({
   standalone: false,
   template: `<div class="frame" [style.overflow-x]="scroll ? 'auto' : 'visible'" style="width: 300px">
-    <div [style.width.px]="scroll ? 2000 : null" [style.padding-left.px]="inputLeft">
+    <div [style.width.px]="scroll ? 2000 : null" [style.padding-left.px]="inputLeft" [style.padding-top.px]="inputTop">
       <input
         ngxDaterangepickerMd
         [(ngModel)]="selected"
@@ -1167,6 +1167,7 @@ class PositionHostComponent {
   appendToBody = false;
   scroll = false;
   inputLeft = 0;
+  inputTop = 0;
 }
 
 describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', () => {
@@ -1270,6 +1271,37 @@ describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', ()
       // Without appendToBody the -10px margin from the styles leaves a small gap, as before.
       expect(gap).toBeGreaterThanOrEqual(-1);
       expect(gap).toBeLessThan(12);
+    });
+  }
+
+  for (const appendToBody of [false, true]) {
+    it(`opens above the input with drops="auto" near the bottom of the window (#136, appendToBody ${appendToBody})`, async () => {
+      await open((host) => {
+        host.drops = 'auto';
+        host.appendToBody = appendToBody;
+        host.inputTop = document.documentElement.clientHeight - 60;
+      });
+      const gap = input.getBoundingClientRect().top - pickerBox().bottom;
+      const classes = fixture.componentInstance.picker.picker.pickerContainer.nativeElement.classList;
+
+      expect(gap).toBeGreaterThanOrEqual(-1);
+      expect(gap).toBeLessThan(12);
+      expect(classes.contains('drops-up-right')).toBeTrue();
+      expect(classes.contains('drops-down-right')).toBeFalse();
+    });
+
+    it(`opens under the input with drops="auto" when there is room below (#136, appendToBody ${appendToBody})`, async () => {
+      await open((host) => {
+        host.drops = 'auto';
+        host.appendToBody = appendToBody;
+      });
+      const gap = pickerBox().top - input.getBoundingClientRect().bottom;
+      const classes = fixture.componentInstance.picker.picker.pickerContainer.nativeElement.classList;
+
+      // Without appendToBody the -10px margin from the styles makes it overlap a little, as with drops="down".
+      expect(gap).toBeGreaterThanOrEqual(-11);
+      expect(gap).toBeLessThan(2);
+      expect(classes.contains('drops-down-right')).toBeTrue();
     });
   }
 
@@ -1757,5 +1789,38 @@ describe('DaterangepickerDirective allowEmptyEndDate (issue #502)', () => {
 
     expect(fixture.componentInstance.picker.picker.endDate).toBeNull();
     expect(input.value).toBe('2026-03-02 - ');
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd #picker="ngxDaterangepickerMd" [(ngModel)]="selected" />
+    <button class="ngx-daterangepicker-action open-button" type="button" (click)="picker.open()">Open</button>`
+})
+class ExportAsHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) directive: DaterangepickerDirective;
+  selected: TimePeriod;
+}
+
+describe('DaterangepickerDirective exportAs (issue #607)', () => {
+  let fixture: ComponentFixture<ExportAsHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ExportAsHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.destroy());
+
+  it('opens the calendar from a template reference', () => {
+    fixture = TestBed.createComponent(ExportAsHostComponent);
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('.open-button').click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.directive.picker.isShown).toBeTrue();
   });
 });

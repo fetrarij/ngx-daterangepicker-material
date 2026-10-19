@@ -494,6 +494,13 @@ It is possible to open datepicker from outside. You should create an input with 
   }
 ```
 
+You can also get the directive with a template reference, without `@ViewChild`:
+```html
+    <input ngxDaterangepickerMd #picker="ngxDaterangepickerMd" [(ngModel)]="selected">
+
+    <button class="ngx-daterangepicker-action" (click)="picker.open()">Open</button>
+```
+
 ### Timepicker
 
 You have to set the attribute `timePicker` to `true` if you want to enable the timepicker.
@@ -523,7 +530,7 @@ You can use theses options:
 | Attribut | Possible values |Description |
 | --- | --- |--- |
 | opens | left, center, right | position the calendar from the input element |
-| drops | up, down | position the calendar to the up or down of the calendar |
+| drops | up, down, auto | position the calendar to the up or down of the input. `auto` opens it up only when it does not fit below and there is more room above |
 | appendToBody | boolean, default `false` | move the calendar to `<body>`, so a parent with `overflow: hidden` can't cut it (since 22.2.0) |
 
 When it opens, the calendar is kept inside the window. With `appendToBody`, it also follows the input when the page or a parent scrolls.

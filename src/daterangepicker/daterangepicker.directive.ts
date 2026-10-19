@@ -34,6 +34,7 @@ import { isPlainDate, parseDate, toExternalDate, toInternalDate } from './extern
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'input[ngxDaterangepickerMd]',
+  exportAs: 'ngxDaterangepickerMd',
   standalone: false,
   host: { '[disabled]': 'disabled' },
   providers: [
@@ -492,8 +493,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     const viewportWidth = this.document.documentElement.clientWidth;
     left = Math.max(0, Math.min(left, viewportWidth - width));
 
+    const dropsUp = this.drops === 'up' || (this.drops === 'auto' && this.lacksRoomBelow(input, container));
+    if (this.drops === 'auto') {
+      // The template class says "auto": set the real direction for the opening animation.
+      this.renderer[dropsUp ? 'addClass' : 'removeClass'](container, `drops-up-${this.opens}`);
+      this.renderer[dropsUp ? 'removeClass' : 'addClass'](container, `drops-down-${this.opens}`);
+    }
+
     let top: number | null = null;
-    if (this.drops === 'up') {
+    if (dropsUp) {
       top = input.top - container.offsetHeight;
     } else if (this.appendToBody) {
       top = input.bottom;
@@ -503,6 +511,12 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     this.renderer.setStyle(container, 'top', top === null ? 'auto' : top - origin.y + 'px');
     this.renderer.setStyle(container, 'left', left - origin.x + 'px');
     this.renderer.setStyle(container, 'right', 'auto');
+  }
+
+  // With drops="auto", open up when the calendar does not fit below the input and there is more room above (issue #136).
+  private lacksRoomBelow(input: DOMRect, container: HTMLElement): boolean {
+    const below = this.document.documentElement.clientHeight - input.bottom;
+    return container.offsetHeight > below && input.top > below;
   }
 
   // Where the calendar's containing block starts, in viewport coordinates, so top and left can be converted to it.
