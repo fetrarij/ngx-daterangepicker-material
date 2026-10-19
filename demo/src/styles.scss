@@ -20,13 +20,22 @@ body {
 }
 
 h1 {
-  margin: 0 0 8px;
-  font: var(--mat-sys-headline-medium);
+  margin: 0 0 12px;
+  font: var(--mat-sys-display-small);
+  letter-spacing: -0.01em;
 }
 
 .lead {
-  margin: 0 0 32px;
+  max-width: 70ch;
+  margin: 0 0 40px;
   color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-title-medium);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--mat-sys-primary);
 }
 
 code,
@@ -35,10 +44,10 @@ pre {
 }
 
 :not(pre) > code {
-  padding: 1px 4px;
-  border-radius: 4px;
+  padding: 1px 6px;
+  border-radius: 6px;
   background: var(--mat-sys-surface-container-high);
-  font-size: 0.9em;
+  font-size: 0.88em;
 }
 
 // Plain inputs in the live examples.
@@ -46,16 +55,81 @@ demo-example .preview input[type='text'] {
   width: 100%;
   max-width: 340px;
   box-sizing: border-box;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border: 1px solid var(--mat-sys-outline);
-  border-radius: 4px;
-  font: var(--mat-sys-body-large);
+  border-radius: 8px;
   background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-large);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+
+  &:hover {
+    border-color: var(--mat-sys-on-surface);
+  }
+
+  &:focus {
+    border-color: var(--mat-sys-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--mat-sys-primary) 20%, transparent);
+  }
+
+  &:disabled {
+    border-color: var(--mat-sys-outline-variant);
+    color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent);
+  }
 }
 
 demo-example .preview > * + * {
   display: block;
-  margin-top: 12px;
+  margin-top: 16px;
+}
+
+// The value printed under an example.
+demo-example .preview pre {
+  max-width: 520px;
+  box-sizing: border-box;
+  margin: 16px 0 0;
+  padding: 10px 14px;
+  overflow-x: auto;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 8px;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 13px;
+  line-height: 1.5;
+
+  &::before {
+    content: 'Value';
+    display: block;
+    margin-bottom: 2px;
+    color: var(--mat-sys-outline);
+    font: var(--mat-sys-label-small);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+// Several labelled inputs side by side, like on the Position page.
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.demo-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-label-large);
+}
+
+.demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 // highlight.js tokens, close to the GitHub light theme.

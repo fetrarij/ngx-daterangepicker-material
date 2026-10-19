@@ -1,0 +1,7 @@
+<input type="text" ngxDaterangepickerMd [formField]="bookingForm.dates" placeholder="Choose your stay" />
+
+<pre>{{ booking().dates | json }}</pre>
+
+<button matButton="outlined" type="button" (click)="locked.set(!locked())">
+    {{ locked() ? 'Unlock' : 'Lock' }}
+</button>

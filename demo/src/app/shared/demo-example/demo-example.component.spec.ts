@@ -62,6 +62,27 @@ describe('DemoExampleComponent', () => {
     expect(copy.textContent.trim()).toBe('Copied');
   });
 
+  it('copies the file of the open tab', async () => {
+    const writeText = spyOn(navigator.clipboard, 'writeText').and.returnValue(Promise.resolve());
+    root.querySelectorAll<HTMLElement>('.mat-mdc-tab')[1].click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(root.querySelector('.file-name').textContent).toBe('sample.component.ts');
+
+    root.querySelector<HTMLButtonElement>('.copy').click();
+
+    expect(writeText).toHaveBeenCalledWith('export class Sample {}');
+  });
+
+  it('links its title to the example on the same page', () => {
+    const anchor: HTMLAnchorElement = root.querySelector('.anchor');
+
+    expect(root.querySelector('section').id).toBe('sample');
+    expect(anchor.getAttribute('href')).toBe(`${location.pathname}#sample`);
+  });
+
   it('shows no code without sources, like in other unit tests', () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({ imports: [HostComponent] });

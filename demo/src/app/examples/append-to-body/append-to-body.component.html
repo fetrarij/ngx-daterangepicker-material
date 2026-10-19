@@ -1,0 +1,10 @@
+<div class="demo-grid">
+    <div class="clipping-box">
+        <span class="demo-field">Without appendToBody</span>
+        <input type="text" ngxDaterangepickerMd [(ngModel)]="selected" placeholder="The box cuts the calendar" />
+    </div>
+    <div class="clipping-box">
+        <span class="demo-field">With appendToBody</span>
+        <input type="text" ngxDaterangepickerMd [appendToBody]="true" [(ngModel)]="selected" placeholder="The calendar shows in full" />
+    </div>
+</div>

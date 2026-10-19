@@ -1,0 +1,33 @@
+<input
+    type="text"
+    ngxDaterangepickerMd
+    [ranges]="ranges"
+    [showCustomRangeLabel]="true"
+    [alwaysShowCalendars]="true"
+    [showClearButton]="true"
+    [showCancel]="true"
+    [(ngModel)]="selected"
+    (dateChange)="log('dateChange', range($event))"
+    (datesUpdated)="log('datesUpdated', range($event))"
+    (startDateChanged)="log('startDateChanged', day($event.startDate))"
+    (endDateChanged)="log('endDateChanged', day($event.endDate))"
+    (rangeClicked)="log('rangeClicked', $event.label)"
+    (customRangeClicked)="log('customRangeClicked')"
+    (clearClicked)="log('clearClicked')"
+    (cancelClicked)="log('cancelClicked')"
+    placeholder="Pick a range to see the events" />
+
+<div class="events">
+    <div class="events-head">
+        <span>Events, newest first</span>
+        <button matButton type="button" (click)="events.set([])" [disabled]="!events().length">Clear the log</button>
+    </div>
+    @for (event of events(); track event.id) {
+        <div class="event">
+            <code>{{ event.name }}</code>
+            <span>{{ event.detail }}</span>
+        </div>
+    } @empty {
+        <p class="empty">No event yet.</p>
+    }
+</div>

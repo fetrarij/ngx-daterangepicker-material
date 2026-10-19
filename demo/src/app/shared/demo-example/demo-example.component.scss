@@ -1,24 +1,65 @@
+:host {
+  display: block;
+}
+
 .example {
-  margin-bottom: 48px;
+  // Leaves room for the sticky top bar when the page jumps to an example.
+  scroll-margin-top: 88px;
+  margin-bottom: 40px;
   border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   background: var(--mat-sys-surface);
 }
 
+.head {
+  padding: 20px 24px 0;
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
 h2 {
   margin: 0;
-  padding: 16px 20px 0;
   font: var(--mat-sys-title-large);
 }
 
+.anchor {
+  color: var(--mat-sys-outline);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  &:hover {
+    color: var(--mat-sys-primary);
+  }
+
+  &:focus-visible {
+    opacity: 1;
+  }
+}
+
+.example:hover .anchor {
+  opacity: 1;
+}
+
 .description {
-  margin: 8px 20px 0;
+  max-width: 70ch;
+  margin: 6px 0 0;
   color: var(--mat-sys-on-surface-variant);
 }
 
 .preview {
-  padding: 20px;
+  margin: 20px 24px 24px;
+  padding: 24px;
+  border-radius: 12px;
+  // A light dot grid sets the live part apart from the text.
+  background-color: var(--mat-sys-surface-container-low);
+  background-image: radial-gradient(var(--mat-sys-outline-variant) 1px, transparent 1px);
+  background-size: 16px 16px;
 
   // Code only examples have no live part.
   &:empty {
@@ -27,31 +68,55 @@ h2 {
 }
 
 .code {
+  position: relative;
   border-top: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-lowest);
 }
 
-.code-block {
-  position: relative;
-  background: var(--mat-sys-surface-container-low);
+// Sits on the right of the tab bar.
+.code-actions {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
 }
 
 .file-name {
-  display: block;
-  padding: 12px 20px 0;
-  font: var(--mat-sys-label-medium);
   color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-label-medium);
+  font-family: 'Roboto Mono', monospace;
 }
 
-.copy {
-  position: absolute;
-  top: 4px;
-  right: 8px;
+.copy svg {
+  margin-right: 4px;
 }
 
 pre {
   margin: 0;
-  padding: 12px 20px 20px;
+  padding: 16px 24px 20px;
   overflow-x: auto;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+@media (max-width: 599px) {
+  .head {
+    padding: 16px 16px 0;
+  }
+
+  .preview {
+    margin: 16px;
+    padding: 16px;
+  }
+
+  .file-name {
+    display: none;
+  }
+
+  pre {
+    padding: 12px 16px 16px;
+  }
 }
