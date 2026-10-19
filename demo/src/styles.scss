@@ -1,65 +1,118 @@
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
-@import '../../node_modules/materialize-css/dist/css/materialize.css';
+@use '@angular/material' as mat;
+
+html {
+  // Light only: the picker itself has no dark theme yet.
+  color-scheme: light;
+  @include mat.theme(
+    (
+      color: mat.$azure-palette,
+      typography: Roboto,
+      density: 0
+    )
+  );
+}
+
+body {
+  margin: 0;
+  font: var(--mat-sys-body-large);
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--mat-sys-on-surface);
+}
+
+h1 {
+  margin: 0 0 8px;
+  font: var(--mat-sys-headline-medium);
+}
+
+.lead {
+  margin: 0 0 32px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+code,
+pre {
+  font-family: 'Roboto Mono', monospace;
+}
+
+:not(pre) > code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--mat-sys-surface-container-high);
+  font-size: 0.9em;
+}
+
+// Plain inputs in the live examples.
+demo-example .preview input[type='text'] {
+  width: 100%;
+  max-width: 340px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--mat-sys-outline);
+  border-radius: 4px;
+  font: var(--mat-sys-body-large);
+  background: var(--mat-sys-surface);
+}
+
+demo-example .preview > * + * {
+  display: block;
+  margin-top: 12px;
+}
+
+// highlight.js tokens, close to the GitHub light theme.
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-doctag {
+  color: #cf222e;
+}
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.function_ {
+  color: #8250df;
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-number,
+.hljs-literal,
+.hljs-variable {
+  color: #0550ae;
+}
+.hljs-string,
+.hljs-meta .hljs-string {
+  color: #0a3069;
+}
+.hljs-built_in,
+.hljs-type {
+  color: #953800;
+}
+.hljs-comment {
+  color: #6e7781;
+}
+.hljs-name,
+.hljs-tag {
+  color: #116329;
+}
+
+// Classes used by the custom date examples.
 .mycustomdate {
-    background-color: #ccc8c8 !important;
-    border-radius: 1px !important;
-    color: white !important;
+  background-color: #ccc8c8 !important;
+  border-radius: 1px !important;
+  color: white !important;
 }
 .first-day {
-    background-color: greenyellow !important;
+  background-color: greenyellow !important;
 }
 .last-day {
-    background-color: green !important;
+  background-color: green !important;
 }
 .empty-week-row {
-    background-color: rosybrown !important;
+  background-color: rosybrown !important;
 }
 .empty-week-column {
-    background-color: rgb(133, 45, 45) !important;
+  background-color: rgb(133, 45, 45) !important;
 }
 .last-previous-day {
-    background-color: rgb(218, 226, 145) !important;
+  background-color: rgb(218, 226, 145) !important;
 }
 .first-next-day {
-    background-color: rgb(229, 255, 0) !important;
-}
-
-// materialize.css floats every .left/.right with !important, and the picker uses these class names.
-// Restore the picker's own floats: stacked on small screens, side by side from 564px.
-.md-drppicker .calendar.left,
-.md-drppicker .calendar.right {
-    float: none !important;
-}
-@media (min-width: 564px) {
-    .md-drppicker.ltr .calendar.left,
-    .md-drppicker.ltr .calendar.right {
-        float: left !important;
-    }
-    .md-drppicker.rtl .calendar.left,
-    .md-drppicker.rtl .calendar.right {
-        float: right !important;
-    }
-}
-
-// Phone width: long code scrolls inside its own block, and the option fields and labels fit their column.
-pre.prettyprint {
-    overflow-x: auto;
-    max-width: 100%;
-}
-.col mat-form-field {
-    width: 100%;
-    .mat-mdc-form-field-infix {
-        width: auto;
-        min-width: 0;
-    }
-}
-.col label {
-    overflow-wrap: anywhere;
-}
-// Long page titles wrap instead of widening the page.
-.mat-toolbar.mat-toolbar-single-row {
-    white-space: normal;
-    height: auto;
-    min-height: 64px;
+  background-color: rgb(229, 255, 0) !important;
 }

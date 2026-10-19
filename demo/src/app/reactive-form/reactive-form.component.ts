@@ -1,10 +1,14 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import dayjs from 'dayjs/esm';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LocaleConfig } from '../../../../src/daterangepicker';
+import { LocaleConfig } from 'ngx-daterangepicker-material';
 
 @Component({
-  standalone: false,
+  imports: [NgClass, ReactiveFormsModule, MatToolbarModule, NgxDaterangepickerMd],
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'reactive-form',
   changeDetection: ChangeDetectionStrategy.Eager,

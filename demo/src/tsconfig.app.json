@@ -2,10 +2,18 @@
     "extends": "../../tsconfig.app.json",
     "compilerOptions": {
         "outDir": "../out-tsc/app",
+        "target": "es2022",
+        "module": "esnext",
+        // Import attributes show the examples' code. Angular does not need decorator metadata.
+        "emitDecoratorMetadata": false,
+        // The examples import the library like an app does.
+        "paths": {
+            "ngx-daterangepicker-material": ["../../src/daterangepicker/index.ts"]
+        },
         "types": []
     },
     "files": ["main.ts", "polyfills.ts"],
-    "include": ["**/*.d.ts", "../../src/**/*.d.ts", "environments/environment.prod.ts"],
+    "include": ["**/*.d.ts", "../../src/**/*.d.ts"],
     "angularCompilerOptions": {
         "strictTemplates": false
     }

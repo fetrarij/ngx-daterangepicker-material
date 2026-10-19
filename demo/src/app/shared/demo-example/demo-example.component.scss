@@ -1,0 +1,52 @@
+.example {
+  margin-bottom: 48px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--mat-sys-surface);
+}
+
+h2 {
+  margin: 0;
+  padding: 16px 20px 0;
+  font: var(--mat-sys-title-large);
+}
+
+.description {
+  margin: 8px 20px 0;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.preview {
+  padding: 20px;
+}
+
+.code {
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.code-block {
+  position: relative;
+  background: var(--mat-sys-surface-container-low);
+}
+
+.file-name {
+  display: block;
+  padding: 12px 20px 0;
+  font: var(--mat-sys-label-medium);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.copy {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+}
+
+pre {
+  margin: 0;
+  padding: 12px 20px 20px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.5;
+}

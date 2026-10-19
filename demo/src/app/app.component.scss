@@ -1,34 +1,54 @@
-nav {
-    position: relative;
-    margin-bottom: 50px;
-    // Leaves room for the GitHub link on the right.
-    padding-right: 120px;
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
 }
 
-// The links scroll sideways when they do not fit, instead of being hidden on phones.
-.demo-nav {
-    display: flex;
-    overflow-x: auto;
-    scrollbar-width: none;
-    li {
-        flex: none;
-        float: none;
-    }
+.topbar {
+  gap: 8px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
-.demo-github {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #fff;
+.brand {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+  text-decoration: none;
+  font: var(--mat-sys-title-medium);
 }
 
-@media (max-width: 600px) {
-    nav {
-        padding-right: 56px;
-    }
+.version {
+  font: var(--mat-sys-label-medium);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.layout {
+  flex: 1;
+}
+
+.sidenav {
+  width: 220px;
+  border-right: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0;
+}
+
+.content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+@media (max-width: 599px) {
+  .content {
+    padding: 24px 16px 48px;
+  }
+
+  .version {
+    display: none;
+  }
 }

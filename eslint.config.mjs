@@ -68,6 +68,13 @@ export default tseslint.config(
     }
   },
   {
+    // Demo components use a short "demo" prefix.
+    files: ['demo/**/*.ts'],
+    rules: {
+      '@angular-eslint/component-selector': ['error', { type: 'element', prefix: 'demo', style: 'kebab-case' }]
+    }
+  },
+  {
     files: ['**/*.html'],
     extends: [...angular.configs.templateRecommended],
     rules: {}
