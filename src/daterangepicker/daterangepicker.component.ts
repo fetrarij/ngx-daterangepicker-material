@@ -387,7 +387,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   }
 
   @Input() set ranges(value: DateRanges) {
-    this.rangesHolder = value;
+    // No ranges, like [ranges]="undefined", must still show the calendars.
+    this.rangesHolder = value || {};
     this.renderRanges();
     // New range names must reach the label of the chosen range too (issue #388).
     if (this.initialized && this.startDate && this.endDate) {
