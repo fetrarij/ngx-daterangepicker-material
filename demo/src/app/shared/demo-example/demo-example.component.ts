@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, afterNextRender, computed, inject, input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { EXAMPLE_SOURCES, SourceFile } from '../example-sources';
@@ -32,6 +32,16 @@ export class DemoExampleComponent {
   // The file in the open tab: the copy button copies this one.
   protected readonly selectedFile = signal(0);
   protected readonly copied = signal<string | null>(null);
+
+  constructor() {
+    // The router scrolls to the #name of a link before the examples above take their full height.
+    const host = inject<ElementRef<HTMLElement>>(ElementRef);
+    afterNextRender(() => {
+      if (this.document.location.hash === `#${this.name()}`) {
+        host.nativeElement.scrollIntoView();
+      }
+    });
+  }
 
   protected copy(file: SourceFile): void {
     navigator.clipboard.writeText(file.code).then(() => {

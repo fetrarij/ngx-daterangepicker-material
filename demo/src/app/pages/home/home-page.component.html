@@ -1,0 +1,77 @@
+<section class="hero">
+    <div class="intro">
+        <span class="badge">For Angular 22</span>
+        <h1>A date range picker for Angular</h1>
+        <p class="lead">
+            Predefined ranges, a time picker and one input where users type or pick the whole range. It works with standalone components,
+            SSR and zoneless apps.
+        </p>
+
+        <div class="install">
+            <div class="install-tabs" role="tablist" aria-label="Install with">
+                @for (item of installCommands; track item.label; let i = $index) {
+                    <button
+                        type="button"
+                        role="tab"
+                        [attr.aria-selected]="selectedCommand() === i"
+                        [class.active]="selectedCommand() === i"
+                        (click)="selectCommand(i)">
+                        {{ item.label }}
+                    </button>
+                }
+            </div>
+            <div class="install-line">
+                <code><span class="prompt">$</span> {{ installCommands[selectedCommand()].command }}</code>
+                <button matButton type="button" class="copy" (click)="copyCommand()">{{ copied() ? 'Copied' : 'Copy' }}</button>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a matButton="filled" routerLink="/simple">Get started</a>
+            <a matButton="outlined" routerLink="/full">Open the playground</a>
+        </div>
+    </div>
+
+    <div class="showcase">
+        <ngx-daterangepicker-material [ranges]="ranges" [alwaysShowCalendars]="true" (choosedDate)="chosen.set($event)" />
+        <p class="chosen">
+            @if (chosen()?.startDate) {
+                {{ chosen().chosenLabel }}
+            } @else {
+                Pick a range, or click Today.
+            }
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <h2>What it does</h2>
+    <div class="features">
+        @for (feature of features; track feature.path) {
+            <a class="feature" [routerLink]="feature.path">
+                <h3>{{ feature.title }}</h3>
+                <p>{{ feature.text }}</p>
+                <span class="more">See the examples →</span>
+            </a>
+        }
+    </div>
+</section>
+
+<section class="section">
+    <h2>Quick start</h2>
+    <p class="section-lead"><code>ng add</code> does the first step for you. Then add the directive to any input.</p>
+    <ol class="steps">
+        @for (step of steps; track step.file; let i = $index) {
+            <li class="step">
+                <span class="step-number">{{ i + 1 }}</span>
+                <div class="step-body">
+                    <h3>{{ step.title }}</h3>
+                    <div class="code">
+                        <span class="file-name">{{ step.file }}</span>
+                        <pre><code class="hljs" [innerHTML]="step.html"></code></pre>
+                    </div>
+                </div>
+            </li>
+        }
+    </ol>
+</section>
