@@ -1,0 +1,9 @@
+<input
+    type="text"
+    ngxDaterangepickerMd
+    [allowEmptyEndDate]="true"
+    [locale]="{ emptyEndDateLabel: 'From {start}' }"
+    [(ngModel)]="selected"
+    placeholder="Click one day, then Apply" />
+
+<pre>{{ selected() | json }}</pre>

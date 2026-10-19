@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -17,11 +18,17 @@ export class DemoExampleComponent {
   readonly title = input.required<string>();
   readonly description = input('');
 
+  // With <base href="/">, a bare "#name" link would lead to the home page.
+  private readonly document = inject(DOCUMENT);
+  protected readonly anchorHref = computed(() => `${this.document.location.pathname}#${this.name()}`);
+
   private readonly sources = inject(EXAMPLE_SOURCES, { optional: true });
   protected readonly files = computed(() =>
     (this.sources?.[this.name()] ?? []).map((file) => ({ ...file, html: highlight(file.code, file.language) }))
   );
 
+  // The file in the open tab: the copy button copies this one.
+  protected readonly selectedFile = signal(0);
   protected readonly copied = signal<string | null>(null);
 
   protected copy(file: SourceFile): void {

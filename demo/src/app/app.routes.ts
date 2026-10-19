@@ -6,6 +6,8 @@ import { TimePickerPageComponent } from './pages/time-picker/time-picker-page.co
 import { RangesPageComponent } from './pages/ranges/ranges-page.component';
 import { FormsPageComponent } from './pages/forms/forms-page.component';
 import { InlinePageComponent } from './pages/inline/inline-page.component';
+import { PositionPageComponent } from './pages/position/position-page.component';
+import { EventsPageComponent } from './pages/events/events-page.component';
 import { FullComponent } from './full/full.component';
 
 export interface DemoLink {
@@ -13,16 +15,33 @@ export interface DemoLink {
   label: string;
 }
 
-// The menu shows the pages in this order. The paths stay the same as in the old demo, so old links still work.
-export const demoLinks: DemoLink[] = [
-  { path: 'simple', label: 'Simple' },
-  { path: 'locale', label: 'Locale' },
-  { path: 'single-datepicker', label: 'Single date' },
-  { path: 'with-timepicker', label: 'Time picker' },
-  { path: 'custom-ranges', label: 'Ranges' },
-  { path: 'reactive-forms', label: 'Forms' },
-  { path: 'inline', label: 'Inline' },
-  { path: 'full', label: 'All options' }
+export interface DemoLinkGroup {
+  label: string;
+  links: DemoLink[];
+}
+
+// The menu shows the pages in this order. The old paths stay the same, so old links still work.
+export const demoLinkGroups: DemoLinkGroup[] = [
+  { label: 'Getting started', links: [{ path: 'simple', label: 'Simple' }] },
+  {
+    label: 'Features',
+    links: [
+      { path: 'single-datepicker', label: 'Single date' },
+      { path: 'with-timepicker', label: 'Time picker' },
+      { path: 'custom-ranges', label: 'Ranges' },
+      { path: 'locale', label: 'Locale' },
+      { path: 'position', label: 'Position' },
+      { path: 'inline', label: 'Inline' }
+    ]
+  },
+  {
+    label: 'Integration',
+    links: [
+      { path: 'reactive-forms', label: 'Forms' },
+      { path: 'events', label: 'Events and API' }
+    ]
+  },
+  { label: 'Reference', links: [{ path: 'full', label: 'All options' }] }
 ];
 
 export const routes: Routes = [
@@ -32,7 +51,9 @@ export const routes: Routes = [
   { path: 'single-datepicker', component: SingleDatePageComponent, title: 'Single date' },
   { path: 'with-timepicker', component: TimePickerPageComponent, title: 'Time picker' },
   { path: 'custom-ranges', component: RangesPageComponent, title: 'Ranges' },
+  { path: 'position', component: PositionPageComponent, title: 'Position' },
   { path: 'reactive-forms', component: FormsPageComponent, title: 'Forms' },
+  { path: 'events', component: EventsPageComponent, title: 'Events and API' },
   { path: 'inline', component: InlinePageComponent, title: 'Inline' },
   { path: 'full', component: FullComponent, title: 'All options' },
   { path: '**', redirectTo: 'simple' }

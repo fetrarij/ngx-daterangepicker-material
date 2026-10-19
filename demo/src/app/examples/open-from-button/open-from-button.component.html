@@ -1,4 +1,9 @@
 <input type="text" ngxDaterangepickerMd #picker="ngxDaterangepickerMd" [(ngModel)]="selected" placeholder="Choose a date range" />
 
 <!-- The ngx-daterangepicker-action class keeps the click from closing the calendar. -->
-<button matButton="outlined" type="button" class="ngx-daterangepicker-action" (click)="picker.open()">Open the calendar</button>
+<div class="demo-actions">
+    <button matButton="outlined" type="button" class="ngx-daterangepicker-action" (click)="picker.open()">Open</button>
+    <button matButton="outlined" type="button" (click)="picker.clear()">Clear</button>
+</div>
+
+<pre>{{ selected() | json }}</pre>

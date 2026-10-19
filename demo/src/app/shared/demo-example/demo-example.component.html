@@ -1,24 +1,40 @@
-<section class="example">
-    <h2>{{ title() }}</h2>
-    @if (description()) {
-        <p class="description">{{ description() }}</p>
-    }
+<section class="example" [id]="name()">
+    <header class="head">
+        <div class="title-row">
+            <h2>{{ title() }}</h2>
+            <a class="anchor" [href]="anchorHref()" [attr.aria-label]="'Link to ' + title()">#</a>
+        </div>
+        @if (description()) {
+            <p class="description">{{ description() }}</p>
+        }
+    </header>
     <div class="preview">
         <ng-content />
     </div>
     @if (files().length) {
-        <mat-tab-group class="code" animationDuration="0ms" mat-stretch-tabs="false">
-            @for (file of files(); track file.name) {
-                <mat-tab [label]="file.language === 'html' ? 'HTML' : 'TS'">
-                    <div class="code-block">
-                        <span class="file-name">{{ file.name }}</span>
-                        <button matButton type="button" class="copy" (click)="copy(file)">
-                            {{ copied() === file.name ? 'Copied' : 'Copy' }}
-                        </button>
+        <div class="code">
+            <mat-tab-group animationDuration="0ms" mat-stretch-tabs="false" [(selectedIndex)]="selectedFile">
+                @for (file of files(); track file.name) {
+                    <mat-tab [label]="file.language === 'html' ? 'HTML' : 'TS'">
                         <pre><code class="hljs" [innerHTML]="file.html"></code></pre>
-                    </div>
-                </mat-tab>
-            }
-        </mat-tab-group>
+                    </mat-tab>
+                }
+            </mat-tab-group>
+            <div class="code-actions">
+                <span class="file-name">{{ files()[selectedFile()]?.name }}</span>
+                <button matButton type="button" class="copy" (click)="copy(files()[selectedFile()])">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        @if (copied() === files()[selectedFile()]?.name) {
+                            <path fill="currentColor" d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                        } @else {
+                            <path
+                                fill="currentColor"
+                                d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z" />
+                        }
+                    </svg>
+                    {{ copied() === files()[selectedFile()]?.name ? 'Copied' : 'Copy' }}
+                </button>
+            </div>
+        </div>
     }
 </section>

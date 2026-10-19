@@ -31,6 +31,18 @@ import * as inlineTimeTs from './inline-time/inline-time.component' with { loade
 import inlineTimeHtml from './inline-time/inline-time.component.html' with { loader: 'text' };
 import * as inlineNgmodelTs from './inline-ngmodel/inline-ngmodel.component' with { loader: 'text' };
 import inlineNgmodelHtml from './inline-ngmodel/inline-ngmodel.component.html' with { loader: 'text' };
+import * as dropsOpensTs from './drops-opens/drops-opens.component' with { loader: 'text' };
+import dropsOpensHtml from './drops-opens/drops-opens.component.html' with { loader: 'text' };
+import * as dropsAutoTs from './drops-auto/drops-auto.component' with { loader: 'text' };
+import dropsAutoHtml from './drops-auto/drops-auto.component.html' with { loader: 'text' };
+import * as appendToBodyTs from './append-to-body/append-to-body.component' with { loader: 'text' };
+import appendToBodyHtml from './append-to-body/append-to-body.component.html' with { loader: 'text' };
+import * as eventLogTs from './event-log/event-log.component' with { loader: 'text' };
+import eventLogHtml from './event-log/event-log.component.html' with { loader: 'text' };
+import * as openEndDateTs from './open-end-date/open-end-date.component' with { loader: 'text' };
+import openEndDateHtml from './open-end-date/open-end-date.component.html' with { loader: 'text' };
+import * as signalFormTs from './signal-form/signal-form.component' with { loader: 'text' };
+import signalFormHtml from './signal-form/signal-form.component.html' with { loader: 'text' };
 import * as globalConfigTs from './global-config/app.config' with { loader: 'text' };
 
 // The text loader gives the file as the default export, but TypeScript still sees the .ts module.
@@ -58,5 +70,11 @@ export const exampleSources: Record<string, SourceFile[]> = {
   'inline-calendar': files('inline-calendar', inlineCalendarHtml, inlineCalendarTs),
   'inline-time': files('inline-time', inlineTimeHtml, inlineTimeTs),
   'inline-ngmodel': files('inline-ngmodel', inlineNgmodelHtml, inlineNgmodelTs),
+  'drops-opens': files('drops-opens', dropsOpensHtml, dropsOpensTs),
+  'drops-auto': files('drops-auto', dropsAutoHtml, dropsAutoTs),
+  'append-to-body': files('append-to-body', appendToBodyHtml, appendToBodyTs),
+  'event-log': files('event-log', eventLogHtml, eventLogTs),
+  'open-end-date': files('open-end-date', openEndDateHtml, openEndDateTs),
+  'signal-form': files('signal-form', signalFormHtml, signalFormTs),
   'global-config': [{ name: 'app.config.ts', language: 'typescript', code: text(globalConfigTs) }]
 };

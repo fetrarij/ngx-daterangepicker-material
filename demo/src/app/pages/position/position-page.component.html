@@ -1,0 +1,26 @@
+<h1>Position</h1>
+<p class="lead">
+    Choose where the calendar opens next to its input. By default it opens below the input, centered on it, and moves to stay inside the
+    window.
+</p>
+
+<demo-example
+    name="drops-opens"
+    title="Left, center, right, up"
+    description="opens sets the side the calendar grows to. drops sets whether it opens below (down) or above (up) the input.">
+    <demo-drops-opens />
+</demo-example>
+
+<demo-example
+    name="drops-auto"
+    title="Open where there is room"
+    description='With drops="auto", the calendar opens above the input when there is not enough room below. Scroll so the input is near the bottom of the window, then click it.'>
+    <demo-drops-auto />
+</demo-example>
+
+<demo-example
+    name="append-to-body"
+    title="Inside a parent that clips"
+    description="A parent with overflow: hidden, like mat-form-field, cuts the calendar. appendToBody moves the calendar to the end of the page, so it shows in full.">
+    <demo-append-to-body />
+</demo-example>

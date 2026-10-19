@@ -18,6 +18,12 @@ import { ReactiveFormComponent } from './reactive-form/reactive-form.component';
 import { SingleDateComponent } from './single-date/single-date.component';
 import { SingleDateFormComponent } from './single-date-form/single-date-form.component';
 import { TooltipDaysComponent } from './tooltip-days/tooltip-days.component';
+import { DropsOpensComponent } from './drops-opens/drops-opens.component';
+import { DropsAutoComponent } from './drops-auto/drops-auto.component';
+import { AppendToBodyComponent } from './append-to-body/append-to-body.component';
+import { EventLogComponent } from './event-log/event-log.component';
+import { OpenEndDateComponent } from './open-end-date/open-end-date.component';
+import { SignalFormComponent } from './signal-form/signal-form.component';
 import { appConfig } from './global-config/app.config';
 
 const inputExamples: Type<unknown>[] = [
@@ -33,7 +39,13 @@ const inputExamples: Type<unknown>[] = [
   ReactiveFormComponent,
   SingleDateComponent,
   SingleDateFormComponent,
-  TooltipDaysComponent
+  TooltipDaysComponent,
+  DropsOpensComponent,
+  DropsAutoComponent,
+  AppendToBodyComponent,
+  EventLogComponent,
+  OpenEndDateComponent,
+  SignalFormComponent
 ];
 const inlineExamples: Type<unknown>[] = [InlineCalendarComponent, InlineNgmodelComponent, InlineTimeComponent];
 
@@ -56,6 +68,7 @@ describe('Demo examples', () => {
   }
 
   const root = (): HTMLElement => fixture.nativeElement as HTMLElement;
+  const input = (): HTMLInputElement => root().querySelector('input');
 
   async function open(): Promise<void> {
     root().querySelector('input').click();
@@ -72,8 +85,8 @@ describe('Demo examples', () => {
     fixture.detectChanges();
   }
 
-  function clickButton(label: string): void {
-    Array.from(root().querySelectorAll<HTMLButtonElement>('.md-drppicker button'))
+  function clickButton(label: string, selector = '.md-drppicker button'): void {
+    Array.from(root().querySelectorAll<HTMLButtonElement>(selector))
       .find((button) => button.textContent.trim() === label)
       .click();
     fixture.detectChanges();
@@ -149,5 +162,78 @@ describe('Demo examples', () => {
     const labels = Array.from(root().querySelectorAll('.md-drppicker button')).map((button) => button.textContent.trim());
 
     expect(labels).toContain('Okay');
+  });
+
+  it('append to body: only the picker with appendToBody leaves the clipping box', async () => {
+    await create(AppendToBodyComponent);
+    const [clipped, free] = Array.from(root().querySelectorAll<HTMLInputElement>('input'));
+    clipped.click();
+    free.click();
+    fixture.detectChanges();
+    await settle();
+    const pickers = Array.from(document.querySelectorAll<HTMLElement>('ngx-daterangepicker-material'));
+
+    expect(pickers.filter((picker) => root().contains(picker)).length).toBe(1);
+    expect(pickers.some((picker) => picker.parentElement === document.body)).toBeTrue();
+  });
+
+  it('event log: a range click logs rangeClicked, then dateChange with the dates', async () => {
+    const log = (await create(EventLogComponent)).componentInstance;
+    await open();
+    clickButton('Last 7 days', '.ranges button');
+    await settle();
+    const names = log.events().map((event) => event.name);
+
+    expect(names).toContain('rangeClicked');
+    expect(names).toContain('dateChange');
+    expect(names.indexOf('dateChange')).toBeLessThan(names.indexOf('rangeClicked'));
+    expect(log.events().find((event) => event.name === 'rangeClicked').detail).toBe('Last 7 days');
+  });
+
+  it('control from code: the buttons open the calendar and clear the value', async () => {
+    const example = (await create(OpenFromButtonComponent)).componentInstance;
+    clickButton('Open', '.demo-actions button');
+    await settle();
+    fixture.detectChanges();
+
+    expect(root().querySelector('.md-drppicker.shown')).not.toBeNull();
+
+    clickDay(10);
+    clickDay(12);
+    clickButton('Apply');
+    await settle();
+
+    expect(example.selected().startDate.date()).toBe(10);
+
+    clickButton('Clear', '.demo-actions button');
+    await settle();
+
+    expect(example.selected().startDate).toBeNull();
+    expect(input().value).toBe('');
+  });
+
+  it('open end date: Apply after one day keeps the end date empty', async () => {
+    const example = (await create(OpenEndDateComponent)).componentInstance;
+    await open();
+    clickDay(5);
+    clickButton('Apply');
+    await settle();
+
+    expect(example.selected().startDate.date()).toBe(5);
+    expect(example.selected().endDate).toBeNull();
+    expect(input().value).toMatch(/^From /);
+  });
+
+  it('signal form: shows the starting range and Lock disables the input', async () => {
+    const example = (await create(SignalFormComponent)).componentInstance;
+    const { startDate, endDate } = example.booking().dates;
+
+    expect(input().value).toBe(`${startDate.format('MM/DD/YYYY')} - ${endDate.format('MM/DD/YYYY')}`);
+
+    clickButton('Lock', ':scope > button');
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(input().disabled).toBeTrue();
   });
 });
