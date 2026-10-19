@@ -1225,3 +1225,69 @@ describe('DaterangepickerComponent allowEmptyEndDate (issue #502)', () => {
     expect(picker().endDate).toBeNull();
   });
 });
+
+describe('DaterangepickerComponent end time with a timePickerIncrement', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+  let lastUpdate: TimePeriod;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.destroy());
+
+  function create(seconds: boolean): void {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.inline = true;
+    component.timePicker = true;
+    component.timePicker24Hour = true;
+    component.timePickerIncrement = 15;
+    component.timePickerSeconds = seconds;
+    fixture.detectChanges();
+    component.datesUpdated.subscribe((range: TimePeriod) => (lastUpdate = range));
+  }
+
+  function clickDay(day: number): void {
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar.left td.available:not(.off)'));
+    cells.find((cell) => cell.textContent.trim() === String(day)).click();
+    fixture.detectChanges();
+  }
+
+  function apply(): void {
+    const buttons: HTMLButtonElement[] = Array.from(fixture.nativeElement.querySelectorAll('.buttons button'));
+    buttons.find((button) => button.textContent.trim() === 'Apply').click();
+    fixture.detectChanges();
+  }
+
+  it('ends at the last step of the day, with the seconds', () => {
+    create(true);
+    clickDay(10);
+    clickDay(12);
+    apply();
+
+    expect(lastUpdate.endDate.format('HH:mm:ss')).toBe('23:45:59');
+    expect(lastUpdate.endDate.date()).toBe(12);
+  });
+
+  it('ends at the last step of the day, without the seconds', () => {
+    create(false);
+    clickDay(10);
+    clickDay(12);
+    apply();
+
+    expect(lastUpdate.endDate.format('HH:mm')).toBe('23:45');
+    expect(lastUpdate.endDate.date()).toBe(12);
+  });
+
+  it('keeps an end date set late in the day on the same day', () => {
+    create(true);
+    component.setStartDate(dayjs('2026-03-02T08:00:00'));
+    component.setEndDate(dayjs('2026-03-05T23:59:59'));
+
+    expect(component.endDate.format('YYYY-MM-DD HH:mm')).toBe('2026-03-05 23:45');
+  });
+});

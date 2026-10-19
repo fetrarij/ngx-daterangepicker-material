@@ -631,6 +631,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     }
 
     // generate minutes
+    // A minute between two steps, like 59 at the end of the day, selects the step before it.
+    const selectedStep = Math.floor(selected.minute() / this.timePickerIncrement) * this.timePickerIncrement;
     for (let i = 0; i < 60; i += this.timePickerIncrement) {
       const padded = i < 10 ? `0${i}` : `${i}`;
       const time = selected.clone().minute(i);
@@ -644,7 +646,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
       }
       this.timepickerVariables[side].minutes.push(i);
       this.timepickerVariables[side].minutesLabel.push(padded);
-      if (selected.minute() === i && !disabled) {
+      if (selectedStep === i && !disabled) {
         this.timepickerVariables[side].selectedMinute = i;
       } else if (disabled) {
         this.timepickerVariables[side].disabledMinutes.push(i);
@@ -892,7 +894,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     }
 
     if (this.timePicker && this.timePickerIncrement) {
-      this.endDate = this.endDate.minute(Math.round(this.endDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+      // Round down: rounding 59 up gives 60, which moves the end to the next hour or day.
+      this.endDate = this.endDate.minute(Math.floor(this.endDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
     }
 
     if (this.endDate.isBefore(this.startDate)) {
