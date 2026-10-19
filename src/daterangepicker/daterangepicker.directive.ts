@@ -644,14 +644,12 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
       if (this.picker.chosenLabel) {
         this.el.nativeElement.value = this.picker.chosenLabel;
       }
-    } else if (val) {
-      // A value without dates, like { startDate: null, endDate: null }, shows nothing (issue #311).
-      // No emit here: clear() would send a new empty object back, and two inputs on one model would loop.
-      this.valueHolder = val;
+    } else {
+      // null or a value without dates, like { startDate: null, endDate: null }, shows nothing (issue #311).
+      // No emit here: a written value must not come back as a change, and two inputs on one model would loop.
+      this.valueHolder = val || null;
       this.picker.resetDates();
       this.el.nativeElement.value = '';
-    } else {
-      this.picker.clear();
     }
   }
 
