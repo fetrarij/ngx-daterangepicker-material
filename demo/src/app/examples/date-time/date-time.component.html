@@ -1,0 +1,12 @@
+<input
+    type="text"
+    ngxDaterangepickerMd
+    [timePicker]="true"
+    [timePicker24Hour]="true"
+    [timePickerSeconds]="true"
+    [timePickerIncrement]="15"
+    [locale]="locale"
+    [(ngModel)]="selected"
+    placeholder="Choose dates and times" />
+
+<pre>{{ selected() | json }}</pre>

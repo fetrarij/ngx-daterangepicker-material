@@ -1,0 +1,9 @@
+<input
+    type="text"
+    ngxDaterangepickerMd
+    [showClearButton]="true"
+    [showCancel]="true"
+    [(ngModel)]="selected"
+    placeholder="Choose a date range" />
+
+<pre>{{ selected() | json }}</pre>

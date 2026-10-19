@@ -1,0 +1,8 @@
+<input type="text" ngxDaterangepickerMd [showClearButton]="true" [formControl]="dates" placeholder="Choose a date range" />
+
+<p class="status">Status: {{ dates.status }}</p>
+<pre>{{ dates.value | json }}</pre>
+
+<button matButton="outlined" type="button" (click)="toggleDisabled()">
+    {{ dates.disabled ? 'Enable' : 'Disable' }}
+</button>

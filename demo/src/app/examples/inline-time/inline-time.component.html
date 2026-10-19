@@ -1,0 +1,8 @@
+<ngx-daterangepicker-material
+    [autoApply]="true"
+    [timePicker]="true"
+    [timePicker24Hour]="true"
+    [locale]="locale"
+    (datesUpdated)="selected.set($event)" />
+
+<pre>{{ selected() | json }}</pre>

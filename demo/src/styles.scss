@@ -92,12 +92,13 @@ demo-example .preview > * + * {
   color: #116329;
 }
 
-// Classes used by the custom date examples.
-.mycustomdate {
-  background-color: #ccc8c8 !important;
-  border-radius: 1px !important;
-  color: white !important;
+// Used by the "Limits and special days" example.
+.weekend-day {
+  background-color: var(--mat-sys-tertiary-container) !important;
+  color: var(--mat-sys-on-tertiary-container) !important;
 }
+
+// Classes used by the custom date options on the "All options" page.
 .first-day {
   background-color: greenyellow !important;
 }
