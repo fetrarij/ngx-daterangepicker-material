@@ -476,15 +476,16 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     // Viewport coordinates: they stay right when a parent is scrolled (issue #466).
     const input = element.getBoundingClientRect();
     const width = container.offsetWidth;
+    // Align with the border box: clientWidth leaves out the input borders.
     let left: number;
     if (this.opens === 'left') {
-      left = input.left + element.clientWidth - width;
+      left = input.right - width;
     } else if (this.opens === 'center') {
-      left = input.left + element.clientWidth / 2 - width / 2;
+      left = input.left + input.width / 2 - width / 2;
     } else if (this.opens === 'right') {
       left = input.left;
     } else {
-      left = input.left + element.clientWidth / 2 - width / 2;
+      left = input.left + input.width / 2 - width / 2;
       if (left < 0) {
         left = input.left;
       }
