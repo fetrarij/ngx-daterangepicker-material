@@ -1825,3 +1825,66 @@ describe('DaterangepickerDirective exportAs (issue #607)', () => {
     expect(fixture.componentInstance.directive.picker.isShown).toBeTrue();
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [(ngModel)]="selected"
+    (ngModelChange)="events.push('ngModelChange')"
+    (datesUpdated)="events.push('datesUpdated')"
+    (dateChange)="events.push('dateChange')"
+    (clearClicked)="events.push('clearClicked')"
+  />`
+})
+class SilentWriteHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  selected: TimePeriod | null = null;
+  events: string[] = [];
+}
+
+describe('DaterangepickerDirective writeValue', () => {
+  let fixture: ComponentFixture<SilentWriteHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [SilentWriteHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.destroy());
+
+  async function create(): Promise<SilentWriteHostComponent> {
+    fixture = TestBed.createComponent(SilentWriteHostComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    return fixture.componentInstance;
+  }
+
+  it('sends nothing back when the model starts empty', async () => {
+    const host = await create();
+
+    expect(host.events).toEqual([]);
+    expect(host.selected).toBeNull();
+  });
+
+  it('sends nothing back and keeps the calendar open when the model is emptied', async () => {
+    const host = await create();
+    host.selected = { startDate: dayjs('2026-03-02'), endDate: dayjs('2026-03-05') };
+    fixture.detectChanges();
+    await fixture.whenStable();
+    host.picker.open();
+    fixture.detectChanges();
+
+    host.selected = null;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(host.events).toEqual([]);
+    expect(host.picker.picker.isShown).toBeTrue();
+    expect((fixture.nativeElement.querySelector('input') as HTMLInputElement).value).toBe('');
+    expect(host.picker.picker.startDate.isSame(dayjs(), 'day')).toBeTrue();
+  });
+});
