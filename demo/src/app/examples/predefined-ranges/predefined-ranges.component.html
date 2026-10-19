@@ -1,0 +1,14 @@
+<input
+    type="text"
+    ngxDaterangepickerMd
+    [ranges]="ranges"
+    [showCustomRangeLabel]="true"
+    [alwaysShowCalendars]="true"
+    [showRangeLabelOnInput]="true"
+    (rangeClicked)="rangeClicked($event)"
+    [(ngModel)]="selected"
+    placeholder="Choose a range" />
+
+@if (lastRange()) {
+    <p>Last range clicked: {{ lastRange() }}</p>
+}
