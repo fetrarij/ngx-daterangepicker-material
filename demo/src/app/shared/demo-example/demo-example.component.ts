@@ -17,6 +17,8 @@ export class DemoExampleComponent {
   readonly name = input.required<string>();
   readonly title = input.required<string>();
   readonly description = input('');
+  // Code given directly, for code that changes like on the playground. Otherwise the sources of the example are used.
+  readonly code = input<SourceFile[] | null>(null);
 
   // With <base href="/">, a bare "#name" link would lead to the home page.
   private readonly document = inject(DOCUMENT);
@@ -24,7 +26,7 @@ export class DemoExampleComponent {
 
   private readonly sources = inject(EXAMPLE_SOURCES, { optional: true });
   protected readonly files = computed(() =>
-    (this.sources?.[this.name()] ?? []).map((file) => ({ ...file, html: highlight(file.code, file.language) }))
+    (this.code() ?? this.sources?.[this.name()] ?? []).map((file) => ({ ...file, html: highlight(file.code, file.language) }))
   );
 
   // The file in the open tab: the copy button copies this one.

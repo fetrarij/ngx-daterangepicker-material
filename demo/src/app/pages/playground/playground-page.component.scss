@@ -1,0 +1,81 @@
+.playground {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: start;
+}
+
+.panel {
+  position: sticky;
+  top: 88px;
+  max-height: calc(100dvh - 112px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 8px 20px 20px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 16px;
+  background: var(--mat-sys-surface);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    margin: 0;
+    font: var(--mat-sys-title-large);
+  }
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 0;
+
+  & + .group {
+    border-top: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  h3 {
+    margin: 0;
+    color: var(--mat-sys-on-surface-variant);
+    font: var(--mat-sys-label-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  code {
+    font-size: 13px;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  mat-button-toggle-group {
+    --mat-button-toggle-height: 36px;
+    font-size: 13px;
+  }
+}
+
+.label {
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-label-large);
+}
+
+// Below this width the options go under the preview.
+@media (max-width: 1099px) {
+  // The example card already has a bottom margin.
+  .playground {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .panel {
+    position: static;
+    max-height: none;
+  }
+}
