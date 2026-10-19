@@ -8,7 +8,7 @@ import { FormsPageComponent } from './pages/forms/forms-page.component';
 import { InlinePageComponent } from './pages/inline/inline-page.component';
 import { PositionPageComponent } from './pages/position/position-page.component';
 import { EventsPageComponent } from './pages/events/events-page.component';
-import { FullComponent } from './full/full.component';
+import { PlaygroundPageComponent } from './pages/playground/playground-page.component';
 
 export interface DemoLink {
   path: string;
@@ -41,7 +41,7 @@ export const demoLinkGroups: DemoLinkGroup[] = [
       { path: 'events', label: 'Events and API' }
     ]
   },
-  { label: 'Reference', links: [{ path: 'full', label: 'All options' }] }
+  { label: 'Try it', links: [{ path: 'full', label: 'Playground' }] }
 ];
 
 export const routes: Routes = [
@@ -55,6 +55,6 @@ export const routes: Routes = [
   { path: 'reactive-forms', component: FormsPageComponent, title: 'Forms' },
   { path: 'events', component: EventsPageComponent, title: 'Events and API' },
   { path: 'inline', component: InlinePageComponent, title: 'Inline' },
-  { path: 'full', component: FullComponent, title: 'All options' },
+  { path: 'full', component: PlaygroundPageComponent, title: 'Playground' },
   { path: '**', redirectTo: 'simple' }
 ];

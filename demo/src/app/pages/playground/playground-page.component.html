@@ -1,0 +1,161 @@
+<h1>Playground</h1>
+<p class="lead">Try the options and get the code. Each change builds the picker again, with the value kept.</p>
+
+<div class="playground">
+    <demo-example
+        name="playground"
+        title="Live preview"
+        description="The code follows the options: it only lists what differs from the defaults."
+        [code]="snippet()">
+        @for (config of [live()]; track config.id) {
+            <input
+                type="text"
+                ngxDaterangepickerMd
+                [singleDatePicker]="config.singleDatePicker"
+                [autoApply]="config.autoApply"
+                [closeOnAutoApply]="config.closeOnAutoApply"
+                [linkedCalendars]="config.linkedCalendars"
+                [lockStartDate]="config.lockStartDate"
+                [customRangeDirection]="config.customRangeDirection"
+                [allowEmptyEndDate]="config.allowEmptyEndDate"
+                [showDropdowns]="config.showDropdowns"
+                [showWeekNumbers]="config.showWeekNumbers"
+                [showISOWeekNumbers]="config.showISOWeekNumbers"
+                [showCancel]="config.showCancel"
+                [showClearButton]="config.showClearButton"
+                [ranges]="config.ranges"
+                [alwaysShowCalendars]="config.alwaysShowCalendars"
+                [showCustomRangeLabel]="config.showCustomRangeLabel"
+                [showRangeLabelOnInput]="config.showRangeLabelOnInput"
+                [timePicker]="config.timePicker"
+                [timePicker24Hour]="config.timePicker24Hour"
+                [timePickerSeconds]="config.timePickerSeconds"
+                [timePickerIncrement]="config.timePickerIncrement"
+                [opens]="config.opens"
+                [drops]="config.drops"
+                [minDate]="config.minDate"
+                [maxDate]="config.maxDate"
+                [dateLimit]="config.dateLimit"
+                [locale]="config.locale"
+                [(ngModel)]="selected"
+                placeholder="Click to open the calendar" />
+        }
+        <pre>{{ selected() | json }}</pre>
+    </demo-example>
+
+    <aside class="panel" aria-label="Options">
+        <div class="panel-head">
+            <h2>Options</h2>
+            <button matButton type="button" (click)="reset()">Reset</button>
+        </div>
+
+        @for (group of toggleGroups; track group.label) {
+            <section class="group">
+                <h3>{{ group.label }}</h3>
+                @for (key of group.toggles; track key) {
+                    <mat-slide-toggle hideIcon [checked]="options()[key]" [disabled]="!isActive(key)" (change)="set(key, $event.checked)">
+                        <code>{{ key }}</code>
+                    </mat-slide-toggle>
+                }
+                @if (group.label === 'Time') {
+                    <mat-form-field subscriptSizing="dynamic">
+                        <mat-label>timePickerIncrement</mat-label>
+                        <mat-select
+                            [value]="options().timePickerIncrement"
+                            [disabled]="!isActive('timePickerIncrement')"
+                            (selectionChange)="set('timePickerIncrement', $event.value)">
+                            @for (step of increments; track step) {
+                                <mat-option [value]="step">{{ step }} min</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                }
+            </section>
+        }
+
+        <section class="group">
+            <h3>Position</h3>
+            <span class="label"><code>opens</code></span>
+            <mat-button-toggle-group
+                hideSingleSelectionIndicator
+                aria-label="opens"
+                [value]="options().opens"
+                (change)="set('opens', $event.value)">
+                <mat-button-toggle value="auto">auto</mat-button-toggle>
+                <mat-button-toggle value="left">left</mat-button-toggle>
+                <mat-button-toggle value="center">center</mat-button-toggle>
+                <mat-button-toggle value="right">right</mat-button-toggle>
+            </mat-button-toggle-group>
+            <span class="label"><code>drops</code></span>
+            <mat-button-toggle-group
+                hideSingleSelectionIndicator
+                aria-label="drops"
+                [value]="options().drops"
+                (change)="set('drops', $event.value)">
+                <mat-button-toggle value="down">down</mat-button-toggle>
+                <mat-button-toggle value="up">up</mat-button-toggle>
+                <mat-button-toggle value="auto">auto</mat-button-toggle>
+            </mat-button-toggle-group>
+        </section>
+
+        <section class="group">
+            <h3>Limits</h3>
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>minDate / maxDate</mat-label>
+                <mat-select [value]="options().limits" (selectionChange)="set('limits', $event.value)">
+                    <mat-option value="none">No limit</mat-option>
+                    <mat-option value="future">From today (minDate)</mat-option>
+                    <mat-option value="past">Until today (maxDate)</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>dateLimit</mat-label>
+                <mat-select
+                    [value]="options().dateLimit"
+                    [disabled]="!isActive('dateLimit')"
+                    (selectionChange)="set('dateLimit', $event.value)">
+                    @for (limit of dateLimits; track limit) {
+                        <mat-option [value]="limit">{{ limit === null ? 'No limit' : limit + ' days' }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </section>
+
+        <section class="group">
+            <h3>Locale</h3>
+            <span class="label">Language</span>
+            <mat-button-toggle-group
+                hideSingleSelectionIndicator
+                aria-label="Language"
+                [value]="options().language"
+                (change)="set('language', $event.value)">
+                <mat-button-toggle value="en">English</mat-button-toggle>
+                <mat-button-toggle value="fr">French</mat-button-toggle>
+            </mat-button-toggle-group>
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>format</mat-label>
+                <mat-select [value]="options().format" (selectionChange)="set('format', $event.value)">
+                    @for (format of formats; track format) {
+                        <mat-option [value]="format">{{ format || 'Default' }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>separator</mat-label>
+                <mat-select [value]="options().separator" (selectionChange)="set('separator', $event.value)">
+                    @for (separator of separators; track separator) {
+                        <mat-option [value]="separator">"{{ separator }}"</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field subscriptSizing="dynamic">
+                <mat-label>firstDay</mat-label>
+                <mat-select [value]="options().firstDay" (selectionChange)="set('firstDay', $event.value)">
+                    <mat-option [value]="null">From the language</mat-option>
+                    <mat-option [value]="0">Sunday</mat-option>
+                    <mat-option [value]="1">Monday</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </section>
+    </aside>
+</div>
