@@ -29,31 +29,29 @@
     </div>
     <div class="col s12 m6">
         <b>Typescript code:</b>
-        <pre class="prettyprint"><code class="javascript">
-import * as moment from 'moment';
-import * as localization from 'moment/locale/fr';
-moment.locale('fr', localization);
+        <pre class="prettyprint"><code class="javascript">import dayjs, {{ '{' }} Dayjs &#125; from 'dayjs/esm';
+import 'dayjs/esm/locale/fr';
+import weekday from 'dayjs/esm/plugin/weekday';
+import {{ '{' }} LocaleConfig &#125; from 'ngx-daterangepicker-material';
+dayjs.extend(weekday);
+dayjs.locale('fr');
 ...
 export class SingleDatepickerComponent {{ '{' }}
-  selected: any;
+  selected = dayjs();
   locale: LocaleConfig = {{ '{' }}
     applyLabel: 'Appliquer',
     customRangeLabel: ' - ',
-    daysOfWeek: moment.weekdaysMin(),
-    monthNames: moment.monthsShort(),
-    firstDay: moment.localeData().firstDayOfWeek(),
-  &#125;
-  constructor() {{ '{' }}
-    this.alwaysShowCalendars = true;
-  &#125;
-  isInvalidDate(date) {{ '{' }}
+    daysOfWeek: dayjs.weekdaysMin(),
+    monthNames: dayjs.monthsShort(),
+    firstDay: dayjs.localeData().firstDayOfWeek()
+  &#125;;
+
+  isInvalidDate(date: Dayjs): boolean {{ '{' }}
     return date.weekday() === 0;
   &#125;
-  isCustomDate(date) {{ '{' }}
-    return  (
-      date.weekday() === 0 ||
-      date.weekday() === 6
-    )  ? 'mycustomdate' : false;
+
+  isCustomDate(date: Dayjs): 'mycustomdate' | false {{ '{' }}
+    return date.weekday() === 0 || date.weekday() === 6 ? 'mycustomdate' : false;
   &#125;
 &#125;</code>
     </pre>

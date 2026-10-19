@@ -1,3 +1,34 @@
 nav {
+    position: relative;
     margin-bottom: 50px;
+    // Leaves room for the GitHub link on the right.
+    padding-right: 120px;
+}
+
+// The links scroll sideways when they do not fit, instead of being hidden on phones.
+.demo-nav {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    li {
+        flex: none;
+        float: none;
+    }
+}
+
+.demo-github {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+    nav {
+        padding-right: 56px;
+    }
 }
