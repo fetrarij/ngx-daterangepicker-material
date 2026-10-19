@@ -14,7 +14,7 @@ Actively maintained again since 2026. New issues get a reply.
 
 ![Demo: picking a predefined range, then a custom range](screen.gif)
 
-Demo: https://fetrarij.github.io/ngx-daterangepicker-material/
+Demo: https://fetrarij.github.io/ngx-daterangepicker-material/, with live examples and their code. In the [playground](https://fetrarij.github.io/ngx-daterangepicker-material/full), pick the options and copy the code it writes for you.
 
 Try it online: [open the example on StackBlitz](https://stackblitz.com/github/fetrarij/ngx-daterangepicker-material/tree/master/examples/stackblitz)
 
@@ -25,6 +25,17 @@ Compared to the Angular Material date range picker, it gives you:
 - predefined ranges (Today, Last 7 days, This month...), or your own;
 - an optional time picker;
 - one input where users can type or pick the whole range.
+
+## Contents
+
+- [Versions](#versions)
+- [Installation](#installation)
+- [Usage example](#usage-example)
+- [Inline usage](#inline-usage)
+- [Signal Forms](#signal-forms)
+- [Available options](#available-options)
+- [Available events](#available-events)
+- [Contributing](#contributing)
 
 ---
 
@@ -214,7 +225,7 @@ Typescript:
 ````typescript
 selected: {start: Dayjs, end: Dayjs};
 ````
-You can [play with our online demo here](https://fetrarij.github.io/ngx-daterangepicker-material/)
+You can [play with our online demo here](https://fetrarij.github.io/ngx-daterangepicker-material/), try the options in the [playground](https://fetrarij.github.io/ngx-daterangepicker-material/full),
 and [browse our demo code here](./demo/src/app).
 
 ## Inline usage
@@ -256,7 +267,7 @@ export class BookingComponent {
 }
 ```
 
-The value has the same shape as with `ngModel`, and the `disabled()` rule disables the picker.
+The value has the same shape as with `ngModel`, and the `disabled()` rule disables the picker. [See it in the demo](https://fetrarij.github.io/ngx-daterangepicker-material/reactive-forms#signal-form).
 
 
 ## Available options
@@ -312,7 +323,7 @@ The value then has an empty end date: `{ startDate: dayjs, endDate: null }`. The
 <input ngxDaterangepickerMd [allowEmptyEndDate]="true" [locale]="{ emptyEndDateLabel: 'From {start}' }" [(ngModel)]="selected" />
 ```
 
-A value with `endDate: null` from ngModel or a form control is shown the same way. When the picker opens again, the first click starts a new selection.
+A value with `endDate: null` from ngModel or a form control is shown the same way. When the picker opens again, the first click starts a new selection. [See it in the demo](https://fetrarij.github.io/ngx-daterangepicker-material/custom-ranges#open-end-date).
 
 ### locale
 
@@ -350,6 +361,8 @@ frLocale = { locale: fr, format: 'D MMMM YYYY', applyLabel: 'Appliquer' };
 The `[locale]` input can be changed at runtime, for example when the user switches language.
 
 Dates typed in the input are read with `format` and the month names of this locale, like `5 enero 2026 - 10 enero 2026` in Spanish.
+
+[See the locales in the demo](https://fetrarij.github.io/ngx-daterangepicker-material/locale).
 
 #### Global locale
 
@@ -452,6 +465,8 @@ ranges: any = {
     'Last Month': [dayjs().subtract(1, 'month').startOf('month'), dayjs().subtract(1, 'month').endOf('month')]
   }
 ```
+
+[See the ranges in the demo](https://fetrarij.github.io/ngx-daterangepicker-material/custom-ranges).
 #### Other options with ranges
 
 You can use bellow options when using the ranges. The default are `false`.
@@ -466,40 +481,25 @@ You can use bellow options when using the ranges. The default are `false`.
 
 #### Open datepicker from outside
 
-It is possible to open datepicker from outside. You should create an input with attached datepicker directive and a button with "ngx-daterangepicker-action" class (to prevent triggering of clickOutside). Clicks on its content (an icon, a `mat-icon`, an `svg`) count too.
+You can open the datepicker from a button. Get the directive with a template reference (since 22.4.0), then call `open()`. `clear()` and `toggle()` work the same way. Give the button the `ngx-daterangepicker-action` class, so its click does not close the calendar right away. Clicks on its content (an icon, a `mat-icon`, an `svg`) count too.
+
 ```html
-    <input
-      ngxDaterangepickerMd
-      [closeOnAutoApply]="true"
-      [autoApply]="true"
-      [singleDatePicker]="true"
-      [linkedCalendars]="true"
-      [(ngModel)]="selected"
-      (datesUpdated)="datesUpdated($event)"
-      class="datepicker-calendar-icon">
+<input ngxDaterangepickerMd #picker="ngxDaterangepickerMd" [(ngModel)]="selected" />
 
-    <a class="ngx-daterangepicker-action" (click)="openDatepicker()">
-      Open
-    </a>
+<button class="ngx-daterangepicker-action" (click)="picker.open()">Open</button>
 ```
 
-```javascript
+From the component class, use `@ViewChild` instead:
 
-  ...
-    @ViewChild(DaterangepickerDirective, { static: false }) pickerDirective: DaterangepickerDirective;
-  ...
-  ...
-  openDatepicker() {
-    this.pickerDirective.open();
-  }
+```typescript
+@ViewChild(DaterangepickerDirective) pickerDirective: DaterangepickerDirective;
+
+openDatepicker() {
+  this.pickerDirective.open();
+}
 ```
 
-You can also get the directive with a template reference, without `@ViewChild`:
-```html
-    <input ngxDaterangepickerMd #picker="ngxDaterangepickerMd" [(ngModel)]="selected">
-
-    <button class="ngx-daterangepicker-action" (click)="picker.open()">Open</button>
-```
+[See it in the demo](https://fetrarij.github.io/ngx-daterangepicker-material/events#open-from-button).
 
 ### Timepicker
 
@@ -512,6 +512,8 @@ You can use theses options:
 | timePicker24Hour | boolean | set to `true` if you want to set the timepicker to 24h instead of having AM and PM |
 | timePickerIncrement | number | set the value increment of the minutes (eg: for `12` there would be 0mn, 15mn, 30mn, 45mn,) |
 | timePickerSeconds | boolean | set `true` if you want do display second's select |
+
+[See the time picker in the demo](https://fetrarij.github.io/ngx-daterangepicker-material/with-timepicker).
 
 
 ### Customisation
@@ -545,6 +547,8 @@ Inside a `mat-form-field`, the calendar can be cut by the field. Use `appendToBo
 
 With `appendToBody`, your CSS rules on `.md-drppicker` must not depend on a parent of the input. It does not work when the input is inside a shadow root.
 
+[See the positions in the demo](https://fetrarij.github.io/ngx-daterangepicker-material/position).
+
 ### Disable the picker
 
 Use `[disabled]` on the input, with or without a form. With reactive forms, use `control.disable()`. A disabled input does not open the calendar.
@@ -560,6 +564,8 @@ input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
 ```
 
 ## Available events
+
+To watch them live, open the [event log in the demo](https://fetrarij.github.io/ngx-daterangepicker-material/events).
 
 ### \(rangeClicked)
 

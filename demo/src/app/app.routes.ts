@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { HomePageComponent } from './pages/home/home-page.component';
 import { SimplePageComponent } from './pages/simple/simple-page.component';
 import { LocalePageComponent } from './pages/locale/locale-page.component';
 import { SingleDatePageComponent } from './pages/single-date/single-date-page.component';
@@ -22,7 +23,13 @@ export interface DemoLinkGroup {
 
 // The menu shows the pages in this order. The old paths stay the same, so old links still work.
 export const demoLinkGroups: DemoLinkGroup[] = [
-  { label: 'Getting started', links: [{ path: 'simple', label: 'Simple' }] },
+  {
+    label: 'Getting started',
+    links: [
+      { path: '', label: 'Overview' },
+      { path: 'simple', label: 'Simple' }
+    ]
+  },
   {
     label: 'Features',
     links: [
@@ -45,7 +52,7 @@ export const demoLinkGroups: DemoLinkGroup[] = [
 ];
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'simple', pathMatch: 'full' },
+  { path: '', component: HomePageComponent, title: 'ngx-daterangepicker-material' },
   { path: 'simple', component: SimplePageComponent, title: 'Simple' },
   { path: 'locale', component: LocalePageComponent, title: 'Locale' },
   { path: 'single-datepicker', component: SingleDatePageComponent, title: 'Single date' },
@@ -56,5 +63,5 @@ export const routes: Routes = [
   { path: 'events', component: EventsPageComponent, title: 'Events and API' },
   { path: 'inline', component: InlinePageComponent, title: 'Inline' },
   { path: 'full', component: PlaygroundPageComponent, title: 'Playground' },
-  { path: '**', redirectTo: 'simple' }
+  { path: '**', redirectTo: '' }
 ];

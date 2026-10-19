@@ -1,9 +1,10 @@
 :host {
   display: block;
+  // Leaves room for the sticky top bar when the page jumps to an example.
+  scroll-margin-top: 88px;
 }
 
 .example {
-  // Leaves room for the sticky top bar when the page jumps to an example.
   scroll-margin-top: 88px;
   margin-bottom: 40px;
   border: 1px solid var(--mat-sys-outline-variant);
