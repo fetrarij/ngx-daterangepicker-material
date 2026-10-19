@@ -1,0 +1,24 @@
+<section class="example">
+    <h2>{{ title() }}</h2>
+    @if (description()) {
+        <p class="description">{{ description() }}</p>
+    }
+    <div class="preview">
+        <ng-content />
+    </div>
+    @if (files().length) {
+        <mat-tab-group class="code" animationDuration="0ms" mat-stretch-tabs="false">
+            @for (file of files(); track file.name) {
+                <mat-tab [label]="file.language === 'html' ? 'HTML' : 'TS'">
+                    <div class="code-block">
+                        <span class="file-name">{{ file.name }}</span>
+                        <button matButton type="button" class="copy" (click)="copy(file)">
+                            {{ copied() === file.name ? 'Copied' : 'Copy' }}
+                        </button>
+                        <pre><code class="hljs" [innerHTML]="file.html"></code></pre>
+                    </div>
+                </mat-tab>
+            }
+        </mat-tab-group>
+    }
+</section>

@@ -1,11 +1,30 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import dayjs from 'dayjs/esm';
-import { DaterangepickerDirective } from '../../../../src/daterangepicker/daterangepicker.directive';
-import { EndDate, StartDate } from '../../../../src/daterangepicker/daterangepicker.component';
-import { LocaleConfig } from '../../../../src/daterangepicker';
+import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
+import { EndDate, StartDate } from 'ngx-daterangepicker-material';
+import { LocaleConfig } from 'ngx-daterangepicker-material';
 
 @Component({
-  standalone: false,
+  imports: [
+    JsonPipe,
+    FormsModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    NgxDaterangepickerMd
+  ],
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'full',
   changeDetection: ChangeDetectionStrategy.Eager,

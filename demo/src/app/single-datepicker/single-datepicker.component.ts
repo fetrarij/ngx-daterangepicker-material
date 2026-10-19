@@ -1,14 +1,17 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import dayjs from 'dayjs/esm';
-import 'dayjs/locale/fr';
-import { LocaleConfig } from '../../../../src/daterangepicker';
+import 'dayjs/esm/locale/fr';
+import { LocaleConfig } from 'ngx-daterangepicker-material';
 import weekday from 'dayjs/esm/plugin/weekday';
 import { Dayjs } from 'dayjs/esm';
 dayjs.extend(weekday);
 dayjs.locale('fr');
 
 @Component({
-  standalone: false,
+  imports: [FormsModule, MatToolbarModule, NgxDaterangepickerMd],
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'single-datepicker',
   changeDetection: ChangeDetectionStrategy.Eager,

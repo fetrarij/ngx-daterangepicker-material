@@ -1,9 +1,13 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { DateRange, DateRanges, TimePeriod } from '../../../../src/daterangepicker/daterangepicker.component';
+import { JsonPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { DateRange, DateRanges, TimePeriod } from 'ngx-daterangepicker-material';
 import dayjs, { Dayjs } from 'dayjs/esm';
 
 @Component({
-  standalone: false,
+  imports: [JsonPipe, FormsModule, MatToolbarModule, NgxDaterangepickerMd],
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'custom-ranges',
   changeDetection: ChangeDetectionStrategy.Eager,

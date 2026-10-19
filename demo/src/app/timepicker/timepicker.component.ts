@@ -1,8 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import dayjs from 'dayjs/esm';
 
 @Component({
-  standalone: false,
+  imports: [FormsModule, MatToolbarModule, NgxDaterangepickerMd],
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'timepicker',
   changeDetection: ChangeDetectionStrategy.Eager,
