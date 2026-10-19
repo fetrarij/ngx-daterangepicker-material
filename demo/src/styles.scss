@@ -41,3 +41,25 @@
         float: right !important;
     }
 }
+
+// Phone width: long code scrolls inside its own block, and the option fields and labels fit their column.
+pre.prettyprint {
+    overflow-x: auto;
+    max-width: 100%;
+}
+.col mat-form-field {
+    width: 100%;
+    .mat-mdc-form-field-infix {
+        width: auto;
+        min-width: 0;
+    }
+}
+.col label {
+    overflow-wrap: anywhere;
+}
+// Long page titles wrap instead of widening the page.
+.mat-toolbar.mat-toolbar-single-row {
+    white-space: normal;
+    height: auto;
+    min-height: 64px;
+}

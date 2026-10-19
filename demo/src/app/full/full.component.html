@@ -2,7 +2,7 @@
 
 <mat-card>
     <div class="row">
-        <div class="col s6">
+        <div class="col s12 m6">
             <input
                 type="text"
                 matInput
@@ -40,7 +40,7 @@
                 (endDateChanged)="eventClicked($event)"
                 (clearClicked)="eventCleared()" />
         </div>
-        <div class="col s6">
+        <div class="col s12 m6">
             <strong>Value: </strong>{{ selected | json }}
             <hr />
             <h4>Timepicker</h4>
@@ -163,7 +163,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s6"></div>
-        <div class="col s6"></div>
+        <div class="col s12 m6"></div>
+        <div class="col s12 m6"></div>
     </div>
 </mat-card>
