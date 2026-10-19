@@ -132,10 +132,9 @@ export const rangePresets: RangePreset[] = [
   }
 ];
 
-// No ranges is an empty object, the picker default: undefined hides the calendars.
-export function liveRanges(options: PlaygroundOptions): DateRanges {
+export function liveRanges(options: PlaygroundOptions): DateRanges | undefined {
   if (!options.ranges) {
-    return {};
+    return undefined;
   }
   return Object.fromEntries(rangePresets.map((preset) => [preset.label[options.language], preset.dates()]));
 }

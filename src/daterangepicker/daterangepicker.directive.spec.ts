@@ -9,7 +9,7 @@ import pt from 'dayjs/esm/locale/pt';
 
 import { NgxDaterangepickerMd } from './daterangepicker.module';
 import { DaterangepickerDirective } from './daterangepicker.directive';
-import { TimePeriod } from './daterangepicker.component';
+import { DateRanges, TimePeriod } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 
@@ -1898,5 +1898,60 @@ describe('DaterangepickerDirective writeValue', () => {
     expect(host.picker.picker.isShown).toBeTrue();
     expect((fixture.nativeElement.querySelector('input') as HTMLInputElement).value).toBe('');
     expect(host.picker.picker.startDate.isSame(dayjs(), 'day')).toBeTrue();
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [ranges]="ranges()" [(ngModel)]="selected" />`
+})
+class MissingRangesHostComponent {
+  ranges = signal<DateRanges | null | undefined>(undefined);
+  selected: TimePeriod;
+}
+
+describe('DaterangepickerDirective without ranges', () => {
+  let fixture: ComponentFixture<MissingRangesHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [MissingRangesHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.destroy());
+
+  function open(ranges: DateRanges | null | undefined): void {
+    fixture = TestBed.createComponent(MissingRangesHostComponent);
+    fixture.componentInstance.ranges.set(ranges);
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('input').click();
+    fixture.detectChanges();
+  }
+
+  const days = (): number => fixture.nativeElement.querySelectorAll('.md-drppicker.shown td.available').length;
+
+  it('shows the calendars when ranges is undefined', () => {
+    open(undefined);
+
+    expect(days()).toBeGreaterThan(0);
+  });
+
+  it('shows the calendars when ranges is null', () => {
+    open(null);
+
+    expect(days()).toBeGreaterThan(0);
+  });
+
+  it('shows the calendars again when the ranges are removed', () => {
+    open({ Today: [dayjs(), dayjs()] });
+
+    expect(days()).toBe(0);
+
+    fixture.componentInstance.ranges.set(undefined);
+    fixture.detectChanges();
+
+    expect(days()).toBeGreaterThan(0);
   });
 });
