@@ -1524,6 +1524,148 @@ describe('DaterangepickerDirective dateChange output (issue #344)', () => {
 });
 
 @Component({
+  standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [startKey]="startKey()"
+    [endKey]="endKey()"
+    [singleDatePicker]="single"
+    [allowEmptyEndDate]="allowEmptyEndDate"
+    [ranges]="ranges"
+    [(ngModel)]="selected"
+    (datesUpdated)="updates.push($event)"
+    (dateChange)="changes.push($event)"
+  />`
+})
+class DatesUpdatedKeysHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  startKey = signal<string | null>('from');
+  endKey = signal<string | null>('to');
+  single = false;
+  allowEmptyEndDate = false;
+  ranges: DateRanges = { Chosen: [dayjs('2026-03-10'), dayjs('2026-03-12')] };
+  selected: unknown = null;
+  updates: Record<string, dayjs.Dayjs | null>[] = [];
+  changes: Record<string, dayjs.Dayjs | null>[] = [];
+}
+
+describe('DaterangepickerDirective datesUpdated custom keys (issue #227)', () => {
+  let fixture: ComponentFixture<DatesUpdatedKeysHostComponent>;
+  let host: DatesUpdatedKeysHostComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [DatesUpdatedKeysHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  async function create(setup: (host: DatesUpdatedKeysHostComponent) => void = () => undefined): Promise<void> {
+    fixture = TestBed.createComponent(DatesUpdatedKeysHostComponent);
+    host = fixture.componentInstance;
+    setup(host);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function selectRange(label = 'Chosen'): void {
+    host.picker.picker.clickRange(new MouseEvent('click'), label);
+    fixture.detectChanges();
+  }
+
+  it('emits the custom startKey and endKey on apply, like dateChange does', async () => {
+    await create();
+    selectRange();
+
+    const update = host.updates[0];
+    expect(host.updates.length).toBe(1);
+    expect(update.from.format('YYYY-MM-DD')).toBe('2026-03-10');
+    expect(update.to.format('YYYY-MM-DD')).toBe('2026-03-12');
+    expect(Object.keys(update).sort()).toEqual(['from', 'to']);
+
+    expect(host.changes.length).toBe(1);
+    expect(host.changes[0].from.format('YYYY-MM-DD')).toBe('2026-03-10');
+    expect(host.changes[0].to.format('YYYY-MM-DD')).toBe('2026-03-12');
+  });
+
+  it('emits the custom keys with null dates on clear', async () => {
+    await create();
+    host.picker.picker.clear();
+    fixture.detectChanges();
+
+    expect(host.updates).toEqual([{ from: null, to: null }]);
+    expect(Object.keys(host.updates[0]).sort()).toEqual(['from', 'to']);
+  });
+
+  it('keeps a null end date under its custom key', async () => {
+    await create((h) => (h.allowEmptyEndDate = true));
+    const picker = host.picker.picker;
+    picker.setStartDate(dayjs('2026-03-10'));
+    picker.clearEndDate();
+    picker.clickApply(new MouseEvent('click'));
+    fixture.detectChanges();
+
+    const update = host.updates[0];
+    expect(update.from.format('YYYY-MM-DD')).toBe('2026-03-10');
+    expect(update.to).toBeNull();
+    expect(Object.keys(update).sort()).toEqual(['from', 'to']);
+  });
+
+  it('uses the custom keys in single date mode', async () => {
+    await create((h) => (h.single = true));
+    const picker = host.picker.picker;
+    picker.setStartDate(dayjs('2026-03-10'));
+    picker.setEndDate(dayjs('2026-03-10'));
+    picker.clickApply(new MouseEvent('click'));
+    fixture.detectChanges();
+
+    const update = host.updates[0];
+    expect(update.from.format('YYYY-MM-DD')).toBe('2026-03-10');
+    expect(update.to.format('YYYY-MM-DD')).toBe('2026-03-10');
+    expect(Object.keys(update).sort()).toEqual(['from', 'to']);
+  });
+
+  it('falls back to endDate when only startKey is set', async () => {
+    await create((h) => h.endKey.set(null));
+    selectRange();
+
+    const update = host.updates[0];
+    expect(update.from.format('YYYY-MM-DD')).toBe('2026-03-10');
+    expect(update.endDate.format('YYYY-MM-DD')).toBe('2026-03-12');
+    expect(Object.keys(update).sort()).toEqual(['endDate', 'from']);
+  });
+
+  it('uses the keys as they are when they change after init', async () => {
+    await create();
+    host.startKey.set('periodStart');
+    host.endKey.set('periodEnd');
+    fixture.detectChanges();
+    selectRange();
+
+    const update = host.updates[0];
+    expect(update.periodStart.format('YYYY-MM-DD')).toBe('2026-03-10');
+    expect(update.periodEnd.format('YYYY-MM-DD')).toBe('2026-03-12');
+    expect(Object.keys(update).sort()).toEqual(['periodEnd', 'periodStart']);
+  });
+
+  it('still emits startDate and endDate without custom keys', async () => {
+    await create((h) => {
+      h.startKey.set(null);
+      h.endKey.set(null);
+    });
+    selectRange();
+
+    const update = host.updates[0];
+    expect(update.startDate.format('YYYY-MM-DD')).toBe('2026-03-10');
+    expect(update.endDate.format('YYYY-MM-DD')).toBe('2026-03-12');
+    expect(Object.keys(update).sort()).toEqual(['endDate', 'startDate']);
+  });
+});
+
+@Component({
   template: `
     <input class="plain" ngxDaterangepickerMd [(ngModel)]="selected" />
     <input class="own" ngxDaterangepickerMd [locale]="{ applyLabel: 'Mine' }" [(ngModel)]="selected" />
