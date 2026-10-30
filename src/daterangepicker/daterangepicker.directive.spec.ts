@@ -1199,6 +1199,14 @@ describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', ()
   // Waits for the position set after opening and for the ResizeObserver.
   const settle = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 250));
 
+  // A slow CI browser can need more than one settle(): wait for the expected state, up to 2 seconds.
+  async function settleUntil(done: () => boolean): Promise<void> {
+    await settle();
+    for (let waited = 0; !done() && waited < 2000; waited += 50) {
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
+  }
+
   async function open(setup: (host: PositionHostComponent) => void = () => undefined): Promise<void> {
     fixture = TestBed.createComponent(PositionHostComponent);
     setup(fixture.componentInstance);
@@ -1211,7 +1219,7 @@ describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', ()
     frame.scrollLeft = 500;
     input.click();
     fixture.detectChanges();
-    await settle();
+    await settleUntil(() => pickerBox().width > 0);
   }
 
   const pickerBox = (): DOMRect => fixture.componentInstance.picker.picker.pickerContainer.nativeElement.getBoundingClientRect();
@@ -1236,7 +1244,7 @@ describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', ()
     );
     custom.click();
     fixture.detectChanges();
-    await settle();
+    await settleUntil(() => pickerBox().width > 400 && Math.abs(pickerBox().right - input.getBoundingClientRect().right) < 2);
 
     expect(pickerBox().width).toBeGreaterThan(400);
     expect(Math.abs(pickerBox().right - input.getBoundingClientRect().right)).toBeLessThan(2);
