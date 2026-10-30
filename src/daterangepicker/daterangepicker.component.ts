@@ -17,7 +17,7 @@ import {
   untracked
 } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import dayjs, { Dayjs } from 'dayjs/esm';
+import dayjs, { type Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 import { isPlainDate, toExternalDate, toInternalDate } from './external-date';
