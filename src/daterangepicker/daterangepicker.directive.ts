@@ -349,9 +349,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     });
     this.picker.datesUpdated.asObservable().subscribe((range: TimePeriod) => {
       this.datesUpdated.emit({
-        startDate: toExternalDate(range.startDate),
-        endDate: toExternalDate(range.endDate)
-      });
+        [this.startKeyHolder]: toExternalDate(range.startDate),
+        [this.endKeyHolder]: toExternalDate(range.endDate)
+      } as TimePeriod);
     });
     this.picker.cancelClicked.asObservable().subscribe(() => {
       this.writeAppliedValue();

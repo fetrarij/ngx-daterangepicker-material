@@ -573,7 +573,7 @@ To watch them live, open the [event log in the demo](https://fetrarij.github.io/
 
 ### \(datesUpdated)
 
- >Fires when the date model is updated, like applying (if you have activated the apply button), or when selecting a range or date without the apply button, and sends an object containing start and end dates, eg: `{startDate: Dayjs, endDate: Dayjs}`
+ >Fires when the date model is updated, like applying (if you have activated the apply button), or when selecting a range or date without the apply button, and sends an object containing start and end dates with your `startKey`/`endKey`, eg: `{startDate: Dayjs, endDate: Dayjs}`
 
 ### \(clearClicked)
 
