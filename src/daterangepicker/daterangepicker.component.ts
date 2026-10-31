@@ -207,6 +207,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   @Input()
   lockStartDate = false;
 
+  @Input()
+  lockEndDate = false;
+
   // Apply can keep the end date empty, for an open range like "from X" (issue #502).
   @Input()
   allowEmptyEndDate = false;
@@ -1370,7 +1373,17 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     let date = side === SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
     this.keepMonthsInView = true;
 
-    if (
+    if (this.lockEndDate && this.endDate) {
+      // Keep the end date and only move the start date (issue #606).
+      if (this.timePicker) {
+        date = this.getDateWithTime(date, SideEnum.left);
+      }
+      this.setStartDate(date.isAfter(this.endDate) ? this.endDate.clone() : date.clone());
+      this.pickingDate = false;
+      if (this.autoApply) {
+        this.calculateChosenLabel();
+      }
+    } else if (
       (this.endDate || this.emptyEndApplied || (date.isBefore(this.startDate, 'day') && this.customRangeDirection === false)) &&
       this.lockStartDate === false
     ) {

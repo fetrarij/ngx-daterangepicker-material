@@ -13,6 +13,7 @@ export interface PlaygroundOptions {
   singleDatePicker: boolean;
   linkedCalendars: boolean;
   lockStartDate: boolean;
+  lockEndDate: boolean;
   customRangeDirection: boolean;
   allowEmptyEndDate: boolean;
   showDropdowns: boolean;
@@ -48,6 +49,7 @@ export const defaultOptions: PlaygroundOptions = {
   singleDatePicker: false,
   linkedCalendars: false,
   lockStartDate: false,
+  lockEndDate: false,
   customRangeDirection: false,
   allowEmptyEndDate: false,
   showDropdowns: false,

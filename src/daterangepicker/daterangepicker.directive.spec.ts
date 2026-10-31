@@ -1957,6 +1957,117 @@ describe('DaterangepickerDirective allowEmptyEndDate (issue #502)', () => {
 
 @Component({
   standalone: false,
+  template: `<input
+    ngxDaterangepickerMd
+    [lockEndDate]="lock"
+    [timePicker]="timePicker"
+    [autoApply]="autoApply"
+    [(ngModel)]="selected"
+  />`
+})
+class LockEndDateHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  lock = true;
+  timePicker = false;
+  autoApply = false;
+  selected: TimePeriod = { startDate: dayjs().date(10), endDate: dayjs().date(20) };
+}
+
+describe('DaterangepickerDirective lockEndDate (issue #606)', () => {
+  let fixture: ComponentFixture<LockEndDateHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [LockEndDateHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  async function open(setup: (host: LockEndDateHostComponent) => void = () => undefined): Promise<void> {
+    fixture = TestBed.createComponent(LockEndDateHostComponent);
+    setup(fixture.componentInstance);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('input').click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function clickDay(day: number): void {
+    const cell = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.md-drppicker.shown .calendar.left td.available:not(.off)')
+    ).find((td) => td.textContent.trim() === String(day));
+    cell.click();
+    fixture.detectChanges();
+  }
+
+  async function apply(): Promise<void> {
+    fixture.componentInstance.picker.picker.clickApply(new MouseEvent('click'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+  }
+
+  const day = (d: number): string => dayjs().date(d).format('YYYY-MM-DD');
+  const selectedDays = (): string[] => {
+    const selected = fixture.componentInstance.selected;
+    return [selected.startDate.format('YYYY-MM-DD'), selected.endDate.format('YYYY-MM-DD')];
+  };
+
+  it('moves only the start date on a click before the end date', async () => {
+    await open();
+    clickDay(5);
+    expect(fixture.componentInstance.picker.picker.endDate.format('YYYY-MM-DD')).toBe(day(20));
+    clickDay(15);
+    await apply();
+
+    expect(selectedDays()).toEqual([day(15), day(20)]);
+  });
+
+  it('moves the start date to the end date on a click after it', async () => {
+    await open();
+    clickDay(25);
+    await apply();
+
+    expect(selectedDays()).toEqual([day(20), day(20)]);
+  });
+
+  it('keeps the end date and its time with the time picker', async () => {
+    await open((host) => {
+      host.timePicker = true;
+      host.selected = { startDate: dayjs().date(10).hour(8).minute(0), endDate: dayjs().date(20).hour(18).minute(30) };
+    });
+    clickDay(5);
+    await apply();
+
+    const selected = fixture.componentInstance.selected;
+    expect(selected.startDate.format('YYYY-MM-DD')).toBe(day(5));
+    expect(selected.endDate.format('YYYY-MM-DD HH:mm')).toBe(`${day(20)} 18:30`);
+  });
+
+  it('applies right away with autoApply', async () => {
+    await open((host) => (host.autoApply = true));
+    clickDay(5);
+    await fixture.whenStable();
+
+    expect(selectedDays()).toEqual([day(5), day(20)]);
+  });
+
+  it('starts a new range when the option is off', async () => {
+    await open((host) => (host.lock = false));
+    clickDay(5);
+
+    const picker = fixture.componentInstance.picker.picker;
+    expect(picker.startDate.format('YYYY-MM-DD')).toBe(day(5));
+    expect(picker.endDate).toBeNull();
+  });
+});
+
+@Component({
+  standalone: false,
   template: `<input ngxDaterangepickerMd #picker="ngxDaterangepickerMd" [(ngModel)]="selected" />
     <button class="ngx-daterangepicker-action open-button" type="button" (click)="picker.open()">Open</button>`
 })
