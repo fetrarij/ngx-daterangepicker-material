@@ -478,6 +478,7 @@ You can use bellow options when using the ranges. The default are `false`.
 | showRangeLabelOnInput | boolean | set to `true` if you want to display the range label on input |
 | customRangeDirection | boolean | set to `true` if you want to allow selection range from end date first |
 | lockStartDate | boolean | set to `true` if you want to lock start date and change only the end date |
+| lockEndDate | boolean | set to `true` if you want to lock end date and change only the start date (since 22.5.0). If both locks are on, `lockEndDate` wins |
 
 #### Open datepicker from outside
 

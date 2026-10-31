@@ -8,6 +8,7 @@ const booleanInputs: BooleanOption[] = [
   'closeOnAutoApply',
   'linkedCalendars',
   'lockStartDate',
+  'lockEndDate',
   'customRangeDirection',
   'allowEmptyEndDate',
   'showDropdowns',

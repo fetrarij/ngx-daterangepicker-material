@@ -151,6 +151,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   @Input()
   lockStartDate = false;
 
+  @Input()
+  lockEndDate = false;
+
   // Apply can keep the end date empty, for an open range like "from X" (issue #502).
   @Input()
   allowEmptyEndDate = false;

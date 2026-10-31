@@ -72,6 +72,7 @@ export class PlaygroundPageComponent {
         'closeOnAutoApply',
         'linkedCalendars',
         'lockStartDate',
+        'lockEndDate',
         'customRangeDirection',
         'allowEmptyEndDate'
       ]
