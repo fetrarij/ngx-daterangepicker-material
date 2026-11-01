@@ -47,6 +47,9 @@ import { isPlainDate, parseDate, toExternalDate, toInternalDate } from './extern
 })
 // eslint-disable-next-line @angular-eslint/no-conflicting-lifecycle
 export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnDestroy {
+  // The picker opened by the click in progress, so the other pickers can tell an action element is not theirs (issue #623).
+  private static openedByCurrentClick: DaterangepickerDirective | null = null;
+
   /**
    * @deprecated Use `(dateChange)`. `(change)` also gets the native change event of the input (issue #344).
    * It will be removed in v23.
@@ -283,6 +286,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
 
     // Also matches clicks on children of the action element, like an icon's svg.
     if (path.some((node) => node instanceof Element && node.classList.contains('ngx-daterangepicker-action'))) {
+      // The element is not tied to a picker, so this one stays open unless the click opened another (issue #623).
+      const opened = DaterangepickerDirective.openedByCurrentClick;
+      if (opened && opened !== this) {
+        this.hide();
+      }
       return;
     }
 
@@ -327,7 +335,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     }
     this.placePickerHost();
     this.picker.show(event);
+    DaterangepickerDirective.openedByCurrentClick = this;
     setTimeout(() => {
+      if (DaterangepickerDirective.openedByCurrentClick === this) {
+        DaterangepickerDirective.openedByCurrentClick = null;
+      }
       this.setPosition();
       this.watchPosition();
     });

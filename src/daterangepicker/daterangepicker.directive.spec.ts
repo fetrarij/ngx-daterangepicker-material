@@ -2125,6 +2125,75 @@ describe('DaterangepickerDirective exportAs (issue #607)', () => {
 
 @Component({
   standalone: false,
+  template: `<input class="first" ngxDaterangepickerMd #first="ngxDaterangepickerMd" [(ngModel)]="firstValue" />
+    <input class="second" ngxDaterangepickerMd #second="ngxDaterangepickerMd" [(ngModel)]="secondValue" />
+    <button class="ngx-daterangepicker-action open-second" type="button" (click)="second.open()">Open</button>
+    <button class="ngx-daterangepicker-action clear-first" type="button" (click)="first.clear()">Clear</button>`
+})
+class TwoActionPickersHostComponent {
+  @ViewChild('first', { static: true }) first: DaterangepickerDirective;
+  @ViewChild('second', { static: true }) second: DaterangepickerDirective;
+  firstValue: TimePeriod;
+  secondValue: TimePeriod;
+}
+
+describe('DaterangepickerDirective action element with two pickers (issue #623)', () => {
+  let fixture: ComponentFixture<TwoActionPickersHostComponent>;
+
+  const nextTask = (): Promise<void> => new Promise((resolve) => setTimeout(resolve));
+  const click = (selector: string): void => {
+    fixture.nativeElement.querySelector(selector).click();
+    fixture.detectChanges();
+  };
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [TwoActionPickersHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TwoActionPickersHostComponent);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('closes the open picker when the action element opens another one', async () => {
+    click('.first');
+    await nextTask();
+
+    click('.open-second');
+
+    expect(fixture.componentInstance.first.picker.isShown).toBeFalse();
+    expect(fixture.componentInstance.second.picker.isShown).toBeTrue();
+  });
+
+  it('keeps the picker open when the action element does not open one', async () => {
+    click('.first');
+    await nextTask();
+
+    click('.clear-first');
+
+    expect(fixture.componentInstance.first.picker.isShown).toBeTrue();
+  });
+
+  it('does not treat a later click as the one that opened the picker', async () => {
+    click('.open-second');
+    await nextTask();
+    click('.first');
+    await nextTask();
+
+    click('.clear-first');
+
+    expect(fixture.componentInstance.first.picker.isShown).toBeTrue();
+    expect(fixture.componentInstance.second.picker.isShown).toBeFalse();
+  });
+});
+
+@Component({
+  standalone: false,
   template: `<input
     ngxDaterangepickerMd
     [(ngModel)]="selected"
