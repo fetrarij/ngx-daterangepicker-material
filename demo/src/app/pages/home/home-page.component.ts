@@ -23,11 +23,11 @@ const steps: Step[] = [
     title: 'Register the providers once',
     file: 'app.config.ts',
     language: 'typescript',
-    code: `import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+    code: `import { ApplicationConfig } from '@angular/core';
+import { provideDaterangepicker } from 'ngx-daterangepicker-material';
 
 export const appConfig: ApplicationConfig = {
-  providers: [importProvidersFrom(NgxDaterangepickerMd.forRoot())]
+  providers: [provideDaterangepicker()]
 };`
   },
   {
