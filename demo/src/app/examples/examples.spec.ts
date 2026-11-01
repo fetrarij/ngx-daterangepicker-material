@@ -173,8 +173,20 @@ describe('Demo examples', () => {
     await settle();
     const pickers = Array.from(document.querySelectorAll<HTMLElement>('ngx-daterangepicker-material'));
 
-    expect(pickers.filter((picker) => root().contains(picker)).length).toBe(1);
+    // The appendToBody one moves to <body>; the two others stay in the example.
+    expect(pickers.filter((picker) => root().contains(picker)).length).toBe(2);
     expect(pickers.some((picker) => picker.parentElement === document.body)).toBeTrue();
+  });
+
+  it('append to body: the picker with topLayer opens in the top layer and stays in the box', async () => {
+    await create(AppendToBodyComponent);
+    const topLayer = root().querySelectorAll<HTMLInputElement>('input')[2];
+    topLayer.click();
+    fixture.detectChanges();
+    await settle();
+    const container = topLayer.parentElement.querySelector<HTMLElement>('.md-drppicker');
+
+    expect(container.matches(':popover-open')).toBeTrue();
   });
 
   it('event log: a range click logs rangeClicked, then dateChange with the dates', async () => {

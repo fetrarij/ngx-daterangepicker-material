@@ -79,6 +79,13 @@ $input-height: 3rem !default;
   font-size: 14px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  // Undo the browser styles of a popover (topLayer). Low specificity, so the user's CSS still wins.
+  &:where([popover]) {
+    inset: auto;
+    height: auto;
+    margin: 0;
+    border: 0;
+  }
   &.double {
     width: $md-drppicker-width-double;
     // On a small screen the months wrap and stack, as before.

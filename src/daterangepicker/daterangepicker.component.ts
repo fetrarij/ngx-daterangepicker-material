@@ -304,7 +304,20 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   public rangesArray: Array<string> = [];
   // some state information
 
-  public isShown = false;
+  // Tells the directive when the picker opens or closes, also when it closes itself (Apply, a range...).
+  readonly shownChange = new EventEmitter<boolean>();
+  private isShownHolder = false;
+  get isShown(): boolean {
+    return this.isShownHolder;
+  }
+
+  set isShown(value: boolean) {
+    if (value !== this.isShownHolder) {
+      this.isShownHolder = value;
+      this.shownChange.emit(value);
+    }
+  }
+
   public inline = true;
   leftCalendar: VisibleCalendar = { month: null, calendar: [] };
   rightCalendar: VisibleCalendar = { month: null, calendar: [] };
