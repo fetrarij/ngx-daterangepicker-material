@@ -24,6 +24,8 @@ $md-drppicker-unselected-color:           #999 !default;
 $md-drppicker-unselected-border-color:    transparent !default;
 $md-drppicker-unselected-bg-color:        #fff !default;
 
+$md-drppicker-focus-color:                $md-drppicker-active-bg-color !default;
+
 $md-drppicker-width:          278px !default;
 // max-content: the width does not depend on where the calendar is placed (issue #542).
 $md-drppicker-width-double:          max-content !default;
@@ -79,6 +81,13 @@ $input-height: 3rem !default;
   font-size: 14px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+  // Shows where the keyboard is, only for keyboard users (issue #113).
+  td:focus-visible,
+  th.prev:focus-visible,
+  th.next:focus-visible {
+    outline: 2px solid $md-drppicker-focus-color;
+    outline-offset: -2px;
+  }
   // Undo the browser styles of a popover (topLayer). Low specificity, so the user's CSS still wins.
   &:where([popover]) {
     inset: auto;

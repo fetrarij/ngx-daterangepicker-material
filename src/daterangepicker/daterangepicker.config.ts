@@ -17,6 +17,9 @@ export interface LocaleConfig {
   cancelLabel?: string;
   clearLabel?: string;
   customRangeLabel?: string;
+  // Read by screen readers on the previous and next month buttons (issue #113).
+  prevMonthLabel?: string;
+  nextMonthLabel?: string;
   // Input text when allowEmptyEndDate is on and there is no end date, e.g. 'From {start}'.
   emptyEndDateLabel?: string;
   daysOfWeek?: string[];
@@ -38,6 +41,8 @@ export const DefaultLocaleConfig: LocaleConfig = {
   cancelLabel: 'Cancel',
   clearLabel: 'Clear',
   customRangeLabel: 'Custom range',
+  prevMonthLabel: 'Previous month',
+  nextMonthLabel: 'Next month',
   daysOfWeek: dayjs.weekdaysMin(),
   monthNames: dayjs.monthsShort(),
   firstDay: dayjs.localeData().firstDayOfWeek()

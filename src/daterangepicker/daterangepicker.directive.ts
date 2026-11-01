@@ -199,6 +199,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   private localeInput: LocaleConfig = {};
   private componentRef: ComponentRef<DaterangepickerComponent>;
   private position: PickerPosition;
+  private stopEscapeListener: () => void;
 
   constructor(
     public viewContainerRef: ViewContainerRef,
@@ -233,6 +234,13 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
         topLayer: this.topLayer
       })
     );
+    // Escape in the calendar closes it and gives the focus back to the input (issue #113).
+    this.stopEscapeListener = renderer.listen(this.componentRef.location.nativeElement, 'keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && this.picker.isShown) {
+        this.hide(e);
+        this.el.nativeElement.focus();
+      }
+    });
     this.picker.shownChange.subscribe((shown) => {
       if (!shown) {
         this.position.close();
@@ -341,6 +349,19 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
       this.picker.clickApply();
       this.picker.hide();
     }
+  }
+
+  // Arrow down moves the focus from the input to the calendar, and opens it if needed (issue #113).
+  @HostListener('keydown.arrowdown', ['$event'])
+  onArrowDown(e: Event): void {
+    if (this.disabled) {
+      return;
+    }
+    e.preventDefault();
+    if (!this.picker.isShown) {
+      this.open();
+    }
+    setTimeout(() => this.picker.focusCalendar());
   }
 
   // Paste, autofill and scripts change the text without a key (issue #553). The value is still applied with Enter.
@@ -457,6 +478,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   }
 
   ngOnDestroy(): void {
+    this.stopEscapeListener();
     this.position.destroy();
   }
 

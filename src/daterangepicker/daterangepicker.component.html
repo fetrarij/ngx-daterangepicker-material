@@ -36,7 +36,7 @@
     <div class="calendar" [ngClass]="{ right: singleDatePicker, left: !singleDatePicker }">
         <div class="calendar-table">
             @if (calendarVariables) {
-            <table class="table-condensed">
+            <table class="table-condensed" role="grid">
                 <thead>
                     <tr>
                         @if (showWeekNumbers) {
@@ -46,7 +46,15 @@
                         } @if ( !calendarVariables.left.minDate ||
                         (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars ||
                         true)) ) {
-                        <th (click)="clickPrev(sideEnum.left)" class="prev available"></th>
+                        <th
+                            (click)="clickPrev(sideEnum.left)"
+                            (keydown.enter)="clickPrev(sideEnum.left)"
+                            (keydown.space)="$event.preventDefault(); clickPrev(sideEnum.left)"
+                            class="prev available"
+                            role="button"
+                            tabindex="0"
+                            [attr.aria-label]="locale.prevMonthLabel"
+                        ></th>
                         } @if ( !( !calendarVariables.left.minDate ||
                         (calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && (!this.linkedCalendars ||
                         true)) ) ) {
@@ -93,7 +101,15 @@
                         @if ( (!calendarVariables.left.maxDate ||
                         calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars ||
                         singleDatePicker) ) {
-                        <th class="next available" (click)="clickNext(sideEnum.left)"></th>
+                        <th
+                            class="next available"
+                            (click)="clickNext(sideEnum.left)"
+                            (keydown.enter)="clickNext(sideEnum.left)"
+                            (keydown.space)="$event.preventDefault(); clickNext(sideEnum.left)"
+                            role="button"
+                            tabindex="0"
+                            [attr.aria-label]="locale.nextMonthLabel"
+                        ></th>
                         } @if ( !( (!calendarVariables.left.maxDate ||
                         calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars ||
                         singleDatePicker) ) ) {
@@ -116,7 +132,7 @@
                         }
                     </tr>
                 </thead>
-                <tbody class="drp-animate">
+                <tbody class="drp-animate" [drpCalendarKeyboard]="sideEnum.left" #leftGrid="drpCalendarKeyboard">
                     @for (row of calendarVariables.left.calRows; track row) {
                     <tr [class]="calendarVariables.left.classes[row].classList">
                         <!-- add week number -->
@@ -133,6 +149,11 @@
                         @for (col of calendarVariables.left.calCols; track col) {
                         <td
                             [class]="calendarVariables.left.classes[row][col]"
+                            role="gridcell"
+                            [attr.tabindex]="leftGrid.tabIndexFor(row, col)"
+                            [attr.aria-label]="leftGrid.ariaLabelFor(row, col)"
+                            [attr.aria-selected]="leftGrid.isSelected(row, col)"
+                            [attr.aria-disabled]="leftGrid.isDisabled(row, col) || null"
                             (click)="clickDate($event, sideEnum.left, row, col)"
                             (mouseenter)="hoverDate($event, sideEnum.left, row, col)"
                         >
@@ -216,7 +237,7 @@
     <div class="calendar right">
         <div class="calendar-table">
             @if (calendarVariables) {
-            <table class="table-condensed">
+            <table class="table-condensed" role="grid">
                 <thead>
                     <tr>
                         @if (showWeekNumbers) {
@@ -225,7 +246,15 @@
                         <th></th>
                         } @if ( (!calendarVariables.right.minDate ||
                         calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars ) {
-                        <th (click)="clickPrev(sideEnum.right)" class="prev available"></th>
+                        <th
+                            (click)="clickPrev(sideEnum.right)"
+                            (keydown.enter)="clickPrev(sideEnum.right)"
+                            (keydown.space)="$event.preventDefault(); clickPrev(sideEnum.right)"
+                            class="prev available"
+                            role="button"
+                            tabindex="0"
+                            [attr.aria-label]="locale.prevMonthLabel"
+                        ></th>
                         } @if ( !( (!calendarVariables.right.minDate ||
                         calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars ) ) {
                         <th></th>
@@ -271,7 +300,15 @@
                         @if ( !calendarVariables.right.maxDate ||
                         (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars ||
                         singleDatePicker || true)) ) {
-                        <th class="next available" (click)="clickNext(sideEnum.right)"></th>
+                        <th
+                            class="next available"
+                            (click)="clickNext(sideEnum.right)"
+                            (keydown.enter)="clickNext(sideEnum.right)"
+                            (keydown.space)="$event.preventDefault(); clickNext(sideEnum.right)"
+                            role="button"
+                            tabindex="0"
+                            [attr.aria-label]="locale.nextMonthLabel"
+                        ></th>
                         } @if ( !( !calendarVariables.right.maxDate ||
                         (calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars ||
                         singleDatePicker || true)) ) ) {
@@ -294,7 +331,7 @@
                         }
                     </tr>
                 </thead>
-                <tbody>
+                <tbody [drpCalendarKeyboard]="sideEnum.right" #rightGrid="drpCalendarKeyboard">
                     @for (row of calendarVariables.right.calRows; track row) {
                     <tr [class]="calendarVariables.right.classes[row].classList">
                         @if (showWeekNumbers) {
@@ -308,6 +345,11 @@
                         } @for (col of calendarVariables.right.calCols; track col) {
                         <td
                             [class]="calendarVariables.right.classes[row][col]"
+                            role="gridcell"
+                            [attr.tabindex]="rightGrid.tabIndexFor(row, col)"
+                            [attr.aria-label]="rightGrid.ariaLabelFor(row, col)"
+                            [attr.aria-selected]="rightGrid.isSelected(row, col)"
+                            [attr.aria-disabled]="rightGrid.isDisabled(row, col) || null"
                             (click)="clickDate($event, sideEnum.right, row, col)"
                             (mouseenter)="hoverDate($event, sideEnum.right, row, col)"
                         >

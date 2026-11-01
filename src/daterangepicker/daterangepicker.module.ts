@@ -4,11 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { DaterangepickerDirective } from './daterangepicker.directive';
+import { CalendarKeyboardDirective } from './calendar-keyboard.directive';
 import { LocaleConfig, LOCALE_CONFIG, LOCALE_CONFIG_SIGNAL } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 
 @NgModule({
-  declarations: [DaterangepickerComponent, DaterangepickerDirective],
+  declarations: [DaterangepickerComponent, DaterangepickerDirective, CalendarKeyboardDirective],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   providers: [],
   exports: [DaterangepickerComponent, DaterangepickerDirective]
