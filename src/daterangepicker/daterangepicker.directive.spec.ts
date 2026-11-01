@@ -1250,6 +1250,30 @@ describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', ()
     expect(Math.abs(pickerBox().right - input.getBoundingClientRect().right)).toBeLessThan(2);
   });
 
+  // A hidden or slow browser window may never run the ResizeObserver callback.
+  it('realigns after Custom range without the ResizeObserver (#385)', async () => {
+    const resizeObserver = window.ResizeObserver;
+    (window as { ResizeObserver?: typeof ResizeObserver }).ResizeObserver = undefined;
+    try {
+      await open((host) => {
+        host.opens = 'left';
+        host.inputLeft = 500;
+        host.ranges = { Today: [dayjs(), dayjs()] };
+      });
+      const custom = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('.ranges button')).find(
+        (b) => b.textContent.trim() === 'Custom range'
+      );
+      custom.click();
+      fixture.detectChanges();
+      await settle();
+
+      expect(pickerBox().width).toBeGreaterThan(400);
+      expect(Math.abs(pickerBox().right - input.getBoundingClientRect().right)).toBeLessThan(2);
+    } finally {
+      window.ResizeObserver = resizeObserver;
+    }
+  });
+
   it('stays inside the window near the right edge (#542)', async () => {
     await open((host) => (host.inputLeft = document.documentElement.clientWidth - 100));
 
