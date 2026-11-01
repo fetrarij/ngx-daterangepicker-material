@@ -7,11 +7,15 @@
  */
 
 import { chain, Rule, Tree } from '@angular-devkit/schematics';
-import { addRootImport } from '@schematics/angular/utility';
+import { addRootImport, addRootProvider } from '@schematics/angular/utility';
+import { isStandaloneApp } from '@schematics/angular/utility/ng-ast-utils';
+import { getMainFilePath } from '@schematics/angular/utility/standalone/util';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
 import {Schema} from './schema';
 
+const packageName = 'ngx-daterangepicker-material';
 const moduleName = 'NgxDaterangepickerMd';
+const providerFunction = 'provideDaterangepicker';
 
 /**
  * Scaffolds the basics of a Angular Material application, this includes:
@@ -37,6 +41,10 @@ function addDateRangePickerModule(options: any): Rule {
         if (!project) {
             throw new Error(`Project "${options.project}" not found in workspace.`);
         }
-        return addRootImport(options.project, ({ code, external }) => code`${external(moduleName, 'ngx-daterangepicker-material')}.forRoot()`);
+        const mainFilePath = await getMainFilePath(host, options.project);
+        if (isStandaloneApp(host, mainFilePath)) {
+            return addRootProvider(options.project, ({ code, external }) => code`${external(providerFunction, packageName)}()`);
+        }
+        return addRootImport(options.project, ({ code, external }) => code`${external(moduleName, packageName)}.forRoot()`);
     };
 }
