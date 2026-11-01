@@ -343,6 +343,8 @@ A value with `endDate: null` from ngModel or a form control is shown the same wa
     clearLabel: 'Clear', // detault is 'Clear'
     customRangeLabel: 'Custom range',
     emptyEndDateLabel: 'From {start}', // only with allowEmptyEndDate, default is the start date and the separator
+    prevMonthLabel: 'Previous month', // read by screen readers, since 22.6.0
+    nextMonthLabel: 'Next month', // read by screen readers, since 22.6.0
     daysOfWeek: dayjs.weekdaysMin(),
     monthNames: dayjs.monthsShort(),
     firstDay: 1 // first day is monday
@@ -569,6 +571,22 @@ input.value = '03/10/2026 - 03/12/2026';
 input.dispatchEvent(new Event('input'));
 input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
 ```
+
+### Keyboard
+
+Since 22.6.0, the calendar works with the keyboard. In the input, press the down arrow to open the calendar and move into it, or use Tab. Then:
+
+| Key | Action |
+| --- | --- |
+| Left / Right arrow | previous / next day (swapped when `direction` is `rtl`) |
+| Up / Down arrow | same day, previous / next week |
+| Home / End | first / last day of the week |
+| Page Up / Page Down | previous / next month |
+| Shift + Page Up / Page Down | previous / next year |
+| Enter or Space | choose the date, like a click |
+| Escape | close the calendar and go back to the input |
+
+The days can't go before `minDate` or after `maxDate`. A disabled day can get the focus, but Enter does nothing on it. Screen readers read the full date of each day; set `prevMonthLabel` and `nextMonthLabel` in the [locale](#locale) to translate the month buttons. To change the focus outline, style `.md-drppicker td:focus-visible` in your CSS.
 
 ## Available events
 

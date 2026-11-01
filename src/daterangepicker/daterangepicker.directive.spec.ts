@@ -2124,13 +2124,7 @@ describe('DaterangepickerDirective allowEmptyEndDate (issue #502)', () => {
 
 @Component({
   standalone: false,
-  template: `<input
-    ngxDaterangepickerMd
-    [lockEndDate]="lock"
-    [timePicker]="timePicker"
-    [autoApply]="autoApply"
-    [(ngModel)]="selected"
-  />`
+  template: `<input ngxDaterangepickerMd [lockEndDate]="lock" [timePicker]="timePicker" [autoApply]="autoApply" [(ngModel)]="selected" />`
 })
 class LockEndDateHostComponent {
   @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
@@ -2450,5 +2444,75 @@ describe('DaterangepickerDirective without ranges', () => {
     fixture.detectChanges();
 
     expect(days()).toBeGreaterThan(0);
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [(ngModel)]="selected" />`
+})
+class KeyboardInputHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  selected: TimePeriod = { startDate: dayjs('2026-11-10'), endDate: dayjs('2026-11-12') };
+}
+
+describe('DaterangepickerDirective keyboard (issue #113)', () => {
+  let fixture: ComponentFixture<KeyboardInputHostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [KeyboardInputHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  beforeEach(async () => {
+    fixture = TestBed.createComponent(KeyboardInputHostComponent);
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    input = fixture.nativeElement.querySelector('input');
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    (fixture.nativeElement as HTMLElement).remove();
+  });
+
+  const nextTask = (): Promise<void> => new Promise((resolve) => setTimeout(resolve));
+  const keydown = (target: Element, key: string): void => {
+    target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+    fixture.detectChanges();
+  };
+
+  it('opens the calendar and moves the focus to the start date with arrow down', async () => {
+    input.focus();
+    keydown(input, 'ArrowDown');
+    await nextTask();
+
+    expect(fixture.componentInstance.picker.picker.isShown).toBeTrue();
+    expect(document.activeElement.getAttribute('aria-label')).toBe('November 10, 2026');
+  });
+
+  it('closes with Escape in the calendar and gives the focus back to the input', async () => {
+    input.focus();
+    keydown(input, 'ArrowDown');
+    await nextTask();
+
+    keydown(document.activeElement, 'Escape');
+
+    expect(fixture.componentInstance.picker.picker.isShown).toBeFalse();
+    expect(document.activeElement).toBe(input);
+  });
+
+  it('keeps Apply and Cancel in the tab order', async () => {
+    input.click();
+    fixture.detectChanges();
+    await nextTask();
+    const buttons = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('.buttons button'));
+
+    expect(buttons.length).toBeGreaterThan(0);
+    expect(buttons.every((button) => button.tabIndex === 0 && !button.disabled)).toBeTrue();
   });
 });

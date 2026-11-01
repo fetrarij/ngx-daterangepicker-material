@@ -21,6 +21,7 @@ import dayjs, { type Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 import { isPlainDate, toExternalDate, toInternalDate } from './external-date';
+import { CALENDAR_PICKER } from './calendar-keyboard.directive';
 
 import localeData from 'dayjs/esm/plugin/localeData';
 import LocalizedFormat from 'dayjs/esm/plugin/localizedFormat';
@@ -160,7 +161,8 @@ interface VisibleCalendar {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DaterangepickerComponent),
       multi: true
-    }
+    },
+    { provide: CALENDAR_PICKER, useExisting: forwardRef(() => DaterangepickerComponent) }
   ]
 })
 export class DaterangepickerComponent implements OnInit, OnChanges, ControlValueAccessor {
@@ -324,6 +326,8 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   public showCalInRanges = false;
   nowHoveredDate = null;
   pickingDate = false;
+  // The date with the keyboard focus in the calendar (issue #113).
+  focusedDate: Dayjs | null = null;
   // options: any = {}; // should get some opt from user
   // protected
 
@@ -1379,11 +1383,20 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
         return;
       }
     }
+    this.selectDate(side, row, col);
+
+    // This is to cancel the blur event handler if the mouse was in one of the inputs
+    e.stopPropagation();
+  }
+
+  // Chooses the date of a cell, from a click or from the keyboard (issue #113).
+  selectDate(side: SideEnum, row: number, col: number): void {
     if (this.rangesArray.length) {
       this.chosenRange = this.locale.customRangeLabel;
     }
 
     let date = side === SideEnum.left ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+    this.focusedDate = date;
     this.keepMonthsInView = true;
 
     if (this.lockEndDate && this.endDate) {
@@ -1440,9 +1453,44 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
       this.clickApply();
     }
     this.keepMonthsInView = false;
+  }
 
-    // This is to cancel the blur event handler if the mouse was in one of the inputs
-    e.stopPropagation();
+  // Today, in the same form as the calendar dates.
+  today(): Dayjs {
+    return dayjs().utc(true);
+  }
+
+  isMonthShown(date: Dayjs): boolean {
+    const months = [this.leftCalendar.month];
+    if (!this.singleDatePicker) {
+      months.push(this.rightCalendar.month);
+    }
+    return months.some((month) => month && date.isSame(month, 'month'));
+  }
+
+  // Moves the calendars to show the month of a date the keyboard went to.
+  showMonthOf(date: Dayjs): void {
+    const month = date.clone().date(2);
+    if (this.singleDatePicker || date.isBefore(this.leftCalendar.month, 'month')) {
+      this.leftCalendar.month = month;
+      if (this.linkedCalendars && !this.singleDatePicker) {
+        this.rightCalendar.month = month.add(1, 'month');
+      }
+    } else if (date.isAfter(this.rightCalendar.month, 'month')) {
+      this.rightCalendar.month = month;
+      if (this.linkedCalendars) {
+        this.leftCalendar.month = month.subtract(1, 'month');
+      }
+    } else {
+      // Between two unlinked months.
+      this.leftCalendar.month = month;
+    }
+    this.updateCalendars();
+  }
+
+  // Gives the focus to the day that has the tab stop.
+  focusCalendar(): void {
+    this.pickerContainer.nativeElement.querySelector('td[tabindex="0"]')?.focus();
   }
 
   /**
@@ -1511,6 +1559,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     }
     this.cachedVersion.start = this.startDate.clone();
     this.cachedVersion.end = this.endDate?.clone() ?? null;
+    this.focusedDate = null;
     this.isShown = true;
     this.updateView();
   }
