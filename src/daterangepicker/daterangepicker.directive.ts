@@ -360,7 +360,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
       this.writeAppliedValue();
       this.cancelClicked.emit();
     });
-    this.picker.customRangeClicked.asObservable().subscribe(() => this.customRangeClicked.emit());
+    this.picker.customRangeClicked.asObservable().subscribe(() => {
+      this.customRangeClicked.emit();
+      // Realign once the calendars are drawn, without waiting for the ResizeObserver (issue #385).
+      setTimeout(() => {
+        if (this.picker.isShown) {
+          this.setPosition();
+        }
+      });
+    });
     this.picker.clearClicked.asObservable().subscribe(() => {
       this.clearClicked.emit();
     });
