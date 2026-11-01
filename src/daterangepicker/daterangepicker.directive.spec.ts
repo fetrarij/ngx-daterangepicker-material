@@ -7,7 +7,7 @@ import fr from 'dayjs/esm/locale/fr';
 import es from 'dayjs/esm/locale/es';
 import pt from 'dayjs/esm/locale/pt';
 
-import { NgxDaterangepickerMd } from './daterangepicker.module';
+import { NgxDaterangepickerMd, provideDaterangepicker } from './daterangepicker.module';
 import { DaterangepickerDirective } from './daterangepicker.directive';
 import { DateRanges, TimePeriod } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
@@ -1783,6 +1783,39 @@ describe('DaterangepickerDirective global config change (issue #519)', () => {
     await settle(fixture);
 
     expect(applyText(inline)).toBe('Vas-y');
+  });
+
+  describe('provideDaterangepicker (issue #624)', () => {
+    async function createWithProviders(config?: LocaleConfig | typeof source): Promise<ComponentFixture<GlobalConfigHostComponent>> {
+      TestBed.configureTestingModule({ providers: [provideDaterangepicker(config)] });
+      const fixture = TestBed.createComponent(GlobalConfigHostComponent);
+      await settle(fixture);
+      return fixture;
+    }
+
+    it('uses the default labels without a config', async () => {
+      const fixture = await createWithProviders();
+
+      expect(applyText(containers(fixture)[0])).toBe('Apply');
+    });
+
+    it('gives the config to the pickers', async () => {
+      const fixture = await createWithProviders({ applyLabel: 'OK' });
+
+      expect(applyText(containers(fixture)[0])).toBe('OK');
+    });
+
+    it('follows a signal', async () => {
+      const config = signal<LocaleConfig>({ applyLabel: 'Go' });
+      const fixture = await createWithProviders(config);
+      const plain = containers(fixture)[0];
+      expect(applyText(plain)).toBe('Go');
+
+      config.set({ applyLabel: 'Vas-y' });
+      await settle(fixture);
+
+      expect(applyText(plain)).toBe('Vas-y');
+    });
   });
 });
 

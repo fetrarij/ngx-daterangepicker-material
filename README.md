@@ -106,20 +106,22 @@ npm install ngx-daterangepicker-material
 #### Standalone apps
 
 `NgxDaterangepickerMd` is still an `NgModule` internally, but it works with standalone
-applications too. Register `NgxDaterangepickerMd.forRoot()`'s providers once with
-`importProvidersFrom` in your app config:
+applications too. Register its providers once with `provideDaterangepicker()` in your app
+config. It takes the same config as `forRoot()`, a `LocaleConfig` or a signal of one:
 
 ````typescript
 // app.config.ts
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { ApplicationConfig } from '@angular/core';
+import { provideDaterangepicker } from 'ngx-daterangepicker-material';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    importProvidersFrom(NgxDaterangepickerMd.forRoot())
+    provideDaterangepicker({ applyLabel: 'OK' })
   ]
 };
 ````
+
+`importProvidersFrom(NgxDaterangepickerMd.forRoot())` still works.
 
 Then import `NgxDaterangepickerMd` directly in any standalone component that uses the
 directive:
@@ -140,8 +142,8 @@ export class App {
 }
 ````
 
-`forRoot()` must only be called once, from `app.config.ts` — do not add it again to a
-component's own `imports` array.
+Do not add `forRoot()` to a component's own `imports` array: the providers are registered
+once, from `app.config.ts`.
 
 #### NgModule apps
 

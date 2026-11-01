@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ModuleWithProviders, NgModule, Signal, isSignal } from '@angular/core';
+import { EnvironmentProviders, ModuleWithProviders, NgModule, Signal, isSignal, makeEnvironmentProviders } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DaterangepickerComponent } from './daterangepicker.component';
@@ -27,4 +27,9 @@ export class NgxDaterangepickerMd {
       ]
     };
   }
+}
+
+// For the providers of a standalone app, in place of importProvidersFrom(NgxDaterangepickerMd.forRoot()) (issue #624).
+export function provideDaterangepicker(config: LocaleConfig | Signal<LocaleConfig> = {}): EnvironmentProviders {
+  return makeEnvironmentProviders(NgxDaterangepickerMd.forRoot(config).providers);
 }
