@@ -181,12 +181,14 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   @Input() closeOnAutoApply = true;
   // Moves the calendar to <body>, so a parent with overflow: hidden (like mat-form-field) cannot clip it (issue #565).
   @Input() appendToBody = false;
+  // Shows the calendar in the browser top layer (Popover API), above every parent and z-index. Wins over appendToBody.
+  @Input({ transform: booleanAttribute }) topLayer = false;
   @Input()
   private endKeyHolder: string;
 
   public picker: DaterangepickerComponent;
   private startKeyHolder: string;
-  private notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey', 'initialDates', 'appendToBody', 'disabled'];
+  private notForChangesProperty: Array<string> = ['locale', 'endKey', 'startKey', 'initialDates', 'appendToBody', 'topLayer', 'disabled'];
   private onChangeFn = Function.prototype;
   private onTouched = Function.prototype;
   private validatorChange = Function.prototype;
@@ -227,9 +229,15 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
       () => ({
         opens: this.opens,
         drops: this.drops,
-        appendToBody: this.appendToBody
+        appendToBody: this.appendToBody,
+        topLayer: this.topLayer
       })
     );
+    this.picker.shownChange.subscribe((shown) => {
+      if (!shown) {
+        this.position.close();
+      }
+    });
     let seenConfig = untracked(this.localeHolderService.configChanges);
     effect(() => {
       const config = this.localeHolderService.configChanges();

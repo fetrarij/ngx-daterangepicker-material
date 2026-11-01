@@ -537,10 +537,13 @@ You can use theses options:
 | opens | left, center, right | position the calendar from the input element |
 | drops | up, down, auto | position the calendar to the up or down of the input. `auto` opens it up only when it does not fit below and there is more room above |
 | appendToBody | boolean, default `false` | move the calendar to `<body>`, so a parent with `overflow: hidden` can't cut it (since 22.2.0) |
+| topLayer | boolean, default `false` | show the calendar above the whole page with the browser [Popover API](https://developer.mozilla.org/docs/Web/API/Popover_API), without moving it in the page. No parent can cut it and `z-index` does not matter. Wins over `appendToBody` (since 22.6.0) |
 
-When it opens, the calendar is kept inside the window. With `appendToBody`, it also follows the input when the page or a parent scrolls.
+When it opens, the calendar is kept inside the window. With `appendToBody` or `topLayer`, it also follows the input when the page or a parent scrolls.
 
-Inside a `mat-form-field`, the calendar can be cut by the field. Use `appendToBody`:
+With `topLayer`, the calendar stays next to the input in the page, so your CSS rules on `.md-drppicker` keep working. It closes without the closing animation. In an old browser without the Popover API, the calendar opens as if `topLayer` was not set (with `appendToBody` if you set it too).
+
+Inside a `mat-form-field`, the calendar can be cut by the field. Use `appendToBody` (or `topLayer`):
 
 ```html
 <mat-form-field>

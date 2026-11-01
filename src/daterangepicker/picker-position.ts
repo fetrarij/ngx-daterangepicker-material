@@ -6,6 +6,7 @@ export interface PickerPositionOptions {
   opens: string;
   drops: string;
   appendToBody: boolean;
+  topLayer: boolean;
 }
 
 // Places the calendar of a DaterangepickerDirective next to its input, and keeps it there while it is open.
@@ -23,23 +24,46 @@ export class PickerPosition {
     private options: () => PickerPositionOptions
   ) {}
 
-  // Puts the calendar under <body> with appendToBody, or back next to the input without it.
+  // Puts the calendar in the top layer with topLayer, under <body> with appendToBody, or next to the input.
   place(): void {
-    const { appendToBody } = this.options();
+    const container = this.container();
+    // Without the Popover API (old browsers), topLayer falls back to the behavior without it.
+    const topLayer = this.options().topLayer && typeof container.showPopover === 'function';
+    const appendToBody = this.options().appendToBody && !topLayer;
     if (appendToBody && this.host.parentNode !== this.document.body) {
       this.renderer.appendChild(this.document.body, this.host);
     } else if (!appendToBody && this.host.parentNode === this.document.body && this.element.parentNode) {
       this.renderer.insertBefore(this.element.parentNode, this.host, this.element.nextSibling);
     }
+    if (topLayer) {
+      // The top layer shows the calendar above the whole page, so no parent can clip it.
+      this.renderer.setAttribute(container, 'popover', 'manual');
+      if (!container.matches(':popover-open')) {
+        container.showPopover();
+      }
+    } else {
+      this.close();
+      this.renderer.removeAttribute(container, 'popover');
+    }
+  }
+
+  // Takes the calendar out of the top layer when it closes.
+  close(): void {
+    const container = this.container();
+    if (this.inTopLayer(container) && container.matches(':popover-open')) {
+      container.hidePopover();
+    }
   }
 
   update(): void {
-    const { opens, drops, appendToBody } = this.options();
-    const container: HTMLElement = this.picker.pickerContainer.nativeElement;
+    const { opens, drops } = this.options();
+    const container = this.container();
+    // In <body> or in the top layer, the calendar is placed in viewport coordinates.
+    const fixed = this.isFixed(container);
     // Set first: the width is measured in the final layout.
-    this.renderer.setStyle(container, 'position', appendToBody ? 'fixed' : '');
-    // The -10px margin from the styles assumes the in-flow position; with appendToBody, start right under the input.
-    this.renderer.setStyle(container, 'margin-top', appendToBody ? '0' : '');
+    this.renderer.setStyle(container, 'position', fixed ? 'fixed' : '');
+    // The -10px margin from the styles assumes the in-flow position; when fixed, start right under the input.
+    this.renderer.setStyle(container, 'margin-top', fixed ? '0' : '');
     // Viewport coordinates: they stay right when a parent is scrolled (issue #466).
     const input = this.element.getBoundingClientRect();
     const width = container.offsetWidth;
@@ -71,17 +95,17 @@ export class PickerPosition {
     let top: number | null = null;
     if (dropsUp) {
       top = input.top - container.offsetHeight;
-    } else if (appendToBody) {
+    } else if (fixed) {
       top = input.bottom;
     }
 
-    const origin = this.containerOrigin(container, appendToBody);
+    const origin = this.containerOrigin(container, fixed);
     this.renderer.setStyle(container, 'top', top === null ? 'auto' : top - origin.y + 'px');
     this.renderer.setStyle(container, 'left', left - origin.x + 'px');
     this.renderer.setStyle(container, 'right', 'auto');
   }
 
-  // While open, follow size changes (Custom range, issue #385) and, with appendToBody, scrolling.
+  // While open, follow size changes (Custom range, issue #385) and, when fixed, scrolling.
   watch(): void {
     this.unwatch();
     const view = this.document.defaultView;
@@ -93,9 +117,9 @@ export class PickerPosition {
       const update = (): void => (this.picker.isShown ? this.update() : this.unwatch());
       if (typeof view.ResizeObserver !== 'undefined') {
         this.resizeObserver = new view.ResizeObserver(update);
-        this.resizeObserver.observe(this.picker.pickerContainer.nativeElement);
+        this.resizeObserver.observe(this.container());
       }
-      if (this.options().appendToBody) {
+      if (this.isFixed(this.container())) {
         // Capture also catches the scroll of any parent, not only of the page.
         view.addEventListener('scroll', update, true);
         view.addEventListener('resize', update);
@@ -117,9 +141,23 @@ export class PickerPosition {
   // Stops watching and removes the calendar from <body>, where Angular would not remove it.
   destroy(): void {
     this.unwatch();
+    this.close();
     if (this.host.parentNode === this.document.body) {
       this.renderer.removeChild(this.document.body, this.host);
     }
+  }
+
+  private container(): HTMLElement {
+    return this.picker.pickerContainer.nativeElement;
+  }
+
+  // place() sets the popover attribute only when the browser has the Popover API.
+  private inTopLayer(container: HTMLElement): boolean {
+    return container.hasAttribute('popover');
+  }
+
+  private isFixed(container: HTMLElement): boolean {
+    return this.inTopLayer(container) || this.options().appendToBody;
   }
 
   // With drops="auto", open up when the calendar does not fit below the input and there is more room above (issue #136).
@@ -129,8 +167,8 @@ export class PickerPosition {
   }
 
   // Where the calendar's containing block starts, in viewport coordinates, so top and left can be converted to it.
-  private containerOrigin(container: HTMLElement, appendToBody: boolean): { x: number; y: number } {
-    if (appendToBody) {
+  private containerOrigin(container: HTMLElement, fixed: boolean): { x: number; y: number } {
+    if (fixed) {
       return { x: 0, y: 0 };
     }
     const view = this.document.defaultView;

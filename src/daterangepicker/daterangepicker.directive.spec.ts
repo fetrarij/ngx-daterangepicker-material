@@ -1153,6 +1153,7 @@ describe('DaterangepickerDirective keyboard and closing (issues #399, #172, #450
         [drops]="drops"
         [ranges]="ranges"
         [appendToBody]="appendToBody"
+        [topLayer]="topLayer"
         [showCustomRangeLabel]="true"
         style="width: 200px"
       />
@@ -1166,6 +1167,7 @@ class PositionHostComponent {
   drops = 'down';
   ranges = {};
   appendToBody = false;
+  topLayer = false;
   scroll = false;
   inputLeft = 0;
   inputTop = 0;
@@ -1363,6 +1365,114 @@ describe('DaterangepickerDirective position (issues #466, #385, #542, #565)', ()
     const hit = document.elementFromPoint(box.left + box.width / 2, box.bottom - 20);
 
     expect(fixture.componentInstance.picker.picker.pickerContainer.nativeElement.contains(hit)).toBeTrue();
+  });
+
+  describe('with topLayer', () => {
+    const container = (): HTMLElement => fixture.componentInstance.picker.picker.pickerContainer.nativeElement;
+    const isOpen = (): boolean => container().matches(':popover-open');
+
+    it('shows the calendar in the top layer, under the input, without moving it in the DOM', async () => {
+      await open((host) => (host.topLayer = true));
+
+      expect(isOpen()).toBeTrue();
+      expect(container().parentElement.parentElement).toBe(input.parentElement);
+      expect(Math.abs(pickerBox().left - input.getBoundingClientRect().left)).toBeLessThan(2);
+      expect(Math.abs(pickerBox().top - input.getBoundingClientRect().bottom)).toBeLessThan(2);
+    });
+
+    it('is not clipped by a parent with overflow hidden and a transform (#565)', async () => {
+      await open((host) => (host.topLayer = true));
+      const frame: HTMLElement = fixture.nativeElement.querySelector('.frame');
+      // Like the mat-form-field wrapper, plus a transform that breaks position: fixed without the top layer.
+      frame.style.position = 'relative';
+      frame.style.overflow = 'hidden';
+      frame.style.height = '40px';
+      frame.style.transform = 'translateX(20px)';
+      // Moving a parent fires no event: place it again, as on the next opening.
+      fixture.componentInstance.picker.setPosition();
+      await settle();
+
+      const box = pickerBox();
+      const hit = document.elementFromPoint(box.left + box.width / 2, box.bottom - 20);
+
+      expect(container().contains(hit)).toBeTrue();
+      expect(Math.abs(box.left - input.getBoundingClientRect().left)).toBeLessThan(2);
+      expect(Math.abs(box.top - input.getBoundingClientRect().bottom)).toBeLessThan(2);
+    });
+
+    it('follows the input when a parent scrolls', async () => {
+      await open((host) => {
+        host.topLayer = true;
+        host.scroll = true;
+        host.inputLeft = 600;
+      });
+      const frame: HTMLElement = fixture.nativeElement.querySelector('.frame');
+      frame.scrollLeft = 450;
+      // The browser sends scroll events with the next frame, which a background test window may not draw.
+      frame.dispatchEvent(new Event('scroll'));
+      await settleUntil(() => Math.abs(pickerBox().left - input.getBoundingClientRect().left) < 2);
+
+      expect(Math.abs(pickerBox().left - input.getBoundingClientRect().left)).toBeLessThan(2);
+    });
+
+    it('opens above the input with drops="auto" near the bottom of the window (#136)', async () => {
+      await open((host) => {
+        host.topLayer = true;
+        host.drops = 'auto';
+        host.inputTop = document.documentElement.clientHeight - 60;
+      });
+      const gap = input.getBoundingClientRect().top - pickerBox().bottom;
+
+      expect(gap).toBeGreaterThanOrEqual(-1);
+      expect(gap).toBeLessThan(2);
+      expect(container().classList.contains('drops-up-right')).toBeTrue();
+    });
+
+    it('leaves the top layer when it closes, also when the calendar closes itself', async () => {
+      await open((host) => {
+        host.topLayer = true;
+        host.ranges = { Today: [dayjs(), dayjs()] };
+      });
+
+      // A range closes the calendar from inside the component.
+      const today = Array.from(container().querySelectorAll<HTMLButtonElement>('.ranges button')).find(
+        (b) => b.textContent.trim() === 'Today'
+      );
+      today.click();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.picker.picker.isShown).toBeFalse();
+      expect(isOpen()).toBeFalse();
+
+      input.click();
+      fixture.detectChanges();
+      await settle();
+
+      expect(isOpen()).toBeTrue();
+
+      // A click outside closes it too.
+      document.body.click();
+      fixture.detectChanges();
+
+      expect(isOpen()).toBeFalse();
+    });
+
+    it('keeps the behavior without topLayer in a browser without the Popover API', async () => {
+      const showPopover = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'showPopover');
+      delete (HTMLElement.prototype as { showPopover?: unknown }).showPopover;
+      try {
+        await open((host) => {
+          host.topLayer = true;
+          host.appendToBody = true;
+        });
+
+        expect(container().hasAttribute('popover')).toBeFalse();
+        expect(container().parentElement.parentElement).toBe(document.body);
+        expect(Math.abs(pickerBox().top - input.getBoundingClientRect().bottom)).toBeLessThan(2);
+      } finally {
+        Object.defineProperty(HTMLElement.prototype, 'showPopover', showPopover);
+      }
+    });
   });
 });
 
