@@ -2128,7 +2128,7 @@ describe('DaterangepickerDirective exportAs (issue #607)', () => {
   template: `<input class="first" ngxDaterangepickerMd #first="ngxDaterangepickerMd" [(ngModel)]="firstValue" />
     <input class="second" ngxDaterangepickerMd #second="ngxDaterangepickerMd" [(ngModel)]="secondValue" />
     <button class="ngx-daterangepicker-action open-second" type="button" (click)="second.open()">Open</button>
-    <button class="ngx-daterangepicker-action clear-first" type="button" (click)="first.clear()">Clear</button>`
+    <button class="ngx-daterangepicker-action other-action" type="button">Other</button>`
 })
 class TwoActionPickersHostComponent {
   @ViewChild('first', { static: true }) first: DaterangepickerDirective;
@@ -2174,7 +2174,7 @@ describe('DaterangepickerDirective action element with two pickers (issue #623)'
     click('.first');
     await nextTask();
 
-    click('.clear-first');
+    click('.other-action');
 
     expect(fixture.componentInstance.first.picker.isShown).toBeTrue();
   });
@@ -2185,7 +2185,7 @@ describe('DaterangepickerDirective action element with two pickers (issue #623)'
     click('.first');
     await nextTask();
 
-    click('.clear-first');
+    click('.other-action');
 
     expect(fixture.componentInstance.first.picker.isShown).toBeTrue();
     expect(fixture.componentInstance.second.picker.isShown).toBeFalse();
