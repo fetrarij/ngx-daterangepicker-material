@@ -15,13 +15,14 @@ async function createApp(runner: SchematicTestRunner, standalone: boolean): Prom
 }
 
 describe('ng-add', () => {
-    it('adds NgxDaterangepickerMd.forRoot() to a standalone app', async () => {
+    it('adds provideDaterangepicker() to a standalone app', async () => {
         const runner = new SchematicTestRunner('ngx-daterangepicker-material', collectionPath);
         const app = await createApp(runner, true);
         const tree = await runner.runSchematic('ng-add', { project: 'app' }, app);
         const config = tree.readText('/projects/app/src/app/app.config.ts');
-        assert.match(config, /import \{ NgxDaterangepickerMd \} from 'ngx-daterangepicker-material';/);
-        assert.match(config, /importProvidersFrom\(NgxDaterangepickerMd\.forRoot\(\)\)/);
+        assert.match(config, /import \{ provideDaterangepicker \} from 'ngx-daterangepicker-material';/);
+        assert.match(config, /providers: \[[^\]]*provideDaterangepicker\(\)/);
+        assert.doesNotMatch(config, /NgxDaterangepickerMd|importProvidersFrom/);
     });
 
     it('adds NgxDaterangepickerMd.forRoot() to an NgModule app', async () => {
