@@ -30,6 +30,7 @@ import dayjs, { Dayjs } from 'dayjs/esm';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 import { isPlainDate, parseDate, toExternalDate, toInternalDate } from './external-date';
+import { PickerPosition } from './picker-position';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
@@ -195,19 +196,18 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   // The [locale] input as given; the global config is merged in when read, so it can change (issue #519).
   private localeInput: LocaleConfig = {};
   private componentRef: ComponentRef<DaterangepickerComponent>;
-  private resizeObserver: ResizeObserver | null = null;
-  private stopWindowListeners: (() => void) | null = null;
+  private position: PickerPosition;
 
   constructor(
     public viewContainerRef: ViewContainerRef,
     public ref: ChangeDetectorRef,
     private el: ElementRef,
-    private renderer: Renderer2,
+    renderer: Renderer2,
     private differs: KeyValueDiffers,
     private localeHolderService: LocaleService,
     private elementRef: ElementRef,
-    private zone: NgZone,
-    @Inject(DOCUMENT) private document: Document
+    zone: NgZone,
+    @Inject(DOCUMENT) document: Document
   ) {
     this.endKey = 'endDate';
     this.startKey = 'startDate';
@@ -217,6 +217,19 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     this.componentRef = viewContainerRef.createComponent(DaterangepickerComponent);
     this.picker = this.componentRef.instance as DaterangepickerComponent;
     this.picker.inline = false; // set inline to false for all directive usage
+    this.position = new PickerPosition(
+      document,
+      renderer,
+      zone,
+      el.nativeElement,
+      this.componentRef.location.nativeElement,
+      this.picker,
+      () => ({
+        opens: this.opens,
+        drops: this.drops,
+        appendToBody: this.appendToBody
+      })
+    );
     let seenConfig = untracked(this.localeHolderService.configChanges);
     effect(() => {
       const config = this.localeHolderService.configChanges();
@@ -333,7 +346,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     if (this.disabled) {
       return;
     }
-    this.placePickerHost();
+    this.position.place();
     this.picker.show(event);
     DaterangepickerDirective.openedByCurrentClick = this;
     setTimeout(() => {
@@ -341,7 +354,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
         DaterangepickerDirective.openedByCurrentClick = null;
       }
       this.setPosition();
-      this.watchPosition();
+      this.position.watch();
     });
   }
 
@@ -436,11 +449,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   }
 
   ngOnDestroy(): void {
-    this.unwatchPosition();
-    const host = this.componentRef.location.nativeElement;
-    if (host.parentNode === this.document.body) {
-      this.renderer.removeChild(this.document.body, host);
-    }
+    this.position.destroy();
   }
 
   toggle(e?: Event): void {
@@ -490,124 +499,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
    * Set position of the calendar
    */
   setPosition(): void {
-    const container: HTMLElement = this.picker.pickerContainer.nativeElement;
-    const element: HTMLElement = this.el.nativeElement;
-    // Set first: the width is measured in the final layout.
-    this.renderer.setStyle(container, 'position', this.appendToBody ? 'fixed' : '');
-    // The -10px margin from the styles assumes the in-flow position; with appendToBody, start right under the input.
-    this.renderer.setStyle(container, 'margin-top', this.appendToBody ? '0' : '');
-    // Viewport coordinates: they stay right when a parent is scrolled (issue #466).
-    const input = element.getBoundingClientRect();
-    const width = container.offsetWidth;
-    // Align with the border box: clientWidth leaves out the input borders.
-    let left: number;
-    if (this.opens === 'left') {
-      left = input.right - width;
-    } else if (this.opens === 'center') {
-      left = input.left + input.width / 2 - width / 2;
-    } else if (this.opens === 'right') {
-      left = input.left;
-    } else {
-      left = input.left + input.width / 2 - width / 2;
-      if (left < 0) {
-        left = input.left;
-      }
-    }
-    // Keep the calendar inside the window (issue #542).
-    const viewportWidth = this.document.documentElement.clientWidth;
-    left = Math.max(0, Math.min(left, viewportWidth - width));
-
-    const dropsUp = this.drops === 'up' || (this.drops === 'auto' && this.lacksRoomBelow(input, container));
-    if (this.drops === 'auto') {
-      // The template class says "auto": set the real direction for the opening animation.
-      this.renderer[dropsUp ? 'addClass' : 'removeClass'](container, `drops-up-${this.opens}`);
-      this.renderer[dropsUp ? 'removeClass' : 'addClass'](container, `drops-down-${this.opens}`);
-    }
-
-    let top: number | null = null;
-    if (dropsUp) {
-      top = input.top - container.offsetHeight;
-    } else if (this.appendToBody) {
-      top = input.bottom;
-    }
-
-    const origin = this.containerOrigin(container);
-    this.renderer.setStyle(container, 'top', top === null ? 'auto' : top - origin.y + 'px');
-    this.renderer.setStyle(container, 'left', left - origin.x + 'px');
-    this.renderer.setStyle(container, 'right', 'auto');
-  }
-
-  // With drops="auto", open up when the calendar does not fit below the input and there is more room above (issue #136).
-  private lacksRoomBelow(input: DOMRect, container: HTMLElement): boolean {
-    const below = this.document.documentElement.clientHeight - input.bottom;
-    return container.offsetHeight > below && input.top > below;
-  }
-
-  // Where the calendar's containing block starts, in viewport coordinates, so top and left can be converted to it.
-  private containerOrigin(container: HTMLElement): { x: number; y: number } {
-    if (this.appendToBody) {
-      return { x: 0, y: 0 };
-    }
-    const view = this.document.defaultView;
-    for (let parent = container.parentElement; parent; parent = parent.parentElement) {
-      const style = view.getComputedStyle(parent);
-      if (style.position !== 'static' || style.transform !== 'none') {
-        if (parent === this.document.body || parent === this.document.documentElement) {
-          break;
-        }
-        const rect = parent.getBoundingClientRect();
-        return {
-          x: rect.left + parent.clientLeft - parent.scrollLeft,
-          y: rect.top + parent.clientTop - parent.scrollTop
-        };
-      }
-    }
-    // No positioned parent: the calendar is placed relative to the page.
-    return { x: -view.scrollX, y: -view.scrollY };
-  }
-
-  // Puts the calendar under <body> with appendToBody, or back next to the input without it.
-  private placePickerHost(): void {
-    const host = this.componentRef.location.nativeElement;
-    const element = this.el.nativeElement;
-    if (this.appendToBody && host.parentNode !== this.document.body) {
-      this.renderer.appendChild(this.document.body, host);
-    } else if (!this.appendToBody && host.parentNode === this.document.body && element.parentNode) {
-      this.renderer.insertBefore(element.parentNode, host, element.nextSibling);
-    }
-  }
-
-  // While open, follow size changes (Custom range, issue #385) and, with appendToBody, scrolling.
-  private watchPosition(): void {
-    this.unwatchPosition();
-    const view = this.document.defaultView;
-    if (!this.picker.isShown || !view) {
-      return;
-    }
-    // Outside Angular: moving the calendar needs no change detection.
-    this.zone.runOutsideAngular(() => {
-      const update = (): void => (this.picker.isShown ? this.setPosition() : this.unwatchPosition());
-      if (typeof view.ResizeObserver !== 'undefined') {
-        this.resizeObserver = new view.ResizeObserver(update);
-        this.resizeObserver.observe(this.picker.pickerContainer.nativeElement);
-      }
-      if (this.appendToBody) {
-        // Capture also catches the scroll of any parent, not only of the page.
-        view.addEventListener('scroll', update, true);
-        view.addEventListener('resize', update);
-        this.stopWindowListeners = () => {
-          view.removeEventListener('scroll', update, true);
-          view.removeEventListener('resize', update);
-        };
-      }
-    });
-  }
-
-  private unwatchPosition(): void {
-    this.resizeObserver?.disconnect();
-    this.resizeObserver = null;
-    this.stopWindowListeners?.();
-    this.stopWindowListeners = null;
+    this.position.update();
   }
 
   // Shows a valid typed date range in the calendar. Returns false when the text is not a valid date.
