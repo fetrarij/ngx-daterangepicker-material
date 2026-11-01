@@ -89,8 +89,9 @@ What you may notice when you move from 6.x to 22.x (details in the [release note
 ng add ngx-daterangepicker-material
 ```
 
-It installs the package and registers `NgxDaterangepickerMd.forRoot()` for you: in
-`app.config.ts` for a standalone app, or in your root `NgModule`. Available since v22.1.3.
+It installs the package and registers the providers for you: `provideDaterangepicker()` in
+`app.config.ts` for a standalone app, or `NgxDaterangepickerMd.forRoot()` in your root
+`NgModule`. Available since v22.1.3.
 
 Then import `NgxDaterangepickerMd` and `FormsModule` in the component that uses the picker
 (see the component example below).
@@ -368,19 +369,19 @@ Dates typed in the input are read with `format` and the month names of this loca
 
 #### Global locale
 
-To set the locale for every picker of the app, pass it to `NgxDaterangepickerMd.forRoot()`. In a standalone app:
+To set the locale for every picker of the app, pass it to `provideDaterangepicker()` in a standalone app:
 
 ```typescript
 // app.config.ts
 providers: [
-  importProvidersFrom(NgxDaterangepickerMd.forRoot({
+  provideDaterangepicker({
     separator: ' - ',
     applyLabel: 'Okay',
-  }))
+  })
 ]
 ```
 
-In an NgModule app:
+In an NgModule app, pass it to `NgxDaterangepickerMd.forRoot()`:
 
 ```typescript
 @NgModule({
