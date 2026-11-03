@@ -90,8 +90,8 @@ ng add ngx-daterangepicker-material
 ```
 
 It installs the package and registers the providers for you: `provideDaterangepicker()` in
-`app.config.ts` for a standalone app, or `NgxDaterangepickerMd.forRoot()` in your root
-`NgModule`. Available since v22.1.3.
+`app.config.ts` for a standalone app (since 22.6.0; before, `importProvidersFrom(NgxDaterangepickerMd.forRoot())`),
+or `NgxDaterangepickerMd.forRoot()` in your root `NgModule`. Available since v22.1.3.
 
 Then import `NgxDaterangepickerMd` and `FormsModule` in the component that uses the picker
 (see the component example below).
@@ -107,8 +107,8 @@ npm install ngx-daterangepicker-material
 #### Standalone apps
 
 `NgxDaterangepickerMd` is still an `NgModule` internally, but it works with standalone
-applications too. Register its providers once with `provideDaterangepicker()` in your app
-config. It takes the same config as `forRoot()`, a `LocaleConfig` or a signal of one:
+applications too. Register its providers once with `provideDaterangepicker()` (since 22.6.0) in
+your app config. It takes the same config as `forRoot()`, a `LocaleConfig` or a signal of one:
 
 ````typescript
 // app.config.ts
@@ -122,7 +122,7 @@ export const appConfig: ApplicationConfig = {
 };
 ````
 
-`importProvidersFrom(NgxDaterangepickerMd.forRoot())` still works.
+`importProvidersFrom(NgxDaterangepickerMd.forRoot())` still works, and is what to use before 22.6.0.
 
 Then import `NgxDaterangepickerMd` directly in any standalone component that uses the
 directive:
@@ -371,7 +371,7 @@ Dates typed in the input are read with `format` and the month names of this loca
 
 #### Global locale
 
-To set the locale for every picker of the app, pass it to `provideDaterangepicker()` in a standalone app:
+To set the locale for every picker of the app, pass it to `provideDaterangepicker()` (since 22.6.0) in a standalone app:
 
 ```typescript
 // app.config.ts
@@ -402,7 +402,7 @@ In an NgModule app, pass it to `NgxDaterangepickerMd.forRoot()`:
 
 #### Change the global locale at runtime
 
-Since 22.2.0, call `LocaleService.setConfig()`. It replaces the config given to `forRoot()`, and the pickers already on the page are redrawn. A `[locale]` set on one picker still wins over it.
+Since 22.2.0, call `LocaleService.setConfig()`. It replaces the config given to `provideDaterangepicker()` or `forRoot()`, and the pickers already on the page are redrawn. A `[locale]` set on one picker still wins over it.
 
 ```typescript
 import { LocaleService } from 'ngx-daterangepicker-material';
@@ -417,13 +417,13 @@ export class LanguageSwitcher {
 }
 ```
 
-You can also give a signal to `forRoot()`. The pickers follow it:
+You can also give a signal to `provideDaterangepicker()` (since 22.6.0) or `forRoot()`. The pickers follow it:
 
 ```typescript
 // app.config.ts
 export const pickerConfig = signal<LocaleConfig>({ applyLabel: 'Okay' });
 
-providers: [importProvidersFrom(NgxDaterangepickerMd.forRoot(pickerConfig))]
+providers: [provideDaterangepicker(pickerConfig)]
 
 // later
 pickerConfig.set({ applyLabel: 'Valider' });
