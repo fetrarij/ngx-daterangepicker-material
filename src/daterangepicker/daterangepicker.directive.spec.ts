@@ -838,6 +838,16 @@ describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416
     expect(view()).toEqual([month(-1), month(0)]);
   });
 
+  it('hides the left next control when unlinked months are adjacent (#635)', async () => {
+    await open({ linkedCalendars: false });
+
+    expect(view()[1]).toBe(month(1)); // right is one month ahead of left
+    const leftNext = (fixture.nativeElement as HTMLElement).querySelector('.calendar.left th.next');
+    expect(leftNext).toBeNull();
+    const rightPrev = (fixture.nativeElement as HTMLElement).querySelector('.calendar.right th.prev');
+    expect(rightPrev).toBeNull();
+  });
+
   it('opens on the minDate month when minDate is in a later month (#277)', async () => {
     await open({ minDate: today.add(3, 'month').startOf('month') });
 

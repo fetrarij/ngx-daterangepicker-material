@@ -99,8 +99,8 @@
                             }
                         </th>
                         @if ( (!calendarVariables.left.maxDate ||
-                        calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars ||
-                        singleDatePicker) ) {
+                        calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (singleDatePicker ||
+                        (!linkedCalendars && leftCalendar.month.clone().add(1, 'month').isBefore(rightCalendar.month, 'month'))) ) {
                         <th
                             class="next available"
                             (click)="clickNext(sideEnum.left)"
@@ -111,8 +111,8 @@
                             [attr.aria-label]="locale.nextMonthLabel"
                         ></th>
                         } @if ( !( (!calendarVariables.left.maxDate ||
-                        calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars ||
-                        singleDatePicker) ) ) {
+                        calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (singleDatePicker ||
+                        (!linkedCalendars && leftCalendar.month.clone().add(1, 'month').isBefore(rightCalendar.month, 'month'))) ) ) {
                         <th></th>
                         }
                     </tr>
@@ -245,7 +245,8 @@
                         } @if (showISOWeekNumbers) {
                         <th></th>
                         } @if ( (!calendarVariables.right.minDate ||
-                        calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars ) {
+                        calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars &&
+                        rightCalendar.month.clone().subtract(1, 'month').isAfter(leftCalendar.month, 'month') ) {
                         <th
                             (click)="clickPrev(sideEnum.right)"
                             (keydown.enter)="clickPrev(sideEnum.right)"
@@ -256,7 +257,8 @@
                             [attr.aria-label]="locale.prevMonthLabel"
                         ></th>
                         } @if ( !( (!calendarVariables.right.minDate ||
-                        calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars ) ) {
+                        calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars &&
+                        rightCalendar.month.clone().subtract(1, 'month').isAfter(leftCalendar.month, 'month') ) ) {
                         <th></th>
                         }
                         <th colspan="5" class="month">
