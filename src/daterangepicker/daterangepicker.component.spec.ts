@@ -501,8 +501,8 @@ describe('DaterangepickerComponent isTooltipDate (issue #641)', () => {
     expect(titleOfDay10(() => 'busy day')).toBe('busy day');
   });
 
-  it('shows a generic text when it returns true', () => {
-    expect(titleOfDay10(() => true)).toBeTruthy();
+  it('shows no title when it returns true', () => {
+    expect(titleOfDay10(() => true)).toBeNull();
   });
 
   it('shows no title when it returns false or null', () => {

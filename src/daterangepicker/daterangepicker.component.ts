@@ -1919,12 +1919,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
         }
         // apply custom tooltip for this date
         const isTooltip = this.isTooltipDate(calendar[row][col]);
-        if (isTooltip) {
-          if (typeof isTooltip === 'string') {
-            this.calendarVariables[side].tooltiptext[row][col] = isTooltip; // setting tooltiptext for custom date
-          } else {
-            this.calendarVariables[side].tooltiptext[row][col] = 'Put the tooltip as the returned value of isTooltipDate';
-          }
+        // Only a non-empty string is shown as the day cell title; booleans are ignored.
+        if (typeof isTooltip === 'string' && isTooltip.length > 0) {
+          this.calendarVariables[side].tooltiptext[row][col] = isTooltip;
         } else {
           this.calendarVariables[side].tooltiptext[row][col] = '';
         }
