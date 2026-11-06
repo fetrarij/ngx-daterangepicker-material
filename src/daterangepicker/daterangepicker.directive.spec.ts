@@ -2260,6 +2260,229 @@ describe('DaterangepickerDirective lockEndDate (issue #606)', () => {
 
 @Component({
   standalone: false,
+  template: `<input ngxDaterangepickerMd [dateLimit]="limit" [(ngModel)]="selected" />`
+})
+class DateLimitHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  limit: number = null;
+  selected: TimePeriod = { startDate: dayjs().date(10), endDate: dayjs().date(20) };
+}
+
+describe('DaterangepickerDirective dateLimit (issue #639)', () => {
+  let fixture: ComponentFixture<DateLimitHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [DateLimitHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  async function open(limit: number): Promise<void> {
+    fixture = TestBed.createComponent(DateLimitHostComponent);
+    fixture.componentInstance.limit = limit;
+    fixture.componentInstance.selected = { startDate: dayjs().date(10), endDate: dayjs().date(20) };
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('input').click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function clickDay(day: number): void {
+    const cell = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.md-drppicker.shown .calendar.left td.available:not(.off)')
+    ).find((td) => td.textContent.trim() === String(day));
+    cell.click();
+    fixture.detectChanges();
+  }
+
+  // A day number in the 8..22 range identifies exactly one cell per calendar, whatever the month.
+  function isOff(side: 'left' | 'right', day: number): boolean {
+    const cells = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>(`.md-drppicker.shown .calendar.${side} td`)
+    ).filter((td) => td.textContent.trim() === String(day));
+    return cells.length > 0 && cells.every((td) => td.classList.contains('off'));
+  }
+
+  it('greys out the days after start + dateLimit once the start is picked', async () => {
+    await open(5);
+    clickDay(10);
+
+    expect(fixture.componentInstance.picker.picker.endDate).toBeNull();
+    expect(isOff('left', 15)).toBeFalse();
+    expect(isOff('left', 16)).toBeTrue();
+    // The next month is entirely beyond the limit.
+    expect(isOff('right', 5)).toBeTrue();
+  });
+
+  it('leaves the days after the start available without a limit', async () => {
+    await open(null);
+    clickDay(10);
+
+    expect(isOff('left', 16)).toBeFalse();
+    expect(isOff('right', 5)).toBeFalse();
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [customRangeDirection]="custom" [(ngModel)]="selected" />`
+})
+class CustomRangeDirectionHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  custom = false;
+  selected: TimePeriod = { startDate: dayjs().date(10), endDate: dayjs().date(20) };
+}
+
+describe('DaterangepickerDirective customRangeDirection (issue #639)', () => {
+  let fixture: ComponentFixture<CustomRangeDirectionHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [CustomRangeDirectionHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  async function open(custom: boolean): Promise<void> {
+    fixture = TestBed.createComponent(CustomRangeDirectionHostComponent);
+    fixture.componentInstance.custom = custom;
+    fixture.componentInstance.selected = { startDate: dayjs().date(10), endDate: dayjs().date(20) };
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('input').click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function clickDay(day: number): void {
+    const cell = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.md-drppicker.shown .calendar.left td.available:not(.off)')
+    ).find((td) => td.textContent.trim() === String(day));
+    cell.click();
+    fixture.detectChanges();
+  }
+
+  async function apply(): Promise<void> {
+    fixture.componentInstance.picker.picker.clickApply(new MouseEvent('click'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+  }
+
+  const day = (d: number): string => dayjs().date(d).format('YYYY-MM-DD');
+  const selectedDays = (): string[] => {
+    const selected = fixture.componentInstance.selected;
+    return [selected.startDate.format('YYYY-MM-DD'), selected.endDate.format('YYYY-MM-DD')];
+  };
+
+  it('keeps the earlier day as end when the end was picked first', async () => {
+    await open(true);
+    clickDay(25); // picks the start only
+    clickDay(5); // earlier than the start: becomes the end, the start moves back
+    await apply();
+
+    expect(selectedDays()).toEqual([day(5), day(25)]);
+  });
+
+  it('moves the start date on the second click when the option is off', async () => {
+    await open(false);
+    clickDay(25);
+    clickDay(5);
+
+    const picker = fixture.componentInstance.picker.picker;
+    expect(picker.startDate.format('YYYY-MM-DD')).toBe(day(5));
+    expect(picker.endDate).toBeNull();
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [lockStartDate]="lock" [(ngModel)]="selected" />`
+})
+class LockStartDateHostComponent {
+  @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
+  lock = false;
+  selected: TimePeriod = { startDate: dayjs().date(10), endDate: dayjs().date(20) };
+}
+
+describe('DaterangepickerDirective lockStartDate (issue #639)', () => {
+  let fixture: ComponentFixture<LockStartDateHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [LockStartDateHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.componentInstance.picker.hide());
+
+  async function open(lock: boolean): Promise<void> {
+    fixture = TestBed.createComponent(LockStartDateHostComponent);
+    fixture.componentInstance.lock = lock;
+    fixture.componentInstance.selected = { startDate: dayjs().date(10), endDate: dayjs().date(20) };
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('input').click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function clickDay(day: number): void {
+    const cell = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.md-drppicker.shown .calendar.left td.available:not(.off)')
+    ).find((td) => td.textContent.trim() === String(day));
+    cell.click();
+    fixture.detectChanges();
+  }
+
+  async function apply(): Promise<void> {
+    fixture.componentInstance.picker.picker.clickApply(new MouseEvent('click'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+  }
+
+  const day = (d: number): string => dayjs().date(d).format('YYYY-MM-DD');
+  const selectedDays = (): string[] => {
+    const selected = fixture.componentInstance.selected;
+    return [selected.startDate.format('YYYY-MM-DD'), selected.endDate.format('YYYY-MM-DD')];
+  };
+
+  it('changes only the end date on a click after the start date', async () => {
+    await open(true);
+    clickDay(25);
+
+    const picker = fixture.componentInstance.picker.picker;
+    expect(picker.startDate.format('YYYY-MM-DD')).toBe(day(10));
+    expect(picker.endDate.format('YYYY-MM-DD')).toBe(day(25));
+    await apply();
+
+    expect(selectedDays()).toEqual([day(10), day(25)]);
+  });
+
+  it('moves the start date with the option off', async () => {
+    await open(false);
+    clickDay(25);
+
+    const picker = fixture.componentInstance.picker.picker;
+    expect(picker.startDate.format('YYYY-MM-DD')).toBe(day(25));
+    expect(picker.endDate).toBeNull();
+  });
+});
+
+@Component({
+  standalone: false,
   template: `<input ngxDaterangepickerMd #picker="ngxDaterangepickerMd" [(ngModel)]="selected" />
     <button class="ngx-daterangepicker-action open-button" type="button" (click)="picker.open()">Open</button>`
 })
