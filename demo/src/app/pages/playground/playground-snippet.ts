@@ -16,6 +16,8 @@ const booleanInputs: BooleanOption[] = [
   'showISOWeekNumbers',
   'showCancel',
   'showClearButton',
+  'appendToBody',
+  'topLayer',
   'alwaysShowCalendars',
   'showCustomRangeLabel',
   'showRangeLabelOnInput',

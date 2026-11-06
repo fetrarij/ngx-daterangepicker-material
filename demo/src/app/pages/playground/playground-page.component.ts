@@ -78,6 +78,7 @@ export class PlaygroundPageComponent {
       ]
     },
     { label: 'Display', toggles: ['showDropdowns', 'showWeekNumbers', 'showISOWeekNumbers', 'showCancel', 'showClearButton'] },
+    { label: 'Position', toggles: ['appendToBody', 'topLayer'] },
     { label: 'Ranges', toggles: ['ranges', 'alwaysShowCalendars', 'showCustomRangeLabel', 'showRangeLabelOnInput'] },
     { label: 'Time', toggles: ['timePicker', 'timePicker24Hour', 'timePickerSeconds'] }
   ];
