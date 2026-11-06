@@ -478,6 +478,39 @@ describe('DaterangepickerComponent isCustomDate (issue #534)', () => {
   });
 });
 
+describe('DaterangepickerComponent isTooltipDate (issue #641)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function titleOfDay10(isTooltipDate: (date: Dayjs) => string | boolean | null): string | null {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    fixture.componentInstance.inline = true;
+    fixture.componentInstance.isTooltipDate = (date: Dayjs) => (date.date() === 10 ? isTooltipDate(date) : null);
+    fixture.detectChanges();
+    const cells: HTMLTableCellElement[] = Array.from(fixture.nativeElement.querySelectorAll('.calendar td.available:not(.off)'));
+    const cell = cells.find((candidate) => candidate.textContent.trim() === '10');
+    return cell ? cell.getAttribute('title') : null;
+  }
+
+  it('shows the returned text as the day cell title', () => {
+    expect(titleOfDay10(() => 'busy day')).toBe('busy day');
+  });
+
+  it('shows a generic text when it returns true', () => {
+    expect(titleOfDay10(() => true)).toBeTruthy();
+  });
+
+  it('shows no title when it returns false or null', () => {
+    expect(titleOfDay10(() => false)).toBeNull();
+    expect(titleOfDay10(() => null)).toBeNull();
+  });
+});
+
 describe('DaterangepickerDirective callback typings (issue #534)', () => {
   it('accepts a list of classes from isCustomDate', () => {
     const directive = {} as DaterangepickerDirective;

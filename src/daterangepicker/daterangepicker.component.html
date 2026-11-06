@@ -154,6 +154,7 @@
                             [attr.aria-label]="leftGrid.ariaLabelFor(row, col)"
                             [attr.aria-selected]="leftGrid.isSelected(row, col)"
                             [attr.aria-disabled]="leftGrid.isDisabled(row, col) || null"
+                            [attr.title]="calendarVariables.left.tooltiptext[row][col] || null"
                             (click)="clickDate($event, sideEnum.left, row, col)"
                             (mouseenter)="hoverDate($event, sideEnum.left, row, col)"
                         >
@@ -352,6 +353,7 @@
                             [attr.aria-label]="rightGrid.ariaLabelFor(row, col)"
                             [attr.aria-selected]="rightGrid.isSelected(row, col)"
                             [attr.aria-disabled]="rightGrid.isDisabled(row, col) || null"
+                            [attr.title]="calendarVariables.right.tooltiptext[row][col] || null"
                             (click)="clickDate($event, sideEnum.right, row, col)"
                             (mouseenter)="hoverDate($event, sideEnum.right, row, col)"
                         >

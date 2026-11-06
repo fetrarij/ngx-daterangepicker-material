@@ -105,6 +105,14 @@ interface CalendarClasses {
   [index: number]: CalendarRowClasses;
 }
 
+interface CalendarRowTooltips {
+  [index: number]: string;
+}
+
+interface CalendarTooltips {
+  [index: number]: CalendarRowTooltips;
+}
+
 interface Dropdowns {
   inMaxYear: boolean;
   yearArrays: number[];
@@ -125,6 +133,7 @@ interface CalendarVariables {
   minDate: dayjs.Dayjs;
   year: number;
   classes: CalendarClasses;
+  tooltiptext: CalendarTooltips;
   lastMonth: number;
   minute: number;
   second: number;
@@ -293,7 +302,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   public chosenLabel: string;
 
   public calendarVariables: CalendarVariableHolder = {};
-  // tooltiptext = []; // for storing tooltiptext
   public timepickerVariables: TimePickerVariablesHolder = {};
   daterangepicker: { start: FormControl; end: FormControl } = { start: new FormControl(), end: new FormControl() };
 
@@ -822,6 +830,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
       calRows: Array.from(Array(6).keys()),
       calCols: Array.from(Array(7).keys()),
       classes: {},
+      tooltiptext: {},
       minDate,
       maxDate,
       calendar
@@ -1359,10 +1368,6 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
       this.renderCalendar(SideEnum.left);
       this.renderCalendar(SideEnum.right);
     }
-    // const tooltip = side === SideEnum.left ? this.tooltiptext[leftCalDate] : this.tooltiptext[rightCalDate];
-    // if (tooltip.length > 0) {
-    //   (e.target as HTMLTableCellElement).setAttribute('title', tooltip);
-    // }
   }
 
   /**
@@ -1808,6 +1813,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   private buildCells(calendar, side: SideEnum) {
     for (let row = 0; row < 6; row++) {
       this.calendarVariables[side].classes[row] = { classList: '' };
+      this.calendarVariables[side].tooltiptext[row] = {};
       const rowClasses = [];
       if (
         this.emptyWeekRowClass &&
@@ -1912,16 +1918,16 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
           classes.push(...isCustom);
         }
         // apply custom tooltip for this date
-        // const isTooltip = this.isTooltipDate(calendar[row][col]);
-        // if (isTooltip) {
-        //   if (typeof isTooltip === 'string') {
-        //     this.tooltiptext[calendar[row][col]] = isTooltip; // setting tooltiptext for custom date
-        //   } else {
-        //     this.tooltiptext[calendar[row][col]] = 'Put the tooltip as the returned value of isTooltipDate';
-        //   }
-        // } else {
-        //   this.tooltiptext[calendar[row][col]] = '';
-        // }
+        const isTooltip = this.isTooltipDate(calendar[row][col]);
+        if (isTooltip) {
+          if (typeof isTooltip === 'string') {
+            this.calendarVariables[side].tooltiptext[row][col] = isTooltip; // setting tooltiptext for custom date
+          } else {
+            this.calendarVariables[side].tooltiptext[row][col] = 'Put the tooltip as the returned value of isTooltipDate';
+          }
+        } else {
+          this.calendarVariables[side].tooltiptext[row][col] = '';
+        }
         // store classes var
         let cname = '';
         let disabled = false;
