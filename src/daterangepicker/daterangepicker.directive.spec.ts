@@ -848,6 +848,27 @@ describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416
     expect(rightPrev).toBeNull();
   });
 
+  it('restores the left next control after advancing the right calendar (#635)', async () => {
+    await open({ linkedCalendars: false });
+    const element = fixture.nativeElement as HTMLElement;
+    expect(view()).toEqual([month(0), month(1)]);
+    expect(element.querySelector('.calendar.left th.next')).toBeNull();
+
+    element.querySelector<HTMLElement>('.calendar.right th.next').click();
+    fixture.detectChanges();
+    expect(view()).toEqual([month(0), month(2)]);
+
+    const leftNext = element.querySelector<HTMLElement>('.calendar.left th.next');
+    expect(leftNext).not.toBeNull();
+    leftNext.click();
+    fixture.detectChanges();
+
+    expect(view()).toEqual([month(1), month(2)]);
+    const picker = fixture.componentInstance.picker.picker;
+    expect(picker.leftCalendar.month.isBefore(picker.rightCalendar.month, 'month')).toBeTrue();
+    expect(element.querySelector('.calendar.left th.next')).toBeNull();
+  });
+
   it('opens on the minDate month when minDate is in a later month (#277)', async () => {
     await open({ minDate: today.add(3, 'month').startOf('month') });
 
