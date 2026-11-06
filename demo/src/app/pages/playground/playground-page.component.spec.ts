@@ -72,6 +72,13 @@ describe('PlaygroundPageComponent', () => {
     expect(root.querySelector('.md-drppicker.shown .calendar-time')).not.toBeNull();
   });
 
+  it('applies topLayer to the live preview', async () => {
+    await toggle('topLayer');
+    await open();
+
+    expect(root.querySelector<HTMLElement>('.md-drppicker.shown')?.hasAttribute('popover')).toBeTrue();
+  });
+
   it('keeps the value when an option changes, and Reset clears it', async () => {
     const page = fixture.componentInstance;
     await open();
