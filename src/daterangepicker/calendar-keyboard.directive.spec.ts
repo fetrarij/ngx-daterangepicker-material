@@ -201,7 +201,9 @@ describe('Calendar keyboard navigation (issue #113)', () => {
 
   it('opens the next month from the keyboard with a labeled button', async () => {
     await create();
-    const next = root.querySelector<HTMLElement>('th.next');
+    // Unlinked adjacent months hide the left next control (#635), so the labeled
+    // next button on the page is the right calendar's.
+    const next = root.querySelector<HTMLElement>('.calendar.right th.next');
     expect(next.getAttribute('role')).toBe('button');
     expect(next.getAttribute('tabindex')).toBe('0');
     expect(next.getAttribute('aria-label')).toBe('Next month');
@@ -209,7 +211,6 @@ describe('Calendar keyboard navigation (issue #113)', () => {
     next.focus();
     press('Enter');
 
-    // The first next button is the one of the left month: the calendars are not linked here.
-    expect(picker().leftCalendar.month.format('YYYY-MM')).toBe('2026-12');
+    expect(picker().rightCalendar.month.format('YYYY-MM')).toBe('2027-01');
   });
 });
