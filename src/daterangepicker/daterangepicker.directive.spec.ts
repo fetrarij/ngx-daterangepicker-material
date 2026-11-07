@@ -704,6 +704,12 @@ interface MonthsOptions {
   alwaysShowCalendars: boolean;
   keepCalendarOpeningWithRange: boolean;
   timePicker: boolean;
+  firstMonthDayClass: string;
+  lastMonthDayClass: string;
+  emptyWeekRowClass: string;
+  emptyWeekColumnClass: string;
+  lastDayOfPreviousMonthClass: string;
+  firstDayOfNextMonthClass: string;
 }
 
 @Component({
@@ -721,6 +727,12 @@ interface MonthsOptions {
     [alwaysShowCalendars]="o.alwaysShowCalendars"
     [keepCalendarOpeningWithRange]="o.keepCalendarOpeningWithRange"
     [timePicker]="o.timePicker"
+    [firstMonthDayClass]="o.firstMonthDayClass"
+    [lastMonthDayClass]="o.lastMonthDayClass"
+    [emptyWeekRowClass]="o.emptyWeekRowClass"
+    [emptyWeekColumnClass]="o.emptyWeekColumnClass"
+    [lastDayOfPreviousMonthClass]="o.lastDayOfPreviousMonthClass"
+    [firstDayOfNextMonthClass]="o.firstDayOfNextMonthClass"
     [(ngModel)]="selected"
   />`
 })
@@ -758,6 +770,12 @@ describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416
       alwaysShowCalendars: false,
       keepCalendarOpeningWithRange: false,
       timePicker: false,
+      firstMonthDayClass: null,
+      lastMonthDayClass: null,
+      emptyWeekRowClass: null,
+      emptyWeekColumnClass: null,
+      lastDayOfPreviousMonthClass: null,
+      firstDayOfNextMonthClass: null,
       ...options
     };
     fixture.componentInstance.selected = value as TimePeriod;
@@ -778,6 +796,13 @@ describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416
   function cells(side: 'left' | 'right', selector: string): string[] {
     return Array.from(
       (fixture.nativeElement as HTMLElement).querySelectorAll(`.md-drppicker.shown .calendar.${side} td${selector}:not(.off)`)
+    ).map((cell) => cell.textContent.trim());
+  }
+
+  // The days of the previous and next months shown around the current one.
+  function otherMonthCells(side: 'left' | 'right', selector: string): string[] {
+    return Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll(`.md-drppicker.shown .calendar.${side} td.off${selector}`)
     ).map((cell) => cell.textContent.trim());
   }
 
@@ -944,6 +969,76 @@ describe('DaterangepickerDirective months in view (issues #400, #398, #450, #416
     clickRange('This Month');
 
     expect(view()).toEqual([month(-1), month(0)]);
+  });
+
+  describe('custom classes', () => {
+    // March 2030 on the left, far from today: February has 28 days, March 31.
+    const march = { startDate: dayjs('2030-03-10'), endDate: dayjs('2030-03-12') };
+
+    it('adds firstMonthDayClass to the first day of the month', async () => {
+      await open({ firstMonthDayClass: 'first-day' }, march);
+
+      expect(cells('left', '.first-day')).toEqual(['1']);
+      expect(otherMonthCells('left', '.first-day')).toEqual([]);
+    });
+
+    it('adds lastMonthDayClass to the last day of the month', async () => {
+      await open({ lastMonthDayClass: 'last-day' }, march);
+
+      expect(cells('left', '.last-day')).toEqual(['31']);
+      expect(otherMonthCells('left', '.last-day')).toEqual([]);
+    });
+
+    it('adds emptyWeekRowClass to the rows with days of another month', async () => {
+      await open({ emptyWeekRowClass: 'mixed-week' }, march);
+
+      const rows = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.md-drppicker.shown .calendar.left tbody tr'));
+      const marked = rows.filter((row) => row.classList.contains('mixed-week'));
+      const withOtherMonth = rows.filter((row) => row.querySelector('td.off'));
+
+      expect(marked.length).toBeGreaterThan(0);
+      expect(marked).toEqual(withOtherMonth);
+    });
+
+    it('adds emptyWeekColumnClass to every day of another month', async () => {
+      await open({ emptyWeekColumnClass: 'other-month' }, march);
+
+      expect(otherMonthCells('left', '.other-month').length).toBeGreaterThan(0);
+      expect(otherMonthCells('left', '.other-month')).toEqual(otherMonthCells('left', ''));
+      expect(cells('left', '.other-month')).toEqual([]);
+    });
+
+    it('adds lastDayOfPreviousMonthClass to the last day of the previous month', async () => {
+      await open({ lastDayOfPreviousMonthClass: 'previous-last' }, march);
+
+      expect(otherMonthCells('left', '.previous-last')).toEqual(['28']);
+      expect(cells('left', '.previous-last')).toEqual([]);
+    });
+
+    it('adds firstDayOfNextMonthClass to the first day of the next month', async () => {
+      await open({ firstDayOfNextMonthClass: 'next-first' }, march);
+
+      expect(otherMonthCells('left', '.next-first')).toEqual(['1']);
+      expect(cells('left', '.next-first')).toEqual([]);
+    });
+
+    it('finds the previous and next months across the new year', async () => {
+      const options = { lastDayOfPreviousMonthClass: 'previous-last', firstDayOfNextMonthClass: 'next-first' };
+
+      // Far from today, so the calendar opens on these months.
+      // December: November has 30 days, the next month is January.
+      await open(options, { startDate: dayjs('2030-12-10'), endDate: dayjs('2030-12-12') });
+      expect(view()[0]).toBe('2030-12');
+      expect(otherMonthCells('left', '.previous-last')).toEqual(['30']);
+      expect(otherMonthCells('left', '.next-first')).toEqual(['1']);
+      fixture.componentInstance.picker.hide();
+
+      // January: the previous month is December, with 31 days.
+      await open(options, { startDate: dayjs('2031-01-10'), endDate: dayjs('2031-01-12') });
+      expect(view()[0]).toBe('2031-01');
+      expect(otherMonthCells('left', '.previous-last')).toEqual(['31']);
+      expect(otherMonthCells('left', '.next-first')).toEqual(['1']);
+    });
   });
 });
 
