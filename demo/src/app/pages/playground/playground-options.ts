@@ -21,6 +21,8 @@ export interface PlaygroundOptions {
   showISOWeekNumbers: boolean;
   showCancel: boolean;
   showClearButton: boolean;
+  appendToBody: boolean;
+  topLayer: boolean;
   ranges: boolean;
   alwaysShowCalendars: boolean;
   showCustomRangeLabel: boolean;
@@ -57,6 +59,8 @@ export const defaultOptions: PlaygroundOptions = {
   showISOWeekNumbers: false,
   showCancel: false,
   showClearButton: false,
+  appendToBody: false,
+  topLayer: false,
   ranges: false,
   alwaysShowCalendars: false,
   showCustomRangeLabel: false,
