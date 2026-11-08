@@ -1340,15 +1340,24 @@ describe('DaterangepickerComponent month grid view (#548)', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('.drp-month-grid')).toBeTruthy();
-    expect(component.monthGridView.left).toBeTrue();
+    expect(component.yearGridView.left).toBeTrue();
 
-    const cells = Array.from(
-      fixture.nativeElement.querySelectorAll('.drp-grid-cell')
-    ) as HTMLButtonElement[];
-    expect(cells.length).toBe(12);
-    const march = cells.find(
-      c => c.textContent!.trim().includes(component.locale.monthNames[2])
-    )!;
+    const yearCell = (
+      Array.from(
+        fixture.nativeElement.querySelectorAll('.drp-grid-cell')
+      ) as HTMLButtonElement[]
+    ).find(c => c.textContent!.trim() === '2025')!;
+    yearCell.click();
+    fixture.detectChanges();
+
+    // Picking a year opens the month grid for that year.
+    expect(component.yearGridView.left).toBeFalse();
+    expect(component.monthGridView.left).toBeTrue();
+    const march = (
+      Array.from(
+        fixture.nativeElement.querySelectorAll('.drp-grid-cell')
+      ) as HTMLButtonElement[]
+    ).find(c => c.textContent!.trim().includes(component.locale.monthNames[2]))!;
     march.click();
     fixture.detectChanges();
 
@@ -1365,6 +1374,14 @@ describe('DaterangepickerComponent month grid view (#548)', () => {
     ).click();
     fixture.detectChanges();
 
+    const yearCell = (
+      Array.from(
+        fixture.nativeElement.querySelectorAll('.drp-grid-cell')
+      ) as HTMLButtonElement[]
+    ).find(c => c.textContent!.trim() === '2026')!;
+    yearCell.click();
+    fixture.detectChanges();
+
     const cells = Array.from(
       fixture.nativeElement.querySelectorAll('.drp-grid-cell')
     ) as HTMLButtonElement[];
@@ -1376,6 +1393,61 @@ describe('DaterangepickerComponent month grid view (#548)', () => {
     )!;
     expect(january.disabled).toBeTrue();
     expect(june.disabled).toBeFalse();
+  });
+
+  it('opens the year grid from the label, then the month grid from a year', () => {
+    create();
+    (
+      fixture.nativeElement.querySelector('.drp-grid-toggle') as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.drp-month-grid')).toBeTruthy();
+    const years = Array.from(
+      fixture.nativeElement.querySelectorAll('.drp-grid-cell')
+    ) as HTMLButtonElement[];
+    expect(years.length).toBe(12);
+
+    const yearCell = (
+      Array.from(
+        fixture.nativeElement.querySelectorAll('.drp-grid-cell')
+      ) as HTMLButtonElement[]
+    ).find(c => c.textContent!.trim() === '2025')!;
+    yearCell.click();
+    fixture.detectChanges();
+
+    // Picking a year opens the month grid for that year.
+    expect(component.yearGridView.left).toBeFalse();
+    expect(component.monthGridView.left).toBeTrue();
+    const monthCellsNow = Array.from(
+      fixture.nativeElement.querySelectorAll('.drp-grid-cell')
+    ) as HTMLButtonElement[];
+    const march = monthCellsNow.find(
+      c => c.textContent!.trim().includes(component.locale.monthNames[2])
+    )!;
+    march.click();
+    fixture.detectChanges();
+
+    expect(component.monthGridView.left).toBeFalse();
+    expect(fixture.nativeElement.querySelector('.table-condensed')).toBeTruthy();
+  });
+
+  it('pages the year grid a decade at a time within min/max', () => {
+    create();
+    (
+      fixture.nativeElement.querySelector('.drp-grid-toggle') as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+
+    const startBefore = component.calendarVariables.left.monthGrid!.yearPageStart;
+    const nav = fixture.nativeElement.querySelector(
+      '.drp-grid-nav'
+    ) as HTMLButtonElement;
+    nav.click();
+    fixture.detectChanges();
+    expect(
+      component.calendarVariables.left.monthGrid!.yearPageStart
+    ).toBe(startBefore - 12);
   });
 
   it('keeps the dropdowns when both options are set', () => {

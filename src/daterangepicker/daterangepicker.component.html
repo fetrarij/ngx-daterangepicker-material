@@ -36,7 +36,28 @@
     <div class="calendar" [ngClass]="{ right: singleDatePicker, left: !singleDatePicker }">
         <div class="calendar-table">
             @if (calendarVariables) {
-            @if (showMonthYearGrid && !showDropdowns && monthGridView.left) {
+            @if (showMonthYearGrid && !showDropdowns && yearGridView.left) {
+            <div class="drp-month-grid">
+                <div class="drp-grid-head">
+                    <button type="button" class="drp-grid-nav"
+                        (click)="yearGridPageChanged(-1, sideEnum.left)">‹</button>
+                    <span class="drp-grid-decade">
+                        {{ calendarVariables.left.monthGrid?.yearPageStart }}–{{ (calendarVariables.left.monthGrid?.yearPageStart ?? 0) + 11 }}
+                    </span>
+                    <button type="button" class="drp-grid-nav"
+                        (click)="yearGridPageChanged(1, sideEnum.left)">›</button>
+                </div>
+                <div class="drp-grid-body">
+                    @for (y of calendarVariables.left.monthGrid?.years; track y.value) {
+                    <button type="button" class="drp-grid-cell" [class.disabled]="y.disabled"
+                        [class.current]="y.current" [disabled]="y.disabled"
+                        (click)="yearGridPicked(y.value, sideEnum.left)">
+                        {{ y.value }}
+                    </button>
+                    }
+                </div>
+            </div>
+            } @else if (showMonthYearGrid && !showDropdowns && monthGridView.left) {
             <div class="drp-month-grid">
                 @for (m of calendarVariables.left.monthGrid?.months; track m.value) {
                 <button type="button" class="drp-grid-cell" [class.disabled]="m.disabled"
@@ -73,7 +94,7 @@
                         }
                         <th colspan="5" class="month drp-animate">
                             @if (showMonthYearGrid && calendarVariables.left.monthGrid) {
-                            <button type="button" class="drp-grid-toggle" (click)="toggleMonthGridView(sideEnum.left)">
+                            <button type="button" class="drp-grid-toggle" (click)="toggleYearGridView(sideEnum.left)">
                                 {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
                                 {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}
                             </button>
@@ -254,7 +275,28 @@
     <div class="calendar right">
         <div class="calendar-table">
             @if (calendarVariables) {
-            @if (showMonthYearGrid && !showDropdowns && monthGridView.right) {
+            @if (showMonthYearGrid && !showDropdowns && yearGridView.right) {
+            <div class="drp-month-grid">
+                <div class="drp-grid-head">
+                    <button type="button" class="drp-grid-nav"
+                        (click)="yearGridPageChanged(-1, sideEnum.right)">‹</button>
+                    <span class="drp-grid-decade">
+                        {{ calendarVariables.right.monthGrid?.yearPageStart }}–{{ (calendarVariables.right.monthGrid?.yearPageStart ?? 0) + 11 }}
+                    </span>
+                    <button type="button" class="drp-grid-nav"
+                        (click)="yearGridPageChanged(1, sideEnum.right)">›</button>
+                </div>
+                <div class="drp-grid-body">
+                    @for (y of calendarVariables.right.monthGrid?.years; track y.value) {
+                    <button type="button" class="drp-grid-cell" [class.disabled]="y.disabled"
+                        [class.current]="y.current" [disabled]="y.disabled"
+                        (click)="yearGridPicked(y.value, sideEnum.right)">
+                        {{ y.value }}
+                    </button>
+                    }
+                </div>
+            </div>
+            } @else if (showMonthYearGrid && !showDropdowns && monthGridView.right) {
             <div class="drp-month-grid">
                 @for (m of calendarVariables.right.monthGrid?.months; track m.value) {
                 <button type="button" class="drp-grid-cell" [class.disabled]="m.disabled"
@@ -291,7 +333,7 @@
                         }
                         <th colspan="5" class="month">
                             @if (showMonthYearGrid && calendarVariables.right.monthGrid) {
-                            <button type="button" class="drp-grid-toggle" (click)="toggleMonthGridView(sideEnum.right)">
+                            <button type="button" class="drp-grid-toggle" (click)="toggleYearGridView(sideEnum.right)">
                                 {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
                                 {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}
                             </button>
