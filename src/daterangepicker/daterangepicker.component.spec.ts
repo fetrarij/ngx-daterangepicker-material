@@ -1291,3 +1291,131 @@ describe('DaterangepickerComponent end time with a timePickerIncrement', () => {
     expect(component.endDate.format('YYYY-MM-DD HH:mm')).toBe('2026-03-05 23:45');
   });
 });
+
+describe('DaterangepickerComponent month/year grid view (#548)', () => {
+  let fixture: ComponentFixture<DaterangepickerComponent>;
+  let component: DaterangepickerComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  function create(singleDatePicker = false): void {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    component.showMonthYearGrid = true;
+    component.singleDatePicker = singleDatePicker;
+    fixture.detectChanges();
+  }
+
+  function monthCells(): HTMLButtonElement[] {
+    return Array.from(
+      fixture.nativeElement.querySelectorAll('.drp-grid-cell')
+    ) as HTMLButtonElement[];
+  }
+
+  it('shows the day table when the option is off', () => {
+    fixture = TestBed.createComponent(DaterangepickerComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.drp-grid')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.table-condensed')).toBeTruthy();
+  });
+
+  it('opens the month grid from the header label and picks a month', () => {
+    create();
+    expect(fixture.nativeElement.querySelector('.table-condensed')).toBeTruthy();
+
+    const toggle = fixture.nativeElement.querySelector(
+      '.drp-grid-toggle'
+    ) as HTMLButtonElement;
+    toggle.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.drp-grid')).toBeTruthy();
+    expect(component.monthGridView.left).toBeTrue();
+
+    const cells = monthCells();
+    expect(cells.length).toBe(12);
+    const march = cells.find(
+      c => c.textContent!.trim().includes(component.locale.monthNames[2])
+    )!;
+    march.click();
+    fixture.detectChanges();
+
+    expect(component.monthGridView.left).toBeFalse();
+    expect(fixture.nativeElement.querySelector('.drp-grid')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.table-condensed')).toBeTruthy();
+  });
+
+  it('disables months outside minDate/maxDate in the grid', () => {
+    create();
+    component.minDate = '2026-03-15';
+    component.maxDate = '2026-10-15';
+    fixture.detectChanges();
+    fixture.detectChanges();
+
+    (
+      fixture.nativeElement.querySelector('.drp-grid-toggle') as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+
+    const cells = monthCells();
+    const january = cells.find(
+      c => c.textContent!.trim().includes(component.locale.monthNames[0])
+    )!;
+    const june = cells.find(
+      c => c.textContent!.trim().includes(component.locale.monthNames[5])
+    )!;
+    expect(january.disabled).toBeTrue();
+    expect(june.disabled).toBeFalse();
+  });
+
+  it('opens the year grid, pages the decade, and picks a year', () => {
+    create();
+    const toggles = fixture.nativeElement.querySelectorAll('.drp-grid-toggle');
+    (toggles[1] as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.drp-grid')).toBeTruthy();
+    const startBefore = component.calendarVariables.left.monthYearGrid!
+      .yearPageStart;
+
+    const nav = fixture.nativeElement.querySelector(
+      '.drp-grid-nav'
+    ) as HTMLButtonElement;
+    nav.click();
+    fixture.detectChanges();
+    expect(
+      component.calendarVariables.left.monthYearGrid!.yearPageStart
+    ).toBe(startBefore - 12);
+
+    const back = fixture.nativeElement.querySelectorAll('.drp-grid-nav')[1];
+    (back as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    const cells = monthCells();
+    const yearCell = cells.find(c => c.textContent!.trim() === '2025')!;
+    yearCell.click();
+    fixture.detectChanges();
+
+    expect(component.yearGridView.left).toBeFalse();
+    expect(component.monthGridView.left).toBeTrue();
+    expect(
+      fixture.nativeElement.querySelector('.drp-grid-toggle').textContent
+    ).toContain('2025');
+  });
+
+  it('works on a single picker with both calendars sharing the grid state', () => {
+    create(true);
+    const toggles = fixture.nativeElement.querySelectorAll('.drp-grid-toggle');
+    (toggles[0] as HTMLButtonElement).click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.drp-grid')).toBeTruthy();
+    expect(component.monthGridView.left).toBeTrue();
+  });
+});

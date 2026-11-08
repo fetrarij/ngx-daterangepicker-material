@@ -796,3 +796,77 @@ $input-height: 3rem !default;
   }
 }
 
+
+/* Month/year grid view (showMonthYearGrid) */
+.drp-grid {
+  .drp-grid-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 4px 8px;
+
+    .drp-grid-decade {
+      font-weight: bold;
+    }
+  }
+
+  .drp-grid-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    padding: 2px 6px;
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  .drp-grid-nav {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    padding: 2px 8px;
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  .drp-grid-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    padding: 4px 8px 8px;
+  }
+
+  .drp-grid-cell {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    text-align: center;
+    padding: 6px 4px;
+    border-radius: 4px;
+
+    &:hover:not(.disabled) {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    &.current {
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    &.disabled,
+    &:disabled {
+      color: #bbb;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+  }
+}
