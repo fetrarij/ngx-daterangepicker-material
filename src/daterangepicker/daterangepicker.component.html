@@ -36,6 +36,17 @@
     <div class="calendar" [ngClass]="{ right: singleDatePicker, left: !singleDatePicker }">
         <div class="calendar-table">
             @if (calendarVariables) {
+            @if (showMonthYearGrid && !showDropdowns && monthGridView.left) {
+            <div class="drp-month-grid">
+                @for (m of calendarVariables.left.monthGrid?.months; track m.value) {
+                <button type="button" class="drp-grid-cell" [class.disabled]="m.disabled"
+                    [class.current]="m.current" [disabled]="m.disabled"
+                    (click)="monthGridPicked(m.value, sideEnum.left)">
+                    {{ locale.monthNames[m.value] }}
+                </button>
+                }
+            </div>
+            } @else {
             <table class="table-condensed" role="grid">
                 <thead>
                     <tr>
@@ -61,7 +72,12 @@
                         <th></th>
                         }
                         <th colspan="5" class="month drp-animate">
-                            @if (showDropdowns && calendarVariables.left.dropdowns) {
+                            @if (showMonthYearGrid && calendarVariables.left.monthGrid) {
+                            <button type="button" class="drp-grid-toggle" (click)="toggleMonthGridView(sideEnum.left)">
+                                {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
+                                {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}
+                            </button>
+                            } @if (showDropdowns && calendarVariables.left.dropdowns) {
                             <div class="dropdowns">
                                 {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
                                 <select class="monthselect" (change)="monthChanged($event, sideEnum.left)">
@@ -165,6 +181,7 @@
                 </tbody>
             </table>
             }
+        }
         </div>
         @if (timePicker && timepickerVariables.left) {
         <div class="calendar-time">
@@ -237,6 +254,17 @@
     <div class="calendar right">
         <div class="calendar-table">
             @if (calendarVariables) {
+            @if (showMonthYearGrid && !showDropdowns && monthGridView.right) {
+            <div class="drp-month-grid">
+                @for (m of calendarVariables.right.monthGrid?.months; track m.value) {
+                <button type="button" class="drp-grid-cell" [class.disabled]="m.disabled"
+                    [class.current]="m.current" [disabled]="m.disabled"
+                    (click)="monthGridPicked(m.value, sideEnum.right)">
+                    {{ locale.monthNames[m.value] }}
+                </button>
+                }
+            </div>
+            } @else {
             <table class="table-condensed" role="grid">
                 <thead>
                     <tr>
@@ -262,7 +290,12 @@
                         <th></th>
                         }
                         <th colspan="5" class="month">
-                            @if (showDropdowns && calendarVariables.right.dropdowns) {
+                            @if (showMonthYearGrid && calendarVariables.right.monthGrid) {
+                            <button type="button" class="drp-grid-toggle" (click)="toggleMonthGridView(sideEnum.right)">
+                                {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
+                                {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}
+                            </button>
+                            } @if (showDropdowns && calendarVariables.right.dropdowns) {
                             <div class="dropdowns">
                                 {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
                                 <select class="monthselect" (change)="monthChanged($event, sideEnum.right)">
@@ -363,6 +396,7 @@
                 </tbody>
             </table>
             }
+        }
         </div>
         @if (timePicker && timepickerVariables.right) {
         <div class="calendar-time">

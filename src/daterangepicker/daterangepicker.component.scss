@@ -796,3 +796,50 @@ $input-height: 3rem !default;
   }
 }
 
+
+/* Month grid view (showMonthYearGrid) */
+.drp-month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 4px 8px 8px;
+
+  .drp-grid-cell {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    text-align: center;
+    padding: 6px 4px;
+    border-radius: 4px;
+
+    &:hover:not(.disabled) {
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    &.current {
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    &.disabled,
+    &:disabled {
+      color: #bbb;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+  }
+}
+
+.drp-grid-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 2px 6px;
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+}

@@ -118,6 +118,16 @@ interface Dropdowns {
 
 type CalendarArrayWithProps<T> = T[] & { firstDay?: Dayjs; lastDay?: Dayjs };
 
+interface MonthGridEntry {
+  value: number;
+  disabled: boolean;
+  current: boolean;
+}
+
+interface MonthGrid {
+  months: MonthGridEntry[];
+}
+
 interface CalendarVariables {
   calRows: number[];
   calCols: number[];
@@ -138,6 +148,7 @@ interface CalendarVariables {
   maxDate: dayjs.Dayjs;
   daysInLastMonth: number;
   dropdowns?: Dropdowns;
+  monthGrid?: MonthGrid;
 }
 
 interface CalendarVariableHolder {
@@ -187,6 +198,14 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
 
   @Input()
   showDropdowns = false;
+
+  /**
+   * Show a month grid view: the month in the header becomes clickable,
+   * opening a 4x3 month grid in place of the day table. Respects
+   * minDate/maxDate. Takes priority over `showDropdowns` when both are set.
+   */
+  @Input()
+  showMonthYearGrid = false;
 
   @Input()
   showWeekNumbers = false;
@@ -295,6 +314,9 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   public calendarVariables: CalendarVariableHolder = {};
   // tooltiptext = []; // for storing tooltiptext
   public timepickerVariables: TimePickerVariablesHolder = {};
+
+  /** Month grid view open per side (see `showMonthYearGrid`). */
+  public monthGridView: {left: boolean; right: boolean} = {left: false, right: false};
   daterangepicker: { start: FormControl; end: FormControl } = { start: new FormControl(), end: new FormControl() };
 
   public applyBtn: { disabled: boolean } = { disabled: false };
@@ -850,6 +872,26 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
       };
     }
 
+    if (this.showMonthYearGrid) {
+      const currentMonth: number = calendar[1][1].month();
+      const currentYear: number = calendar[1][1].year();
+      const realCurrentYear: number = dayjs().utc(true).year();
+      const maxYear: number = (maxDate && maxDate.year()) || realCurrentYear + 5;
+      const minYear: number = (minDate && minDate.year()) || realCurrentYear - 50;
+      const inMinYear: boolean = currentYear === minYear;
+      const inMaxYear: boolean = currentYear === maxYear;
+      const monthDisabled = (m: number): boolean =>
+        (inMinYear && !!minDate && m < minDate.month()) ||
+        (inMaxYear && !!maxDate && m > maxDate.month());
+      this.calendarVariables[side].monthGrid = {
+        months: Array.from(Array(12).keys()).map(m => ({
+          value: m,
+          disabled: monthDisabled(m),
+          current: m === currentMonth,
+        })),
+      };
+    }
+
     this.buildCells(calendar, side);
   }
 
@@ -1189,6 +1231,21 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     this.monthOrYearChanged(month, year, side);
   }
 
+  /** Show/hide the month grid for one side (`showMonthYearGrid`). */
+  toggleMonthGridView(side: SideEnum): void {
+    this.monthGridView[side] = !this.monthGridView[side];
+  }
+
+  /** A month picked from the grid: switch the calendar and close the grid. */
+  monthGridPicked(month: number, side: SideEnum): void {
+    const entry = this.calendarVariables[side].monthGrid?.months[month];
+    if (entry && entry.disabled) {
+      return;
+    }
+    this.monthOrYearChanged(month, this.calendarVariables[side].calendar[1][1].year(), side);
+    this.monthGridView[side] = false;
+  }
+
   /**
    * called when year is changed
    *
@@ -1292,6 +1349,18 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
         newMonth = this.maxDate.month();
         newYear = this.maxDate.year();
       }
+    }
+    if (!this.calendarVariables[side].dropdowns) {
+      this.calendarVariables[side].dropdowns = {
+        inMaxYear: false,
+        yearArrays: [],
+        maxYear: 0,
+        minYear: 0,
+        currentMonth: 0,
+        inMinYear: false,
+        monthArrays: [],
+        currentYear: 0,
+      };
     }
     this.calendarVariables[side].dropdowns.currentYear = newYear;
     this.calendarVariables[side].dropdowns.currentMonth = newMonth;
