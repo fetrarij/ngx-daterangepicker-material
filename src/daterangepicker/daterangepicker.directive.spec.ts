@@ -2547,3 +2547,63 @@ describe('DaterangepickerDirective keyboard (issue #113)', () => {
     expect(buttons.every((button) => button.tabIndex === 0 && !button.disabled)).toBeTrue();
   });
 });
+
+@Component({
+  standalone: false,
+  template: `<input ngxDaterangepickerMd [showMonthYearGrid]="grid" [(ngModel)]="selected" />`
+})
+class GridHostComponent {
+  grid = true;
+  selected: TimePeriod;
+}
+
+describe('DaterangepickerDirective showMonthYearGrid', () => {
+  let fixture: ComponentFixture<GridHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [GridHostComponent],
+      imports: [FormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.destroy());
+
+  it('shows the month grid through the directive', () => {
+    fixture = TestBed.createComponent(GridHostComponent);
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('input').click();
+    fixture.detectChanges();
+
+    (
+      fixture.nativeElement.querySelector('.drp-grid-toggle') as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+
+    // The left calendar shows the grid; the right calendar keeps its day table.
+    expect(fixture.nativeElement.querySelector('.drp-month-grid')).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelectorAll('.table-condensed').length
+    ).toBe(1);
+
+    // The label opens the year grid; picking a year opens the month grid.
+    const yearCell = (
+      Array.from(
+        fixture.nativeElement.querySelectorAll('.drp-grid-cell')
+      ) as HTMLButtonElement[]
+    ).find(c => c.textContent!.trim() === '2025')!;
+    yearCell.click();
+    fixture.detectChanges();
+
+    const march = (
+      Array.from(
+        fixture.nativeElement.querySelectorAll('.drp-grid-cell')
+      ) as HTMLButtonElement[]
+    ).find(c => c.textContent!.trim().includes('Mar'))!;
+    march.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.drp-month-grid')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.table-condensed')).toBeTruthy();
+  });
+});

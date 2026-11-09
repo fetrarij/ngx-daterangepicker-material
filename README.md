@@ -275,7 +275,7 @@ The value has the same shape as with `ngModel`, and the `disabled()` rule disabl
 
 ## Available options
 
-### autoApply, showDropdowns, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars, showClearButton, showCancel
+### autoApply, showDropdowns, showMonthYearGrid, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars, showClearButton, showCancel
 
 >These options are booleans
 
@@ -298,6 +298,8 @@ Both functions get a local dayjs date. The time of that date is not always midni
 Dayjs dates can come from `import dayjs from 'dayjs'` or from `'dayjs/esm'`, both work (this also applies to `ranges`, `startDate` and `endDate`). An unknown value is ignored, with a warning in the console in dev mode.
 
 With `showDropdowns`, the year list goes from the year of `minDate` to the year of `maxDate`. Without them, it goes from 50 years ago to 5 years ahead.
+
+With `showMonthYearGrid`, the month and year in the header become clickable and open a month/year grid in place of the dropdowns; months and years outside `minDate`/`maxDate` are disabled. When both options are set, the dropdowns win.
 
 ### dateLimit
 

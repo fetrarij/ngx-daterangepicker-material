@@ -1393,20 +1393,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
         newYear = this.maxDate.year();
       }
     }
-    if (!this.calendarVariables[side].dropdowns) {
-      this.calendarVariables[side].dropdowns = {
-        inMaxYear: false,
-        yearArrays: [],
-        maxYear: 0,
-        minYear: 0,
-        currentMonth: 0,
-        inMinYear: false,
-        monthArrays: [],
-        currentYear: 0,
-      };
+    if (this.calendarVariables[side].dropdowns) {
+      this.calendarVariables[side].dropdowns.currentYear = newYear;
+      this.calendarVariables[side].dropdowns.currentMonth = newMonth;
     }
-    this.calendarVariables[side].dropdowns.currentYear = newYear;
-    this.calendarVariables[side].dropdowns.currentMonth = newMonth;
     if (isLeft) {
       this.leftCalendar.month = this.leftCalendar.month.month(newMonth).year(newYear);
       if (this.linkedCalendars) {

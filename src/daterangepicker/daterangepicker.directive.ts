@@ -27,6 +27,7 @@ import { DOCUMENT } from '@angular/common';
 import { ChosenDate, DateRange, DaterangepickerComponent, DateRanges, EndDate, StartDate, TimePeriod } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs/esm';
+import { SideEnum } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 import { isPlainDate, parseDate, toExternalDate, toInternalDate } from './external-date';
@@ -100,6 +101,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
 
   @Input()
   showDropdowns: boolean;
+
+  @Input()
+  showMonthYearGrid: boolean;
 
   @Input()
   isInvalidDate: (date: Dayjs) => boolean;
@@ -464,6 +468,18 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
     // The picker recomputes its label for new ranges; show it like a locale change does (issue #388).
     if (changes['ranges'] && !changes['ranges'].firstChange && this.hasDates(this.value) && this.picker.chosenLabel) {
       this.el.nativeElement.value = this.picker.chosenLabel;
+    }
+    if (
+      changes['showMonthYearGrid'] &&
+      this.picker.calendarVariables?.left?.calendar &&
+      this.picker.calendarVariables?.right?.calendar
+    ) {
+      // The grid data is built while the calendars render; rebuild both sides
+      // so the option takes effect without an arrow click. On the first
+      // binding the calendars are not built yet and pick the input up
+      // themselves.
+      this.picker.renderCalendar(SideEnum.left);
+      this.picker.renderCalendar(SideEnum.right);
     }
   }
 

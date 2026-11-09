@@ -130,7 +130,7 @@
                                     }
                                 </select>
                             </div>
-                            } @if (!showDropdowns || !calendarVariables.left.dropdowns) {
+                            } @if (!showMonthYearGrid && (!showDropdowns || !calendarVariables.left.dropdowns)) {
                             {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
                             {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}
                             }
@@ -369,7 +369,7 @@
                                     }
                                 </select>
                             </div>
-                            } @if (!showDropdowns || !calendarVariables.right.dropdowns) {
+                            } @if (!showMonthYearGrid && (!showDropdowns || !calendarVariables.right.dropdowns)) {
                             {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
                             {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}
                             }
