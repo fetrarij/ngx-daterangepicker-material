@@ -137,6 +137,36 @@ describe('Calendar keyboard navigation (issue #113)', () => {
     expect(focused()).toBe('January 10, 2026');
   });
 
+  it('keeps the two unlinked months one month apart when the focus leaves them', async () => {
+    await create();
+    focusGrid();
+
+    const months = (): string => `${picker().leftCalendar.month.format('YYYY-MM')}..${picker().rightCalendar.month.format('YYYY-MM')}`;
+    // The default configuration: the two calendars are not linked.
+    expect(months()).toBe('2026-11..2026-12');
+
+    press('PageDown'); // December is already shown, in the right calendar.
+    press('PageDown'); // January 2027 is not shown: both months move.
+    expect(focused()).toBe('January 10, 2027');
+    expect(months()).toBe('2026-12..2027-01');
+
+    press('PageDown');
+    expect(months()).toBe('2027-01..2027-02');
+
+    // Going back drags the right calendar along the same way.
+    press('PageUp');
+    press('PageUp');
+    expect(focused()).toBe('December 10, 2026');
+    expect(months()).toBe('2026-12..2027-01');
+
+    for (let i = 0; i < 3; i++) {
+      press('PageUp');
+      expect(picker().rightCalendar.month.diff(picker().leftCalendar.month, 'month')).toBe(1);
+      expect(tabStops().length).toBe(1);
+    }
+    expect(focused()).toBe('September 10, 2026');
+  });
+
   it('chooses the start and the end date with Enter and Space', async () => {
     await create();
     focusGrid();

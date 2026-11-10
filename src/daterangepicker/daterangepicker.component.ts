@@ -1478,14 +1478,16 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     const month = date.clone().date(2);
     if (this.singleDatePicker || date.isBefore(this.leftCalendar.month, 'month')) {
       this.leftCalendar.month = month;
-      if (this.linkedCalendars && !this.singleDatePicker) {
+      if (!this.singleDatePicker) {
+        // Linked calendars, and unlinked ones the focus leaves: the other month
+        // comes along, so the two stay one month apart (issue #637).
         this.rightCalendar.month = month.add(1, 'month');
       }
     } else if (date.isAfter(this.rightCalendar.month, 'month')) {
       this.rightCalendar.month = month;
-      if (this.linkedCalendars) {
-        this.leftCalendar.month = month.subtract(1, 'month');
-      }
+      // Same on the other side: the left calendar follows instead of staying on
+      // the month the keyboard just left, which is how the two drifted apart.
+      this.leftCalendar.month = month.subtract(1, 'month');
     } else {
       // Between two unlinked months.
       this.leftCalendar.month = month;
