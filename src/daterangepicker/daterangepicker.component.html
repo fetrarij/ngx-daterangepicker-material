@@ -36,6 +36,38 @@
     <div class="calendar" [ngClass]="{ right: singleDatePicker, left: !singleDatePicker }">
         <div class="calendar-table">
             @if (calendarVariables) {
+            @if (showMonthYearGrid && !showDropdowns && yearGridView.left) {
+            <div class="drp-month-grid">
+                <div class="drp-grid-head">
+                    <button type="button" class="drp-grid-nav"
+                        (click)="yearGridPageChanged(-1, sideEnum.left)">‹</button>
+                    <span class="drp-grid-decade">
+                        {{ calendarVariables.left.monthGrid?.yearPageStart }}–{{ (calendarVariables.left.monthGrid?.yearPageStart ?? 0) + 11 }}
+                    </span>
+                    <button type="button" class="drp-grid-nav"
+                        (click)="yearGridPageChanged(1, sideEnum.left)">›</button>
+                </div>
+                <div class="drp-grid-body">
+                    @for (y of calendarVariables.left.monthGrid?.years; track y.value) {
+                    <button type="button" class="drp-grid-cell" [class.disabled]="y.disabled"
+                        [class.current]="y.current" [disabled]="y.disabled"
+                        (click)="yearGridPicked(y.value, sideEnum.left)">
+                        {{ y.value }}
+                    </button>
+                    }
+                </div>
+            </div>
+            } @else if (showMonthYearGrid && !showDropdowns && monthGridView.left) {
+            <div class="drp-month-grid">
+                @for (m of calendarVariables.left.monthGrid?.months; track m.value) {
+                <button type="button" class="drp-grid-cell" [class.disabled]="m.disabled"
+                    [class.current]="m.current" [disabled]="m.disabled"
+                    (click)="monthGridPicked(m.value, sideEnum.left)">
+                    {{ locale.monthNames[m.value] }}
+                </button>
+                }
+            </div>
+            } @else {
             <table class="table-condensed" role="grid">
                 <thead>
                     <tr>
@@ -61,7 +93,12 @@
                         <th></th>
                         }
                         <th colspan="5" class="month drp-animate">
-                            @if (showDropdowns && calendarVariables.left.dropdowns) {
+                            @if (showMonthYearGrid && calendarVariables.left.monthGrid) {
+                            <button type="button" class="drp-grid-toggle" (click)="toggleYearGridView(sideEnum.left)">
+                                {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
+                                {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}
+                            </button>
+                            } @if (showDropdowns && calendarVariables.left.dropdowns) {
                             <div class="dropdowns">
                                 {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
                                 <select class="monthselect" (change)="monthChanged($event, sideEnum.left)">
@@ -93,7 +130,7 @@
                                     }
                                 </select>
                             </div>
-                            } @if (!showDropdowns || !calendarVariables.left.dropdowns) {
+                            } @if (!showMonthYearGrid && (!showDropdowns || !calendarVariables.left.dropdowns)) {
                             {{ this.locale.monthNames[calendarVariables?.left?.calendar[1][1].month()] }}
                             {{ calendarVariables?.left?.calendar[1][1].format(' YYYY') }}
                             }
@@ -166,6 +203,7 @@
                 </tbody>
             </table>
             }
+        }
         </div>
         @if (timePicker && timepickerVariables.left) {
         <div class="calendar-time">
@@ -238,6 +276,38 @@
     <div class="calendar right">
         <div class="calendar-table">
             @if (calendarVariables) {
+            @if (showMonthYearGrid && !showDropdowns && yearGridView.right) {
+            <div class="drp-month-grid">
+                <div class="drp-grid-head">
+                    <button type="button" class="drp-grid-nav"
+                        (click)="yearGridPageChanged(-1, sideEnum.right)">‹</button>
+                    <span class="drp-grid-decade">
+                        {{ calendarVariables.right.monthGrid?.yearPageStart }}–{{ (calendarVariables.right.monthGrid?.yearPageStart ?? 0) + 11 }}
+                    </span>
+                    <button type="button" class="drp-grid-nav"
+                        (click)="yearGridPageChanged(1, sideEnum.right)">›</button>
+                </div>
+                <div class="drp-grid-body">
+                    @for (y of calendarVariables.right.monthGrid?.years; track y.value) {
+                    <button type="button" class="drp-grid-cell" [class.disabled]="y.disabled"
+                        [class.current]="y.current" [disabled]="y.disabled"
+                        (click)="yearGridPicked(y.value, sideEnum.right)">
+                        {{ y.value }}
+                    </button>
+                    }
+                </div>
+            </div>
+            } @else if (showMonthYearGrid && !showDropdowns && monthGridView.right) {
+            <div class="drp-month-grid">
+                @for (m of calendarVariables.right.monthGrid?.months; track m.value) {
+                <button type="button" class="drp-grid-cell" [class.disabled]="m.disabled"
+                    [class.current]="m.current" [disabled]="m.disabled"
+                    (click)="monthGridPicked(m.value, sideEnum.right)">
+                    {{ locale.monthNames[m.value] }}
+                </button>
+                }
+            </div>
+            } @else {
             <table class="table-condensed" role="grid">
                 <thead>
                     <tr>
@@ -263,7 +333,12 @@
                         <th></th>
                         }
                         <th colspan="5" class="month">
-                            @if (showDropdowns && calendarVariables.right.dropdowns) {
+                            @if (showMonthYearGrid && calendarVariables.right.monthGrid) {
+                            <button type="button" class="drp-grid-toggle" (click)="toggleYearGridView(sideEnum.right)">
+                                {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
+                                {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}
+                            </button>
+                            } @if (showDropdowns && calendarVariables.right.dropdowns) {
                             <div class="dropdowns">
                                 {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
                                 <select class="monthselect" (change)="monthChanged($event, sideEnum.right)">
@@ -295,7 +370,7 @@
                                     }
                                 </select>
                             </div>
-                            } @if (!showDropdowns || !calendarVariables.right.dropdowns) {
+                            } @if (!showMonthYearGrid && (!showDropdowns || !calendarVariables.right.dropdowns)) {
                             {{ this.locale.monthNames[calendarVariables?.right?.calendar[1][1].month()] }}
                             {{ calendarVariables?.right?.calendar[1][1].format(' YYYY') }}
                             }
@@ -365,6 +440,7 @@
                 </tbody>
             </table>
             }
+        }
         </div>
         @if (timePicker && timepickerVariables.right) {
         <div class="calendar-time">
