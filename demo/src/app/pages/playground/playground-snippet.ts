@@ -16,6 +16,7 @@ const booleanInputs: BooleanOption[] = [
   'showISOWeekNumbers',
   'showCancel',
   'showClearButton',
+  'nullOnClear',
   'appendToBody',
   'topLayer',
   'alwaysShowCalendars',
