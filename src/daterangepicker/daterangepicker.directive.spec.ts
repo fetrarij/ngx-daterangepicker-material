@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation, signal } from '@angular/core';
+import { Component, QueryList, ViewChild, ViewChildren, ViewEncapsulation, signal } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -2675,6 +2675,97 @@ describe('DaterangepickerDirective action element with two pickers (issue #623)'
 
     expect(fixture.componentInstance.first.picker.isShown).toBeTrue();
     expect(fixture.componentInstance.second.picker.isShown).toBeFalse();
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<input
+      class="model"
+      ngxDaterangepickerMd
+      [nullOnClear]="nullOnClear"
+      [(ngModel)]="selected"
+      (datesUpdated)="updates.push($event)"
+    />
+    <input class="control" ngxDaterangepickerMd [nullOnClear]="nullOnClear" startKey="from" endKey="to" [formControl]="control" />`
+})
+class NullOnClearHostComponent {
+  @ViewChildren(DaterangepickerDirective) pickers: QueryList<DaterangepickerDirective>;
+  nullOnClear = false;
+  selected: TimePeriod | null = { startDate: dayjs('2026-03-10'), endDate: dayjs('2026-03-12') };
+  control = new FormControl<unknown>({ from: dayjs('2026-03-10'), to: dayjs('2026-03-12') });
+  updates: TimePeriod[] = [];
+}
+
+describe('DaterangepickerDirective nullOnClear (issue #439)', () => {
+  let fixture: ComponentFixture<NullOnClearHostComponent>;
+  let host: NullOnClearHostComponent;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [NullOnClearHostComponent],
+      imports: [FormsModule, ReactiveFormsModule, NgxDaterangepickerMd.forRoot()]
+    }).compileComponents();
+  }));
+
+  afterEach(() => fixture.destroy());
+
+  async function create(nullOnClear: boolean): Promise<void> {
+    fixture = TestBed.createComponent(NullOnClearHostComponent);
+    host = fixture.componentInstance;
+    host.nullOnClear = nullOnClear;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  async function clear(index: number): Promise<void> {
+    host.pickers.get(index).picker.clear();
+    fixture.detectChanges();
+    await fixture.whenStable();
+  }
+
+  it('keeps the object with null dates by default', async () => {
+    await create(false);
+    await clear(0);
+    await clear(1);
+
+    expect(host.selected).toEqual({ startDate: null, endDate: null });
+    expect(host.control.value).toEqual({ from: null, to: null });
+  });
+
+  it('sends null to ngModel on clear', async () => {
+    await create(true);
+    await clear(0);
+
+    expect(host.selected).toBeNull();
+  });
+
+  it('sends null to a form control with custom keys on clear', async () => {
+    await create(true);
+    await clear(1);
+
+    expect(host.control.value).toBeNull();
+  });
+
+  it('does not change the datesUpdated event', async () => {
+    await create(true);
+    await clear(0);
+
+    expect(host.updates).toEqual([{ startDate: null, endDate: null }]);
+  });
+
+  it('still sends the dates when a range is applied', async () => {
+    await create(true);
+    const picker = host.pickers.get(0).picker;
+    picker.setStartDate(dayjs('2026-04-01'));
+    picker.setEndDate(dayjs('2026-04-03'));
+    picker.clickApply(new MouseEvent('click'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(host.selected.startDate.format('YYYY-MM-DD')).toBe('2026-04-01');
+    expect(host.selected.endDate.format('YYYY-MM-DD')).toBe('2026-04-03');
   });
 });
 

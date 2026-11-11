@@ -162,6 +162,9 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
   @Input()
   allowEmptyEndDate = false;
 
+  // Clear sends null to the form instead of { startDate: null, endDate: null } (issue #439). Default in v23.
+  @Input({ transform: booleanAttribute }) nullOnClear = false;
+
   // timepicker variables
   @Input()
   timePicker = false;
@@ -432,7 +435,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck, OnD
           [this.startKeyHolder]: toExternalDate(change.startDate),
           [this.endKeyHolder]: toExternalDate(change.endDate)
         };
-        this.value = value as TimePeriod;
+        const cleared = change.startDate === null && change.endDate === null;
+        this.value = cleared && this.nullOnClear ? null : (value as TimePeriod);
         this.onChange.emit(value as TimePeriod);
         this.dateChange.emit(value as TimePeriod);
         if (typeof change.chosenLabel === 'string') {

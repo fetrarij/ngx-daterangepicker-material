@@ -328,6 +328,16 @@ The value then has an empty end date: `{ startDate: dayjs, endDate: null }`. The
 
 A value with `endDate: null` from ngModel or a form control is shown the same way. When the picker opens again, the first click starts a new selection. [See it in the demo](https://fetrarij.github.io/ngx-daterangepicker-material/custom-ranges#open-end-date).
 
+### nullOnClear
+
+ >Set to `true` so the Clear button sends `null` to ngModel or the form control (since 22.7.0). Default is `false`, where Clear sends `{ startDate: null, endDate: null }`. `null` becomes the default in v23.
+
+```html
+<input ngxDaterangepickerMd [showClearButton]="true" [nullOnClear]="true" [(ngModel)]="selected" />
+```
+
+Only the form value changes: `(datesUpdated)`, `(dateChange)` and `(clearClicked)` stay the same.
+
 ### locale
 
 >the locale options is an object with:

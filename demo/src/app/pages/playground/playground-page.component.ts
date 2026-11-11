@@ -77,7 +77,10 @@ export class PlaygroundPageComponent {
         'allowEmptyEndDate'
       ]
     },
-    { label: 'Display', toggles: ['showDropdowns', 'showWeekNumbers', 'showISOWeekNumbers', 'showCancel', 'showClearButton'] },
+    {
+      label: 'Display',
+      toggles: ['showDropdowns', 'showWeekNumbers', 'showISOWeekNumbers', 'showCancel', 'showClearButton', 'nullOnClear']
+    },
     { label: 'Ranges', toggles: ['ranges', 'alwaysShowCalendars', 'showCustomRangeLabel', 'showRangeLabelOnInput'] },
     { label: 'Time', toggles: ['timePicker', 'timePicker24Hour', 'timePickerSeconds'] }
   ];
