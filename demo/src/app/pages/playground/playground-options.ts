@@ -21,6 +21,9 @@ export interface PlaygroundOptions {
   showISOWeekNumbers: boolean;
   showCancel: boolean;
   showClearButton: boolean;
+  nullOnClear: boolean;
+  appendToBody: boolean;
+  topLayer: boolean;
   ranges: boolean;
   alwaysShowCalendars: boolean;
   showCustomRangeLabel: boolean;
@@ -57,6 +60,9 @@ export const defaultOptions: PlaygroundOptions = {
   showISOWeekNumbers: false,
   showCancel: false,
   showClearButton: false,
+  nullOnClear: false,
+  appendToBody: false,
+  topLayer: false,
   ranges: false,
   alwaysShowCalendars: false,
   showCustomRangeLabel: false,
@@ -80,6 +86,8 @@ export function isActive(key: keyof PlaygroundOptions, options: PlaygroundOption
   switch (key) {
     case 'closeOnAutoApply':
       return options.autoApply;
+    case 'nullOnClear':
+      return options.showClearButton;
     case 'linkedCalendars':
     case 'allowEmptyEndDate':
       return !options.singleDatePicker;

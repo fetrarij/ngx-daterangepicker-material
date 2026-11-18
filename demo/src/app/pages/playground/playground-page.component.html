@@ -24,6 +24,7 @@
                 [showISOWeekNumbers]="config.showISOWeekNumbers"
                 [showCancel]="config.showCancel"
                 [showClearButton]="config.showClearButton"
+                [nullOnClear]="config.nullOnClear"
                 [ranges]="config.ranges"
                 [alwaysShowCalendars]="config.alwaysShowCalendars"
                 [showCustomRangeLabel]="config.showCustomRangeLabel"
@@ -34,6 +35,8 @@
                 [timePickerIncrement]="config.timePickerIncrement"
                 [opens]="config.opens"
                 [drops]="config.drops"
+                [appendToBody]="config.appendToBody"
+                [topLayer]="config.topLayer"
                 [minDate]="config.minDate"
                 [maxDate]="config.maxDate"
                 [dateLimit]="config.dateLimit"
@@ -76,6 +79,12 @@
 
         <section class="group">
             <h3>Position</h3>
+            <mat-slide-toggle hideIcon [checked]="options().appendToBody" (change)="set('appendToBody', $event.checked)">
+                <code>appendToBody</code>
+            </mat-slide-toggle>
+            <mat-slide-toggle hideIcon [checked]="options().topLayer" (change)="set('topLayer', $event.checked)">
+                <code>topLayer</code>
+            </mat-slide-toggle>
             <span class="label"><code>opens</code></span>
             <mat-button-toggle-group
                 hideSingleSelectionIndicator

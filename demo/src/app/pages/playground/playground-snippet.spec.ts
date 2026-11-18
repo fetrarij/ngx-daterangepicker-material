@@ -56,6 +56,13 @@ describe('Playground snippet', () => {
     expect(buildTs(withOptions({ ranges: true, language: 'fr' }))).toContain(`"Aujourd'hui": [dayjs(), dayjs()]`);
   });
 
+  it('writes appendToBody and topLayer only when they are on', () => {
+    expect(buildHtml(withOptions({ topLayer: true }))).toContain('[topLayer]="true"');
+    expect(buildHtml(withOptions({ appendToBody: true }))).toContain('[appendToBody]="true"');
+    expect(buildHtml(defaultOptions)).not.toContain('topLayer');
+    expect(buildHtml(defaultOptions)).not.toContain('appendToBody');
+  });
+
   it('gives minDate or maxDate from today', () => {
     expect(buildHtml(withOptions({ limits: 'future' }))).toContain('[minDate]="today"');
     expect(buildHtml(withOptions({ limits: 'past' }))).toContain('[maxDate]="today"');
