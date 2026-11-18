@@ -128,6 +128,9 @@ interface MonthGrid {
   months: MonthGridEntry[];
   years: MonthGridEntry[];
   yearPageStart: number;
+  // The year page buttons stop at minDate/maxDate.
+  prevYearsDisabled: boolean;
+  nextYearsDisabled: boolean;
 }
 
 interface CalendarVariables {
@@ -204,7 +207,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   /**
    * Show a month grid view: the month in the header becomes clickable,
    * opening a 4x3 month grid in place of the day table. Respects
-   * minDate/maxDate. Takes priority over `showDropdowns` when both are set.
+   * minDate/maxDate. `showDropdowns` wins when both are set.
    */
   @Input()
   showMonthYearGrid = false;
@@ -318,11 +321,11 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
   public timepickerVariables: TimePickerVariablesHolder = {};
 
   /** Month grid view open per side (see `showMonthYearGrid`). */
-  public monthGridView: {left: boolean; right: boolean} = {left: false, right: false};
+  public monthGridView: { left: boolean; right: boolean } = { left: false, right: false };
   /** Year grid view open per side; picking a year opens the month grid. */
-  public yearGridView: {left: boolean; right: boolean} = {left: false, right: false};
+  public yearGridView: { left: boolean; right: boolean } = { left: false, right: false };
   /** Decade page offset for the year grid, per side. */
-  public yearGridPage: {left: number; right: number} = {left: 0, right: 0};
+  public yearGridPage: { left: number; right: number } = { left: 0, right: 0 };
   daterangepicker: { start: FormControl; end: FormControl } = { start: new FormControl(), end: new FormControl() };
 
   public applyBtn: { disabled: boolean } = { disabled: false };
@@ -887,24 +890,24 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
       const inMinYear: boolean = currentYear === minYear;
       const inMaxYear: boolean = currentYear === maxYear;
       const monthDisabled = (m: number): boolean =>
-        (inMinYear && !!minDate && m < minDate.month()) ||
-        (inMaxYear && !!maxDate && m > maxDate.month());
+        (inMinYear && !!minDate && m < minDate.month()) || (inMaxYear && !!maxDate && m > maxDate.month());
       const page = this.yearGridPage[side];
       const yearPageStart = Math.floor(currentYear / 12) * 12 + page * 12;
-      const yearDisabled = (y: number): boolean =>
-        (!!minDate && y < minYear) || (!!maxDate && y > maxYear);
+      const yearDisabled = (y: number): boolean => (!!minDate && y < minYear) || (!!maxDate && y > maxYear);
       this.calendarVariables[side].monthGrid = {
-        months: Array.from(Array(12).keys()).map(m => ({
+        months: Array.from(Array(12).keys()).map((m) => ({
           value: m,
           disabled: monthDisabled(m),
-          current: m === currentMonth,
+          current: m === currentMonth
         })),
-        years: Array.from(Array(12).keys()).map(i => ({
+        years: Array.from(Array(12).keys()).map((i) => ({
           value: yearPageStart + i,
           disabled: yearDisabled(yearPageStart + i),
-          current: yearPageStart + i === currentYear,
+          current: yearPageStart + i === currentYear
         })),
         yearPageStart,
+        prevYearsDisabled: !!minDate && yearPageStart <= minYear,
+        nextYearsDisabled: !!maxDate && yearPageStart + 11 >= maxYear
       };
     }
 
@@ -1247,36 +1250,63 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     this.monthOrYearChanged(month, year, side);
   }
 
-  /** Show/hide the month grid for one side (`showMonthYearGrid`). */
-  toggleMonthGridView(side: SideEnum): void {
-    this.monthGridView[side] = !this.monthGridView[side];
-  }
-
-  /** Open/close the year grid for one side (the header label toggles it). */
+  /** Open the year grid for one side (the header label opens it). */
   toggleYearGridView(side: SideEnum): void {
     this.yearGridView[side] = !this.yearGridView[side];
+    this.monthGridView[side] = false;
+    // Always start on the page of the shown year.
+    this.yearGridPage[side] = 0;
+    this.renderCalendar(side);
+    this.focusGrid(side);
+  }
+
+  /** Close the grids of one side and go back to the day table. */
+  closeGrids(side: SideEnum): void {
+    this.yearGridView[side] = false;
+    this.monthGridView[side] = false;
+    this.yearGridPage[side] = 0;
+    this.ref.detectChanges();
+    this.focusGridElement(`.drp-grid-toggle[data-side="${side}"]`);
   }
 
   /** Page the year grid 12 years back/forward within min/max. */
   yearGridPageChanged(delta: number, side: SideEnum): void {
+    const grid = this.calendarVariables[side].monthGrid;
+    if ((delta < 0 && grid?.prevYearsDisabled) || (delta > 0 && grid?.nextYearsDisabled)) {
+      return;
+    }
     this.yearGridPage[side] = this.yearGridPage[side] + delta;
     this.renderCalendar(side);
+  }
+
+  // Move the focus into the grid that just opened, so keyboard users are not lost.
+  private focusGrid(side: SideEnum): void {
+    this.ref.detectChanges();
+    const grid = `.drp-month-grid[data-side="${side}"]`;
+    if (!this.focusGridElement(`${grid} .drp-grid-cell.current:not(:disabled)`)) {
+      this.focusGridElement(`${grid} .drp-grid-cell:not(:disabled)`);
+    }
+  }
+
+  private focusGridElement(selector: string): boolean {
+    const element = this.el.nativeElement.querySelector(selector) as HTMLElement | null;
+    element?.focus();
+    return !!element;
   }
 
   /** A year picked from the grid: open the month grid for that year. */
   yearGridPicked(year: number, side: SideEnum): void {
     const grid = this.calendarVariables[side].monthGrid;
-    const entry = grid?.years.find(y => y.value === year);
+    const entry = grid?.years.find((y) => y.value === year);
     if (entry && entry.disabled) {
       return;
     }
-    this.monthOrYearChanged(
-      this.calendarVariables[side].calendar[1][1].month(),
-      year,
-      side
-    );
+    // The page is relative to the shown year, which changes here.
+    this.yearGridPage[side] = 0;
+    this.monthOrYearChanged(this.calendarVariables[side].calendar[1][1].month(), year, side);
     this.yearGridView[side] = false;
     this.monthGridView[side] = true;
+    this.focusGrid(side);
   }
 
   /** A month picked from the grid: switch the calendar and close the grid. */
@@ -1286,7 +1316,7 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
       return;
     }
     this.monthOrYearChanged(month, this.calendarVariables[side].calendar[1][1].year(), side);
-    this.monthGridView[side] = false;
+    this.closeGrids(side);
   }
 
   /**
@@ -1687,6 +1717,10 @@ export class DaterangepickerComponent implements OnInit, OnChanges, ControlValue
     // if picker is attached to a text input, update it
     this.updateElement();
     this.isShown = false;
+    // Open the day table again next time.
+    this.monthGridView = { left: false, right: false };
+    this.yearGridView = { left: false, right: false };
+    this.yearGridPage = { left: 0, right: 0 };
     this.ref.detectChanges();
   }
 

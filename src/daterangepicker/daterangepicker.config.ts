@@ -20,6 +20,10 @@ export interface LocaleConfig {
   // Read by screen readers on the previous and next month buttons (issue #113).
   prevMonthLabel?: string;
   nextMonthLabel?: string;
+  // Read by screen readers on the month/year grid buttons (showMonthYearGrid).
+  prevYearsLabel?: string;
+  nextYearsLabel?: string;
+  closeGridLabel?: string;
   // Input text when allowEmptyEndDate is on and there is no end date, e.g. 'From {start}'.
   emptyEndDateLabel?: string;
   daysOfWeek?: string[];
@@ -43,6 +47,9 @@ export const DefaultLocaleConfig: LocaleConfig = {
   customRangeLabel: 'Custom range',
   prevMonthLabel: 'Previous month',
   nextMonthLabel: 'Next month',
+  prevYearsLabel: 'Previous years',
+  nextYearsLabel: 'Next years',
+  closeGridLabel: 'Back to calendar',
   daysOfWeek: dayjs.weekdaysMin(),
   monthNames: dayjs.monthsShort(),
   firstDay: dayjs.localeData().firstDayOfWeek()

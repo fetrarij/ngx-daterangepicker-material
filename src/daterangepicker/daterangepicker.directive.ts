@@ -24,10 +24,9 @@ import {
   untracked
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { ChosenDate, DateRange, DaterangepickerComponent, DateRanges, EndDate, StartDate, TimePeriod } from './daterangepicker.component';
+import { ChosenDate, DateRange, DaterangepickerComponent, DateRanges, EndDate, SideEnum, StartDate, TimePeriod } from './daterangepicker.component';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import dayjs, { Dayjs } from 'dayjs/esm';
-import { SideEnum } from './daterangepicker.component';
 import { LocaleConfig } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
 import { isPlainDate, parseDate, toExternalDate, toInternalDate } from './external-date';
