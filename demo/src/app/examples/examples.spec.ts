@@ -8,6 +8,7 @@ import { CustomDaysComponent } from './custom-days/custom-days.component';
 import { CustomFormatComponent } from './custom-format/custom-format.component';
 import { DateTimeComponent } from './date-time/date-time.component';
 import { DropdownsComponent } from './dropdowns/dropdowns.component';
+import { MonthYearGridComponent } from './month-year-grid/month-year-grid.component';
 import { FrenchLocaleComponent } from './french-locale/french-locale.component';
 import { InlineCalendarComponent } from './inline-calendar/inline-calendar.component';
 import { InlineNgmodelComponent } from './inline-ngmodel/inline-ngmodel.component';
@@ -33,6 +34,7 @@ const inputExamples: Type<unknown>[] = [
   CustomFormatComponent,
   DateTimeComponent,
   DropdownsComponent,
+  MonthYearGridComponent,
   FrenchLocaleComponent,
   OpenFromButtonComponent,
   PredefinedRangesComponent,

@@ -275,7 +275,7 @@ The value has the same shape as with `ngModel`, and the `disabled()` rule disabl
 
 ## Available options
 
-### autoApply, showDropdowns, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars, showClearButton, showCancel
+### autoApply, showDropdowns, showMonthYearGrid, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars, showClearButton, showCancel
 
 >These options are booleans
 
@@ -298,6 +298,8 @@ Both functions get a local dayjs date. The time of that date is not always midni
 Dayjs dates can come from `import dayjs from 'dayjs'` or from `'dayjs/esm'`, both work (this also applies to `ranges`, `startDate` and `endDate`). An unknown value is ignored, with a warning in the console in dev mode.
 
 With `showDropdowns`, the year list goes from the year of `minDate` to the year of `maxDate`. Without them, it goes from 50 years ago to 5 years ahead.
+
+With `showMonthYearGrid`, the month and year in the header become clickable and open a year grid, then a month grid, in place of the day table. Months and years outside `minDate`/`maxDate` are disabled. The × button or Escape goes back to the day table. When both options are set, the dropdowns win.
 
 ### dateLimit
 
@@ -355,6 +357,9 @@ Only the form value changes: `(datesUpdated)`, `(dateChange)` and `(clearClicked
     emptyEndDateLabel: 'From {start}', // only with allowEmptyEndDate, default is the start date and the separator
     prevMonthLabel: 'Previous month', // read by screen readers, since 22.6.0
     nextMonthLabel: 'Next month', // read by screen readers, since 22.6.0
+    prevYearsLabel: 'Previous years', // showMonthYearGrid buttons, since 22.7.0
+    nextYearsLabel: 'Next years', // since 22.7.0
+    closeGridLabel: 'Back to calendar', // since 22.7.0
     daysOfWeek: dayjs.weekdaysMin(),
     monthNames: dayjs.monthsShort(),
     firstDay: 1 // first day is monday
