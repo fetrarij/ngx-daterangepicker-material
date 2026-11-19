@@ -4,10 +4,18 @@ import { BasicRangeComponent } from '../../examples/basic-range/basic-range.comp
 import { DropdownsComponent } from '../../examples/dropdowns/dropdowns.component';
 import { MonthYearGridComponent } from '../../examples/month-year-grid/month-year-grid.component';
 import { ClearCancelComponent } from '../../examples/clear-cancel/clear-cancel.component';
+import { WeekNumbersComponent } from '../../examples/week-numbers/week-numbers.component';
 
 @Component({
   selector: 'demo-simple-page',
-  imports: [DemoExampleComponent, BasicRangeComponent, DropdownsComponent, ClearCancelComponent, MonthYearGridComponent],
+  imports: [
+    DemoExampleComponent,
+    BasicRangeComponent,
+    DropdownsComponent,
+    ClearCancelComponent,
+    MonthYearGridComponent,
+    WeekNumbersComponent
+  ],
   templateUrl: './simple-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
