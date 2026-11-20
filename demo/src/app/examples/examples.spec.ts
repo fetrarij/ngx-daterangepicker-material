@@ -25,6 +25,7 @@ import { AppendToBodyComponent } from './append-to-body/append-to-body.component
 import { EventLogComponent } from './event-log/event-log.component';
 import { OpenEndDateComponent } from './open-end-date/open-end-date.component';
 import { SignalFormComponent } from './signal-form/signal-form.component';
+import { WeekNumbersComponent } from './week-numbers/week-numbers.component';
 import { appConfig } from './global-config/app.config';
 
 const inputExamples: Type<unknown>[] = [
@@ -47,7 +48,8 @@ const inputExamples: Type<unknown>[] = [
   AppendToBodyComponent,
   EventLogComponent,
   OpenEndDateComponent,
-  SignalFormComponent
+  SignalFormComponent,
+  WeekNumbersComponent
 ];
 const inlineExamples: Type<unknown>[] = [InlineCalendarComponent, InlineNgmodelComponent, InlineTimeComponent];
 
@@ -150,6 +152,25 @@ describe('Demo examples', () => {
     expect(sunday).toBeDefined();
     expect(saturday).toBeDefined();
     expect(saturday.classList.contains('invalid')).toBeFalse();
+  });
+
+  it('week numbers: each input shows a week column on the calendars', async () => {
+    await create(WeekNumbersComponent);
+    const inputs = Array.from(root().querySelectorAll<HTMLInputElement>('input'));
+
+    expect(inputs.length).toBe(2);
+    for (const field of inputs) {
+      field.click();
+      fixture.detectChanges();
+      await settle();
+      const picker = field.parentElement.querySelector<HTMLElement>('.md-drppicker');
+
+      expect(picker.classList.contains('show-week-numbers')).toBeTrue();
+      expect(picker.querySelectorAll('.calendar.left td.week').length).toBeGreaterThan(0);
+      field.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      fixture.detectChanges();
+      await settle();
+    }
   });
 
   it('single date form: shows the plain starting date', async () => {

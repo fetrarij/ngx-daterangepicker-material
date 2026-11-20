@@ -43,6 +43,8 @@ import * as openEndDateTs from './open-end-date/open-end-date.component' with { 
 import openEndDateHtml from './open-end-date/open-end-date.component.html' with { loader: 'text' };
 import * as signalFormTs from './signal-form/signal-form.component' with { loader: 'text' };
 import signalFormHtml from './signal-form/signal-form.component.html' with { loader: 'text' };
+import * as weekNumbersTs from './week-numbers/week-numbers.component' with { loader: 'text' };
+import weekNumbersHtml from './week-numbers/week-numbers.component.html' with { loader: 'text' };
 import * as globalConfigTs from './global-config/app.config' with { loader: 'text' };
 
 // The text loader gives the file as the default export, but TypeScript still sees the .ts module.
@@ -76,5 +78,6 @@ export const exampleSources: Record<string, SourceFile[]> = {
   'event-log': files('event-log', eventLogHtml, eventLogTs),
   'open-end-date': files('open-end-date', openEndDateHtml, openEndDateTs),
   'signal-form': files('signal-form', signalFormHtml, signalFormTs),
+  'week-numbers': files('week-numbers', weekNumbersHtml, weekNumbersTs),
   'global-config': [{ name: 'app.config.ts', language: 'typescript', code: text(globalConfigTs) }]
 };
