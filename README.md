@@ -279,6 +279,14 @@ The value has the same shape as with `ngModel`, and the `disabled()` rule disabl
 
 >These options are booleans
 
+### closeOnAutoApply
+
+ >Boolean, default `true`. It goes with `autoApply`: when it is `false`, the calendar stays open after a range is selected. The value is still updated on each selection.
+
+### linkedCalendars
+
+ >Boolean, default `false`. When it is `true`, the two calendars always show two months in a row: going to another month or year in one of them moves the other with it. When it is `false`, they can show months that are not in a row, for example January and April for a range from January to April. It has no effect with `singleDatePicker`.
+
 ### isCustomDate
 
 >(function) A function that is passed each date in the calendars before they are displayed, and may return a string or array of CSS class names to apply to that date's calendar cell
