@@ -561,6 +561,19 @@ describe('DaterangepickerComponent locale change at runtime (issues #519, #462)'
     expect(headers()).toEqual(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']);
     expect(firstGridDay()).toBe(0);
   });
+
+  // Tracking by name rebuilt the whole row and logged NG0956 (issue #654).
+  it('keeps the weekday header cells when the locale changes', () => {
+    const before = Array.from(fixture.nativeElement.querySelectorAll('.calendar thead tr:last-child th'));
+
+    fixture.componentRef.setInput('locale', { locale: fr });
+    fixture.detectChanges();
+
+    const after = Array.from(fixture.nativeElement.querySelectorAll('.calendar thead tr:last-child th'));
+    expect(headers()).toEqual(['lu', 'ma', 'me', 'je', 've', 'sa', 'di']);
+    expect(after.length).toBe(before.length);
+    after.forEach((cell, i) => expect(cell).toBe(before[i]));
+  });
 });
 
 describe('DaterangepickerComponent inline emitted instants (issue #547)', () => {
